@@ -51,15 +51,31 @@ We then demonstrate its efficiency and compare it to implicant-based methods on 
 \subsection{Preliminaries}
 \subsubsection{Traps-spaces}
 \subsubsection{Petri-net encoding of Logical models}
+
+Original encoding~\cite{chaouiya2011petri} vs. more recent one~\cite{chatain2014characterization}
+
 \subsubsection{Siphons}
 
 \subsection{New method}
+
+SBML-Qual~\cite{chaouiya2013sbml}/BoolNet~\cite{mussel2010boolnet,klarner2017pyboolnet} to PNML\footnote{\url{https://www.pnml.org/}} works via GINsim/BioLQM~\cite{chaouiya2012logical} with
+\begin{verbatim}
+\verb|java -jar GINsim.jar -lqm <input.sbml/input.bnet> <output.pnml>|
+\end{verbatim}
 
 \section{Evaluation}
 \subsection{Benchmark vs. implicant-based methods}
 \subsection{Detailed biological example}
 
 \section{Conclusion}
+
+\subsubsection{Acknowledgments}
+Coffee is good, you should drink some!
+
+\bibliographystyle{splncs04}
+\bibliography{cmsb22.bib}
+
+\end{document}
 
 % \begin{table}
 % \caption{Table captions should be placed above the
@@ -107,21 +123,3 @@ We then demonstrate its efficiency and compare it to implicant-based methods on 
 % Proofs, examples, and remarks have the initial word in italics,
 % while the following text appears in normal font.
 % \end{proof}
-% For citations of references, we prefer the use of square brackets
-% and consecutive numbers. Citations using labels or the author/year
-% convention are also acceptable. The following bibliography provides
-% a sample reference list with entries for journal
-% articles~\cite{ref_article1}, an LNCS chapter~\cite{ref_lncs1}, a
-% book~\cite{ref_book1}, proceedings without editors~\cite{ref_proc1},
-% and a homepage~\cite{ref_url1}. Multiple citations are grouped
-% \cite{ref_article1,ref_lncs1,ref_book1},
-% \cite{ref_article1,ref_book1,ref_proc1,ref_url1}.
-
-\subsubsection{Acknowledgments} Please place your acknowledgments at
-the end of the paper, preceded by an unnumbered run-in heading (i.e.
-3rd-level heading).
-
-\bibliographystyle{splncs04}
-\bibliography{cmsb.bib}
-
-\end{document}
