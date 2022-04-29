@@ -50,22 +50,31 @@ We then demonstrate its efficiency and compare it to implicant-based methods on 
 \section{Minimal trap-spaces as maximal siphons}
 \subsection{Preliminaries}
 \subsubsection{Traps-spaces}
+
+\cite{klarner2015computing,klarner2017pyboolnet,cifuentes2020control}
+
 \subsubsection{Petri-net encoding of Logical models}
 
-Original encoding~\cite{chaouiya2011petri} vs. more recent one~\cite{chatain2014characterization}
+Original encoding~\cite{chaouiya2004qualitative,chaouiya2011petri} vs. more recent one~\cite{chatain2014characterization}.
+All identical on Boolean models?
 
 \subsubsection{Siphons}
 
 \subsection{New method}
 
-SBML-Qual~\cite{chaouiya2013sbml}/BoolNet~\cite{mussel2010boolnet,klarner2017pyboolnet} to PNML\footnote{\url{https://www.pnml.org/}} works via GINsim/BioLQM~\cite{chaouiya2012logical} with
+SBML-Qual~\cite{chaouiya2013sbml}/BoolNet~\cite{mussel2010boolnet,klarner2017pyboolnet} to PNML\footnote{\url{https://www.pnml.org/}} works via GINsim~\cite{chaouiya2012logical}/BioLQM\footnote{http://www.colomoto.org/biolqm/} with
 \begin{verbatim}
-\verb|java -jar GINsim.jar -lqm <input.sbml/input.bnet> <output.pnml>|
+java -jar GINsim.jar -lqm <input.sbml/input.bnet> <output.pnml>
 \end{verbatim}
 
 \section{Evaluation}
 \subsection{Benchmark vs. implicant-based methods}
+
+\url{http://colomoto.org/biolqm/doc/tools-trapspace.html}
+
 \subsection{Detailed biological example}
+
+TBD
 
 \section{Conclusion}
 
