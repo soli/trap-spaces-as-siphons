@@ -10,99 +10,112 @@
 \title{Minimal trap-spaces of Logical models are maximal siphons of their Petri-net encoding}
 \titlerunning{Minimal trap-spaces as maximal siphons}
 \author{Van-Giang Trinh\inst{1}\orcidID{0000-1111-2222-3333} \and \\
-Sylvain Soliman\inst{2}\orcidID{0000-0001-5525-7418}}
+  Sylvain Soliman\inst{2}\orcidID{0000-0001-5525-7418}}
 % \authorrunning{F. Author et al.}
 
 \institute{
-Aix-Marseille Université, Marseille, France\\
-\email{???@lis-lab.fr}\\
-\url{???} \and
-Lifeware team, Inria Saclay center, Palaiseau, France\\
-\email{Sylvain.Soliman@inria.fr}\\
-\url{http://lifeware.inria.fr/~soliman/}}
+  Aix-Marseille Université, Marseille, France\\
+  \email{???@lis-lab.fr}\\
+  \url{???} \and
+  Lifeware team, Inria Saclay center, Palaiseau, France\\
+  \email{Sylvain.Soliman@inria.fr}\\
+  \url{http://lifeware.inria.fr/~soliman/}
+}
 
 \maketitle
 
 \begin{abstract}
-The abstract should briefly summarize the contents of the paper in
-150--250 words.
+  % The abstract should briefly summarize the contents of the paper in
+  % 150--250 words.
 
-\keywords{Logical models \and Boolean models \and Trap-spaces \and Attractor computation \and Petri-nets \and Siphons.}
+  Discrete modelling has proven over the years that it can bring powerful analyses and corresponding insight to the many cases where precise biological data is not sufficiently available to build a detailed quantitative model.
+  This is even more true for very big models where such data is frequently missing and led to a constant increase in size of logical models \emph{à la} Thomas.
+  The analysis of such models is mostly based on attractor computation, since those correspond roughly to \emph{phenotypes}, and the recent use of trap-spaces made a real breakthrough in that domain allowing to consider medium-sized models that used to be out of reach.
+  However, with the continuing increase in model-size, the state of the art computation of minimal trap-spaces based on prime-implicants shows its limits as there can be very many such implicants.
+  In this article we present an alternative method to compute minimal trap-spaces, and hence complex attractors, that relies on a completely different technique, namely the enumeration of maximal siphons in the Petri-net encoding of the original Logical model.
+  We then demonstrate its efficiency and compare it to implicant-based methods on a few relevant big Boolean models.
+
+\keywords{Logical models \and Boolean models \and Trap-spaces \and Attractor computation \and Petri-nets \and Siphons}
 \end{abstract}
-%
-%
-%
-\section{First Section}
-\subsection{A Subsection Sample}
-Please note that the first paragraph of a section or subsection is
-not indented. The first paragraph that follows a table, figure,
-equation etc. does not need an indent, either.
 
-Subsequent paragraphs, however, are indented.
+\section{Introduction}
 
-\subsubsection{Sample Heading (Third Level)} Only two levels of
-headings should be numbered. Lower level headings remain unnumbered;
-they are formatted as run-in headings.
+Discrete modelling has proven over the years that it can bring powerful analyses and corresponding insight to the many cases where precise biological data is not sufficiently available to build a detailed quantitative model.
+This is even more true for very big models where such data is frequently missing and led to a constant increase in size of logical models \emph{à la} Thomas.
+The analysis of such models is mostly based on attractor computation, since those correspond roughly to \emph{phenotypes}, and the recent use of trap-spaces made a real breakthrough in that domain allowing to consider medium-sized models that used to be out of reach.
+However, with the continuing increase in model-size, the state of the art computation of minimal trap-spaces based on prime-implicants shows its limits as there can be very many such implicants.
+In this article we present an alternative method to compute minimal trap-spaces, and hence complex attractors, that relies on a completely different technique, namely the enumeration of maximal siphons in the Petri-net encoding of the original Logical model.
+We then demonstrate its efficiency and compare it to implicant-based methods on a few relevant big Boolean models.
 
-\paragraph{Sample Heading (Fourth Level)}
-The contribution should contain no more than four levels of
-headings. Table~\ref{tab1} gives a summary of all heading levels.
+\section{Minimal trap-spaces as maximal siphons}
+\subsection{Preliminaries}
+\subsubsection{Traps-spaces}
+\subsubsection{Petri-net encoding of Logical models}
+\subsubsection{Siphons}
 
-\begin{table}
-\caption{Table captions should be placed above the
-tables.}\label{tab1}
-\begin{tabular}{|l|l|l|}
-\hline
-Heading level &  Example & Font size and style\\
-\hline
-Title (centered) &  {\Large\bfseries Lecture Notes} & 14 point, bold\\
-1st-level heading &  {\large\bfseries 1 Introduction} & 12 point, bold\\
-2nd-level heading & {\bfseries 2.1 Printing Area} & 10 point, bold\\
-3rd-level heading & {\bfseries Run-in Heading in Bold.} Text follows & 10 point, bold\\
-4th-level heading & {\itshape Lowest Level Heading.} Text follows & 10 point, italic\\
-\hline
-\end{tabular}
-\end{table}
+\subsection{New method}
+
+\section{Evaluation}
+\subsection{Benchmark vs. implicant-based methods}
+\subsection{Detailed biological example}
+
+\section{Conclusion}
+
+% \begin{table}
+% \caption{Table captions should be placed above the
+% tables.}\label{tab1}
+% \begin{tabular}{|l|l|l|}
+% \hline
+% Heading level &  Example & Font size and style\\
+% \hline
+% Title (centered) &  {\Large\bfseries Lecture Notes} & 14 point, bold\\
+% 1st-level heading &  {\large\bfseries 1 Introduction} & 12 point, bold\\
+% 2nd-level heading & {\bfseries 2.1 Printing Area} & 10 point, bold\\
+% 3rd-level heading & {\bfseries Run-in Heading in Bold.} Text follows & 10 point, bold\\
+% 4th-level heading & {\itshape Lowest Level Heading.} Text follows & 10 point, italic\\
+% \hline
+% \end{tabular}
+% \end{table}
 
 
-\noindent Displayed equations are centered and set on a separate
-line.
-\begin{equation}
-x + y = z
-\end{equation}
-Please try to avoid rasterized images for line-art diagrams and
-schemas. Whenever possible, use vector graphics instead (see
-Fig.~\ref{fig1}).
+% \noindent Displayed equations are centered and set on a separate
+% line.
+% \begin{equation}
+% x + y = z
+% \end{equation}
+% Please try to avoid rasterized images for line-art diagrams and
+% schemas. Whenever possible, use vector graphics instead (see
+% Fig.~\ref{fig1}).
 
-\begin{figure}
-% \includegraphics[width=\textwidth]{fig1.eps}
-\caption{A figure caption is always placed below the illustration.
-Please note that short captions are centered, while long ones are
-justified by the macro package automatically.} \label{fig1}
-\end{figure}
+% \begin{figure}
+% % \includegraphics[width=\textwidth]{fig1.eps}
+% \caption{A figure caption is always placed below the illustration.
+% Please note that short captions are centered, while long ones are
+% justified by the macro package automatically.} \label{fig1}
+% \end{figure}
 
-\begin{theorem}
-This is a sample theorem. The run-in heading is set in bold, while
-the following text appears in italics. Definitions, lemmas,
-propositions, and corollaries are styled the same way.
-\end{theorem}
-%
-% the environments 'definition', 'lemma', 'proposition', 'corollary',
-% 'remark', and 'example' are defined in the LLNCS documentclass as well.
-%
-\begin{proof}
-Proofs, examples, and remarks have the initial word in italics,
-while the following text appears in normal font.
-\end{proof}
-For citations of references, we prefer the use of square brackets
-and consecutive numbers. Citations using labels or the author/year
-convention are also acceptable. The following bibliography provides
-a sample reference list with entries for journal
-articles~\cite{ref_article1}, an LNCS chapter~\cite{ref_lncs1}, a
-book~\cite{ref_book1}, proceedings without editors~\cite{ref_proc1},
-and a homepage~\cite{ref_url1}. Multiple citations are grouped
-\cite{ref_article1,ref_lncs1,ref_book1},
-\cite{ref_article1,ref_book1,ref_proc1,ref_url1}.
+% \begin{theorem}
+% This is a sample theorem. The run-in heading is set in bold, while
+% the following text appears in italics. Definitions, lemmas,
+% propositions, and corollaries are styled the same way.
+% \end{theorem}
+% %
+% % the environments 'definition', 'lemma', 'proposition', 'corollary',
+% % 'remark', and 'example' are defined in the LLNCS documentclass as well.
+% %
+% \begin{proof}
+% Proofs, examples, and remarks have the initial word in italics,
+% while the following text appears in normal font.
+% \end{proof}
+% For citations of references, we prefer the use of square brackets
+% and consecutive numbers. Citations using labels or the author/year
+% convention are also acceptable. The following bibliography provides
+% a sample reference list with entries for journal
+% articles~\cite{ref_article1}, an LNCS chapter~\cite{ref_lncs1}, a
+% book~\cite{ref_book1}, proceedings without editors~\cite{ref_proc1},
+% and a homepage~\cite{ref_url1}. Multiple citations are grouped
+% \cite{ref_article1,ref_lncs1,ref_book1},
+% \cite{ref_article1,ref_book1,ref_proc1,ref_url1}.
 
 \subsubsection{Acknowledgments} Please place your acknowledgments at
 the end of the paper, preceded by an unnumbered run-in heading (i.e.
