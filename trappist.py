@@ -17,6 +17,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 import argparse
+import os
 import subprocess
 import sys
 import tempfile
@@ -40,7 +41,6 @@ def read_pnml(fileobj: IO) -> nx.DiGraph:
         net.add_node(
             place.get("id"), kind="place", name=place.find("./name/value").text
         )
-        # print(place.get("id"), place.find("./name/value").text)
 
     for transition in root.findall("./net/transition"):
         net.add_node(transition.get("id"), kind="transition")
@@ -51,36 +51,51 @@ def read_pnml(fileobj: IO) -> nx.DiGraph:
     return net
 
 
+def pnml_to_asp(name: str) -> str:
+    if name.startswith("-"):
+        return "n" + name[1:]
+    return "p" + name
+
+
 def write_asp(petri_net: nx.DiGraph, asp_file: IO):
     """Write the ASP program for the maximal conflict-free siphons of petri_net."""
     for node, kind in petri_net.nodes(data="kind"):
         if kind == "place":
-            print("{", node, "}", file=asp_file)
+            print("{", pnml_to_asp(node), "}.", file=asp_file, sep="")
             if not node.startswith("-"):
-                print(f":- {node}, -{node}.", file=asp_file)    # conflict-freeness
-        else:   # it's a transition, apply siphon (if one succ is true, one pred must be true)
+                print(
+                    f":- {pnml_to_asp(node)}, {pnml_to_asp('-' + node)}.", file=asp_file
+                )  # conflict-freeness
+        else:  # it's a transition, apply siphon (if one succ is true, one pred must be true)
             preds = list(petri_net.predecessors(node))
-            or_preds = "; ".join(preds)
+            or_preds = "; ".join(map(pnml_to_asp, preds))
             for succ in petri_net.successors(node):
-                if succ not in preds:   # optimize obvious tautologies
-                    print(f"{or_preds} :- {succ}", file=asp_file)
+                if succ not in preds:  # optimize obvious tautologies
+                    print(f"{or_preds} :- {pnml_to_asp(succ)}.", file=asp_file)
 
 
-def solve_asp(asp_filename: str):
+def solve_asp(asp_filename: str) -> str:
     """Run an ASP solver on program asp_file and get the solutions."""
-    # result = subprocess.run(
-    #     [
-    #         "clingo",
-    #         "--dom-pref=32",
-    #         "--heu=domain",
-    #         "--dom-mod=7",
-    #         asp_filename,
-    #         "0",
-    #     ],
-    #     capture_output=True,
-    # )
-    result = subprocess.run(["cat", asp_filename])
-    print(result.stdout)
+    result = subprocess.run(
+        [
+            "clingo",
+            "0",
+            "--heuristic=Domain",
+            "--enum-mod=domRec",
+            "--dom-mod=3",
+            asp_filename,
+        ],
+        capture_output=True,
+        text=True,
+    )
+    # print(result.stderr)
+
+    return result.stdout
+
+
+def write_solutions(asp_output: str):
+    """Display the ASP output back as trap-spaces."""
+    print(asp_output)
 
 
 def main():
@@ -105,9 +120,12 @@ def main():
 
     petri_net = read_pnml(args.infile)
 
-    with tempfile.NamedTemporaryFile(mode="w+t") as asp_file:
+    (_, tmpname) = tempfile.mkstemp(suffix=".lp", text=True)
+    with open(tmpname, "wt") as asp_file:
         write_asp(petri_net, asp_file)
-        solve_asp(asp_file.name)
+    solutions = solve_asp(tmpname)
+    os.unlink(tmpname)
+    write_solutions(solutions)
 
 
 if __name__ == "__main__":
