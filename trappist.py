@@ -37,38 +37,49 @@ def read_pnml(fileobj: IO) -> nx.DiGraph:
     net = nx.DiGraph()
 
     for place in root.findall("./net/place"):
-        net.add_node(place.get("id"), name=place.find("./name/value").text)
+        net.add_node(
+            place.get("id"), kind="place", name=place.find("./name/value").text
+        )
         # print(place.get("id"), place.find("./name/value").text)
 
     for transition in root.findall("./net/transition"):
-        net.add_node(transition.get("id"))
+        net.add_node(transition.get("id"), kind="transition")
 
     for arc in root.findall("./net/arc"):
         net.add_edge(arc.get("source"), arc.get("target"))
 
-    print(net.number_of_nodes(), net.size())
     return net
 
 
 def write_asp(petri_net: nx.DiGraph, asp_file: IO):
     """Write the ASP program for the maximal conflict-free siphons of petri_net."""
-    pass
+    for node, kind in petri_net.nodes(data="kind"):
+        if kind == "place":
+            print("{", node, "}", file=asp_file)
+            if not node.startswith("-"):
+                print(f":- {node}, -{node}.", file=asp_file)    # conflict-freeness
+        else:   # it's a transition, apply siphon (if one succ is true, one pred must be true)
+            preds = list(petri_net.predecessors(node))
+            or_preds = "; ".join(preds)
+            for succ in petri_net.successors(node):
+                if succ not in preds:   # optimize obvious tautologies
+                    print(f"{or_preds} :- {succ}", file=asp_file)
 
 
 def solve_asp(asp_filename: str):
     """Run an ASP solver on program asp_file and get the solutions."""
-    result = subprocess.run(
-        [
-            "echo",
-            "clingo",
-            "--dom-pref=32",
-            "--heu=domain",
-            "--dom-mod=7",
-            asp_filename,
-            "0",
-        ],
-        capture_output=True,
-    )
+    # result = subprocess.run(
+    #     [
+    #         "clingo",
+    #         "--dom-pref=32",
+    #         "--heu=domain",
+    #         "--dom-mod=7",
+    #         asp_filename,
+    #         "0",
+    #     ],
+    #     capture_output=True,
+    # )
+    result = subprocess.run(["cat", asp_filename])
     print(result.stdout)
 
 
@@ -94,7 +105,7 @@ def main():
 
     petri_net = read_pnml(args.infile)
 
-    with tempfile.NamedTemporaryFile() as asp_file:
+    with tempfile.NamedTemporaryFile(mode="w+t") as asp_file:
         write_asp(petri_net, asp_file)
         solve_asp(asp_file.name)
 
