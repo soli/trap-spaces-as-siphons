@@ -91,8 +91,10 @@ def solve_asp(asp_filename: str) -> str:
         text=True,
         # check=True,
     )
-    if result.returncode != 30:     # https://www.mat.unical.it/aspcomp2013/files/aspoutput.txt
-        print(result.stderr)        # 30: SAT, all enumerated, optima found
+
+    # https://www.mat.unical.it/aspcomp2013/files/aspoutput.txt
+    if result.returncode != 30:     # 30: SAT, all enumerated, optima found
+        result.check_returncode()   # will raise CalledProcessError
 
     return result.stdout
 
