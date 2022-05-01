@@ -25,7 +25,7 @@ import tempfile
 import xml.etree.ElementTree as etree
 from typing import IO, List
 
-import networkx as nx   # TODO maybe replace with lists/dicts
+import networkx as nx  # TODO maybe replace with lists/dicts
 
 
 version = "0.1.0"
@@ -53,6 +53,8 @@ def read_pnml(fileobj: IO) -> nx.DiGraph:
 
 
 def pnml_to_asp(name: str) -> str:
+    """Convert a PNML id to an ASP variable."""
+    # TODO handle non-accetable chars
     if name.startswith("-"):
         return "n" + name[1:]
     return "p" + name
@@ -81,10 +83,10 @@ def solve_asp(asp_filename: str) -> str:
         [
             "clingo",
             "0",
-            "--heuristic=Domain",   # maximal w.r.t. inclusion
+            "--heuristic=Domain",  # maximal w.r.t. inclusion
             "--enum-mod=domRec",
             "--dom-mod=3",
-            "--outf=2",             # json output
+            "--outf=2",  # json output
             asp_filename,
         ],
         capture_output=True,
@@ -93,15 +95,15 @@ def solve_asp(asp_filename: str) -> str:
     )
 
     # https://www.mat.unical.it/aspcomp2013/files/aspoutput.txt
-    if result.returncode != 30:     # 30: SAT, all enumerated, optima found
-        result.check_returncode()   # will raise CalledProcessError
+    if result.returncode != 30:  # 30: SAT, all enumerated, optima found
+        result.check_returncode()  # will raise CalledProcessError
 
     return result.stdout
 
 
 def solution_to_bool(places: List[str], sol: List[str]) -> List[str]:
     """Convert a list of present places in sol, to a tri-valued vector."""
-    return([place_in_sol(sol, p) for p in places])
+    return [place_in_sol(sol, p) for p in places]
 
 
 def place_in_sol(sol: List[str], place: str) -> str:
