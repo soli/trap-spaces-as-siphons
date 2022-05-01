@@ -8,9 +8,11 @@
 \newcommand{\vangiang}[1]{\textcolor{magenta}{#1}}
 \newcommand{\sylvain}[1]{\textcolor{teal}{#1}}
 
+\newcommand{\bbbb}{{\rm I\!B}}
+
 \begin{document}
 %
-\title{Minimal trap-spaces of Logical models are maximal siphons of their Petri-net encoding}
+\title{Minimal trap-spaces of Logical models are maximal siphons of their Petri net encoding}
 \titlerunning{Minimal trap-spaces as maximal siphons}
 \author{Van-Giang Trịnh\inst{1}\orcidID{0000-0001-6581-998X} \and \\
   Sylvain Soliman\inst{2}\orcidID{0000-0001-5525-7418}}
@@ -31,49 +33,88 @@
   % The abstract should briefly summarize the contents of the paper in
   % 150--250 words.
 
-  Discrete modelling has proven over the years that it can bring powerful analyses and corresponding insight to the many cases where precise biological data is not sufficiently available to build a detailed quantitative model.
+  Boolean modelling has proven over the years that it can bring powerful analyses and corresponding insight to the many cases where precise biological data is not sufficiently available to build a detailed quantitative model.
   This is even more true for very big models where such data is frequently missing and led to a constant increase in size of logical models \emph{à la} Thomas.
   The analysis of such models is mostly based on attractor computation, since those correspond roughly to \emph{phenotypes}, and the recent use of trap-spaces made a real breakthrough in that domain allowing to consider medium-sized models that used to be out of reach.
   However, with the continuing increase in model-size, the state of the art computation of minimal trap-spaces based on prime-implicants shows its limits as there can be very many such implicants.
-  In this article we present an alternative method to compute minimal trap-spaces, and hence complex attractors, that relies on a completely different technique, namely the enumeration of maximal siphons in the Petri-net encoding of the original Logical model.
+  In this article we present an alternative method to compute minimal trap-spaces, and hence complex attractors, that relies on a completely different technique, namely the enumeration of maximal siphons in the Petri net encoding of the original Logical model.
   We then demonstrate its efficiency and compare it to implicant-based methods on a few relevant big Boolean models.
 
-\keywords{Logical models \and Boolean models \and Trap-spaces \and Attractor computation \and Petri-nets \and Siphons}
+\keywords{Logical models \and Boolean models \and Trap-spaces \and Attractor computation \and Petri nets \and Siphons}
 \end{abstract}
 
 \section{Introduction}
 
-\sylvain{We could go for a completely different title, e.g. focused on performance much more, like ``Scaling-up attractor computation for Logical models''}
+\sylvain{We could go for a completely different title, e.g., focused on performance much more, like ``Scaling-up attractor computation for Logical models''}
 
-\cite{glass1973logical,thomas1973boolean,thomas1990biological}
+From the observation that the transcriptional regulation behaved in a sigmoid step-like way, came the original idea to represent models of gene regulation as discrete event systems.
+Those Gene Regulation Networks (GRN) use thresholds or equivalently logical functions to represent the different regulations~\cite{glass1973logical,thomas1973boolean,thomas1990biological,thomas1991regulatory}.
 
-Discrete modelling has proven over the years that it can bring powerful analyses and corresponding insight to the many cases where precise biological data is not sufficiently available to build a detailed quantitative model.
-This is even more true for very big models where such data is frequently missing and led to a constant increase in size of logical models \emph{à la} Thomas.
-The analysis of such models is mostly based on attractor computation, since those correspond roughly to \emph{phenotypes}, and the recent use of trap-spaces made a real breakthrough in that domain allowing to consider medium-sized models that used to be out of reach.
-However, with the continuing increase in model-size, the state of the art computation of minimal trap-spaces based on prime-implicants shows its limits as there can be very many such implicants.
-In this article we present an alternative method to compute minimal trap-spaces, and hence complex attractors, that relies on a completely different technique, namely the enumeration of maximal siphons in the Petri-net encoding of the original Logical model.
+Boolean modelling has proven over the years that it can bring powerful analyses and corresponding insight to the many cases where precise biological data is not sufficiently available to build a detailed quantitative model~\cite{wang2012boolean}.
+This is even more true for very big models where such data is frequently missing and led to a constant increase in size of logical models \emph{à la} Thomas~\cite{aghamiri2020automated}.
+The analysis of such models is mostly based on attractor computation, since those correspond roughly to \emph{phenotypes}, and the recent use of trap-spaces~\cite{klarner2015computing} made a real breakthrough in that domain allowing to consider medium-sized models that used to be out of reach.
+However, with the continuing increase in model-size, the state of the art computation of minimal trap-spaces based on \emph{prime-implicants} shows its limits as there can be a huge number of such implicants.
+
+Petri nets were introduced in the 60’s as a simple formalism for describing and analyzing information processing systems that are characterized as being concurrent, asynchronous, non-deterministic and possibly distributed~\cite{peterson1981petri}.
+The use of Petri nets for representing biochemical reaction systems, by mapping molecular species to places and reactions to transitions, was introduced quite late in~\cite{reddy1993petri}, together with some Petri net concepts and tools for the analysis of metabolic networks.
+Siphons are such a concept but they have not been used a lot for the analysis of biochemical systems even if the practical cost of computing their minimal/maximal elements appear much more manageable than the theoretical complexity would indicate~\cite{nabli2016enumerating}.
+
+In this article we present an alternative method to compute minimal trap-spaces, and hence complex attractors, that replaces the need for prime-implicants by a completely different technique, namely the enumeration of maximal siphons in the Petri net encoding of the original Logical model.
 We then demonstrate its efficiency and compare it to implicant-based methods on a few relevant big Boolean models.
 
-\section{Minimal trap-spaces as maximal siphons}
-\subsection{Preliminaries}
-\subsubsection{Traps-spaces}
 
-Purely boolean, asynchronous.
+\section{Preliminaries}
 
-\cite{klarner2015computing,klarner2017pyboolnet,cifuentes2020control}
+TBD.
+Purely Boolean for trap-spaces, asynchronous for encoding.
 
-\subsubsection{Petri-net encoding of Logical models}
+\subsection{Traps-spaces}
+
+We recall here some definitions from~\cite{klarner2015computing} for the introduction of \emph{trap-spaces}.
+Minimal trap-spaces prove to be a very good approximation of the attractors of a Boolean model and have become the \emph{de facto} standard way to analyze models of a few tens of \emph{genes}~\cite{klarner2017pyboolnet,cifuentes2020control}.
+
+Given a Boolean model \(\mathcal{M} = (V, F)\) with variables \(V=(v_{1},\dots,v_{n})\) and Boolean functions \(F=(f_{1},\dots,f_{n})\), its state-space is \(\mathcal{S} =\bbbb^{n}\) with \(\bbbb = \{0, 1\}\).
+
+A \emph{partial state} \(P\) of \(\mathcal{M}\) is a subset of \(\mathcal{S}\) where for some \(U\subset V\) the values are fixed by a mapping \(p: U\mapsto\bbbb\) and the other variables (\(V\setminus U\)) are \emph{free}.
+
+\begin{definition}
+
+  A \emph{trap space} of \(\mathcal{M}\) is a partial state \(P\) that is also a \emph{trap set}:
+
+  if \(P'\) is the image of \(P\) by the state transition function, then \(P'\subset P\).
+
+\end{definition}
+
+Here and in the following, the notion of \emph{minimality/maximality} will always be w.r.t. to subset inclusion.
+
+\subsection{Petri net encoding of Logical models}
 \label{sec:encoding}
 
-The link between Logical models \emph{à la} Thomas and Petri-nets was originally established in~\cite{chaouiya2004qualitative} in order to make available formal methods like model-checking for the analysis of such systems.
-The basic encoding only holds for purely Boolean models but was later extended to multi-valued models in two ways, either in \cite{chaouiya2011petri} with non 1-safe Petri-nets or more recently in~\cite{chatain2014characterization} with 1-safe nets but many more places.
+\begin{definition}
 
-Since our study is focused on Boolean models, we will only briefly recall the original encoding here.
+  A \emph{Petri net graph} is a weighted bipartite directed graph \((P, T, W)\),
+  where \(P\) is a non-empty finite set of vertices called \emph{places},
+  \(T\) is a non-empty finite set of vertices called \emph{transitions},
+  \(P \cap T = \emptyset\),
+  and \(W : (P \times T) \cup (T \times P) \mapsto \bbbn \) is a weight function attached to the arcs.
+
+\end{definition}
+
+We will write \(pred(x)\) (resp.\ \(succ(x)\)) to represent the set of vertices that have an (non-zero weighted) arc leading to (resp.\ coming from) \(x\).
+
+The link between Logical models \emph{à la} Thomas and Petri nets was originally established in~\cite{chaouiya2004qualitative} in order to make available formal methods like model-checking for the analysis of such systems.
+The basic encoding into 1-safe (i.e., never more than one token in each place) nets only holds for purely Boolean models but was later extended to multi-valued models in two ways, either in \cite{chaouiya2011petri} with non 1-safe Petri nets or more recently in~\cite{chatain2014characterization} with 1-safe nets but many more places.
+
+Since our study is focused on Boolean models, we briefly recall the original encoding here.
 Its basis is that every \emph{gene} of the original model is represented by two separate places, corresponding to its two states, active, and inactive.
 Each conjunct of the logical function that activate the \emph{gene} will lead to a transition, consuming the inactive place, producing the active place, and with all other literals both consumed and produced.
 And conversely for the inactivation.
 
-Note that given a Logical model in the standard SBML-Qual format~\cite{chaouiya2013sbml}, i.e., one of the packages of SBML v3~\cite{keating2020sbml}, one can easily obtain its Petri-net encoding in the PNML\footnote{\url{https://www.pnml.org/}} standard using the BioLQM\footnote{\url{http://www.colomoto.org/biolqm/}} library.
+The main property of this encoding is that it is completely faithful w.r.t.\ the asynchronous semantics.
+Asynchronous transitions of the original model correspond one-to-one with firings of transitions in the Petri net.
+
+
+Note that given a Logical model in the standard SBML-Qual format~\cite{chaouiya2013sbml}, i.e., one of the packages of SBML v3~\cite{keating2020sbml}, one can easily obtain its Petri net encoding in the PNML\footnote{\url{https://www.pnml.org/}} standard using the BioLQM\footnote{\url{http://www.colomoto.org/biolqm/}} library.
 This piece of software extracted from GINsim~\cite{chaouiya2012logical} and part of the CoLoMoTo\footnote{\url{http://colomoto.org/}} software suite allows for easy conversion between standard formats.
 It also accepts many other common formats for Logical models, notably the \verb|.bnet| files of the  BoolNet~\cite{mussel2010boolnet,klarner2017pyboolnet} tools.
 
@@ -81,28 +122,54 @@ Conversion is executed as follows:
 
 \noindent{\small \verb|java -jar GINsim.jar -lqm <input.{sbml,bnet,zginml,...}> <output.pnml>|}
 
-\subsubsection{Siphons}
+\subsection{Siphons}
 
-Siphons are a classical property of place-transition nets~\cite{peterson81petri}.
-Note however that the use of siphons for the analysis of biological models, though it is not new~\cite{angeli2007petri,angeli2011persistence,degrand2020graphical}, has been mostly relevant to the ODE-based continuous semantics of Chemical Reaction Networks.
+Siphons are a classical property of place-transition nets~\cite{peterson1981petri}.
+Note however that the use of siphons for the analysis of biological models, though it is not new, has been mostly relevant to the ODE-based continuous semantics of Chemical Reaction Networks~\cite{angeli2007petri,angeli2011persistence,degrand2020graphical}.
 
-We recall here the basic definition:
+We recall here the basic definition establishing that to produce something in a siphon you must consume something from the siphon:
 
 \begin{definition}
 
-  A siphon is a set of places such that for each edge from a transition to any place of the siphon, there is an edge from a place of the siphon to that transition.
+  A \emph{siphon} of a Petri net \((P, T, W)\) is a set of places \(S\) such that:
+  \[\forall t\in T, S\cap succ(t)\not =\emptyset\Rightarrow S\cap pred(t)\not =\emptyset\]
 
 \end{definition}
 
-Intuitively a siphon is a set of places that once empty remains empty, i.e.,
-a set of species that cannot be produced again once they have been completely
-consumed.
+Intuitively a siphon is a set of places that once empty remains empty.
 
-\subsection{New method}
+We add a definition related to any set of places of a Petri net encoding a Logical model, and notably a siphon of such a net.
 
+\begin{definition}
+
+  A set of places of Petri net \(P\) encoding logical model \(\mathcal{M}\) is \emph{conflict-free} if it does not contain any two places corresponding to the active and inactive states of the same \emph{gene} of \(\mathcal{M}\).
+
+\end{definition}
+
+\section{Minimal trap-spaces as maximal siphons}
+
+\begin{theorem}
+
+  \(S\) is a minimal trap-space of model \(\mathcal{M}\) iff the places corresponding to the fixed values in \(S\) (active or inactive) are a maximal conflict-free siphon of \((P, T, W)\), the Petri net encoding of \(S\).
+
+\end{theorem}
+
+Intuitively, a siphon is a set of places that once empty remains so.
+If it is conflict-free then its dual corresponds to a partial-state of the model such that whatever update, the fixed values remain so (since the empty places remain empty).
+This is precisely the definition of a trap-space and maximality of the siphon is equivalent to as many fixed values as possible, hence minimality of the trap-space.
+
+\begin{proof}
+
+  TBD\qed
+
+\end{proof}
+
+\section{Implementation}
+
+ASP
 
 \section{Evaluation}
-\subsection{Benchmark vs. implicant-based methods}
+\subsection{Benchmark vs.\ implicant-based methods}
 
 Using BioLQM~\ref{sec:encoding}
 
@@ -113,6 +180,8 @@ Using BioLQM~\ref{sec:encoding}
 TBD
 
 \section{Conclusion}
+
+Future work: comparison with SAT/MaxSAT based approaches~\cite{nabli2016enumerating}
 
 \subsubsection{Acknowledgments}
 Coffee is good, you should drink some!
@@ -154,17 +223,3 @@ Coffee is good, you should drink some!
 % Please note that short captions are centered, while long ones are
 % justified by the macro package automatically.} \label{fig1}
 % \end{figure}
-
-% \begin{theorem}
-% This is a sample theorem. The run-in heading is set in bold, while
-% the following text appears in italics. Definitions, lemmas,
-% propositions, and corollaries are styled the same way.
-% \end{theorem}
-% %
-% % the environments 'definition', 'lemma', 'proposition', 'corollary',
-% % 'remark', and 'example' are defined in the LLNCS documentclass as well.
-% %
-% \begin{proof}
-% Proofs, examples, and remarks have the initial word in italics,
-% while the following text appears in normal font.
-% \end{proof}
