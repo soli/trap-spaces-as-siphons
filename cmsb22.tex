@@ -2,8 +2,11 @@
 \usepackage[T5]{fontenc}
 % \usepackage{graphicx}
 \usepackage{hyperref}
-\usepackage{color}
+\usepackage{xcolor}
 \renewcommand\UrlFont{\color{blue}\rmfamily}
+
+\newcommand{\vangiang}[1]{\textcolor{magenta}{#1}}
+\newcommand{\sylvain}[1]{\textcolor{teal}{#1}}
 
 \begin{document}
 %
@@ -39,6 +42,8 @@
 \end{abstract}
 
 \section{Introduction}
+
+\sylvain{We could go for a completely different title, e.g. focused on performance much more, like ``Scaling-up attractor computation for Logical models''}
 
 Discrete modelling has proven over the years that it can bring powerful analyses and corresponding insight to the many cases where precise biological data is not sufficiently available to build a detailed quantitative model.
 This is even more true for very big models where such data is frequently missing and led to a constant increase in size of logical models \emph{à la} Thomas.
