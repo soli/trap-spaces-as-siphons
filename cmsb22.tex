@@ -45,6 +45,8 @@
 
 \sylvain{We could go for a completely different title, e.g. focused on performance much more, like ``Scaling-up attractor computation for Logical models''}
 
+\cite{glass1973logical,thomas1973boolean,thomas1990biological}
+
 Discrete modelling has proven over the years that it can bring powerful analyses and corresponding insight to the many cases where precise biological data is not sufficiently available to build a detailed quantitative model.
 This is even more true for very big models where such data is frequently missing and led to a constant increase in size of logical models \emph{à la} Thomas.
 The analysis of such models is mostly based on attractor computation, since those correspond roughly to \emph{phenotypes}, and the recent use of trap-spaces made a real breakthrough in that domain allowing to consider medium-sized models that used to be out of reach.
@@ -56,24 +58,53 @@ We then demonstrate its efficiency and compare it to implicant-based methods on 
 \subsection{Preliminaries}
 \subsubsection{Traps-spaces}
 
+Purely boolean, asynchronous.
+
 \cite{klarner2015computing,klarner2017pyboolnet,cifuentes2020control}
 
 \subsubsection{Petri-net encoding of Logical models}
+\label{sec:encoding}
 
-Original encoding~\cite{chaouiya2004qualitative,chaouiya2011petri} vs. more recent one~\cite{chatain2014characterization}.
-All identical on Boolean models?
+The link between Logical models \emph{à la} Thomas and Petri-nets was originally established in~\cite{chaouiya2004qualitative} in order to make available formal methods like model-checking for the analysis of such systems.
+The basic encoding only holds for purely Boolean models but was later extended to multi-valued models in two ways, either in \cite{chaouiya2011petri} with non 1-safe Petri-nets or more recently in~\cite{chatain2014characterization} with 1-safe nets but many more places.
+
+Since our study is focused on Boolean models, we will only briefly recall the original encoding here.
+Its basis is that every \emph{gene} of the original model is represented by two separate places, corresponding to its two states, active, and inactive.
+Each conjunct of the logical function that activate the \emph{gene} will lead to a transition, consuming the inactive place, producing the active place, and with all other literals both consumed and produced.
+And conversely for the inactivation.
+
+Note that given a Logical model in the standard SBML-Qual format~\cite{chaouiya2013sbml}, i.e., one of the packages of SBML v3~\cite{keating2020sbml}, one can easily obtain its Petri-net encoding in the PNML\footnote{\url{https://www.pnml.org/}} standard using the BioLQM\footnote{\url{http://www.colomoto.org/biolqm/}} library.
+This piece of software extracted from GINsim~\cite{chaouiya2012logical} and part of the CoLoMoTo\footnote{\url{http://colomoto.org/}} software suite allows for easy conversion between standard formats.
+It also accepts many other common formats for Logical models, notably the \verb|.bnet| files of the  BoolNet~\cite{mussel2010boolnet,klarner2017pyboolnet} tools.
+
+Conversion is executed as follows:
+
+\noindent{\small \verb|java -jar GINsim.jar -lqm <input.{sbml,bnet,zginml,...}> <output.pnml>|}
 
 \subsubsection{Siphons}
 
+Siphons are a classical property of place-transition nets~\cite{peterson81petri}.
+Note however that the use of siphons for the analysis of biological models, though it is not new~\cite{angeli2007petri,angeli2011persistence,degrand2020graphical}, has been mostly relevant to the ODE-based continuous semantics of Chemical Reaction Networks.
+
+We recall here the basic definition:
+
+\begin{definition}
+
+  A siphon is a set of places such that for each edge from a transition to any place of the siphon, there is an edge from a place of the siphon to that transition.
+
+\end{definition}
+
+Intuitively a siphon is a set of places that once empty remains empty, i.e.,
+a set of species that cannot be produced again once they have been completely
+consumed.
+
 \subsection{New method}
 
-SBML-Qual~\cite{chaouiya2013sbml}/BoolNet~\cite{mussel2010boolnet,klarner2017pyboolnet} to PNML\footnote{\url{https://www.pnml.org/}} works via GINsim~\cite{chaouiya2012logical}/BioLQM\footnote{http://www.colomoto.org/biolqm/} with
-\begin{verbatim}
-java -jar GINsim.jar -lqm <input.sbml/input.bnet> <output.pnml>
-\end{verbatim}
 
 \section{Evaluation}
 \subsection{Benchmark vs. implicant-based methods}
+
+Using BioLQM~\ref{sec:encoding}
 
 \url{http://colomoto.org/biolqm/doc/tools-trapspace.html}
 
