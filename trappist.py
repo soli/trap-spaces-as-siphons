@@ -17,14 +17,15 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 import argparse
+import json
 import os
 import subprocess
 import sys
 import tempfile
 import xml.etree.ElementTree as etree
-from typing import IO
+from typing import IO, List
 
-import networkx as nx
+import networkx as nx   # TODO maybe replace with lists/dicts
 
 
 version = "0.1.0"
@@ -80,22 +81,47 @@ def solve_asp(asp_filename: str) -> str:
         [
             "clingo",
             "0",
-            "--heuristic=Domain",
+            "--heuristic=Domain",   # maximal w.r.t. inclusion
             "--enum-mod=domRec",
             "--dom-mod=3",
+            "--outf=2",             # json output
             asp_filename,
         ],
         capture_output=True,
         text=True,
+        # check=True,
     )
-    # print(result.stderr)
+    if result.returncode != 30:     # https://www.mat.unical.it/aspcomp2013/files/aspoutput.txt
+        print(result.stderr)        # 30: SAT, all enumerated, optima found
 
     return result.stdout
 
 
-def write_solutions(asp_output: str):
+def solution_to_bool(places: List[str], sol: List[str]) -> List[str]:
+    """Convert a list of present places in sol, to a tri-valued vector."""
+    return([place_in_sol(sol, p) for p in places])
+
+
+def place_in_sol(sol: List[str], place: str) -> str:
+    """Return 0/1/- if place is absent, present or does not appear in sol."""
+    if "p" + place in sol:
+        return "1"
+    if "n" + place in sol:
+        return "0"
+    return "-"
+
+
+def write_solutions(asp_output: str, petri_net: nx.DiGraph):
     """Display the ASP output back as trap-spaces."""
-    print(asp_output)
+    places = []
+    for node, kind in petri_net.nodes(data="kind"):
+        if kind == "place" and not node.startswith("-"):
+            places.append(node)
+    print(" ".join(places))
+    solutions = json.loads(asp_output)
+    for sol in solutions["Call"][0]["Witnesses"]:
+        print(" ".join(solution_to_bool(places, sol["Value"])))
+    print("Total time:", solutions["Time"]["Total"], "s")
 
 
 def main():
@@ -125,7 +151,7 @@ def main():
         write_asp(petri_net, asp_file)
     solutions = solve_asp(tmpname)
     os.unlink(tmpname)
-    write_solutions(solutions)
+    write_solutions(solutions, petri_net)
 
 
 if __name__ == "__main__":
