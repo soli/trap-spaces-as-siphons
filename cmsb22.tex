@@ -1,8 +1,9 @@
 \documentclass[runningheads]{llncs}
-\usepackage[T5]{fontenc}
+\usepackage[T1]{fontenc}
 % \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{xcolor}
+\usepackage{booktabs}
 
 \renewcommand\UrlFont{\color{blue}\rmfamily}
 
@@ -74,25 +75,24 @@ Purely Boolean for trap-spaces, asynchronous for encoding.
 We recall here some definitions from~\cite{klarner2015computing} for the introduction of \emph{trap-spaces}.
 Minimal trap-spaces prove to be a very good approximation of the attractors of a Boolean model and have become the \emph{de facto} standard way to analyze models of a few tens of \emph{genes}~\cite{klarner2017pyboolnet,cifuentes2020control}.
 
-Given a Boolean model \(\mathcal{M} = (V, F)\) with variables \(V=(v_{1},\dots,v_{n})\) and Boolean functions \(F=(f_{1},\dots,f_{n})\), its state-space is \(\mathcal{S} =\bbbb^{n}\) with \(\bbbb = \{0, 1\}\).
-
-A \emph{partial state} \(P\) of \(\mathcal{M}\) is a subset of \(\mathcal{S}\) where for some \(U\subset V\) the values are fixed by a mapping \(p: U\mapsto\bbbb\) and the other variables (\(V\setminus U\)) are \emph{free}.
-
-\begin{definition}
-
-  A \emph{trap space} of \(\mathcal{M}\) is a partial state \(P\) that is also a \emph{trap set}:
-
-  if \(P'\) is the image of \(P\) by the state transition function, then \(P'\subset P\).
-
-\end{definition}
-
-Here and in the following, the notion of \emph{minimality/maximality} will always be w.r.t. to subset inclusion.
+Given a Boolean model \(\mathcal{M} = (V, F)\) with variables \(V=(v_{1},\dots,v_{n})\) and Boolean functions \(F=(f_{1},\dots,f_{n})\), its state-space is \(\mathcal{S}_{\mathcal{M}} =\bbbb^{n}\) with \(\bbbb = \{0, 1\}\).
 
 %%% Subspace %%%
-A subspace \(m\) of \(S_{\mathcal{M}}\) is characterized by its fixed variables (denoted by \(D_m\)) and free variables. This subspace can be specified by an assignment \(m : D_m \mapsto \bbbb\) where \(D_m \subseteq V\) and \(m(u)\) is the value of node \(u \in D_m\). The remaining variables of \(\mathcal{M}\), \(V \setminus D_m\), are said to be free, i.e., they can receive any Boolean value. We specify subspaces like states but use in addition the symbol \(\star\) to indicate that a variable is free. In addition, a subspace \(m\) also refers to the set of states \(\mathcal{S}_{\mathcal{M}}[m] := \{s \in \mathcal{S}_{\mathcal{M}}\;|\;\forall x_i \in D_m : s_i = m(x_i)\}\). For example, \(m = \star\star1\) means that \(D_m = \{x_3\}\), \(m(x_3) = 1\), and refers to the set of states \(\{001, 011, 101, 111\}\). Let \(\mathcal{S}_{\mathcal{M}}^{\star}\) denote the set of all possible subspaces of \(\mathcal{M}\). Note that \(\left|\mathcal{S}_{\mathcal{M}}^{\star}\right| = 3^n\) and \(S_{\mathcal{M}} \subset \mathcal{S}_{\mathcal{M}}^{\star}\)~\cite{klarner2015computing}.
+A \emph{subspace} \(m\) of \(\mathcal{S}_{\mathcal{M}}\) is characterized by its fixed variables (denoted by \(D_m\)) and free variables.
+This subspace can be specified by an assignment \(D_m \mapsto \bbbb\), also denoted by \(m\) by abuse of notation, and where \(D_m \subseteq V\) and \(m(u)\) is the value of node \(u \in D_m\).
+The remaining variables of \(\mathcal{M}\), \(V \setminus D_m\), are said to be \emph{free}, i.e., they can receive any Boolean value.
+We write subspaces like states but use in addition the symbol \(\star\) to indicate that a variable is free.
+A subspace \(m\) thus corresponds to the set of states \(\mathcal{S}_{\mathcal{M}}[m] := \{s \in \mathcal{S}_{\mathcal{M}}\;|\;\forall x_i \in D_m : s_i = m(x_i)\}\).
+For example, \(m = \star\star1\) means that \(D_m = \{x_3\}\), \(m(x_3) = 1\), and corresponds to the set of states \(\{001, 011, 101, 111\}\).
+Let \(\mathcal{S}_{\mathcal{M}}^{\star}\) denote the set of all possible subspaces of \(\mathcal{M}\). Note that \(\left|\mathcal{S}_{\mathcal{M}}^{\star}\right| = 3^n\) and \(S_{\mathcal{M}} \subset \mathcal{S}_{\mathcal{M}}^{\star}\)~\cite{klarner2015computing}.
 
 %%% Minimal trap space and example %%%
-A \emph{trap space} is defined as a subspace that is also a trap set. Then, we define a partial order \(<\) on \(\mathcal{S}_{\mathcal{M}}^{\star}\) as: \(m < m'\) if and only if \(\mathcal{S}_{\mathcal{M}}[m] \subseteq \mathcal{S}_{\mathcal{M}}[m']\) and \(\mathcal{S}_{\mathcal{M}}[m] \neq \mathcal{S}_{\mathcal{M}}[m']\). Consequently, a trap space \(m\) is minimal if and only if there is no trap space \(m' \in \mathcal{S}_{\mathcal{M}}^{\star}\) such that \(m' < m\). For example, the BN shown in Example~\ref{example:BN} has all two trap spaces, \(m_1 = 11\) and \(m_2 = \star\star\). Since \(m_1 < m_2\), \(m_1\) is a minimal trap space of the BN.
+A \emph{trap space} is defined as a subspace that is also a trap set.
+Then, we define a partial order \(<\) on \(\mathcal{S}_{\mathcal{M}}^{\star}\) as: \(m < m'\) if and only if \(\mathcal{S}_{\mathcal{M}}[m] \subseteq \mathcal{S}_{\mathcal{M}}[m']\) and \(\mathcal{S}_{\mathcal{M}}[m] \neq \mathcal{S}_{\mathcal{M}}[m']\).
+Consequently, a trap space \(m\) is minimal if and only if there is no trap space \(m' \in \mathcal{S}_{\mathcal{M}}^{\star}\) such that \(m' < m\).
+For example, the BN shown in Example~\ref{example:BN} has all two trap spaces, \(m_1 = 11\) and \(m_2 = \star\star\). Since \(m_1 < m_2\), \(m_1\) is a minimal trap space of the BN.
+
+\sylvain{missing example?}
 
 \subsection{Petri net encoding of Logical models}
 \label{sec:encoding}
@@ -113,7 +113,7 @@ The link between Logical models \emph{à la} Thomas and Petri nets was originall
 The basic encoding into 1-safe (i.e., never more than one token in each place) nets only holds for purely Boolean models but was later extended to multi-valued models in two ways, either in \cite{chaouiya2011petri} with non 1-safe Petri nets or more recently in~\cite{chatain2014characterization} with 1-safe nets but many more places.
 
 Since our study is focused on Boolean models, we briefly recall the original encoding here.
-Its basis is that every \emph{gene} of the original model is represented by two separate places, corresponding to its two states, active, and inactive.
+Its basis is that every \emph{gene} of the original model is represented by two separate places (\(p\) and \(\overline{p}\)), corresponding to its two states, active, and inactive.
 Each conjunct of the logical function that activate the \emph{gene} will lead to a transition, consuming the inactive place, producing the active place, and with all other literals both consumed and produced.
 And conversely for the inactivation.
 
@@ -150,7 +150,7 @@ We add a definition related to any set of places of a Petri net encoding a Logic
 \begin{definition}
 
   A set of places of Petri net \(P\) encoding logical model \(\mathcal{M}\) is \emph{conflict-free} if it does not contain any two places corresponding to the active and inactive states of the same \emph{gene} of \(\mathcal{M}\).
-  
+
 \end{definition}
 
 \section{Minimal trap spaces as maximal conflict-free siphons}
@@ -159,27 +159,13 @@ We add a definition related to any set of places of a Petri net encoding a Logic
 
   Let \(m\) be a subspace of Boolean model \(\mathcal{M}\). A \emph{mirror} of $m$ is a set of places $S$ in the Petri net encoding \(\mathcal{P}\) of \(\mathcal{M}\) such that:
   \[\forall v \in D_m, m(v) = 0 \Leftrightarrow p_v \in S, m(v) = 1 \Leftrightarrow \overline{p}_v \in S\]
-  
+
 \end{definition}
 
 \begin{theorem}
 
   Let \(\mathcal{M}\) be a Boolean model and \(\mathcal{P}\) be its Petri net encoding. A subspace \(m\) is a trap space of \(\mathcal{M}\) if and only if its mirror \(S\) is a conflict-free siphon of \(\mathcal{P}\).
-  
-\end{theorem}
 
-\begin{proof}
-
-  TBD\qed
-
-\end{proof}
-
-\begin{theorem}
-\label{theo:min_ts_max_sp}
-  %\(S\) is a minimal trap-space of Boolean model \(\mathcal{M}\) if and only if the places corresponding to the fixed values in \(S\) (active or inactive) are a maximal conflict-free siphon of \((P, T, W)\), the Petri net encoding of \(S\).
-  
-  Let \(\mathcal{M}\) be a Boolean model and \(\mathcal{P}\) be its Petri net encoding. A subspace \(m\) is a minimal trap space of \(\mathcal{M}\) if and only if its mirror \(S\) is a maximal conflict-free siphon of \(\mathcal{P}\).
-  
 \end{theorem}
 
 Intuitively, a siphon is a set of places that once empty remains so.
@@ -192,6 +178,14 @@ This is precisely the definition of a trap-space and maximality of the siphon is
 
 \end{proof}
 
+\begin{theorem}
+\label{theo:min_ts_max_sp}
+  %\(S\) is a minimal trap-space of Boolean model \(\mathcal{M}\) if and only if the places corresponding to the fixed values in \(S\) (active or inactive) are a maximal conflict-free siphon of \((P, T, W)\), the Petri net encoding of \(S\).
+
+  Let \(\mathcal{M}\) be a Boolean model and \(\mathcal{P}\) be its Petri net encoding. A subspace \(m\) is a minimal trap space of \(\mathcal{M}\) if and only if its mirror \(S\) is a maximal conflict-free siphon of \(\mathcal{P}\).
+
+\end{theorem}
+
 By Theorem~\ref{theo:min_ts_max_sp}, we can reduce the problem of computing all minimal trap spaces of a Boolean model to the problem of computing all maximal conflict-free siphons of its Petri net encoding. It is noted that there are no existing methods specifically designed for computing maximal conflict-free siphons (even maximal siphons) of a Petri net. The reason is that researchers mainly focus on minimal siphons~\cite{DBLP:journals/isci/LiuB16}. Hence, we here propose a new method based on Answer Set Programming (ASP)~\cite{DBLP:journals/aicom/GebserKKOSS11} for computing  maximal conflict-free siphons of a Petri net. The details of the proposed method shall be shown in the next section.
 
 \section{Answer set programming-based method}
@@ -199,56 +193,68 @@ By Theorem~\ref{theo:min_ts_max_sp}, we can reduce the problem of computing all 
 ASP
 
 \section{Evaluation}
-To test the efficiency of the proposed method, we compared it with the state-of-the-art method PyBoolNet~\cite{klarner2017pyboolnet}. We used a set of real-world Boolean models lying in various scales obtained from the literature. These models are complex (i.e., having high average in-degree) and most of them have never been fully analyzed. We then applied the proposed method and PyBoolNet to computing minimal trap spaces of these real-world models. To solve the ASP problems, we used the ASP solver CLINGO~\cite{DBLP:journals/aicom/GebserKKOSS11} with the configuration as same as that used in PyBoolNet~\cite{klarner2015computing}. Specifically, ... Finally, we set a time limit as one hour for each model.
+To assess the efficiency of the proposed method, we compared it with the state-of-the-art method PyBoolNet~\cite{klarner2017pyboolnet}.
+We used a set of real-world Boolean models lying in various scales obtained from the literature.
+These models are quite big (in size), complex (i.e., having high average in-degree, which is related to the number of prime-implicants) and most of them have never been fully analyzed.
+We then applied the proposed method and PyBoolNet to computing minimal trap spaces of these real-world models.
+To solve the ASP problems, we used the same ASP solver CLINGO~\cite{DBLP:journals/aicom/GebserKKOSS11} and the same configuration as that used in PyBoolNet~\cite{klarner2015computing}.
+Specifically, ...
+Finally, we set a time limit as one hour for each model.
+
+\sylvain{we need a source for the models as much as possible, or to refer to some place where people can access them to reproduce the benchmark.}
 
 \subsection{Benchmark vs.\ implicant-based methods}
-
-Using BioLQM~\ref{sec:encoding}
-
-\url{http://colomoto.org/biolqm/doc/tools-trapspace.html}
 
 Table~\ref{tab:result_real} shows the experimental results on real-world models. Hereafter, we analyze in detail the results with respect to minimal trap space computation.
 
 \begin{table}[!ht]
-\centering
-\caption{Timing comparisons between the proposed method and PyBoolNet on the selected real-world models. Columns "\(n\)", "\(e\)", and "\(s\)" denote the numbers of nodes, interactions, and source nodes of each model, respectively. Column "\(|M|\)" denotes the number of minimal trap spaces. The computational time is in seconds. "DNF" means that the method did not finish the computation within one hour.}
-\label{tab:result_real}
-\begin{tabular}{|c|r|r|r|r|r|r|r|r|r|}
-\cline{7-10}
-\multicolumn{1}{l}{} & \multicolumn{1}{l}{} & \multicolumn{1}{l}{} & \multicolumn{1}{l}{} & \multicolumn{1}{l}{} & \multicolumn{1}{l|}{} & \multicolumn{2}{c|}{PyBoolNet} & \multicolumn{2}{c|}{Proposed method} \\ \hline
-model & $n$ & $e$ & $s$ & $|M|$ & $|F|$ & t1 (s) & t2 (s) & t1 (s) & t2 (s) \\ \hline
-CASCADE-3 & 183 & - & 0 & 1 & 0 & - & - & 1.65 & - \\ \hline
-CHO-2016 & 200 & - & 13 & 1024 & 0 & - & - & 2.10 & - \\ \hline
-CACC & 70 & 153 & 1 & 10 & 2 & - & - & 0.18 & - \\ \hline
-THIL\_17 & 92 & - & 16 & 5724 & 5724 & - & - & 0.90 & - \\ \hline
-ERBB & 247 & 1100 & 22 & 1456394+ & 0 & DNF & DNF & DNF & - \\ \hline
-ER-STRESS & 182 & 266 & 75 & 25600 & 25600 & - & - & 4.54 & - \\ \hline
-AD & 1169 & - & 469 & 49152 & 49152 & - & - & 66.17 & - \\ \hline
-Cholocystokinin & 404 & - & 95 & 705024 & 705024 & - & - & 1080.35 & - \\ \hline
-FIBROBLASTS & 139 & 557 & 9 & 375850 & 32768 & - & - & 331.87 & - \\ \hline
-TcellCheckPoint & 218 & - & 34 & 15360 & 10240 & - & - & 4.33 & - \\ \hline
-HIV-1 & 138 & 368 & 14 & 1408 & 1408 & DNF & DNF & 1.44 & - \\ \hline
-HMOX1 & 145 & 228 & 56 & 5120 & 5120 & - & - & 0.99 & - \\ \hline
-Human network & 1953 & - & 675 & 2048 & 2048 & DNF & DNF & 1770.98 & - \\ \hline
-IL\_6 Signalling & 86 & 149 & 15 & 512 & 448 & - & - & 0.32 & - \\ \hline
-IMMUNE-SYS & 164 & 506 & 13 & 36852 & 27871 & DNF & DNF & 14.19 & - \\ \hline
-IBD & 47 & 287 & 0 & 1 & 0 & DNF & DNF & 296.23 & - \\ \hline
-Influenza A & 131 & 302 & 11 & 2560 & 2560 & - & - & 1.07 & - \\ \hline
-INTERFERON-1 & 121 & 190 & 55 & 512 & 512 & - & - & 0.43 & - \\ \hline
-KORKUT-2015 & 99 & - & 12 & 2060 & 1384 & DNF & DNF & 2.86 & - \\ \hline
-KY-PA & 150 & 304 & 72 & 512 & 512 & - & - & 3.79 & - \\ \hline
-RA Apoptosis & 431 & - & 59 & 640 & 0 & DNF & DNF & 0.70 & - \\ \hline
-CELL CYCLE 2020 & 121 & 493 & - & 78 & 78 & - & - & 3.72 & - \\ \hline
-S1\_Table & 1659 & - & 522 & 1024 & 1024 & DNF & DNF & 1511.07 & - \\ \hline
-Macrophage\_Act & 321 & 533 & 19 & 512 & 384 & - & - & 1.58 & - \\ \hline
-SIPC & 133 & 431 & 0 & 812 & 746 & - & - & 1.40 & - \\ \hline
-SPBP & 66 & 139 & 13 & 512 & 256 & - & - & 0.17 & - \\ \hline
-SN5 & 2746 & - & 835 & 2048 & 2048 & DNF & DNF & 3094.04 & - \\ \hline
-TCR-TLR5-SIG & 130 & 273 & 2 & 48 & 48 & - & - & 0.50 & - \\ \hline
-TLGLSurvival & 61 & 193 & 7 & 318 & 172 & - & - & 0.24 & - \\ \hline
-TUREI-2016 & 4691 & - & 1257 & - & - & DNF & DNF & DNF & DNF \\ \hline
-VIRUS-RE-CYC & 154 & 268 & 25 & 1024 & 1024 & - & - & 0.67 & - \\ \hline
-\end{tabular}
+  \caption{Timing comparisons between the proposed method and PyBoolNet on the selected real-world models.
+    Columns "\(n\)", "\(e\)", and "\(s\)" denote the numbers of nodes, interactions, and source nodes of each model, respectively.
+    Column "\(|M|\)" denotes the number of minimal trap spaces.
+    The computation times are all in seconds.
+    "DNF" means that the method did not finish the computation within one hour.}
+  \label{tab:result_real}
+  \begin{tabular}{lrrrrrrrrr}
+    \toprule
+    & & & & & & \multicolumn{2}{c}{PyBoolNet} & \multicolumn{2}{c}{Proposed method}\\
+    \cmidrule(lr){7-8}\cmidrule(lr){9-10}
+    model & $n$ & $e$ & $s$ & $|M|$ & $|F|$ & t1 (s) & t2 (s) & t1 (s) & t2 (s) \\ \midrule
+    CASCADE-3 & 183 & - & 0 & 1 & 0 & - & - & 1.65 & - \\
+    CHO-2016 & 200 & - & 13 & 1024 & 0 & - & - & 2.10 & - \\
+    CACC & 70 & 153 & 1 & 10 & 2 & - & - & 0.18 & - \\
+    THIL\_17 & 92 & - & 16 & 5724 & 5724 & - & - & 0.90 & - \\
+    ERBB & 247 & 1100 & 22 & 1456394+ & 0 & DNF & DNF & DNF & - \\
+    ER-STRESS & 182 & 266 & 75 & 25600 & 25600 & - & - & 4.54 & - \\
+    AD & 1169 & - & 469 & 49152 & 49152 & - & - & 66.17 & - \\
+    Cholocystokinin & 404 & - & 95 & 705024 & 705024 & - & - & 1080.35 & - \\
+    FIBROBLASTS & 139 & 557 & 9 & 375850 & 32768 & - & - & 331.87 & - \\
+    TcellCheckPoint & 218 & - & 34 & 15360 & 10240 & - & - & 4.33 & - \\
+    HIV-1 & 138 & 368 & 14 & 1408 & 1408 & DNF & DNF & 1.44 & - \\
+    HMOX1 & 145 & 228 & 56 & 5120 & 5120 & - & - & 0.99 & - \\
+    Human network & 1953 & - & 675 & 2048 & 2048 & DNF & DNF & 1770.98 & - \\
+    IL\_6 Signalling & 86 & 149 & 15 & 512 & 448 & - & - & 0.32 & - \\
+    IMMUNE-SYS & 164 & 506 & 13 & 36852 & 27871 & DNF & DNF & 14.19 & - \\
+    IBD & 47 & 287 & 0 & 1 & 0 & DNF & DNF & 296.23 & - \\
+    Influenza A & 131 & 302 & 11 & 2560 & 2560 & - & - & 1.07 & - \\
+    INTERFERON-1 & 121 & 190 & 55 & 512 & 512 & - & - & 0.43 & - \\
+    KORKUT-2015 & 99 & - & 12 & 2060 & 1384 & DNF & DNF & 2.86 & - \\
+    KY-PA & 150 & 304 & 72 & 512 & 512 & - & - & 3.79 & - \\
+    RA Apoptosis & 431 & - & 59 & 640 & 0 & DNF & DNF & 0.70 & - \\
+    CELL CYCLE 2020 & 121 & 493 & - & 78 & 78 & - & - & 3.72 & - \\
+    S1\_Table & 1659 & - & 522 & 1024 & 1024 & DNF & DNF & 1511.07 & - \\
+    Macrophage\_Act & 321 & 533 & 19 & 512 & 384 & - & - & 1.58 & - \\
+    SIPC & 133 & 431 & 0 & 812 & 746 & - & - & 1.40 & - \\
+    SPBP & 66 & 139 & 13 & 512 & 256 & - & - & 0.17 & - \\
+    SN5 & 2746 & - & 835 & 2048 & 2048 & DNF & DNF & 3094.04 & - \\
+    TCR-TLR5-SIG & 130 & 273 & 2 & 48 & 48 & - & - & 0.50 & - \\
+    TLGLSurvival & 61 & 193 & 7 & 318 & 172 & - & - & 0.24 & - \\
+    TUREI-2016 & 4691 & - & 1257 & - & - & DNF & DNF & DNF & DNF \\
+    VIRUS-RE-CYC & 154 & 268 & 25 & 1024 & 1024 & - & - & 0.67 & - \\ \bottomrule
+  \end{tabular}
+
+\sylvain{I changed the ``look'' of the table using booktabs, see \url{https://nhigham.com/2019/11/19/better-latex-tables-with-booktabs/} for instance.}
+
+\sylvain{what is $|F|$? what are t1 and t2? why are there no times for BoolNet?}
 \end{table}
 
 \subsection{Detailed biological example}
@@ -259,6 +265,9 @@ TBD
 
 Future work: comparison with SAT/MaxSAT based approaches~\cite{nabli2016enumerating}
 
+Also to a BDD-based approach using BioLQM is proposed at \url{http://colomoto.org/biolqm/doc/tools-trapspace.html} but because of the BDD conversion, some models are not even loaded.
+This is also an issue for using BioLQM as a translator/preprocessor and since we do not use BDDs we might rely on writing our own parser for SBML-Qual and such formats.
+
 \subsubsection{Acknowledgments}
 Coffee is good, you should drink some!
 
@@ -266,23 +275,6 @@ Coffee is good, you should drink some!
 \bibliography{cmsb22.bib}
 
 \end{document}
-
-% \begin{table}
-% \caption{Table captions should be placed above the
-% tables.}\label{tab1}
-% \begin{tabular}{|l|l|l|}
-% \hline
-% Heading level &  Example & Font size and style\\
-% \hline
-% Title (centered) &  {\Large\bfseries Lecture Notes} & 14 point, bold\\
-% 1st-level heading &  {\large\bfseries 1 Introduction} & 12 point, bold\\
-% 2nd-level heading & {\bfseries 2.1 Printing Area} & 10 point, bold\\
-% 3rd-level heading & {\bfseries Run-in Heading in Bold.} Text follows & 10 point, bold\\
-% 4th-level heading & {\itshape Lowest Level Heading.} Text follows & 10 point, italic\\
-% \hline
-% \end{tabular}
-% \end{table}
-
 
 % \noindent Displayed equations are centered and set on a separate
 % line.
