@@ -3,6 +3,7 @@
 % \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{xcolor}
+
 \renewcommand\UrlFont{\color{blue}\rmfamily}
 
 \newcommand{\vangiang}[1]{\textcolor{magenta}{#1}}
@@ -14,7 +15,7 @@
 %
 \title{Minimal trap-spaces of Logical models are maximal siphons of their Petri net encoding}
 \titlerunning{Minimal trap-spaces as maximal siphons}
-\author{Van-Giang Trịnh\inst{1}\orcidID{0000-0001-6581-998X} \and \\
+\author{Van-Giang Trinh\inst{1}\orcidID{0000-0001-6581-998X} \and \\
   Sylvain Soliman\inst{2}\orcidID{0000-0001-5525-7418}}
 % \authorrunning{F. Author et al.}
 
@@ -87,6 +88,12 @@ A \emph{partial state} \(P\) of \(\mathcal{M}\) is a subset of \(\mathcal{S}\) w
 
 Here and in the following, the notion of \emph{minimality/maximality} will always be w.r.t. to subset inclusion.
 
+%%% Subspace %%%
+A subspace \(m\) of \(S_{\mathcal{M}}\) is characterized by its fixed variables (denoted by \(D_m\)) and free variables. This subspace can be specified by an assignment \(m : D_m \mapsto \bbbb\) where \(D_m \subseteq V\) and \(m(u)\) is the value of node \(u \in D_m\). The remaining variables of \(\mathcal{M}\), \(V \setminus D_m\), are said to be free, i.e., they can receive any Boolean value. We specify subspaces like states but use in addition the symbol \(\star\) to indicate that a variable is free. In addition, a subspace \(m\) also refers to the set of states \(\mathcal{S}_{\mathcal{M}}[m] := \{s \in \mathcal{S}_{\mathcal{M}}\;|\;\forall x_i \in D_m : s_i = m(x_i)\}\). For example, \(m = \star\star1\) means that \(D_m = \{x_3\}\), \(m(x_3) = 1\), and refers to the set of states \(\{001, 011, 101, 111\}\). Let \(\mathcal{S}_{\mathcal{M}}^{\star}\) denote the set of all possible subspaces of \(\mathcal{M}\). Note that \(\left|\mathcal{S}_{\mathcal{M}}^{\star}\right| = 3^n\) and \(S_{\mathcal{M}} \subset \mathcal{S}_{\mathcal{M}}^{\star}\)~\cite{klarner2015computing}.
+
+%%% Minimal trap space and example %%%
+A \emph{trap space} is defined as a subspace that is also a trap set. Then, we define a partial order \(<\) on \(\mathcal{S}_{\mathcal{M}}^{\star}\) as: \(m < m'\) if and only if \(\mathcal{S}_{\mathcal{M}}[m] \subseteq \mathcal{S}_{\mathcal{M}}[m']\) and \(\mathcal{S}_{\mathcal{M}}[m] \neq \mathcal{S}_{\mathcal{M}}[m']\). Consequently, a trap space \(m\) is minimal if and only if there is no trap space \(m' \in \mathcal{S}_{\mathcal{M}}^{\star}\) such that \(m' < m\). For example, the BN shown in Example~\ref{example:BN} has all two trap spaces, \(m_1 = 11\) and \(m_2 = \star\star\). Since \(m_1 < m_2\), \(m_1\) is a minimal trap space of the BN.
+
 \subsection{Petri net encoding of Logical models}
 \label{sec:encoding}
 
@@ -143,15 +150,36 @@ We add a definition related to any set of places of a Petri net encoding a Logic
 \begin{definition}
 
   A set of places of Petri net \(P\) encoding logical model \(\mathcal{M}\) is \emph{conflict-free} if it does not contain any two places corresponding to the active and inactive states of the same \emph{gene} of \(\mathcal{M}\).
-
+  
 \end{definition}
 
-\section{Minimal trap-spaces as maximal siphons}
+\section{Minimal trap spaces as maximal conflict-free siphons}
+
+\begin{definition}
+
+  Let \(m\) be a subspace of Boolean model \(\mathcal{M}\). A \emph{mirror} of $m$ is a set of places $S$ in the Petri net encoding \(\mathcal{P}\) of \(\mathcal{M}\) such that:
+  \[\forall v \in D_m, m(v) = 0 \Leftrightarrow p_v \in S, m(v) = 1 \Leftrightarrow \overline{p}_v \in S\]
+  
+\end{definition}
 
 \begin{theorem}
 
-  \(S\) is a minimal trap-space of model \(\mathcal{M}\) iff the places corresponding to the fixed values in \(S\) (active or inactive) are a maximal conflict-free siphon of \((P, T, W)\), the Petri net encoding of \(S\).
+  Let \(\mathcal{M}\) be a Boolean model and \(\mathcal{P}\) be its Petri net encoding. A subspace \(m\) is a trap space of \(\mathcal{M}\) if and only if its mirror \(S\) is a conflict-free siphon of \(\mathcal{P}\).
+  
+\end{theorem}
 
+\begin{proof}
+
+  TBD\qed
+
+\end{proof}
+
+\begin{theorem}
+\label{theo:min_ts_max_sp}
+  %\(S\) is a minimal trap-space of Boolean model \(\mathcal{M}\) if and only if the places corresponding to the fixed values in \(S\) (active or inactive) are a maximal conflict-free siphon of \((P, T, W)\), the Petri net encoding of \(S\).
+  
+  Let \(\mathcal{M}\) be a Boolean model and \(\mathcal{P}\) be its Petri net encoding. A subspace \(m\) is a minimal trap space of \(\mathcal{M}\) if and only if its mirror \(S\) is a maximal conflict-free siphon of \(\mathcal{P}\).
+  
 \end{theorem}
 
 Intuitively, a siphon is a set of places that once empty remains so.
@@ -164,7 +192,9 @@ This is precisely the definition of a trap-space and maximality of the siphon is
 
 \end{proof}
 
-\section{Implementation}
+By Theorem~\ref{theo:min_ts_max_sp}, we can reduce the problem of computing all minimal trap spaces of a Boolean model to the problem of computing all maximal conflict-free siphons of its Petri net encoding. It is noted that there are no existing methods specifically designed for computing maximal conflict-free siphons (even maximal siphons) of a Petri net. The reason is that researchers mainly focus on minimal siphons~\cite{DBLP:journals/isci/LiuB16}. Hence, we here propose a new method based on Answer Set Programming (ASP)~\cite{DBLP:journals/aicom/GebserKKOSS11} for computing  maximal conflict-free siphons of a Petri net. The details of the proposed method shall be shown in the next section.
+
+\section{Answer set programming-based method}
 
 ASP
 
