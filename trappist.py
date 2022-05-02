@@ -107,11 +107,14 @@ def solution_to_bool(places: List[str], sol: List[str]) -> List[str]:
 
 
 def place_in_sol(sol: List[str], place: str) -> str:
-    """Return 0/1/- if place is absent, present or does not appear in sol."""
+    """Return 0/1/- if place is absent, present or does not appear in sol.
+
+    Remember that being in the siphon means staying empty, so the opposite value is the one fixed.
+    """
     if "p" + place in sol:
-        return "1"
-    if "n" + place in sol:
         return "0"
+    if "n" + place in sol:
+        return "1"
     return "-"
 
 
