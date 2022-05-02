@@ -23,7 +23,7 @@ import subprocess
 import sys
 import tempfile
 import xml.etree.ElementTree as etree
-from typing import IO, List
+from typing import Generator, IO, List, Optional
 
 import networkx as nx  # TODO maybe replace with lists/dicts
 
@@ -40,7 +40,7 @@ def read_pnml(fileobj: IO) -> nx.DiGraph:
 
     for place in root.findall("./net/place"):
         net.add_node(
-            place.get("id"), kind="place", name=place.find("./name/value").text
+            place.get("id"), kind="place"  # , name=place.find("./name/value").text
         )
 
     for transition in root.findall("./net/transition"):
@@ -79,6 +79,7 @@ def write_asp(petri_net: nx.DiGraph, asp_file: IO):
 
 def solve_asp(asp_filename: str) -> str:
     """Run an ASP solver on program asp_file and get the solutions."""
+    # FIXME we need a limit on number of solutions
     result = subprocess.run(
         [
             "clingo",
@@ -118,17 +119,45 @@ def place_in_sol(sol: List[str], place: str) -> str:
     return "-"
 
 
-def write_solutions(asp_output: str, petri_net: nx.DiGraph):
+def get_solutions(
+    asp_output: str, petri_net: nx.DiGraph, display: bool
+) -> Optional[Generator[List[str], None, None]]:
     """Display the ASP output back as trap-spaces."""
     places = []
     for node, kind in petri_net.nodes(data="kind"):
         if kind == "place" and not node.startswith("-"):
             places.append(node)
-    print(" ".join(places))
+    if display:
+        print(" ".join(places))
     solutions = json.loads(asp_output)
-    for sol in solutions["Call"][0]["Witnesses"]:
-        print(" ".join(solution_to_bool(places, sol["Value"])))
-    print("Total time:", solutions["Time"]["Total"], "s")
+    if display:
+        print(
+            "\n".join(
+                " ".join(solution_to_bool(places, sol["Value"]))
+                for sol in solutions["Call"][0]["Witnesses"]
+            )
+        )
+        print("Total time:", solutions["Time"]["Total"], "s")
+        return None
+    else:
+        return (
+            solution_to_bool(places, sol["Value"])
+            for sol in solutions["Call"][0]["Witnesses"]
+        )
+
+
+def compute_trap_spaces(
+    infile: IO, display: bool = False
+) -> Optional[Generator[List[str], None, None]]:
+    """Do the minimal trap-space computation on input file infile."""
+    petri_net = read_pnml(infile)
+
+    (_, tmpname) = tempfile.mkstemp(suffix=".lp", text=True)
+    with open(tmpname, "wt") as asp_file:
+        write_asp(petri_net, asp_file)
+    solutions = solve_asp(tmpname)
+    os.unlink(tmpname)
+    return get_solutions(solutions, petri_net, display)
 
 
 def main():
@@ -151,14 +180,7 @@ def main():
     )
     args = parser.parse_args()
 
-    petri_net = read_pnml(args.infile)
-
-    (_, tmpname) = tempfile.mkstemp(suffix=".lp", text=True)
-    with open(tmpname, "wt") as asp_file:
-        write_asp(petri_net, asp_file)
-    solutions = solve_asp(tmpname)
-    os.unlink(tmpname)
-    write_solutions(solutions, petri_net)
+    compute_trap_spaces(args.infile, display=True)
 
 
 if __name__ == "__main__":
