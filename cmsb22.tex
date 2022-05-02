@@ -199,11 +199,57 @@ By Theorem~\ref{theo:min_ts_max_sp}, we can reduce the problem of computing all 
 ASP
 
 \section{Evaluation}
+To test the efficiency of the proposed method, we compared it with the state-of-the-art method PyBoolNet~\cite{klarner2017pyboolnet}. We used a set of real-world Boolean models lying in various scales obtained from the literature. These models are complex (i.e., having high average in-degree) and most of them have never been fully analyzed. We then applied the proposed method and PyBoolNet to computing minimal trap spaces of these real-world models. To solve the ASP problems, we used the ASP solver CLINGO~\cite{DBLP:journals/aicom/GebserKKOSS11} with the configuration as same as that used in PyBoolNet~\cite{klarner2015computing}. Specifically, ... Finally, we set a time limit as one hour for each model.
+
 \subsection{Benchmark vs.\ implicant-based methods}
 
 Using BioLQM~\ref{sec:encoding}
 
 \url{http://colomoto.org/biolqm/doc/tools-trapspace.html}
+
+Table~\ref{tab:result_real} shows the experimental results on real-world models. Hereafter, we analyze in detail the results with respect to minimal trap space computation.
+
+\begin{table}[!ht]
+\centering
+\caption{Timing comparisons between the proposed method and PyBoolNet on the selected real-world models. Columns "\(n\)", "\(e\)", and "\(s\)" denote the numbers of nodes, interactions, and source nodes of each model, respectively. Column "\(|M|\)" denotes the number of minimal trap spaces. The computational time is in seconds. "DNF" means that the method did not finish the computation within one hour.}
+\label{tab:result_real}
+\begin{tabular}{|c|r|r|r|r|r|r|r|r|r|}
+\cline{7-10}
+\multicolumn{1}{l}{} & \multicolumn{1}{l}{} & \multicolumn{1}{l}{} & \multicolumn{1}{l}{} & \multicolumn{1}{l}{} & \multicolumn{1}{l|}{} & \multicolumn{2}{c|}{PyBoolNet} & \multicolumn{2}{c|}{Proposed method} \\ \hline
+model & $n$ & $e$ & $s$ & $|M|$ & $|F|$ & t1 (s) & t2 (s) & t1 (s) & t2 (s) \\ \hline
+CASCADE-3 & 183 & - & 0 & 1 & 0 & - & - & 1.65 & - \\ \hline
+CHO-2016 & 200 & - & 13 & 1024 & 0 & - & - & 2.10 & - \\ \hline
+CACC & 70 & 153 & 1 & 10 & 2 & - & - & 0.18 & - \\ \hline
+THIL\_17 & 92 & - & 16 & 5724 & 5724 & - & - & 0.90 & - \\ \hline
+ERBB & 247 & 1100 & 22 & 1456394+ & 0 & DNF & DNF & DNF & - \\ \hline
+ER-STRESS & 182 & 266 & 75 & 25600 & 25600 & - & - & 4.54 & - \\ \hline
+AD & 1169 & - & 469 & 49152 & 49152 & - & - & 66.17 & - \\ \hline
+Cholocystokinin & 404 & - & 95 & 705024 & 705024 & - & - & 1080.35 & - \\ \hline
+FIBROBLASTS & 139 & 557 & 9 & 375850 & 32768 & - & - & 331.87 & - \\ \hline
+TcellCheckPoint & 218 & - & 34 & 15360 & 10240 & - & - & 4.33 & - \\ \hline
+HIV-1 & 138 & 368 & 14 & 1408 & 1408 & DNF & DNF & 1.44 & - \\ \hline
+HMOX1 & 145 & 228 & 56 & 5120 & 5120 & - & - & 0.99 & - \\ \hline
+Human network & 1953 & - & 675 & 2048 & 2048 & DNF & DNF & 1770.98 & - \\ \hline
+IL\_6 Signalling & 86 & 149 & 15 & 512 & 448 & - & - & 0.32 & - \\ \hline
+IMMUNE-SYS & 164 & 506 & 13 & 36852 & 27871 & DNF & DNF & 14.19 & - \\ \hline
+IBD & 47 & 287 & 0 & 1 & 0 & DNF & DNF & 296.23 & - \\ \hline
+Influenza A & 131 & 302 & 11 & 2560 & 2560 & - & - & 1.07 & - \\ \hline
+INTERFERON-1 & 121 & 190 & 55 & 512 & 512 & - & - & 0.43 & - \\ \hline
+KORKUT-2015 & 99 & - & 12 & 2060 & 1384 & DNF & DNF & 2.86 & - \\ \hline
+KY-PA & 150 & 304 & 72 & 512 & 512 & - & - & 3.79 & - \\ \hline
+RA Apoptosis & 431 & - & 59 & 640 & 0 & DNF & DNF & 0.70 & - \\ \hline
+CELL CYCLE 2020 & 121 & 493 & - & 78 & 78 & - & - & 3.72 & - \\ \hline
+S1\_Table & 1659 & - & 522 & 1024 & 1024 & DNF & DNF & 1511.07 & - \\ \hline
+Macrophage\_Act & 321 & 533 & 19 & 512 & 384 & - & - & 1.58 & - \\ \hline
+SIPC & 133 & 431 & 0 & 812 & 746 & - & - & 1.40 & - \\ \hline
+SPBP & 66 & 139 & 13 & 512 & 256 & - & - & 0.17 & - \\ \hline
+SN5 & 2746 & - & 835 & 2048 & 2048 & DNF & DNF & 3094.04 & - \\ \hline
+TCR-TLR5-SIG & 130 & 273 & 2 & 48 & 48 & - & - & 0.50 & - \\ \hline
+TLGLSurvival & 61 & 193 & 7 & 318 & 172 & - & - & 0.24 & - \\ \hline
+TUREI-2016 & 4691 & - & 1257 & - & - & DNF & DNF & DNF & DNF \\ \hline
+VIRUS-RE-CYC & 154 & 268 & 25 & 1024 & 1024 & - & - & 0.67 & - \\ \hline
+\end{tabular}
+\end{table}
 
 \subsection{Detailed biological example}
 
