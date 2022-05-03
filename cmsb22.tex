@@ -138,13 +138,14 @@ We recall here the basic definition establishing that to produce something in a 
 \begin{definition}
 
   A \emph{siphon} of a Petri net \((P, T, W)\) is a set of places \(S\) such that:
-  \[\forall t\in T, S\cap succ(t)\not =\emptyset\Rightarrow S\cap pred(t)\not =\emptyset\]
+  \[\forall t\in T, S\cap succ(t)\not =\emptyset\Rightarrow S\cap pred(t)\not =\emptyset.\] \(\emptyset\) is trivially a siphon.
 
 \end{definition}
 
 Intuitively a siphon is a set of places that once empty remains empty.
 
-We add a definition related to any set of places of a Petri net encoding a Logical model, and notably a siphon of such a net.
+\section{Minimal trap spaces as maximal conflict-free siphons}
+First, we add a definition related to any set of places of a Petri net encoding a Logical model, and notably a siphon of such a net.
 
 \begin{definition}
 
@@ -152,40 +153,53 @@ We add a definition related to any set of places of a Petri net encoding a Logic
 
 \end{definition}
 
-\section{Minimal trap spaces as maximal conflict-free siphons}
+Intuitively, a siphon is a set of places that once empty remains so.
+If it is conflict-free then its dual corresponds to a partial-state of the model such that whatever update, the fixed values remain so (since the empty places remain empty).
+This is precisely the definition of a trap-space and maximality of the siphon is equivalent to as many fixed values as possible, hence minimality of the trap-space. Hereafter, we formally prove that a maximal conflict-free siphon is equivalent to a minimal trap space. 
 
 \begin{definition}
 
   Let \(m\) be a subspace of Boolean model \(\mathcal{M}\). A \emph{mirror} of $m$ is a set of places $S$ in the Petri net encoding \(\mathcal{P}\) of \(\mathcal{M}\) such that:
-  \[\forall v \in D_m, m(v) = 0 \Leftrightarrow p_v \in S, m(v) = 1 \Leftrightarrow \overline{p}_v \in S\]
+  \[\forall v \in D_m, m(v) = 0 \Leftrightarrow p_v \in S, m(v) = 1 \Leftrightarrow \overline{p}_v \in S.\] If \(D_m = \emptyset\), \(S\) is conventionally \(\emptyset\).  
 
 \end{definition}
 
 \begin{theorem}
+\label{theo:ts_2_sp}
 
   Let \(\mathcal{M}\) be a Boolean model and \(\mathcal{P}\) be its Petri net encoding. A subspace \(m\) is a trap space of \(\mathcal{M}\) if and only if its mirror \(S\) is a conflict-free siphon of \(\mathcal{P}\).
 
 \end{theorem}
 
-Intuitively, a siphon is a set of places that once empty remains so.
-If it is conflict-free then its dual corresponds to a partial-state of the model such that whatever update, the fixed values remain so (since the empty places remain empty).
-This is precisely the definition of a trap-space and maximality of the siphon is equivalent to as many fixed values as possible, hence minimality of the trap-space.
-
 \begin{proof}
 
-  TBD\qed
-
+  First, we show that if \(m\) is a trap space of \(\mathcal{M}\), then \(S\) is a conflict-free siphon of \(\mathcal{P}\) (*).
+  
+  Second, we show that if \(S\) is a conflict-free siphon of \(\mathcal{P}\), then \(m\) is a trap space of \(\mathcal{M}\) (**).
+  
+  From (*) and (**), we can conclude the proof.\qed
+  
 \end{proof}
 
 \begin{theorem}
-\label{theo:min_ts_max_sp}
+\label{theo:min_ts_2_max_sp}
   %\(S\) is a minimal trap-space of Boolean model \(\mathcal{M}\) if and only if the places corresponding to the fixed values in \(S\) (active or inactive) are a maximal conflict-free siphon of \((P, T, W)\), the Petri net encoding of \(S\).
 
   Let \(\mathcal{M}\) be a Boolean model and \(\mathcal{P}\) be its Petri net encoding. A subspace \(m\) is a minimal trap space of \(\mathcal{M}\) if and only if its mirror \(S\) is a maximal conflict-free siphon of \(\mathcal{P}\).
 
 \end{theorem}
 
-By Theorem~\ref{theo:min_ts_max_sp}, we can reduce the problem of computing all minimal trap spaces of a Boolean model to the problem of computing all maximal conflict-free siphons of its Petri net encoding. It is noted that there are no existing methods specifically designed for computing maximal conflict-free siphons (even maximal siphons) of a Petri net. The reason is that researchers mainly focus on minimal siphons~\cite{DBLP:journals/isci/LiuB16}. Hence, we here propose a new method based on Answer Set Programming (ASP)~\cite{DBLP:journals/aicom/GebserKKOSS11} for computing  maximal conflict-free siphons of a Petri net. The details of the proposed method shall be shown in the next section.
+\begin{proof}
+
+  First, we show that if \(m\) is a minimal trap space of \(\mathcal{M}\), then \(S\) is a maximal conflict-free siphon of \(\mathcal{P}\) (*).
+  
+  Second, we show that if \(S\) is a maximal conflict-free siphon of \(\mathcal{P}\), then \(m\) is a minimal trap space of \(\mathcal{M}\) (**).
+  
+  From (*) and (**), we can conclude the proof.\qed
+  
+\end{proof}
+
+By Theorem~\ref{theo:min_ts_2_max_sp}, we can reduce the problem of computing all minimal trap spaces of a Boolean model to the problem of computing all maximal conflict-free siphons of its Petri net encoding. It is noted that there are no existing methods specifically designed for computing maximal conflict-free siphons (even maximal siphons) of a Petri net. The reason is that researchers mainly focus on minimal siphons~\cite{DBLP:journals/isci/LiuB16}. Hence, we here propose a new method based on Answer Set Programming (ASP)~\cite{DBLP:journals/aicom/GebserKKOSS11} for computing  maximal conflict-free siphons of a Petri net. The details of the proposed method shall be shown in the next section.
 
 \section{Answer set programming-based method}
 
