@@ -197,10 +197,10 @@ We used a set of real-world Boolean models lying in various scales obtained from
 These models are quite big (in size), complex (i.e., having high average in-degree, which is related to the number of prime-implicants) and most of them have never been fully analyzed.
 We then applied the proposed method and PyBoolNet to computing minimal trap spaces of these real-world models.
 To solve the ASP problems, we used the same ASP solver CLINGO~\cite{DBLP:journals/aicom/GebserKKOSS11} and the same configuration as that used in PyBoolNet~\cite{klarner2015computing}.
-Specifically, ...
-Finally, we set a time limit as one hour for each model.
+Specifically, we used the configuration \texttt{--dom-pref=32, --heu=domain, --dom-mod=7} (subset maximality). We ran all the benchmarks on a virtual machine whose environment is CPU: Intel(R) Core(TM) i7-3630QM 2.40GHz x 4, Memory: 8 GB, Ubuntu 18.04.2 64 bit. Finally, we set a time limit as one hour for each model.
 
 \sylvain{we need a source for the models as much as possible, or to refer to some place where people can access them to reproduce the benchmark.}
+\vangiang{Yes. I have added reference sources for the models but some models are still missing now.}
 
 \subsection{Benchmark vs.\ implicant-based methods}
 
@@ -208,52 +208,54 @@ Table~\ref{tab:result_real} shows the experimental results on real-world models.
 
 \begin{table}[!ht]
   \caption{Timing comparisons between the proposed method and PyBoolNet on the selected real-world models.
-    Columns "\(n\)", "\(e\)", and "\(s\)" denote the numbers of nodes, interactions, and source nodes of each model, respectively.
-    Column "\(|M|\)" denotes the number of minimal trap spaces.
-    The computation times are all in seconds.
+    Columns "\(n\)", "\(e\)", and "\(s\)" denote the numbers of nodes, interactions, and source nodes of each model, respectively. For each method, Column "\(|M|\)" denotes the number of minimal trap spaces and Column "time (s)" denotes the computation time in seconds.
     "DNF" means that the method did not finish the computation within one hour.}
+  \centering
   \label{tab:result_real}
-  \begin{tabular}{lrrrrrrrrr}
+  \begin{tabular}{lrrrrrrr}
     \toprule
-    & & & & & & \multicolumn{2}{c}{PyBoolNet} & \multicolumn{2}{c}{Proposed method}\\
-    \cmidrule(lr){7-8}\cmidrule(lr){9-10}
-    model & $n$ & $e$ & $s$ & $|M|$ & $|F|$ & t1 (s) & t2 (s) & t1 (s) & t2 (s) \\ \midrule
-    CASCADE-3~\cite{Tsirvouli2020} & 183 & - & 0 & 1 & 0 & - & - & 1.65 & - \\
-    CHO-2016 & 200 & - & 13 & 1024 & 0 & - & - & 2.10 & - \\
-    CACC~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 70 & 153 & 1 & 10 & 2 & - & - & 0.18 & - \\
-    THIL\_17 & 92 & - & 16 & 5724 & 5724 & - & - & 0.90 & - \\
-    ERBB & 247 & 1100 & 22 & 1456394+ & 0 & DNF & DNF & DNF & - \\
-    ER-STRESS & 182 & 266 & 75 & 25600 & 25600 & - & - & 4.54 & - \\
-    AD~\cite{aghamiri2020automated} & 1169 & - & 469 & 49152 & 49152 & - & - & 66.17 & - \\
-    Cholocystokinin~\cite{aghamiri2020automated} & 404 & - & 95 & 705024 & 705024 & - & - & 1080.35 & - \\
-    FIBROBLASTS~\cite{helikar2008emergent} & 139 & 557 & 9 & 375850 & 32768 & - & - & 331.87 & - \\
-    TcellCheckPoint & 218 & - & 34 & 15360 & 10240 & - & - & 4.33 & - \\
-    HIV-1~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 138 & 368 & 14 & 1408 & 1408 & DNF & DNF & 1.44 & - \\
-    HMOX1~\cite{ostaszewski2021covid19} & 145 & 228 & 56 & 5120 & 5120 & - & - & 0.99 & - \\
-    Human network & 1953 & - & 675 & 2048 & 2048 & DNF & DNF & 1770.98 & - \\
-    IL\_6 Signalling~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 86 & 149 & 15 & 512 & 448 & - & - & 0.32 & - \\
-    IMMUNE-SYS & 164 & 506 & 13 & 36852 & 27871 & DNF & DNF & 14.19 & - \\
-    IBD~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 47 & 287 & 0 & 1 & 0 & DNF & DNF & 296.23 & - \\
-    Influenza A~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 131 & 302 & 11 & 2560 & 2560 & - & - & 1.07 & - \\
-    INTERFERON-1~\cite{ostaszewski2021covid19} & 121 & 190 & 55 & 512 & 512 & - & - & 0.43 & - \\
-    KORKUT-2015 & 99 & - & 12 & 2060 & 1384 & DNF & DNF & 2.86 & - \\
-    KY-PA & 150 & 304 & 72 & 512 & 512 & - & - & 3.79 & - \\
-    RA Apoptosis~\cite{aghamiri2020automated} & 431 & - & 59 & 640 & 0 & DNF & DNF & 0.70 & - \\
-    CELL CYCLE 2020 & 121 & 493 & - & 78 & 78 & - & - & 3.72 & - \\
-    S1\_Table & 1659 & - & 522 & 1024 & 1024 & DNF & DNF & 1511.07 & - \\
-    Macrophage\_Act~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 321 & 533 & 19 & 512 & 384 & - & - & 1.58 & - \\
-    SIPC~\cite{Montagud2021} & 133 & 431 & 0 & 812 & 746 & - & - & 1.40 & - \\
-    SPBP & 66 & 139 & 13 & 512 & 256 & - & - & 0.17 & - \\
-    SN5~\cite{kim2013rmod} & 2746 & - & 835 & 2048 & 2048 & DNF & DNF & 3094.04 & - \\
-    TCR-TLR5-SIG & 130 & 273 & 2 & 48 & 48 & - & - & 0.50 & - \\
-    TLGLSurvival~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 61 & 193 & 7 & 318 & 172 & - & - & 0.24 & - \\
-    TUREI-2016 & 4691 & - & 1257 & - & - & DNF & DNF & DNF & DNF \\
-    VIRUS-RE-CYC & 154 & 268 & 25 & 1024 & 1024 & - & - & 0.67 & - \\ \bottomrule
+    & & & & \multicolumn{2}{c}{PyBoolNet} & \multicolumn{2}{c}{Proposed method}\\
+    \cmidrule(lr){5-6}\cmidrule(lr){7-8}
+    model & $n$ & $e$ & $s$ & $|M|$ & time (s) & $|M|$ & time (s) \\ \midrule
+    cascade-3~\cite{Tsirvouli2020} & 183 & - & 0 & - & - & 1 & 1.65 \\
+    CHO-2016 & 200 & - & 13 & - & - & 1024 & 2.10 \\
+    colitis-associated-colon-cancer~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 70 & 153 & 1 & - & - & 10 & 0.18 \\
+    THIL\_17 & 92 & - & 16 & - & - & 5724 & 0.90 \\
+    ErbB-receptor-signaling~\cite{helikar2013comprehensive} & 247 & 1100 & 22 & DNF & DNF & DNF & DNF \\
+    er-stress & 182 & 266 & 75 & - & - & 25600 & 4.54 \\
+    Alzheimer~\cite{aghamiri2020automated} & 1169 & - & 469 & - & - & 49152 & 66.17 \\
+    cholocystokinin~\cite{aghamiri2020automated} & 404 & - & 95 & - & - & 705024 & 1080.35 \\
+    signal-transduction-in-fibroblasts~\cite{helikar2008emergent} & 139 & 557 & 9 & - & - & 375850 & 331.87 \\
+    T-cell-check-point & 218 & - & 34 & - & - & 15360 & 4.33 \\
+    HIV-1-with-T-cell-signaling~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 138 & 368 & 14 & DNF & DNF & 1408 & 1.44 \\
+    HMOX-1-pathway~\cite{ostaszewski2021covid19} & 145 & 228 & 56 & - & - & 5120 & 0.99 \\
+    human-network & 1953 & - & 675 & DNF & DNF & 2048 & 1770.98 \\
+    IL-6-signalling~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 86 & 149 & 15 & - & - & 512 & 0.32 \\
+    immune-system & 164 & 506 & 13 & DNF & DNF & 36852 & 14.19 \\
+    inflammatory-bowel-disease~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 47 & 287 & 0 & DNF & DNF & 1 & 296.23 \\
+    influenza-virus-replication-cycle~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 131 & 302 & 11 & - & - & 2560 & 1.07 \\
+    interferon-1~\cite{ostaszewski2021covid19} & 121 & 190 & 55 & - & - & 512 & 0.43 \\
+    KORKUT-2015 & 99 & - & 12 & DNF & DNF & 2060 & 2.86 \\
+    KY-PA & 150 & 304 & 72 & - & - & 512 & 3.79 \\
+    RA-apoptosis~\cite{aghamiri2020automated} & 431 & - & 59 & DNF & DNF & 640 & 0.70 \\
+    CELL CYCLE 2020 & 121 & 493 & - & - & - & 78 & 3.72 \\
+    S1\_Table & 1659 & - & 522 & DNF & DNF & 1024 & 1511.07 \\
+    signaling-in-macrophage-activation~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 321 & 533 & 19 & - & - & 512 & 1.58 \\
+    SIPC~\cite{Montagud2021} & 133 & 431 & 0 & - & - & 812 & 1.40 \\
+    SPBP & 66 & 139 & 13 & - & - & 512 & 0.17 \\
+    SN5~\cite{kim2013rmod} & 2746 & - & 835 & DNF & DNF & 2048 & 3094.04 \\
+    TCR-TLR5-signaling-2018 & 130 & 273 & 2 & - & - & 48 & 0.50 \\
+    T-LGL-survival-network-2008~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 61 & 193 & 7 & - & - & 318 & 0.24 \\
+    TUREI-2016 & 4691 & - & 1257 & DNF & DNF & DNF & DNF \\
+    VIRUS-RE-CYC & 154 & 268 & 25 & - & - & 1024 & 0.67 \\ \bottomrule
   \end{tabular}
 
 \sylvain{I changed the ``look'' of the table using booktabs, see \url{https://nhigham.com/2019/11/19/better-latex-tables-with-booktabs/} for instance.}
+\vangiang{Actually, booktabs looks better. I have never used it before. Thank you for sharing.}
 
 \sylvain{what is $|F|$? what are t1 and t2? why are there no times for BoolNet?}
+\vangiang{I need to open an excel file containing the experimental results but I am unable to access this file now.}
+
 \end{table}
 
 \subsection{Detailed biological example}
