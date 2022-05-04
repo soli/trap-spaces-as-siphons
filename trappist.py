@@ -174,7 +174,7 @@ def main():
     )
     parser.add_argument(
         "-m",
-        "--max-output",
+        "--max",
         type=int,
         default=0,
         help="Maximum number of solutions (0 for all).",
@@ -188,7 +188,7 @@ def main():
     )
     args = parser.parse_args()
 
-    compute_trap_spaces(args.infile, display=True, max_output=args.max - output)
+    compute_trap_spaces(args.infile, display=True, max_output=args.max)
 
 
 if __name__ == "__main__":
