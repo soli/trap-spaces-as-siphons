@@ -77,13 +77,13 @@ def write_asp(petri_net: nx.DiGraph, asp_file: IO):
                     print(f"{or_preds} :- {pnml_to_asp(succ)}.", file=asp_file)
 
 
-def solve_asp(asp_filename: str) -> str:
+def solve_asp(asp_filename: str, max_output: int) -> str:
     """Run an ASP solver on program asp_file and get the solutions."""
     # FIXME we need a limit on number of solutions
     result = subprocess.run(
         [
             "clingo",
-            "0",
+            str(max_output),
             "--heuristic=Domain",  # maximal w.r.t. inclusion
             "--enum-mod=domRec",
             "--dom-mod=3",
@@ -96,7 +96,8 @@ def solve_asp(asp_filename: str) -> str:
     )
 
     # https://www.mat.unical.it/aspcomp2013/files/aspoutput.txt
-    if result.returncode != 30:  # 30: SAT, all enumerated, optima found
+    # 30: SAT, all enumerated, optima found, 10 stopped by max
+    if result.returncode != 30 and result.returncode != 10:
         result.check_returncode()  # will raise CalledProcessError
 
     return result.stdout
@@ -147,7 +148,7 @@ def get_solutions(
 
 
 def compute_trap_spaces(
-    infile: IO, display: bool = False
+    infile: IO, display: bool = False, max_output: int = 0
 ) -> Optional[Generator[List[str], None, None]]:
     """Do the minimal trap-space computation on input file infile."""
     petri_net = read_pnml(infile)
@@ -155,7 +156,7 @@ def compute_trap_spaces(
     (_, tmpname) = tempfile.mkstemp(suffix=".lp", text=True)
     with open(tmpname, "wt") as asp_file:
         write_asp(petri_net, asp_file)
-    solutions = solve_asp(tmpname)
+    solutions = solve_asp(tmpname, max_output)
     os.unlink(tmpname)
     return get_solutions(solutions, petri_net, display)
 
@@ -172,6 +173,13 @@ def main():
         version="%(prog)s v{version}".format(version=version),
     )
     parser.add_argument(
+        "-m",
+        "--max-output",
+        type=int,
+        default=0,
+        help="Maximum number of solutions (0 for all).",
+    )
+    parser.add_argument(
         "infile",
         type=argparse.FileType("r", encoding="utf-8"),
         nargs="?",
@@ -180,7 +188,7 @@ def main():
     )
     args = parser.parse_args()
 
-    compute_trap_spaces(args.infile, display=True)
+    compute_trap_spaces(args.infile, display=True, max_output=args.max - output)
 
 
 if __name__ == "__main__":
