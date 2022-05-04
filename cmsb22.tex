@@ -217,6 +217,25 @@ for each \(v \in V\). ...
 
 Naturally, a stable model \(A\) of \(\mathcal{A}\) is equivalent to a conflict-free siphon \(S\) of \(\mathcal{P}\), thus a minimal trap space \(m\) of \(\mathcal{M}\). The conversion from \(A\) to \(m\) is straightforward. If \(\texttt{p(v, 1)} \in A\) then \(v \in D_m\) and \(m(v) = 0\). Conversely, if \(\texttt{p(v, 0)} \in A\) then \(v \in D_m\) and \(m(v) = 1\). Otherwise, \(v \not \in D_m\). Computing multiple solutions is built into ASP solvers and the solving collection POTASSCO~\cite{DBLP:journals/aicom/GebserKKOSS11} also features the option to find set-inclusion maximal solutions with respect to the predicates that are true. By using this built-in option, we can compute all the stable models of \(\mathcal{A}\) in one execution.
 
+\section{Motivating example}
+
+For a few years now the second author has been collaborating with biologists who have been building huge detailed and annotated maps and now wish to analyze the dynamics of the corresponding models.
+One of the main maps studied this way is a map representing knowledge about the Rheumatoïd Arthritis~\cite{singh2018computational}, which was the main motivation for the development of a tool to automatically transform it into an executable Boolean model~\cite{aghamiri2020automated}.
+In the supplementary material of the paper, an excerpt of the map, focused around the apoptosis (cell death) module is transformed into a model of \emph{reasonable} size, namely 181 Boolean variables (model \verb|F5_RA_apoptosis_executable_module.sbml|).
+The study of such model, though, is a big hurdle.
+Indeed, as stated in the article about another model of the same size:
+\emph{``The size of the CaSQ-inferred MAPK model (181 nodes) made the calculation of stable states a non-realistic endeavour.''}
+
+In practice, even if there are many attractors in such a model, to validate it having only a sample of those was deemed useful.
+However, using a state-of-the-art tool like PyBoolNet~\cite{klarner2015computing} on that model actually fails at the phase of prime-implicant generation.
+And hence, it is not possible to extract any (complex) attractor at all.
+This is also true for the Alzheimer model also mentioned in that same article and originally from~\cite{ogishima2016alzpathway}, but actually not for the MAPK model for which the first trap spaces can be obtained in reasonable time.
+
+Using the method presented above, it is possible to convert the model to PNML in about 1s and to obtain the first 1000 minimal trap-spaces (including ones that contain more than one state) in a few milliseconds.
+Unfortunately since this was not available at the time, the analysis of the model remained very high-level and qualitative, instead of being able to use the rich information of computed minimal trap-spaces.
+
+
+
 \section{Evaluation}
 To assess the efficiency of the proposed method, we compared it with the state-of-the-art method PyBoolNet~\cite{klarner2017pyboolnet}.
 We used a set of real-world Boolean models lying in various scales obtained from the literature.
@@ -295,10 +314,6 @@ The second observation is that ...
 % \vangiang{I need to open an excel file containing the experimental results but I am unable to access this file now.}
 
 \end{table}
-
-\subsection{Detailed biological example}
-
-TBD
 
 \section{Conclusion}
 
