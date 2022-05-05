@@ -13,9 +13,11 @@
 \newcommand{\bbbb}{{\rm I\!B}}
 
 \begin{document}
-%
-\title{Minimal trap-spaces of Logical models are maximal siphons of their Petri net encoding}
-\titlerunning{Minimal trap-spaces as maximal siphons}
+
+% \title{Minimal trap spaces of Logical models are maximal siphons of their Petri net encoding}
+% \titlerunning{Minimal trap spaces as maximal siphons}
+\title{Scaling-up attractor computation for Boolean models}
+
 \author{Van-Giang Trinh\inst{1}\orcidID{0000-0001-6581-998X} \and \\
   Sylvain Soliman\inst{2}\orcidID{0000-0001-5525-7418} \and \\
   Kunihiko Hiraishi\inst{3}\orcidID{0000-0003-1750-1891} \and \\ Belaid Benhamou\inst{1}
@@ -23,15 +25,12 @@
 
 \authorrunning{Trinh et al.}
 
-\vangiang{I added two other authors. Prof. Belaid Benhamou is currently my postdoctoral supervisor and he will also involve in the topic on siphons. Prof. Kunihiko Hiraishi was my doctoral supervisor. I obtained the method for trap space computation when I was a researcher in his lab and he also contributes to this method. Of course, they will involve in revising the papers. Is this OK for you?}
-
 \institute{
   LIS, Aix-Marseille Université, Marseille, France\\
   \email{\{Trinh.Van-Giang, belaid.benhamou\}@lis-lab.fr}
   \and
   Lifeware team, Inria Saclay center, Palaiseau, France\\
-  \email{Sylvain.Soliman@inria.fr}%\\
-  %\url{http://lifeware.inria.fr/~soliman/}
+  \email{Sylvain.Soliman@inria.fr}
   \and
   School of Information Science, Japan Advanced Institute of Science and Technology, Japan\\
   \email{hira@jaist.ac.jp}
@@ -45,37 +44,37 @@
 
   Boolean modelling has proven over the years that it can bring powerful analyses and corresponding insight to the many cases where precise biological data is not sufficiently available to build a detailed quantitative model.
   This is even more true for very big models where such data is frequently missing and led to a constant increase in size of logical models \emph{à la} Thomas.
-  The analysis of such models is mostly based on attractor computation, since those correspond roughly to \emph{phenotypes}, and the recent use of trap-spaces made a real breakthrough in that domain allowing to consider medium-sized models that used to be out of reach.
-  However, with the continuing increase in model-size, the state of the art computation of minimal trap-spaces based on prime-implicants shows its limits as there can be very many such implicants.
-  In this article we present an alternative method to compute minimal trap-spaces, and hence complex attractors, that relies on a completely different technique, namely the enumeration of maximal siphons in the Petri net encoding of the original Logical model.
+  The analysis of such models is mostly based on attractor computation, since those correspond roughly to \emph{phenotypes}, and the recent use of trap spaces made a real breakthrough in that domain allowing to consider medium-sized models that used to be out of reach.
+  However, with the continuing increase in model-size, the state of the art computation of minimal trap spaces based on prime-implicants shows its limits as there can be very many such implicants.
+  In this article we present an alternative method to compute minimal trap spaces, and hence complex attractors, that relies on a completely different technique, namely the enumeration of maximal siphons in the Petri net encoding of the original Logical model.
   We then demonstrate its efficiency and compare it to implicant-based methods on a few relevant big Boolean models.
 
-\keywords{Logical models \and Boolean models \and Trap-spaces \and Attractor computation \and Petri nets \and Siphons}
+\keywords{Logical models \and Boolean models \and Trap spaces \and Attractor computation \and Petri nets \and Siphons}
 \end{abstract}
 
 \section{Introduction}
-
-\sylvain{We could go for a completely different title, e.g., focused on performance much more, like ``Scaling-up attractor computation for Logical models''}
 
 From the observation that the transcriptional regulation behaved in a sigmoid step-like way, came the original idea to represent models of gene regulation as discrete event systems.
 Those Gene Regulation Networks (GRN) use thresholds or equivalently logical functions to represent the different regulations~\cite{glass1973logical,thomas1973boolean,thomas1990biological,thomas1991regulatory}.
 
 Boolean modelling has proven over the years that it can bring powerful analyses and corresponding insight to the many cases where precise biological data is not sufficiently available to build a detailed quantitative model~\cite{wang2012boolean}.
 This is even more true for very big models where such data is frequently missing and led to a constant increase in size of logical models \emph{à la} Thomas~\cite{aghamiri2020automated}.
-The analysis of such models is mostly based on attractor computation, since those correspond roughly to \emph{phenotypes}, and the recent use of trap-spaces~\cite{klarner2015computing} made a real breakthrough in that domain allowing to consider medium-sized models that used to be out of reach.
-However, with the continuing increase in model-size, the state of the art computation of minimal trap-spaces based on \emph{prime-implicants} shows its limits as there can be a huge number of such implicants.
+The analysis of such models is mostly based on attractor computation, since those correspond roughly to \emph{phenotypes}, and the recent use of trap spaces~\cite{klarner2015computing} made a real breakthrough in that domain allowing to consider medium-sized models that used to be out of reach.
+However, with the continuing increase in model-size, the state of the art computation of minimal trap spaces based on \emph{prime-implicants} shows its limits as there can be a huge number of such implicants.
 
 Petri nets were introduced in the 60’s as a simple formalism for describing and analyzing information processing systems that are characterized as being concurrent, asynchronous, non-deterministic and possibly distributed~\cite{peterson1981petri,Murata1989}.
 The use of Petri nets for representing biochemical reaction systems, by mapping molecular species to places and reactions to transitions, was introduced quite late in~\cite{reddy1993petri}, together with some Petri net concepts and tools for the analysis of metabolic networks.
 Siphons are such a concept but they have not been used a lot for the analysis of biochemical systems even if the practical cost of computing their minimal/maximal elements appear much more manageable than the theoretical complexity would indicate~\cite{nabli2016enumerating}.
 
-In this article we present an alternative method to compute minimal trap-spaces, and hence complex attractors, that replaces the need for prime-implicants by a completely different technique, namely the enumeration of maximal siphons in the Petri net encoding of the original Logical model.
+In this article we present an alternative method to compute minimal trap spaces, and hence complex attractors, that replaces the need for prime-implicants by a completely different technique, namely the enumeration of maximal siphons in the Petri net encoding of the original Logical model.
 We then demonstrate its efficiency and compare it to implicant-based methods on a few relevant big Boolean models.
 
 \section{Preliminaries}
 
-TBD.
-Purely Boolean for trap-spaces, asynchronous for encoding.
+We will briefly recall here some preliminaries on Boolean models related to trap spaces and Petri nets.
+To stay in line with the usual considerations we will always assume purely Boolean (and not multi-valued) logical models, and an asynchronous update.
+In the case of multi-level models, an encoding into a Boolean model is always possible (and once again available through BioLQM).
+As far as different update strategies are concerned, we think that even if they might require small technical adaptations, they would not bring much change to the main results of this article.
 
 \subsection{Traps spaces}
 
@@ -105,8 +104,6 @@ For example, the Boolean model shown in Example~\ref{example:BN} has all two tra
 We give a Boolean model \(\mathcal{M} = (V, F)\), where \(V = (x_1, x_2)\) and \(F = (f_1, f_2)\) with \(f_1 = (x_1 \land x_2) \lor (\neg x_1 \land \neg x_2), f_2 = (x_1 \land x_2) \lor (\neg x_1 \land \neg x_2)\). Herein, \(\land\), \(\lor\), and \(\neg\) denote the CONJUNCTION, DISJUNCTION, and NEGATION logical operators, respectively.
 \label{example:BN}
 \end{example}
-
-%\sylvain{missing example?}
 
 \subsection{Petri net encoding of Logical models}
 \label{sec:encoding}
@@ -142,6 +139,12 @@ Conversion is executed as follows:
 
 \noindent{\small \verb|java -jar GINsim.jar -lqm <input.{sbml,bnet,zginml,...}> <output.pnml>|}
 
+Note that transforming a Boolean model defined by its functions into its Petri net encoding roughly relies on obtaining the Disjunctive Normal Forms (DNF) of each Boolean function.
+Though this might be quite computationally intensive it is important to remark first that contrary to the Prime implicants case, there is no need to find \emph{minimal} DNF.
+Second, in practice this transformation seems to behave quite well on even quite big models as will be shown in the Section~\ref{sec:eval} on evaluation.
+Currently, relying on BioLQM implies going through a BDD encoding of the formulae, which might not be optimal.
+Hence we are still considering a direct encoding that would skip the BDD construction.
+
 \subsection{Siphons}
 
 Siphons are a static and classical property of Petri nets~\cite{peterson1981petri}.
@@ -169,7 +172,7 @@ First, we add a definition related to any set of places of a Petri net encoding 
 
 Intuitively, a siphon is a set of places that once empty remains so.
 If it is conflict-free then its dual corresponds to a partial-state of the model such that whatever update, the fixed values remain so (since the empty places remain empty).
-This is precisely the definition of a trap-space and maximality of the siphon is equivalent to as many fixed values as possible, hence minimality of the trap-space. Hereafter, we formally prove that a maximal conflict-free siphon is equivalent to a minimal trap space. 
+This is precisely the definition of a trap space and maximality of the siphon is equivalent to as many fixed values as possible, hence minimality of the trap space. Hereafter, we formally prove that a maximal conflict-free siphon is equivalent to a minimal trap space.
 
 \begin{definition}
 
@@ -197,7 +200,7 @@ This is precisely the definition of a trap-space and maximality of the siphon is
 
 \begin{theorem}
 \label{theo:min_ts_2_max_sp}
-  %\(S\) is a minimal trap-space of Boolean model \(\mathcal{M}\) if and only if the places corresponding to the fixed values in \(S\) (active or inactive) are a maximal conflict-free siphon of \((P, T, W)\), the Petri net encoding of \(S\).
+  %\(S\) is a minimal trap space of Boolean model \(\mathcal{M}\) if and only if the places corresponding to the fixed values in \(S\) (active or inactive) are a maximal conflict-free siphon of \((P, T, W)\), the Petri net encoding of \(S\).
 
   Let \(\mathcal{M}\) be a Boolean model and \(\mathcal{P}\) be its Petri net encoding. A subspace \(m\) is a minimal trap space of \(\mathcal{M}\) if and only if its mirror \(S\) is a maximal conflict-free siphon of \(\mathcal{P}\).
 
@@ -249,12 +252,13 @@ However, using a state-of-the-art tool like PyBoolNet~\cite{klarner2015computing
 And hence, it is not possible to extract any (complex) attractor at all.
 This is also true for the Alzheimer model also mentioned in that same article and originally from~\cite{ogishima2016alzpathway}, but actually not for the MAPK model for which the first trap spaces can be obtained in reasonable time.
 
-Using the method presented above, it is possible to convert the model to PNML in about 1s and to obtain the first 1000 minimal trap-spaces (including ones that contain more than one state) in a few milliseconds.
-Unfortunately since this was not available at the time, the analysis of the model remained very high-level and qualitative, instead of being able to use the rich information of computed minimal trap-spaces.
+Using the method presented above, it is possible to convert the model to PNML in about 1s and to obtain the first 1000 minimal trap spaces (including ones that contain more than one state) in a few milliseconds.
+Unfortunately since this was not available at the time, the analysis of the model remained very high-level and qualitative, instead of being able to use the rich information of computed minimal trap spaces.
 
 
 
 \section{Evaluation}
+\label{sec:eval}
 To assess the efficiency of the proposed method, we compared it with the state-of-the-art method PyBoolNet~\cite{klarner2017pyboolnet}.
 We used a set of real-world Boolean models lying in various scales collected from various bibliographic sources.
 These models are quite big (in size), complex (i.e., having high average in-degree, which is related to the number of prime-implicants) and most of them have never been fully analyzed.
@@ -262,9 +266,6 @@ We then applied the proposed method and PyBoolNet to computing minimal trap spac
 It is notable that unlike existing analysis shown in the literature, we did not fix specific values for source nodes (i.e., some node \(v\) such that \(f_v = v\)) in these models. 
 To solve the ASP problems, we used the same ASP solver CLINGO~\cite{DBLP:journals/aicom/GebserKKOSS11} and the same configuration as that used in PyBoolNet~\cite{klarner2015computing}.
 Specifically, we used the configuration \texttt{--dom-pref=32, --heu=domain, --dom-mod=7} (subset maximality). We ran all the benchmarks on a virtual machine whose environment is CPU: Intel(R) Core(TM) i7-3630QM 2.40GHz x 4, Memory: 8 GB, Ubuntu 18.04.2 64 bit. Finally, we set a time limit as one hour for each model.
-
-% \sylvain{we need a source for the models as much as possible, or to refer to some place where people can access them to reproduce the benchmark.}
-% \vangiang{Yes. I have added reference sources for the models but some models are still missing now.}
 
 \subsection{Benchmark vs.\ implicant-based methods}
 
@@ -324,12 +325,6 @@ The second observation is that ...
     
     \bottomrule
   \end{tabular}
-
-% \sylvain{I changed the ``look'' of the table using booktabs, see \url{https://nhigham.com/2019/11/19/better-latex-tables-with-booktabs/} for instance.}
-% \vangiang{Actually, booktabs looks better. I have never used it before. Thank you for sharing.}
-
-% \sylvain{what is $|F|$? what are t1 and t2? why are there no times for BoolNet?}
-% \vangiang{I need to open an excel file containing the experimental results but I am unable to access this file now.}
 
 \end{table}
 
