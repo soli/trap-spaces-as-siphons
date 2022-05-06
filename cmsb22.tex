@@ -149,7 +149,7 @@ Conversion is executed as follows:
 
 Note that transforming a Boolean model defined by its functions into its Petri net encoding roughly relies on obtaining conditions for the activation and inactivation of the states. In~\cite{chaouiya2004qualitative} this took the form of the whole truth table of the Boolean functions, but as shown in Appendix 1 of~\cite{chatain2014characterization} computing Disjunctive Normal Forms (DNF) of each Boolean function is enough.
 Though this might appear quite computationally intensive it is important to remark first that contrary to the prime-implicants case, there is no need to find \emph{minimal} DNFs.
-Second, in practice this transformation, here using BDDs in BioLQM, seems to behave quite well on even quite big models as will be shown in the Section~\ref{sec:eval} on evaluation.
+In practice this transformation, here using BDDs in BioLQM, seems to behave quite well on even quite big models as will be shown in the Section~\ref{sec:eval} on evaluation.
 
 \subsection{Siphons}
 
@@ -248,7 +248,7 @@ Naturally, a solution (simply an answer set) \(A\) of \(\mathcal{A}\) is equival
 
 \section{Motivating example}
 
-For a few years now the second author has been collaborating with biologists who have been building huge detailed and annotated maps and now wish to analyze the dynamics of the corresponding models.
+For a few years now the second author has been collaborating with biologists who have been building very large detailed and annotated maps and now wish to analyze the dynamics of the corresponding models.
 One of the main maps studied this way is a map representing knowledge about the Rheumatoïd Arthritis~\cite{singh2018computational}, which was the main motivation for the development of a tool to automatically transform it into an executable Boolean model~\cite{aghamiri2020automated}.
 In the supplementary material of the paper, an excerpt of the map, focused around the apoptosis (cell death) module is transformed into a model of \emph{reasonable} size, namely 181 Boolean variables (model \verb|F5_RA_apoptosis_executable_module.sbml| of supplementary material S3, and model ``RA-apoptosis'' of Section~\ref{sec:eval}).
 The study of such model, though, is a big hurdle.
@@ -256,16 +256,19 @@ Indeed, as stated in the article about another model of the same size:
 \emph{``The size of the CaSQ-inferred MAPK model (181 nodes) made the calculation of stable states a non-realistic endeavour.''}
 
 In practice, even if there is a huge number of attractors in such a model, obtaining a sample of those can reveal very useful to invalidate the model and lead to further refinement.
+In particular, it provides a feature-rich alternative to random simulations for this type of very non-deterministic model.
+Being able to detect that there are inconsistencies with published experimental data in some of the, say first 100 attractors, can lead to a much quicker Systems Biology loop: model, invalidate, refine.
+
 However, using a state-of-the-art tool like PyBoolNet~\cite{klarner2015computing} on that model actually fails at the phase of prime-implicant generation.
 And hence, it is not possible to extract any (complex) attractor at all.
-This is also true for the Alzheimer model also mentioned in that same article and originally from~\cite{ogishima2016alzpathway}, but actually not for the MAPK model for which the first trap spaces can be obtained in reasonable time.
+This is also true for the Alzheimer model also mentioned in that same article and originally from~\cite{ogishima2016alzpathway} (\verb|F4| file in the original supplementary material, and ``Alzheimer'' in Table~\ref{tab:result_real}), but actually not for the MAPK model for which the first trap spaces can be obtained in reasonable time.
 The current practice usually revolves then around fixing some inputs to plausible values and reducing the model accordingly.
 While this approach makes sense, it relies on potentially arbitrary decisions, and \emph{hides away} critical modelling choices that were actually not part of the original Boolean model.
 
 Using the method presented above, it is possible to convert the model to PNML in about 1s and to obtain the all 640 minimal trap spaces (including ones that contain more than one state) in a few milliseconds.
 Unfortunately since this was not available at the time, the analysis of the model remained very high-level and qualitative, instead of being able to use the rich information of computed minimal trap spaces.
 
-
+\sylvain{It seems that the RA\_apoptosis model is only 180 nodes, where does the n = 431 come from?}
 
 \section{Evaluation}
 \label{sec:eval}
