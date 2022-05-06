@@ -52,8 +52,6 @@
 \maketitle
 
 \begin{abstract}
-  % The abstract should briefly summarize the contents of the paper in
-  % 150--250 words.
 
   Boolean modelling of gene regulation but also post-transcri\-ptomic models has proven over the years that it can bring powerful analyses and corresponding insight to the many cases where precise biological data is not sufficiently available to build a detailed quantitative model.
   This is even more true for very large models where such data is frequently missing and led to a constant increase in size of logical models \emph{à la} Thomas.
@@ -154,7 +152,6 @@ We give a Boolean model \(\mathcal{M} = (V, F)\), where \(V = (x_1, x_2)\) and \
 \label{fig:stg_and_PN}
 \end{figure}
 
-\sylvain{I might add a small figure for the example later\dots}
 \vangiang{In this small figure, we can show the STG under the fully asynchronous update and the Petri net encoding of the Boolean model.}
 
 \subsection{Petri net encoding of Logical models}
@@ -312,8 +309,8 @@ While this approach makes sense, it relies on potentially arbitrary decisions, a
 Using the method presented above, it is possible to convert the model to PNML in about 1s and to obtain the all 640 minimal trap spaces (including ones that contain more than one state) in a few milliseconds.
 Unfortunately since this was not available at the time, the analysis of the model remained very high-level and qualitative, instead of being able to use the rich information of computed minimal trap spaces.
 
-\sylvain{It seems that the RA\_apoptosis model is only 180 nodes, where does the n = 431 come from?}
 \vangiang{n = 431 comes from Table 1 of~\cite{aghamiri2020automated}. I have checked this model. It has only 180 nodes. I will check others models come from~\cite{aghamiri2020automated}.}
+\sylvain{that's actually another model (called RA-map or something in the supplementary material), I think the other models should be ok.}
 
 \section{Evaluation}
 \label{sec:eval}
@@ -380,8 +377,7 @@ Specifically, we used the configuration \texttt{--dom-pref=32, --heu=domain, --d
 
 \sylvain{the \texttt{dom-pref} thing is deprecated since 2014 but still used in PyBoolNet, I think we might give the more modern version I used in the Python script, but we'll see}
 \vangiang{I also found that you did not use the \texttt{dom-pref} thing in the Python script. I think we should use the same configuration as that used in PyBoolNet.}
-
-% \subsection{Benchmark vs.\ implicant-based methods}
+\sylvain{as said above, this is deprecated, and has been since August 2014 \url{https://github.com/potassco/clasp/blob/master/CHANGES}, so I'd advise against using it, it might break any-time.}
 
 Table~\ref{tab:result_real} shows the experimental results on real-world models. Hereafter, we analyze in detail the results with respect to minimal trap space computation.
 
