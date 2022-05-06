@@ -43,12 +43,14 @@
   % The abstract should briefly summarize the contents of the paper in
   % 150--250 words.
 
-  Boolean modelling has proven over the years that it can bring powerful analyses and corresponding insight to the many cases where precise biological data is not sufficiently available to build a detailed quantitative model.
-  This is even more true for very big models where such data is frequently missing and led to a constant increase in size of logical models \emph{à la} Thomas.
-  The analysis of such models is mostly based on attractor computation, since those correspond roughly to \emph{phenotypes}, and the recent use of trap spaces made a real breakthrough in that domain allowing to consider medium-sized models that used to be out of reach.
-  However, with the continuing increase in model-size, the state of the art computation of minimal trap spaces based on prime-implicants shows its limits as there can be very many such implicants.
-  In this article we present an alternative method to compute minimal trap spaces, and hence complex attractors, that relies on a completely different technique, namely the enumeration of maximal siphons in the Petri net encoding of the original Logical model.
-  We then demonstrate its efficiency and compare it to implicant-based methods on a few relevant big Boolean models.
+  Boolean modelling of gene regulation but also post-transcri\-ptomic models has proven over the years that it can bring powerful analyses and corresponding insight to the many cases where precise biological data is not sufficiently available to build a detailed quantitative model.
+  This is even more true for very large models where such data is frequently missing and led to a constant increase in size of logical models \emph{à la} Thomas.
+  Besides simulation, the analysis of such models is mostly based on attractor computation, since those correspond roughly to observable biological \emph{phenotypes}. The recent use of trap spaces made a real breakthrough in that field allowing to consider medium-sized models that used to be out of reach.
+  However, with the continuing increase in model-size, the state of the art computation of minimal trap spaces based on \emph{prime-implicants} shows its limits as there can be a huge number of implicants.
+
+  In this article we present an alternative method to compute minimal trap spaces, and hence complex attractors, of a Boolean model. It replaces the need for prime-implicants by a completely different technique, namely the enumeration of maximal siphons in the Petri net encoding of the original model.
+  After some technical preliminaries, we expose the concrete need for such a method and detail its implementation using Answer Set Programming.
+  We then demonstrate its efficiency and compare it to implicant-based methods on some large Boolean models from the litterature.
 
 \keywords{Logical models \and Boolean models \and Trap spaces \and Attractor computation \and Petri nets \and Siphons}
 \end{abstract}
@@ -58,17 +60,22 @@
 From the observation that the transcriptional regulation behaved in a sigmoid step-like way, came the original idea to represent models of gene regulation as discrete event systems.
 Those Gene Regulation Networks (GRN) use thresholds or equivalently logical functions to represent the different regulations~\cite{glass1973logical,thomas1973boolean,thomas1990biological,thomas1991regulatory}.
 
-Boolean modelling has proven over the years that it can bring powerful analyses and corresponding insight to the many cases where precise biological data is not sufficiently available to build a detailed quantitative model~\cite{wang2012boolean}.
-This is even more true for very big models where such data is frequently missing and led to a constant increase in size of logical models \emph{à la} Thomas~\cite{aghamiri2020automated}.
-The analysis of such models is mostly based on attractor computation, since those correspond roughly to \emph{phenotypes}, and the recent use of trap spaces~\cite{klarner2015computing} made a real breakthrough in that domain allowing to consider medium-sized models that used to be out of reach.
-However, with the continuing increase in model-size, the state of the art computation of minimal trap spaces based on \emph{prime-implicants} shows its limits as there can be a huge number of such implicants.
+Boolean modelling has proven over the years that it can bring powerful analyses and corresponding insight to the many cases where precise biological data is not sufficiently available to build a detailed quantitative model~\cite{wang2012boolean}, even for modelling post-transcriptional mechanisms.
+This is even more true for very large models where such data is frequently missing and led to a constant increase in size of logical models \emph{à la} Thomas~\cite{aghamiri2020automated}.
+Besides simulation, the analysis of such models is mostly based on attractor computation, since those correspond roughly to observable biological \emph{phenotypes}. The recent use of trap spaces~\cite{klarner2015computing} made a real breakthrough in that field allowing to consider medium-sized models that used to be out of reach.
+However, with the continuing increase in model-size, the state of the art computation of minimal trap spaces based on \emph{prime-implicants} shows its limits as there can be a huge number of implicants.
 
 Petri nets were introduced in the 60’s as a simple formalism for describing and analyzing information processing systems that are characterized as being concurrent, asynchronous, non-deterministic and possibly distributed~\cite{peterson1981petri,Murata1989}.
 The use of Petri nets for representing biochemical reaction systems, by mapping molecular species to places and reactions to transitions, was introduced quite late in~\cite{reddy1993petri}, together with some Petri net concepts and tools for the analysis of metabolic networks.
 Siphons are such a concept but they have not been used a lot for the analysis of biochemical systems even if the practical cost of computing their minimal/maximal elements appear much more manageable than the theoretical complexity would indicate~\cite{nabli2016enumerating}.
 
-In this article we present an alternative method to compute minimal trap spaces, and hence complex attractors, that replaces the need for prime-implicants by a completely different technique, namely the enumeration of maximal siphons in the Petri net encoding of the original Logical model.
-We then demonstrate its efficiency and compare it to implicant-based methods on a few relevant big Boolean models.
+In this article we present an alternative method to compute minimal trap spaces, and hence complex attractors, of a Boolean model. It replaces the need for prime-implicants by a completely different technique, namely the enumeration of maximal siphons in the Petri net encoding of the original model.
+After some technical preliminaries, we expose the concrete need for such a method and detail its implementation using Answer Set Programming (ASP).
+We then demonstrate its efficiency and compare it to implicant-based methods on some large Boolean models from the litterature.
+
+All models used for evaluation and the implementation of the presented method are available at\dots.
+
+\sylvain{TBD}
 
 \section{Preliminaries}
 
@@ -104,6 +111,8 @@ We give a Boolean model \(\mathcal{M} = (V, F)\), where \(V = (x_1, x_2)\) and \
 \label{example:BN}
 \end{example}
 
+\sylvain{I might add a small figure for the example later\dots}
+
 \subsection{Petri net encoding of Logical models}
 \label{sec:encoding}
 
@@ -138,7 +147,7 @@ Conversion is executed as follows:
 
 \noindent{\small \verb|java -jar GINsim.jar -lqm <input.{sbml,bnet,zginml,...}> <output.pnml>|}
 
-Note that transforming a Boolean model defined by its functions into its Petri net encoding roughly relies on obtaining conditions for the activation/inactivation of the states. In~\cite{chaouiya2004qualitative} this took the form of the whole truth table of the Boolean functions, but as shown in Appendix 1 of~\cite{chatain2014characterization} computing Disjunctive Normal Forms (DNF) of each Boolean function is enough.
+Note that transforming a Boolean model defined by its functions into its Petri net encoding roughly relies on obtaining conditions for the activation and inactivation of the states. In~\cite{chaouiya2004qualitative} this took the form of the whole truth table of the Boolean functions, but as shown in Appendix 1 of~\cite{chatain2014characterization} computing Disjunctive Normal Forms (DNF) of each Boolean function is enough.
 Though this might appear quite computationally intensive it is important to remark first that contrary to the prime-implicants case, there is no need to find \emph{minimal} DNFs.
 Second, in practice this transformation, here using BDDs in BioLQM, seems to behave quite well on even quite big models as will be shown in the Section~\ref{sec:eval} on evaluation.
 
@@ -230,7 +239,8 @@ p_v \in S \Rightarrow \overline{p_v} \not \in S \wedge \overline{p_v} \in S \Rig
 Then, we translate the above characterization into the ASP \(\mathcal{A}\) as follows. We use atom \verb|p(v, 1)| (resp. \verb|p(v, 0)|) to denote place \(p_v\) (resp. \(\overline{p_v}\)), \(\forall v \in V\). For each pair \((p, t)\) where \(p \in P, t \in T, t \in pred(p)\), we translate the rule (\ref{eq:siphon}) into the ASP rule
 \[
 \verb|p(v_1, x_1); ... ; p(v_k, x_k) :- p(v, x).|
-\] where \verb|p(v, x)| is the atom representing place \(p\) and \(\{\verb|p(v_1, x_1)|, ..., \verb|p(v_k, x_k)|\}\) is the set of atoms representing places in \(pred(t)\). The rule (\ref{eq:conflict}) is translated into the ASP rule
+\]
+where \verb|p(v, x)| is the atom representing place \(p\) and \{\verb|p(v_1, x_1)|, \dots,\linebreak \verb|p(v_k, x_k)|\} is the set of atoms representing places in \(pred(t)\). The rule (\ref{eq:conflict}) is translated into the ASP rule
 \[\verb|:- p(v, 1), p(v, 0).|\]
 for each \(v \in V\). This rule guarantees that \verb|p(v, 1)| and \verb|p(v, 0)| never belong to the same answer set of \(\mathcal{A}\), representing the conflict-freeness. Note that the number of atoms of \(\mathcal{A}\) is only \(2n\), which is theoretically advanced to the ASP encoding shown in~\cite{klarner2015computing} where the number of atoms of the encoded ASP equals to the number of prime-implicants of the Boolean model.
 
@@ -242,7 +252,7 @@ Naturally, a solution (simply an answer set) \(A\) of \(\mathcal{A}\) is equival
 
 For a few years now the second author has been collaborating with biologists who have been building huge detailed and annotated maps and now wish to analyze the dynamics of the corresponding models.
 One of the main maps studied this way is a map representing knowledge about the Rheumatoïd Arthritis~\cite{singh2018computational}, which was the main motivation for the development of a tool to automatically transform it into an executable Boolean model~\cite{aghamiri2020automated}.
-In the supplementary material of the paper, an excerpt of the map, focused around the apoptosis (cell death) module is transformed into a model of \emph{reasonable} size, namely 181 Boolean variables (model \verb|F5_RA_apoptosis_executable_module.sbml|).
+In the supplementary material of the paper, an excerpt of the map, focused around the apoptosis (cell death) module is transformed into a model of \emph{reasonable} size, namely 181 Boolean variables (model \verb|F5_RA_apoptosis_executable_module.sbml| of supplementary material S3, and model ``RA-apoptosis'' of Section~\ref{sec:eval}).
 The study of such model, though, is a big hurdle.
 Indeed, as stated in the article about another model of the same size:
 \emph{``The size of the CaSQ-inferred MAPK model (181 nodes) made the calculation of stable states a non-realistic endeavour.''}
@@ -254,7 +264,7 @@ This is also true for the Alzheimer model also mentioned in that same article an
 The current practice usually revolves then around fixing some inputs to plausible values and reducing the model accordingly.
 While this approach makes sense, it relies on potentially arbitrary decisions, and \emph{hides away} critical modelling choices that were actually not part of the original Boolean model.
 
-Using the method presented above, it is possible to convert the model to PNML in about 1s and to obtain the first 1000 minimal trap spaces (including ones that contain more than one state) in a few milliseconds.
+Using the method presented above, it is possible to convert the model to PNML in about 1s and to obtain the all 640 minimal trap spaces (including ones that contain more than one state) in a few milliseconds.
 Unfortunately since this was not available at the time, the analysis of the model remained very high-level and qualitative, instead of being able to use the rich information of computed minimal trap spaces.
 
 
@@ -322,6 +332,7 @@ It is notable that unlike existing analysis shown in the literature, we did not 
 To solve the ASP problems, we used the same ASP solver CLINGO~\cite{DBLP:journals/aicom/GebserKKOSS11} and the same configuration as that used in PyBoolNet~\cite{klarner2015computing}.
 Specifically, we used the configuration \texttt{--dom-pref=32, --heu=domain, --dom-mod=7} (subset maximality). We ran all the benchmarks on a virtual machine whose environment is CPU: Intel(R) Core(TM) i7-3630QM 2.40GHz x 4, Memory: 8 GB, Ubuntu 18.04.2 64 bit. Finally, we set a time limit as one hour for each model.
 
+\sylvain{the \texttt{dom-pref} thing is deprecated since 2014 but still used in PyBoolNet, I think we might give the more modern version I used in the Python script, but we'll see}
 % \subsection{Benchmark vs.\ implicant-based methods}
 
 Table~\ref{tab:result_real} shows the experimental results on real-world models. Hereafter, we analyze in detail the results with respect to minimal trap space computation.
