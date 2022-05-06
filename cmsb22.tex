@@ -28,7 +28,7 @@
 
 \institute{
   LIS, Aix-Marseille Université, Marseille, France\\
-  \email{\{Trinh.Van-Giang, belaid.benhamou\}@lis-lab.fr}
+  \email{\{trinh.van-giang, belaid.benhamou\}@lis-lab.fr}
   \and
   Lifeware team, Inria Saclay center, Palaiseau, France\\
   \email{Sylvain.Soliman@inria.fr}
@@ -242,9 +242,10 @@ Then, we translate the above characterization into the ASP \(\mathcal{A}\) as fo
 \]
 where \verb|p(v, x)| is the atom representing place \(p\) and \{\verb|p(v_1, x_1)|, \dots,\linebreak \verb|p(v_k, x_k)|\} is the set of atoms representing places in \(pred(t)\). The rule (\ref{eq:conflict}) is translated into the ASP rule
 \[\verb|:- p(v, 1), p(v, 0).|\]
-for each \(v \in V\). This rule guarantees that \verb|p(v, 1)| and \verb|p(v, 0)| never belong to the same answer set of \(\mathcal{A}\), representing the conflict-freeness. Note that the number of atoms of \(\mathcal{A}\) is only \(2n\), which is theoretically advanced to the ASP encoding shown in~\cite{klarner2015computing} where the number of atoms of the encoded ASP equals to the number of prime-implicants of the Boolean model.
+for each \(v \in V\). This rule guarantees that \verb|p(v, 1)| and \verb|p(v, 0)| never belong to the same answer set of \(\mathcal{A}\), representing the conflict-freeness. Note that the number of atoms of \(\mathcal{A}\) is only \(2n\), which is more theoretically advanced than the ASP encoding shown in~\cite{klarner2015computing} where the number of atoms of the encoded ASP equals to the number of prime-implicants of the Boolean model and that number might be exponential in \(n\).
 
-\sylvain{What do you mean by \emph{advanced}? It is less since there might be an exponential number of prime-implicants?}
+% \sylvain{What do you mean by \emph{advanced}? It is less since there might be an exponential number of prime-implicants?}
+% \vangiang{Yes. Since there might be an exponential number of prime-implicants, our new ASP encoding is more advanced than the ASP encoding of PyBoolNet.}
 
 Naturally, a solution (simply an answer set) \(A\) of \(\mathcal{A}\) is equivalent to a conflict-free siphon \(S\) of \(\mathcal{P}\), thus a minimal trap space \(m\) of \(\mathcal{M}\). The conversion from \(A\) to \(m\) is straightforward. If \(\verb|p(v, 1)| \in A\) then \(v \in D_m\) and \(m(v) = 0\). Conversely, if \(\verb|p(v, 0)| \in A\) then \(v \in D_m\) and \(m(v) = 1\). Otherwise, \(v \not \in D_m\). Computing multiple answer sets is built into ASP solvers and the solving collection POTASSCO~\cite{DBLP:journals/aicom/GebserKKOSS11} also features the option to find set-inclusion maximal answer sets with respect to the predicates that are true. By using this built-in option, we can compute all the answer sets of \(\mathcal{A}\) in one execution.
 
@@ -344,14 +345,14 @@ The second observation is that ...
 
 \section{Conclusion}
 
-In this article we proposed a new method for the computation of minimal trap-spaces of Boolean models, based on maximal siphons.
-This method is evaluated on big models from the litterature and shows that it can scale up much better than the state-of-the-art prime-implicants based techniques.
+In this article we proposed a new method for the computation of minimal trap-spaces of Boolean models, based on a new concept called maximal conflict-free siphons.
+This method is evaluated on big models from the literature and shows that it can scale up much better than the state-of-the-art prime-implicants based techniques.
 We believe that this opens up the way to a much better analysis of large Boolean models, which is needed with the advent of automatic model-generation pipelines~\cite{ostaszewski2021covid19}.
 
 Though we benchmarked this new approach against the state-of-the-art tool PyBoolNet, there are many more evaluations that we plan to do in the future.
 First, the BioLQM platform that we are using is providing another implicant-based method using BDDs in \url{http://colomoto.org/biolqm/doc/tools-trapspace.html} and though we expect it to behave mostly like PyBoolNet, that remains to be checked.
 Note that this also raises the question of replacing altogether the BioLQM preprocessing step we use to obtain the Petri net encoding, since its use of BDDs might not be optimal for that step.
-The tradeoff between a small Petri net, and hence small ASP, and the time it takes to compute it has to be evaluated in depth.
+The trade-off between a small Petri net, and hence small ASP, and the time it takes to compute it has to be evaluated in depth.
 
 Moreover, there are other methods for the maximal siphon computation, like SAT/MaxSAT approaches~\cite{nabli2016enumerating} that could replace our ASP program if they outperform it.
 
