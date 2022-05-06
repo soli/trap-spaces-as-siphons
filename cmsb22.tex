@@ -264,24 +264,8 @@ Unfortunately since this was not available at the time, the analysis of the mode
 
 \section{Evaluation}
 \label{sec:eval}
-To assess the efficiency of the proposed method, we compared it with the state-of-the-art method PyBoolNet~\cite{klarner2017pyboolnet}.
-We used a set of real-world Boolean models lying in various scales collected from various bibliographic sources.
-These models are quite big (in size), complex (i.e., having high average in-degree, which is related to the number of prime-implicants) and most of them have never been fully analyzed.
-We then applied the proposed method and PyBoolNet to computing minimal trap spaces of these real-world models.
-It is notable that unlike existing analysis shown in the literature, we did not fix specific values for source nodes (i.e., some node \(v\) such that \(f_v = v\)) in these models. 
-To solve the ASP problems, we used the same ASP solver CLINGO~\cite{DBLP:journals/aicom/GebserKKOSS11} and the same configuration as that used in PyBoolNet~\cite{klarner2015computing}.
-Specifically, we used the configuration \texttt{--dom-pref=32, --heu=domain, --dom-mod=7} (subset maximality). We ran all the benchmarks on a virtual machine whose environment is CPU: Intel(R) Core(TM) i7-3630QM 2.40GHz x 4, Memory: 8 GB, Ubuntu 18.04.2 64 bit. Finally, we set a time limit as one hour for each model.
 
-% \subsection{Benchmark vs.\ implicant-based methods}
-
-Table~\ref{tab:result_real} shows the experimental results on real-world models. Hereafter, we analyze in detail the results with respect to minimal trap space computation.
-
-The first observation is that the proposed method much outperforms PyBoolNet in computational time. More specifically, ...
-\vangiang{In the journal version, we can measure the memory consumption of the two methods}
-
-The second observation is that ...
-
-\begin{table}[!ht]
+\begin{table}[!htb]
   \caption{Timing comparisons between the proposed method and PyBoolNet on the selected real-world models.
     Columns "\(n\)", "\(e\)", and "\(s\)" denote the numbers of nodes, interactions, and source nodes of each model, respectively. For each method, Column "\(|M|\)" denotes the number of minimal trap spaces and Column "time (s)" denotes the computation time in seconds.
     "DNF" means that the method did not finish the computation within one hour.}
@@ -333,11 +317,28 @@ The second observation is that ...
 
 \end{table}
 
+To assess the efficiency of the proposed method, we compared it with the state-of-the-art method PyBoolNet~\cite{klarner2017pyboolnet}.
+We used a set of real-world Boolean models lying in various scales collected from various bibliographic sources.
+These models are quite big (in size), complex (i.e., having high average in-degree, which is related to the number of prime-implicants) and most of them have never been fully analyzed.
+We then applied the proposed method and PyBoolNet to computing minimal trap spaces of these real-world models.
+It is notable that unlike existing analysis shown in the literature, we did not fix specific values for source nodes (i.e., some node \(v\) such that \(f_v = v\)) in these models.
+To solve the ASP problems, we used the same ASP solver CLINGO~\cite{DBLP:journals/aicom/GebserKKOSS11} and the same configuration as that used in PyBoolNet~\cite{klarner2015computing}.
+Specifically, we used the configuration \texttt{--dom-pref=32, --heu=domain, --dom-mod=7} (subset maximality). We ran all the benchmarks on a virtual machine whose environment is CPU: Intel(R) Core(TM) i7-3630QM 2.40GHz x 4, Memory: 8 GB, Ubuntu 18.04.2 64 bit. Finally, we set a time limit as one hour for each model.
+
+% \subsection{Benchmark vs.\ implicant-based methods}
+
+Table~\ref{tab:result_real} shows the experimental results on real-world models. Hereafter, we analyze in detail the results with respect to minimal trap space computation.
+
+The first observation is that the proposed method much outperforms PyBoolNet in computational time. More specifically, ...
+\vangiang{In the journal version, we can measure the memory consumption of the two methods}
+
+The second observation is that ...
+
 \section{Conclusion}
 
 In this article we proposed a new method for the computation of minimal trap-spaces of Boolean models, based on maximal siphons.
 This method is evaluated on big models from the litterature and shows that it can scale up much better than the state-of-the-art prime-implicants based techniques.
-We believe that this opens up the way to a much better analysis of large Boolean models, which is needed with the advent of automatic model-generation pipelines~\cite{ONMKPO21molecular}.
+We believe that this opens up the way to a much better analysis of large Boolean models, which is needed with the advent of automatic model-generation pipelines~\cite{ostaszewski2021covid19}.
 
 Though we benchmarked this new approach against the state-of-the-art tool PyBoolNet, there are many more evaluations that we plan to do in the future.
 First, the BioLQM platform that we are using is providing another implicant-based method using BDDs in \url{http://colomoto.org/biolqm/doc/tools-trapspace.html} and though we expect it to behave mostly like PyBoolNet, that remains to be checked.
