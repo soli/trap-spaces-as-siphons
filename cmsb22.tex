@@ -73,8 +73,8 @@ We then demonstrate its efficiency and compare it to implicant-based methods on 
 \section{Preliminaries}
 
 We will briefly recall here some preliminaries on Boolean models related to trap spaces and Petri nets.
-To stay in line with the usual considerations we will always assume purely Boolean (and not multi-valued) logical models, and an asynchronous update.
-In the case of multi-level models, an encoding into a Boolean model is always possible (and once again available through BioLQM).
+To stay in line with the usual considerations we will always assume purely Boolean logical models, and an asynchronous update.
+In the case of multi-level models, an encoding into a Boolean model is always possible.
 As far as different update strategies are concerned, we think that even if they might require small technical adaptations, they would not bring much change to the main results of this article.
 \vangiang{Minimal trap spaces are a static property of a BN regardless of its update semantics. All the results presented in this paper still valid for any update semantics. Hence, we do not need to restrict to an asynchronous update.}
 
@@ -88,7 +88,7 @@ Given a Boolean model \(\mathcal{M} = (V, F)\) with variables \(V=(v_{1},\dots,v
 
 %%% Subspace %%%
 A \emph{subspace} \(m\) of \(\mathcal{S}_{\mathcal{M}}\) is characterized by its fixed nodes (denoted by \(D_m\)) and free nodes.
-This subspace can be specified by an assignment \(D_m \mapsto \bbbb\), also denoted by \(m\) by abuse of notation, and where \(D_m \subseteq V\) and \(m(u)\) is the value of node \(u \in D_m\).
+This subspace can be specified by an assignment \(D_m \mapsto \bbbb\) where \(D_m \subseteq V\) and \(m(u)\) is the value of node \(u \in D_m\).
 The remaining nodes of \(\mathcal{M}\), \(V \setminus D_m\), are said to be \emph{free}, i.e., they can receive any Boolean value.
 We write subspaces like states but use in addition the symbol \(\star\) to indicate that a node is free.
 A subspace \(m\) thus corresponds to the set of states \(\mathcal{S}_{\mathcal{M}}[m] := \{s \in \mathcal{S}_{\mathcal{M}}\;|\;\forall x_i \in D_m : s_i = m(x_i)\}\).
@@ -141,27 +141,28 @@ Conversion is executed as follows:
 
 \noindent{\small \verb|java -jar GINsim.jar -lqm <input.{sbml,bnet,zginml,...}> <output.pnml>|}
 
-Note that transforming a Boolean model defined by its functions into its Petri net encoding roughly relies on obtaining the Disjunctive Normal Forms (DNF) of each Boolean function.\vangiang{I think it is better to put a reference here for this argument.}
-Though this might be quite computationally intensive it is important to remark first that contrary to the Prime implicants case, there is no need to find \emph{minimal} DNF.
 Second, in practice this transformation seems to behave quite well on even quite big models as will be shown in the Section~\ref{sec:eval} on evaluation.
 Currently, relying on BioLQM implies going through a BDD encoding of the formulae, which might not be optimal.
 Hence we are still considering a direct encoding that would skip the BDD construction.
+
+\vangiang{I think it is better to put a reference here for this argument.}
 
 \subsection{Siphons}
 
 Siphons are a static and classical property of Petri nets~\cite{peterson1981petri}.
 Note however that the use of siphons for the analysis of biological models, though it is not new, has been mostly relevant to the ODE-based continuous semantics of Chemical Reaction Networks~\cite{angeli2007petri,angeli2011persistence,degrand2020graphical}.
 
-We recall here the basic definition establishing that to produce something in a siphon you must consume something from the siphon:
+We recall here the basic definition establishing that to produce something in a siphon you must consume something from the siphon.
+This corresponds to the idea that a siphon is a set of places that once empty remains empty.
 
 \begin{definition}
 
   A \emph{siphon} of a Petri net \((P, T, W)\) is a set of places \(S\) such that:
-  \[\forall t\in T, S\cap succ(t)\not =\emptyset\Rightarrow S\cap pred(t)\not =\emptyset.\] \(\emptyset\) is trivially a siphon.
+  \[\forall t\in T, S\cap succ(t)\not =\emptyset\Rightarrow S\cap pred(t)\not =\emptyset.\]
 
 \end{definition}
 
-Intuitively a siphon is a set of places that once empty remains empty.
+Note that \(\emptyset\) is trivially a siphon.
 
 \section{Minimal trap spaces as maximal conflict-free siphons}
 First, we add a definition related to any set of places of a Petri net encoding a Logical model, and notably a siphon of such a net.
@@ -218,10 +219,10 @@ This is precisely the definition of a trap space and maximality of the siphon is
   
 \end{proof}
 
-By Theorem~\ref{theo:min_ts_2_max_sp}, we can reduce the problem of computing all minimal trap spaces of a Boolean model to the problem of computing all maximal conflict-free siphons of its Petri net encoding. It is noted that there are no existing methods specifically designed for computing maximal conflict-free siphons (even maximal siphons) of a Petri net. The reason is that researchers mainly focus on minimal siphons~\cite{DBLP:journals/isci/LiuB16}. Hence, we here propose a new method based on Answer Set Programming (ASP)~\cite{DBLP:journals/aicom/GebserKKOSS11} for computing maximal conflict-free siphons of a Petri net. The details of the proposed method shall be shown in the next section.
+By Theorem~\ref{theo:min_ts_2_max_sp}, we can reduce the problem of computing all minimal trap spaces of a Boolean model to the problem of computing all maximal conflict-free siphons of its Petri net encoding. It is noted that there are no existing methods specifically designed for computing maximal conflict-free siphons (even maximal siphons) of a Petri net. The reason is that researchers mainly focus on minimal siphons~\cite{DBLP:journals/isci/LiuB16}. Hence, we here propose a new method based on Answer Set Programming (ASP)~\cite{DBLP:journals/aicom/GebserKKOSS11} for computing maximal conflict-free siphons of a Petri net. The details of the proposed method shall be given in the next section.
 
 \section{Answer set programming-based method}
-First, we show the characterization of all conflict-free siphons of the encoded Petri net \(\mathcal{P} = (P, T, W)\). Suppose that \(S\) is a generic siphon of \(\mathcal{P}\). If a place \(p\) should belong to \(S\), then by definition all the transitions in \(pred(p)\) must belong to \(succ(S)\). Note that \(succ(S) = \bigcup_{p \in S}succ(p)\). A transition \(t\) belongs to \(post(S)\) if and only if there is at least one place \(p'\) in \(S\) such that \(p' \in pred(t)\). Hence, for each transition \(t \in pred(p)\), we can state that 
+First, we show the characterization of all conflict-free siphons of the encoded Petri net \(\mathcal{P} = (P, T, W)\). Suppose that \(S\) is a generic siphon of \(\mathcal{P}\). If a place \(p\) should belong to \(S\), then by definition all the transitions in \(pred(p)\) must belong to \(succ(S)\). Note that \(succ(S) = \bigcup_{p \in S}succ(p)\). A transition \(t\) belongs to \(succ(S)\) if and only if there is at least one place \(p'\) in \(S\) such that \(p' \in pred(t)\). Hence, for each transition \(t \in pred(p)\), we can state that
 \begin{equation}
 \label{eq:siphon}
 p \in S \Rightarrow \bigvee_{p' \in pred(t)}p' \in S.
@@ -238,6 +239,8 @@ Then, we translate the above characterization into the ASP \(\mathcal{A}\) as fo
 \[\verb|:- p(v, 1), p(v, 0).|\]
 for each \(v \in V\). This rule guarantees that \verb|p(v, 1)| and \verb|p(v, 0)| never belong to the same answer set of \(\mathcal{A}\), representing the conflict-freeness. Note that the number of atoms of \(\mathcal{A}\) is only \(2n\), which is theoretically advanced to the ASP encoding shown in~\cite{klarner2015computing} where the number of atoms of the encoded ASP equals to the number of prime-implicants of the Boolean model.
 
+\sylvain{What do you mean by \emph{advanced}? It is less since there might be an exponential number of prime implicants?}
+
 Naturally, a solution (simply an answer set) \(A\) of \(\mathcal{A}\) is equivalent to a conflict-free siphon \(S\) of \(\mathcal{P}\), thus a minimal trap space \(m\) of \(\mathcal{M}\). The conversion from \(A\) to \(m\) is straightforward. If \(\verb|p(v, 1)| \in A\) then \(v \in D_m\) and \(m(v) = 0\). Conversely, if \(\verb|p(v, 0)| \in A\) then \(v \in D_m\) and \(m(v) = 1\). Otherwise, \(v \not \in D_m\). Computing multiple answer sets is built into ASP solvers and the solving collection POTASSCO~\cite{DBLP:journals/aicom/GebserKKOSS11} also features the option to find set-inclusion maximal answer sets with respect to the predicates that are true. By using this built-in option, we can compute all the answer sets of \(\mathcal{A}\) in one execution.
 
 \section{Motivating example}
@@ -249,10 +252,12 @@ The study of such model, though, is a big hurdle.
 Indeed, as stated in the article about another model of the same size:
 \emph{``The size of the CaSQ-inferred MAPK model (181 nodes) made the calculation of stable states a non-realistic endeavour.''}
 
-In practice, even if there are many attractors in such a model, to validate it having only a sample of those was deemed useful.
+In practice, even if there is a huge number of attractors in such a model, obtaining a sample of those can reveal very useful to invalidate the model and lead to further refinement.
 However, using a state-of-the-art tool like PyBoolNet~\cite{klarner2015computing} on that model actually fails at the phase of prime-implicant generation.
 And hence, it is not possible to extract any (complex) attractor at all.
 This is also true for the Alzheimer model also mentioned in that same article and originally from~\cite{ogishima2016alzpathway}, but actually not for the MAPK model for which the first trap spaces can be obtained in reasonable time.
+The current practice usually revolves then around fixing some inputs to plausible values and reducing the model accordingly.
+While this approach makes sense, it relies on potentially arbitrary decisions, and \emph{hides away} critical modelling choices that were actually not part of the original Boolean model.
 
 Using the method presented above, it is possible to convert the model to PNML in about 1s and to obtain the first 1000 minimal trap spaces (including ones that contain more than one state) in a few milliseconds.
 Unfortunately since this was not available at the time, the analysis of the model remained very high-level and qualitative, instead of being able to use the rich information of computed minimal trap spaces.
@@ -261,24 +266,8 @@ Unfortunately since this was not available at the time, the analysis of the mode
 
 \section{Evaluation}
 \label{sec:eval}
-To assess the efficiency of the proposed method, we compared it with the state-of-the-art method PyBoolNet~\cite{klarner2017pyboolnet}.
-We used a set of real-world Boolean models lying in various scales collected from various bibliographic sources.
-These models are quite big (in size), complex (i.e., having high average in-degree, which is related to the number of prime-implicants) and most of them have never been fully analyzed.
-We then applied the proposed method and PyBoolNet to computing minimal trap spaces of these real-world models.
-It is notable that unlike existing analysis shown in the literature, we did not fix specific values for source nodes (i.e., some node \(v\) such that \(f_v = v\)) in these models. 
-To solve the ASP problems, we used the same ASP solver CLINGO~\cite{DBLP:journals/aicom/GebserKKOSS11} and the same configuration as that used in PyBoolNet~\cite{klarner2015computing}.
-Specifically, we used the configuration \texttt{--dom-pref=32, --heu=domain, --dom-mod=7} (subset maximality). We ran all the benchmarks on a virtual machine whose environment is CPU: Intel(R) Core(TM) i7-3630QM 2.40GHz x 4, Memory: 8 GB, Ubuntu 18.04.2 64 bit. Finally, we set a time limit as one hour for each model.
 
-\subsection{Benchmark vs.\ implicant-based methods}
-
-Table~\ref{tab:result_real} shows the experimental results on real-world models. Hereafter, we analyze in detail the results with respect to minimal trap space computation.
-
-The first observation is that the proposed method much outperforms PyBoolNet in computational time. More specifically, ...
-\vangiang{In the journal version, we can measure the memory consumption of the two methods}
-
-The second observation is that ...
-
-\begin{table}[!ht]
+\begin{table}[!htb]
   \caption{Timing comparisons between the proposed method and PyBoolNet on the selected real-world models.
     Columns "\(n\)", "\(e\)", and "\(s\)" denote the numbers of nodes, interactions, and source nodes of each model, respectively. For each method, Column "\(|M|\)" denotes the number of minimal trap spaces and Column "time (s)" denotes the computation time in seconds.
     "DNF" means that the method did not finish the computation within one hour.}
@@ -330,33 +319,41 @@ The second observation is that ...
 
 \end{table}
 
+To assess the efficiency of the proposed method, we compared it with the state-of-the-art method PyBoolNet~\cite{klarner2017pyboolnet}.
+We used a set of real-world Boolean models lying in various scales collected from various bibliographic sources.
+These models are quite big (in size), complex (i.e., having high average in-degree, which is related to the number of prime-implicants) and most of them have never been fully analyzed.
+We then applied the proposed method and PyBoolNet to computing minimal trap spaces of these real-world models.
+It is notable that unlike existing analysis shown in the literature, we did not fix specific values for source nodes (i.e., some node \(v\) such that \(f_v = v\)) in these models.
+To solve the ASP problems, we used the same ASP solver CLINGO~\cite{DBLP:journals/aicom/GebserKKOSS11} and the same configuration as that used in PyBoolNet~\cite{klarner2015computing}.
+Specifically, we used the configuration \texttt{--dom-pref=32, --heu=domain, --dom-mod=7} (subset maximality). We ran all the benchmarks on a virtual machine whose environment is CPU: Intel(R) Core(TM) i7-3630QM 2.40GHz x 4, Memory: 8 GB, Ubuntu 18.04.2 64 bit. Finally, we set a time limit as one hour for each model.
+
+% \subsection{Benchmark vs.\ implicant-based methods}
+
+Table~\ref{tab:result_real} shows the experimental results on real-world models. Hereafter, we analyze in detail the results with respect to minimal trap space computation.
+
+The first observation is that the proposed method much outperforms PyBoolNet in computational time. More specifically, ...
+\vangiang{In the journal version, we can measure the memory consumption of the two methods}
+
+The second observation is that ...
+
 \section{Conclusion}
 
-Future work: comparison with SAT/MaxSAT based approaches~\cite{nabli2016enumerating}
+In this article we proposed a new method for the computation of minimal trap-spaces of Boolean models, based on maximal siphons.
+This method is evaluated on big models from the litterature and shows that it can scale up much better than the state-of-the-art prime-implicants based techniques.
+We believe that this opens up the way to a much better analysis of large Boolean models, which is needed with the advent of automatic model-generation pipelines~\cite{ostaszewski2021covid19}.
 
-Also to a BDD-based approach using BioLQM is proposed at \url{http://colomoto.org/biolqm/doc/tools-trapspace.html} but because of the BDD conversion, some models are not even loaded.
-This is also an issue for using BioLQM as a translator/preprocessor and since we do not use BDDs we might rely on writing our own parser for SBML-Qual and such formats.
+Though we benchmarked this new approach against the state-of-the-art tool PyBoolNet, there are many more evaluations that we plan to do in the future.
+First, the BioLQM platform that we are using is providing another implicant-based method using BDDs in \url{http://colomoto.org/biolqm/doc/tools-trapspace.html} and though we expect it to behave mostly like PyBoolNet, that remains to be checked.
+Note that this also raises the question of replacing altogether the BioLQM preprocessing step we use to obtain the Petri net encoding, since its use of BDDs might not be optimal for that step.
 
-\subsubsection{Acknowledgments}
-Coffee is good, you should drink some!
+Moreover, there are other methods for the maximal siphon computation, like SAT/MaxSAT approaches~\cite{nabli2016enumerating} that could replace our ASP program if they outperform it.
+
+However, the current method already appears to perform very well even on the biggest models we have considered.
+We thus plan to propose its inclusion in the CoLoMoTo effort to make it readily available to modellers.
+
+% \subsubsection{Acknowledgments}
 
 \bibliographystyle{splncs04}
 \bibliography{cmsb22.bib}
 
 \end{document}
-
-% \noindent Displayed equations are centered and set on a separate
-% line.
-% \begin{equation}
-% x + y = z
-% \end{equation}
-% Please try to avoid rasterized images for line-art diagrams and
-% schemas. Whenever possible, use vector graphics instead (see
-% Fig.~\ref{fig1}).
-
-% \begin{figure}
-% % \includegraphics[width=\textwidth]{fig1.eps}
-% \caption{A figure caption is always placed below the illustration.
-% Please note that short captions are centered, while long ones are
-% justified by the macro package automatically.} \label{fig1}
-% \end{figure}
