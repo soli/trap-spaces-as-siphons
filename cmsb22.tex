@@ -17,6 +17,7 @@
 % \title{Minimal trap spaces of Logical models are maximal siphons of their Petri net encoding}
 % \titlerunning{Minimal trap spaces as maximal siphons}
 \title{Scaling-up attractor computation for Boolean models}
+\vangiang{I like the first title :). Since we only conduct experiments on real-world Boolean models of not too large size, it seems to make less sense to use "scaling-up" (this should be for the journal version).}
 
 \author{Van-Giang Trinh\inst{1}\orcidID{0000-0001-6581-998X} \and \\
   Sylvain Soliman\inst{2}\orcidID{0000-0001-5525-7418} \and \\
@@ -75,6 +76,7 @@ We will briefly recall here some preliminaries on Boolean models related to trap
 To stay in line with the usual considerations we will always assume purely Boolean logical models, and an asynchronous update.
 In the case of multi-level models, an encoding into a Boolean model is always possible.
 As far as different update strategies are concerned, we think that even if they might require small technical adaptations, they would not bring much change to the main results of this article.
+\vangiang{Minimal trap spaces are a static property of a BN regardless of its update semantics. All the results presented in this paper still valid for any update semantics. Hence, we do not need to restrict to an asynchronous update.}
 
 \subsection{Traps spaces}
 
@@ -139,11 +141,11 @@ Conversion is executed as follows:
 
 \noindent{\small \verb|java -jar GINsim.jar -lqm <input.{sbml,bnet,zginml,...}> <output.pnml>|}
 
-Note that transforming a Boolean model defined by its functions into its Petri net encoding roughly relies on obtaining the Disjunctive Normal Forms (DNF) of each Boolean function.
-Though this might be quite computationally intensive it is important to remark first that contrary to the prime-implicants case, there is no need to find \emph{minimal} DNFs.
 Second, in practice this transformation seems to behave quite well on even quite big models as will be shown in the Section~\ref{sec:eval} on evaluation.
 Currently, relying on BioLQM implies going through a BDD encoding of the formulae, which might not be optimal.
 Hence we are still considering a direct encoding that would skip the BDD construction.
+
+\vangiang{I think it is better to put a reference here for this argument.}
 
 \subsection{Siphons}
 
