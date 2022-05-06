@@ -5,6 +5,18 @@
 \usepackage{xcolor}
 \usepackage{booktabs}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Drawing
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{tikz}
+\usepackage{amsfonts}
+
+\usetikzlibrary{positioning,automata} % drawing automa
+\usetikzlibrary{calc,fit,tikzmark}
+
+% for captions in figures
+\usepackage{subcaption}
+
 \renewcommand\UrlFont{\color{blue}\rmfamily}
 
 \newcommand{\vangiang}[1]{\textcolor{magenta}{#1}}
@@ -111,7 +123,39 @@ We give a Boolean model \(\mathcal{M} = (V, F)\), where \(V = (x_1, x_2)\) and \
 \label{example:BN}
 \end{example}
 
+\begin{figure}[!ht]
+\centering
+\begin{subfigure}[b]{0.5\textwidth}
+\centering
+\begin{tikzpicture}[node distance=1cm and 1cm, every node/.style={scale=1.0}]
+   \node[circle,draw] (0) [] {00};
+   \node[circle,draw] (1) [above=of 0] {01};
+   \node[circle,draw] (2) [right=of 0] {10};
+   \node[circle,draw] (3) [above=of 2] {11};
+   
+   \draw[->] (0) edge [bend left] (1);
+   \draw[->] (0) edge [bend right] (2);
+   
+   \draw[->] (1) edge [bend left] (0);
+   \draw[->] (1) edge [loop right] (1);
+   
+   \draw[->] (2) edge [bend right] (0);
+   \draw[->] (2) edge [loop right] (2);
+   
+   \draw[->] (3) edge [loop right] (3);
+\end{tikzpicture}
+\caption{}
+\end{subfigure}%
+\begin{subfigure}[b]{0.5\textwidth}
+\centering
+\caption{}
+\end{subfigure}%
+\caption{(a) STG under the fully asynchronous update of the Boolean model. (b) Petri net encoding of the Boolean model.}
+\label{fig:stg_and_PN}
+\end{figure}
+
 \sylvain{I might add a small figure for the example later\dots}
+\vangiang{In this small figure, we can show the STG under the fully asynchronous update and the Petri net encoding of the Boolean model.}
 
 \subsection{Petri net encoding of Logical models}
 \label{sec:encoding}
@@ -269,6 +313,7 @@ Using the method presented above, it is possible to convert the model to PNML in
 Unfortunately since this was not available at the time, the analysis of the model remained very high-level and qualitative, instead of being able to use the rich information of computed minimal trap spaces.
 
 \sylvain{It seems that the RA\_apoptosis model is only 180 nodes, where does the n = 431 come from?}
+\vangiang{n = 431 comes from Table 1 of~\cite{aghamiri2020automated}. I have checked this model. It has only 180 nodes. I will check others models come from~\cite{aghamiri2020automated}.}
 
 \section{Evaluation}
 \label{sec:eval}
@@ -334,6 +379,8 @@ To solve the ASP problems, we used the same ASP solver CLINGO~\cite{DBLP:journal
 Specifically, we used the configuration \texttt{--dom-pref=32, --heu=domain, --dom-mod=7} (subset maximality). We ran all the benchmarks on a virtual machine whose environment is CPU: Intel(R) Core(TM) i7-3630QM 2.40GHz x 4, Memory: 8 GB, Ubuntu 18.04.2 64 bit. Finally, we set a time limit as one hour for each model.
 
 \sylvain{the \texttt{dom-pref} thing is deprecated since 2014 but still used in PyBoolNet, I think we might give the more modern version I used in the Python script, but we'll see}
+\vangiang{I also found that you did not use the \texttt{dom-pref} thing in the Python script. I think we should use the same configuration as that used in PyBoolNet.}
+
 % \subsection{Benchmark vs.\ implicant-based methods}
 
 Table~\ref{tab:result_real} shows the experimental results on real-world models. Hereafter, we analyze in detail the results with respect to minimal trap space computation.
