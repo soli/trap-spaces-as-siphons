@@ -311,6 +311,7 @@ Unfortunately since this was not available at the time, the analysis of the mode
 
 \vangiang{n = 431 comes from Table 1 of~\cite{aghamiri2020automated}. I have checked this model. It has only 180 nodes. I will check others models come from~\cite{aghamiri2020automated}.}
 \sylvain{that's actually another model (called RA-map or something in the supplementary material), I think the other models should be ok.}
+\vangiang{Oh. Thank you for confirming that.}
 
 \section{Evaluation}
 \label{sec:eval}
@@ -345,6 +346,7 @@ Unfortunately since this was not available at the time, the analysis of the mode
     kynurenine-pathway~\cite{ostaszewski2021covid19} & 150 & 304 & 72 & - & - & 512 & 3.79 \\
     virus-replication-cycle~\cite{ostaszewski2021covid19} & 154 & 268 & 25 & - & - & 1024 & 0.67 \\
     immune-system~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 164 & 506 & 13 & DNF & DNF & 36852 & 14.19 \\
+    RA-apoptosis~\cite{aghamiri2020automated} & 181 & - & 59 & DNF & DNF & 640 & 0.70 \\
     er-stress~\cite{ostaszewski2021covid19} & 182 & 266 & 75 & - & - & 25600 & 4.54 \\
     cascade-3~\cite{Tsirvouli2020} & 183 & 603 & 0 & - & - & 1 & 1.65 \\
     CHO-2016~\cite{lee2019signal} & 200 & 696 & 13 & - & - & 1024 & 2.10 \\ \midrule
@@ -352,8 +354,7 @@ Unfortunately since this was not available at the time, the analysis of the mode
     T-cell-check-point~\cite{hernandez2020computational} & 218 & - & 34 & - & - & 15360 & 4.33 \\
     ErbB-receptor-signaling~\cite{helikar2013comprehensive} & 247 & 1100 & 22 & DNF & DNF & DNF & DNF \\
     signaling-macrophage-activation~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 321 & 533 & 19 & - & - & 512 & 1.58 \\
-    cholocystokinin~\cite{aghamiri2020automated} & 404 & - & 95 & - & - & 705024 & 1080.35 \\
-    RA-apoptosis~\cite{aghamiri2020automated} & 431 & - & 59 & DNF & DNF & 640 & 0.70 \\ \midrule
+    cholocystokinin~\cite{aghamiri2020automated} & 404 & - & 95 & - & - & 705024 & 1080.35 \\ \midrule
     
     Alzheimer~\cite{aghamiri2020automated} & 1169 & - & 469 & - & - & 49152 & 66.17 \\
     KEGG-network~\cite{DBLP:journals/bmcsb/Kwon16} & 1659 & - & 522 & DNF & DNF & 1024 & 1511.07 \\
@@ -378,6 +379,7 @@ Specifically, we used the configuration \texttt{--dom-pref=32, --heu=domain, --d
 \sylvain{the \texttt{dom-pref} thing is deprecated since 2014 but still used in PyBoolNet, I think we might give the more modern version I used in the Python script, but we'll see}
 \vangiang{I also found that you did not use the \texttt{dom-pref} thing in the Python script. I think we should use the same configuration as that used in PyBoolNet.}
 \sylvain{as said above, this is deprecated, and has been since August 2014 \url{https://github.com/potassco/clasp/blob/master/CHANGES}, so I'd advise against using it, it might break any-time.}
+\vangiang{I see. Let's use the more modern version.}
 
 Table~\ref{tab:result_real} shows the experimental results on real-world models. Hereafter, we analyze in detail the results with respect to minimal trap space computation.
 
@@ -397,7 +399,7 @@ First, the BioLQM platform that we are using is providing another implicant-base
 Note that this also raises the question of replacing altogether the BioLQM preprocessing step we use to obtain the Petri net encoding, since its use of BDDs might not be optimal for that step.
 The trade-off between a small Petri net, and hence small ASP, and the time it takes to compute it has to be evaluated in depth.
 
-Moreover, there are other methods for the maximal siphon computation, like SAT/MaxSAT approaches~\cite{nabli2016enumerating} that could replace our ASP program if they outperform it.
+Moreover, there are possibly other methods for the maximal siphon computation, like SAT/MaxSAT approaches~\cite{nabli2016enumerating}. We also plan to investigate them in the future. They could replace our ASP program if they outperform it.
 
 However, the current method already appears to perform very well even on the biggest models we have considered.
 We thus plan to propose its inclusion in the CoLoMoTo effort to make it readily available to modellers.
