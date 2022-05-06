@@ -14,10 +14,10 @@
 
 \begin{document}
 
-% \title{Minimal trap spaces of Logical models are maximal siphons of their Petri net encoding}
-% \titlerunning{Minimal trap spaces as maximal siphons}
-\title{Scaling-up attractor computation for Boolean models}
-\vangiang{I like the first title :). Since we only conduct experiments on real-world Boolean models of not too large size, it seems to make less sense to use "scaling-up" (this should be for the journal version).}
+\title{Minimal trap spaces of Logical models are maximal siphons of their Petri net encoding}
+\titlerunning{Minimal trap spaces as maximal siphons}
+% \title{Scaling-up attractor computation for Boolean models}
+% \vangiang{I like the first title :). Since we only conduct experiments on real-world Boolean models of not too large size, it seems to make less sense to use "scaling-up" (this should be for the journal version).}
 
 \author{Van-Giang Trinh\inst{1}\orcidID{0000-0001-6581-998X} \and \\
   Sylvain Soliman\inst{2}\orcidID{0000-0001-5525-7418} \and \\
@@ -73,10 +73,7 @@ We then demonstrate its efficiency and compare it to implicant-based methods on 
 \section{Preliminaries}
 
 We will briefly recall here some preliminaries on Boolean models related to trap spaces and Petri nets.
-To stay in line with the usual considerations we will always assume purely Boolean logical models, and an asynchronous update.
-In the case of multi-level models, an encoding into a Boolean model is always possible.
-As far as different update strategies are concerned, we think that even if they might require small technical adaptations, they would not bring much change to the main results of this article.
-\vangiang{Minimal trap spaces are a static property of a BN regardless of its update semantics. All the results presented in this paper still valid for any update semantics. Hence, we do not need to restrict to an asynchronous update.}
+In the case of multi-level Logical models, an encoding into a Boolean model is always possible.
 
 \subsection{Traps spaces}
 
@@ -141,11 +138,9 @@ Conversion is executed as follows:
 
 \noindent{\small \verb|java -jar GINsim.jar -lqm <input.{sbml,bnet,zginml,...}> <output.pnml>|}
 
-Second, in practice this transformation seems to behave quite well on even quite big models as will be shown in the Section~\ref{sec:eval} on evaluation.
-Currently, relying on BioLQM implies going through a BDD encoding of the formulae, which might not be optimal.
-Hence we are still considering a direct encoding that would skip the BDD construction.
-
-\vangiang{I think it is better to put a reference here for this argument.}
+Note that transforming a Boolean model defined by its functions into its Petri net encoding roughly relies on obtaining conditions for the activation/inactivation of the states. In~\cite{chaouiya2004qualitative} this took the form of the whole truth table of the Boolean functions, but as shown in Appendix 1 of~\cite{chatain2014characterization} computing Disjunctive Normal Forms (DNF) of each Boolean function is enough.
+Though this might appear quite computationally intensive it is important to remark first that contrary to the prime-implicants case, there is no need to find \emph{minimal} DNFs.
+Second, in practice this transformation, here using BDDs in BioLQM, seems to behave quite well on even quite big models as will be shown in the Section~\ref{sec:eval} on evaluation.
 
 \subsection{Siphons}
 
@@ -239,7 +234,7 @@ Then, we translate the above characterization into the ASP \(\mathcal{A}\) as fo
 \[\verb|:- p(v, 1), p(v, 0).|\]
 for each \(v \in V\). This rule guarantees that \verb|p(v, 1)| and \verb|p(v, 0)| never belong to the same answer set of \(\mathcal{A}\), representing the conflict-freeness. Note that the number of atoms of \(\mathcal{A}\) is only \(2n\), which is theoretically advanced to the ASP encoding shown in~\cite{klarner2015computing} where the number of atoms of the encoded ASP equals to the number of prime-implicants of the Boolean model.
 
-\sylvain{What do you mean by \emph{advanced}? It is less since there might be an exponential number of prime implicants?}
+\sylvain{What do you mean by \emph{advanced}? It is less since there might be an exponential number of prime-implicants?}
 
 Naturally, a solution (simply an answer set) \(A\) of \(\mathcal{A}\) is equivalent to a conflict-free siphon \(S\) of \(\mathcal{P}\), thus a minimal trap space \(m\) of \(\mathcal{M}\). The conversion from \(A\) to \(m\) is straightforward. If \(\verb|p(v, 1)| \in A\) then \(v \in D_m\) and \(m(v) = 0\). Conversely, if \(\verb|p(v, 0)| \in A\) then \(v \in D_m\) and \(m(v) = 1\). Otherwise, \(v \not \in D_m\). Computing multiple answer sets is built into ASP solvers and the solving collection POTASSCO~\cite{DBLP:journals/aicom/GebserKKOSS11} also features the option to find set-inclusion maximal answer sets with respect to the predicates that are true. By using this built-in option, we can compute all the answer sets of \(\mathcal{A}\) in one execution.
 
@@ -345,6 +340,7 @@ We believe that this opens up the way to a much better analysis of large Boolean
 Though we benchmarked this new approach against the state-of-the-art tool PyBoolNet, there are many more evaluations that we plan to do in the future.
 First, the BioLQM platform that we are using is providing another implicant-based method using BDDs in \url{http://colomoto.org/biolqm/doc/tools-trapspace.html} and though we expect it to behave mostly like PyBoolNet, that remains to be checked.
 Note that this also raises the question of replacing altogether the BioLQM preprocessing step we use to obtain the Petri net encoding, since its use of BDDs might not be optimal for that step.
+The tradeoff between a small Petri net, and hence small ASP, and the time it takes to compute it has to be evaluated in depth.
 
 Moreover, there are other methods for the maximal siphon computation, like SAT/MaxSAT approaches~\cite{nabli2016enumerating} that could replace our ASP program if they outperform it.
 
