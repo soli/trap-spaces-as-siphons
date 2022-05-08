@@ -77,7 +77,7 @@ def write_asp(petri_net: nx.DiGraph, asp_file: IO):
                     print(f"{or_preds} :- {pnml_to_asp(succ)}.", file=asp_file)
 
 
-def solve_asp(asp_filename: str, max_output: int) -> str:
+def solve_asp(asp_filename: str, max_output: int, time_limit: int) -> str:
     """Run an ASP solver on program asp_file and get the solutions."""
     # FIXME we need a limit on number of solutions
     result = subprocess.run(
@@ -88,6 +88,7 @@ def solve_asp(asp_filename: str, max_output: int) -> str:
             "--enum-mod=domRec",
             "--dom-mod=3",
             "--outf=2",  # json output
+            f"--time=limit={time_limit}",
             asp_filename,
         ],
         capture_output=True,
@@ -148,7 +149,7 @@ def get_solutions(
 
 
 def compute_trap_spaces(
-    infile: IO, display: bool = False, max_output: int = 0
+    infile: IO, display: bool = False, max_output: int = 0, time_limit: int = 0
 ) -> Optional[Generator[List[str], None, None]]:
     """Do the minimal trap-space computation on input file infile."""
     petri_net = read_pnml(infile)
@@ -156,7 +157,7 @@ def compute_trap_spaces(
     (_, tmpname) = tempfile.mkstemp(suffix=".lp", text=True)
     with open(tmpname, "wt") as asp_file:
         write_asp(petri_net, asp_file)
-    solutions = solve_asp(tmpname, max_output)
+    solutions = solve_asp(tmpname, max_output, time_limit)
     os.unlink(tmpname)
     return get_solutions(solutions, petri_net, display)
 
@@ -180,6 +181,13 @@ def main():
         help="Maximum number of solutions (0 for all).",
     )
     parser.add_argument(
+        "-t",
+        "--time",
+        type=int,
+        default=0,
+        help="Maximum number of seconds for search (0 for no-limit).",
+    )
+    parser.add_argument(
         "infile",
         type=argparse.FileType("r", encoding="utf-8"),
         nargs="?",
@@ -188,7 +196,9 @@ def main():
     )
     args = parser.parse_args()
 
-    compute_trap_spaces(args.infile, display=True, max_output=args.max)
+    compute_trap_spaces(
+        args.infile, display=True, max_output=args.max, time_limit=args.time
+    )
 
 
 if __name__ == "__main__":
