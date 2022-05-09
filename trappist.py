@@ -88,7 +88,7 @@ def solve_asp(asp_filename: str, max_output: int, time_limit: int) -> str:
             "--enum-mod=domRec",
             "--dom-mod=3",
             "--outf=2",  # json output
-            f"--time=limit={time_limit}",
+            f"--time-limit={time_limit}",
             asp_filename,
         ],
         capture_output=True,
@@ -99,6 +99,7 @@ def solve_asp(asp_filename: str, max_output: int, time_limit: int) -> str:
     # https://www.mat.unical.it/aspcomp2013/files/aspoutput.txt
     # 30: SAT, all enumerated, optima found, 10 stopped by max
     if result.returncode != 30 and result.returncode != 10:
+        print(f"Return code from clingo: {result.returncode}")
         result.check_returncode()  # will raise CalledProcessError
 
     return result.stdout
