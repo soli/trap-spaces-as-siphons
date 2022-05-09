@@ -582,4 +582,6 @@ On the contrary, on every model that was a bit challenging for ByPoolNet, the ne
 \end{table}
 
 \sylvain{Some models seem to have a different number of trap spaces here than in the other table (like RA apoptosis), for others quite large time differences (ERBB, inflammatory bowel)\dots}
+\vangiang{Regarding the time differences, the reason might be that my implementation uses an ASP encoding based on choice rules instead of disjunctive rules or constraint rules.}
+\vangiang{Regarding the differences in the numbers of minimal trap spaces, I have also observed this phenomenon. For example, for the Colitis\_associated\_colon\_cancer, the number of minimal trap spaces should be 10 (I am sure that this number is correct). For the TLGLSurvival model, the number of minimal trap spaces should be 318. Since PyBoolNet and Trappist return the same results for these models, I do not think that there is a problem with Trappist. Please check the model files.}
 \end{document}
