@@ -480,4 +480,57 @@ We thus plan to propose its inclusion in the CoLoMoTo effort to make it readily 
 \bibliographystyle{splncs04}
 \bibliography{cmsb22.bib}
 
+\appendix
+
+\section{Temporary}
+
+\begin{table}[!htb]
+  \caption{Timing comparisons between the proposed method and PyBoolNet on the PyBoolNet's repository.
+    Columns "\(n\)", "\(e\)", and "\(s\)" denote the numbers of nodes, interactions, and source nodes of each model, respectively. Column "\(|M|\)" denotes the number of minimal trap spaces and for each method is given the computation time in seconds.
+    "DNF" means that the method did not finish the computation (with a maximum of 1000 trap-spaces) within the timeout of 2 minutes. Number in bold indicate a ratio greater than three.}
+  \centering
+  \label{tab:pyboolnet_repo}
+  \begin{tabular}{lrrrrrr}
+    \toprule
+    model & $n$ & $e$ & $s$ & $|M|$ & PyBoolNet (s) & Trappist (s) \\ \midrule
+    arellano\_rootstem &&&& 4 & 0.04 & \textbf{0.31}\\
+    calzone\_cellfate &&&& 27 & 0.03 & 0.08\\
+    dahlhaus\_neuroplastoma &&&& 32 & 0.04 & 0.11\\
+    davidich\_yeast &&&& 12 & 0.03 & 0.08\\
+    dinwoodie\_life &&&& 7 & 0.03 & 0.08\\
+    dinwoodie\_stomatal &&&& 1 & 0.04 & 0.05\\
+    faure\_cellcycle &&&& 2 & 0.04 & 0.04\\
+    grieco\_mapk &&&& 18 & 0.04 & 0.08\\
+    irons\_yeast &&&& 1 & 0.05 & 0.04\\
+    jaoude\_thdiff &&&& 1000+ & \textbf{1.73} & 0.40\\
+    klamt\_tcr &&&& 8 & 0.06 & 0.04\\
+    krumsiek\_myeloid &&&& 6 & 0.03 & 0.03\\
+    multivalued &&&& 4 & 0.02 & 0.02\\
+    n12c5 &&&& 5 & \textbf{34.37} & 0.06\\
+    n3s1c1a &&&& 2 & 0.02 & 0.03\\
+    n3s1c1b &&&& 2 & 0.02 & 0.03\\
+    n5s3 &&&& 3 & 0.03 & 0.03\\
+    n6s1c2 &&&& 3 & 0.03 & 0.04\\
+    n7s3 &&&& 3 & 0.02 & 0.02\\
+    raf &&&& 2 & 0.03 & 0.02\\
+    randomnet\_n15k3 &&&& 3 & 0.04 & 0.05\\
+    randomnet\_n7k3 &&&& 10 & 0.03 & \textbf{0.19}\\
+    remy\_tumorigenesis &&&& 25 & \textbf{1.79} & 0.13\\
+    saadatpour\_guardcell &&&& 1 & 0.02 & 0.03\\
+    selvaggio\_emt &&&& 1000+ & \textbf{1.03} & 0.23\\
+    tournier\_apoptosis &&&& 3 & 0.05 & 0.06\\
+    xiao\_wnt5a &&&& 4 & 0.06 & 0.03\\
+    zhang\_tlgl &&&& 156 & 0.26 & 0.17\\
+    zhang\_tlgl\_v2 &&&& 258 & 0.19 & 0.17\\
+    \bottomrule
+  \end{tabular}
+
+  \sylvain{I'm not sure that \(e\) and \(s\) are very relevant, moreover they are not readily available\dots}
+\end{table}
+
+As shown in Table~\ref{tab:pyboolnet_repo}, for most of the models of the official PyBoolNet repository\footnote{\url{https://github.com/hklarner/pyboolnet/tree/master/pyboolnet/repository}}, the results are comparable with all minimal trap spaces found very fast.
+Note however that on some very small models, our proposed method was sometimes slower than PyBoolNet, but still way under one second.
+Moreover, we believe that the result on the Arellano model is caused by the cold start of the JVM for BioLQM.
+On the contrary, on every model that was a bit challenging for ByPoolNet, the new method was far more efficient with speedups between one and two orders of magnitude.
+
 \end{document}
