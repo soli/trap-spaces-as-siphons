@@ -292,7 +292,7 @@ Hereafter, we formally prove that a maximal conflict-free siphon is equivalent t
 
   First, we show that if \(m\) is a trap space of \(\mathcal{M}\), then \(S\) is a conflict-free siphon of \(\mathcal{P}\) (*). If \(D_m = \emptyset\), then \(S = \emptyset\) is trivially a conflict-free siphon of \(\mathcal{P}\). Thus, we consider the case that \(D_m \neq \emptyset\) (resp. \(S \neq \emptyset\)). Assume that \(S\) is not a siphon of \(\mathcal{P}\). Then, there is a transition \(t \in T\) such that \(S\cap succ(t)\not =\emptyset\) but \(S\cap pred(t)=\emptyset\). In other words, there is a place \(p \in S\) such that \(p \in succ(t)\) but \(p \not \in pred(t)\). Let \(v\) be the corresponding node in \(\mathcal{M}\) of \(p\). By the characterization of the encoding~\cite{chaouiya2004qualitative}, there is a directional arc from \(t\) to \(p\) and a directional arc from the complementary place of \(p\) to \(t\). Without loss of generality, we assume that \(p = p_v\), then there is a directional arc from \(t\) to \(p_v\) and a directional arc from \(\overline{p}_v\) to \(t\). In addition, there is also no arc or a bi-directional arc between \(t\) and another place rather than \(p_v\) and \(\overline{p}_v\). Thus, there is no connecting arc between \(t\) and any place in \(S \setminus \{p_v\}\) because \(S\cap pred(t)\not =\emptyset\). In \(\mathcal{S}_{\mathcal{M}}[m]\), a node in \(V \setminus D_m\) can receive any Boolean value. Hence, there is a state \(s \in \mathcal{S}_{\mathcal{M}}[m]\) such that \(m_s(p') = 1, \forall p' \in pred(t) \setminus \{\overline{p_v}\}\) where \(m_s\) is the corresponding marking in \(\mathcal{P}\) of \(s\). We also have \(m_s(p_v) = 0\), leading to \(m_s(\overline{p_v}) = 1\) by the characterization of the encoding~\cite{chaouiya2004qualitative}. Now, \(t\) is enabled at marking \(m_s\). Its firing leads to a new marking \(m'_s\) such that \(m'_s(p_v) = 1\) and \(m'_s(\overline{p}_v) = 0\). Let \(s'\) be the corresponding state in \(\mathcal{M}\) of \(m'_s\). Since \(m\) is a trap space of \(\mathcal{M}\), \(s' \in \mathcal{S}_{\mathcal{M}}[m]\). Then, \(s'(v) = m(v)\), leading to \(m'_s(p_v) = 0\), which is a contradiction. Hence, \(S\) is a siphon of \(\mathcal{P}\). By the definition of a mirror, \(S\) is also a conflict-free one.
   
-  Second, we show that if \(S\) is a conflict-free siphon of \(\mathcal{P}\), then \(m\) is a trap space of \(\mathcal{M}\) (**). By the definition of a mirror, \(m\) is a subspace of \(\mathcal{M}\). Let \(s\) be an arbitrary state in \(\mathcal{S}_{\mathcal{M}}[m]\) and \(m_s\) be its corresponding marking in \(\mathcal{P}\). By the characterization of the encoding~\cite{chaouiya2004qualitative}, \(m_s(p) = 0, \forall p \in S\). In any marking \(m'_s\) reachable from \(m_s\) regardless of the update semantics of \(\mathcal{P}\), we have \(m'_s(p) = 0, \forall p \in S\) by the dynamical property on markings of a siphon~\cite{DBLP:journals/isci/LiuB16}. Equivalently, in any state \(s'\) reachable from \(s\) regardless of the update semantics of \(\mathcal{M}\), we have \(s'(v) = s(v) = m(v), \forall v \in D_m\). Then, \(s' \in \mathcal{S}_{\mathcal{M}}[m]\). By the definition of a trap space and the arbitrariness of \(s\), \(m\) is a trap space of \(\mathcal{M}\).
+  Second, we show that if \(S\) is a conflict-free siphon of \(\mathcal{P}\), then \(m\) is a trap space of \(\mathcal{M}\) (**). By the definition of a mirror, \(m\) is a subspace of \(\mathcal{M}\). Let \(s\) be an arbitrary state in \(\mathcal{S}_{\mathcal{M}}[m]\) and \(m_s\) be its corresponding marking in \(\mathcal{P}\). By the characterization of the encoding~\cite{chaouiya2004qualitative}, \(m_s(p) = 0, \forall p \in S\). In any marking \(m'_s\) reachable from \(m_s\) regardless of the firing scheme of \(\mathcal{P}\), we have \(m'_s(p) = 0, \forall p \in S\) by the dynamical property on markings of a siphon~\cite{DBLP:journals/isci/LiuB16}. Equivalently, in any state \(s'\) reachable from \(s\) regardless of the update scheme of \(\mathcal{M}\), we have \(s'(v) = s(v) = m(v), \forall v \in D_m\). Then, \(s' \in \mathcal{S}_{\mathcal{M}}[m]\). By the definition of a trap space and the arbitrariness of \(s\), \(m\) is a trap space of \(\mathcal{M}\).
   
   From (*) and (**), we can conclude the proof.\qed
   
@@ -316,28 +316,47 @@ Hereafter, we formally prove that a maximal conflict-free siphon is equivalent t
   
 \end{proof}
 
-By Theorem~\ref{theo:min_ts_2_max_sp}, we can reduce the problem of computing all minimal trap spaces of a Boolean model to the problem of computing all maximal conflict-free siphons of its Petri net encoding. It is noted that there are no existing methods specifically designed for computing maximal conflict-free siphons (even maximal siphons) of a Petri net. The reason is that researchers mainly focus on minimal siphons~\cite{DBLP:journals/isci/LiuB16}. Hence, we here propose a new method based on Answer Set Programming (ASP)~\cite{DBLP:journals/aicom/GebserKKOSS11} for computing maximal conflict-free siphons of a Petri net. The details of the proposed method shall be given in the next section.
+By Theorem~\ref{theo:min_ts_2_max_sp}, we can reduce the problem of computing all minimal trap spaces of a Boolean model to the problem of computing all maximal conflict-free siphons of its Petri net encoding. It is noted that there are no existing methods specifically designed for computing maximal conflict-free siphons (even maximal siphons) of a Petri net. The reason might be that researchers mainly focus on minimal siphons~\cite{DBLP:journals/isci/LiuB16}. Hence, we here propose a new method based on Answer Set Programming (ASP)~\cite{DBLP:journals/aicom/GebserKKOSS11} for computing maximal conflict-free siphons of a Petri net. The details of the proposed method shall be given in the next section.
 
 \section{Answer set programming-based method}
 First, we show the characterization of all conflict-free siphons of the encoded Petri net \(\mathcal{P} = (P, T, W)\). Suppose that \(S\) is a generic siphon of \(\mathcal{P}\). If a place \(p\) should belong to \(S\), then by definition all the transitions in \(pred(p)\) must belong to \(succ(S)\). Note that \(succ(S) = \bigcup_{p \in S}succ(p)\). A transition \(t\) belongs to \(succ(S)\) if and only if there is at least one place \(p'\) in \(S\) such that \(p' \in pred(t)\). Hence, for each transition \(t \in pred(p)\), we can state that
 \begin{equation}
 \label{eq:siphon}
 p \in S \Rightarrow \bigvee_{p' \in pred(t)}p' \in S.
-\end{equation}The system of all the rules of the above form with respect to all pairs \((p, t)\) where \(p \in P, t \in T, t \in pred(p)\) fully characterizes all generic siphons of a Petri net~\cite{nabli2016enumerating}. To make \(S\) to be a conflict-free siphon, we need to add the following rule for each node \(v \in V\) to the system.
+\end{equation}The system of all the rules of the above form with respect to all pairs \((p, t)\) where \(p \in P, t \in T, t \in pred(p)\) fully characterizes all generic siphons of a Petri net~\cite{nabli2016enumerating}.
+To make \(S\) to be a conflict-free siphon, we need to add to the system the rule
 \begin{equation}
 \label{eq:conflict}
 p_v \in S \Rightarrow \overline{p_v} \not \in S \wedge \overline{p_v} \in S \Rightarrow p_v \not \in S
-\end{equation}By definition, the final system fully characterizes all conflict-free siphons of the encoded Petri net.
+\end{equation}for each node \(v \in V\).
+By definition, the final system fully characterizes all conflict-free siphons of the encoded Petri net.
 
-Then, we translate the above characterization into the ASP \(\mathcal{A}\) as follows. We use atom \verb|p(v, 1)| (resp. \verb|p(v, 0)|) to denote place \(p_v\) (resp. \(\overline{p_v}\)), \(\forall v \in V\). For each pair \((p, t)\) where \(p \in P, t \in T, t \in pred(p)\), we translate the rule (\ref{eq:siphon}) into the ASP rule
+Then, we translate the above characterization into the ASP \(\mathcal{A}\) as follows.
+We introduce atom \verb|p(v, 1)| (resp. \verb|p(v, 0)|) to denote place \(p_v\) (resp. \(\overline{p_v}\)), \(\forall v \in V\). For each pair \((p, t)\) where \(p \in P, t \in T, t \in pred(p)\), we translate the rule (\ref{eq:siphon}) into the ASP rule
 \[
 \verb|p(v_1, x_1); ... ; p(v_k, x_k) :- p(v, x).|
 \]
 where \verb|p(v, x)| is the atom representing place \(p\) and \{\verb|p(v_1, x_1)|, \dots,\linebreak \verb|p(v_k, x_k)|\} is the set of atoms representing places in \(pred(t)\). The rule (\ref{eq:conflict}) is translated into the ASP rule
 \[\verb|:- p(v, 1), p(v, 0).|\]
-for each \(v \in V\). This rule guarantees that \verb|p(v, 1)| and \verb|p(v, 0)| never belong to the same answer set of \(\mathcal{A}\), representing the conflict-freeness. Note that the number of atoms of \(\mathcal{A}\) is only \(2n\), whereas the ASP encoding shown in~\cite{klarner2015computing} has as many atoms as the number of prime-implicants of the Boolean model and that number might be exponential in \(n\).
+for each \(v \in V\). This ASP rule guarantees that two places representing the same node in \(\mathcal{M}\) never belong to the same siphon of \(\mathcal{P}\), representing the conflict-freeness.
+Naturally, a Herbrand model (see, e.g,~\cite{DBLP:journals/aicom/GebserKKOSS11}) of \(\mathcal{A}\) is equivalent to a conflict-free siphon of \(\mathcal{P}\).
+To guarantee that a Herbrand model is also a stable model (an answer set), we need to add to \(\mathcal{A}\) the choice rule
+\[
+\verb|{p(v, 1) ; p(v, 0)}.|
+\] for each \(v \in V\).
+Note that the number of atoms of \(\mathcal{A}\) is only \(2n\), whereas the ASP encoding shown in~\cite{klarner2015computing} has as many atoms as the number of prime-implicants of the Boolean model and that number might be exponential in \(n\).
 
-Naturally, a solution (simply an answer set) \(A\) of \(\mathcal{A}\) is equivalent to a conflict-free siphon \(S\) of \(\mathcal{P}\), thus a minimal trap space \(m\) of \(\mathcal{M}\). The conversion from \(A\) to \(m\) is straightforward. If \(\verb|p(v, 1)| \in A\) then \(v \in D_m\) and \(m(v) = 0\). Conversely, if \(\verb|p(v, 0)| \in A\) then \(v \in D_m\) and \(m(v) = 1\). Otherwise, \(v \not \in D_m\). Computing multiple answer sets is built into ASP solvers and the solving collection POTASSCO~\cite{DBLP:journals/aicom/GebserKKOSS11} also features the option to find set-inclusion maximal answer sets with respect to the predicates that are true. By using this built-in option, we can compute all the answer sets of \(\mathcal{A}\) in one execution.
+% For illustration, we consider the Petri net encoding \(\mathcal{P}\) shown in Figure~\ref{fig:stg_and_PN}(b).
+% If \(p_{x_1}\) is in a siphon \(S\), then \(\overline{p_{x_1}}\) or \(\overline{p_{x_2}}\) should be in \(S\).
+% This rule is translated into the ASP rule
+% \[
+% \verb|p(x_1, 0) ; p(x_2, 0) :- p(x_1, 1).|
+% \] To forbid that \(S\) contains both \(p_{x_1}\) and \(\overline{p_{x_1}}\), we have the ASP rule
+% \[
+% \verb|:- p(x_1, 1) , p(x_2, 0).|
+% \] Analogously for other places in \(\mathcal{P}\), we obtain the final ASP as follows:
+
+Now, a solution (simply an answer set) \(A\) of \(\mathcal{A}\) is equivalent to a conflict-free siphon \(S\) of \(\mathcal{P}\), thus a minimal trap space \(m\) of \(\mathcal{M}\). The conversion from \(A\) to \(m\) is straightforward. If \(\verb|p(v, 1)| \in A\) then \(v \in D_m\) and \(m(v) = 0\). Conversely, if \(\verb|p(v, 0)| \in A\) then \(v \in D_m\) and \(m(v) = 1\). Otherwise, \(v \not \in D_m\). Computing multiple answer sets is built into ASP solvers and the solving collection POTASSCO~\cite{DBLP:journals/aicom/GebserKKOSS11} also features the option to find set-inclusion maximal answer sets with respect to the predicates that are true. By using this built-in option, we can compute all the answer sets of \(\mathcal{A}\) in one execution.
 
 \section{Motivating example}
 
@@ -361,9 +380,9 @@ While this approach makes sense, it relies on potentially arbitrary decisions, a
 Using the method presented above, it is possible to convert the model to PNML in about 1s and to obtain the all 640 minimal trap spaces (including ones that contain more than one state) in a few milliseconds.
 Unfortunately since this was not available at the time, the analysis of the model remained very high-level and qualitative, instead of being able to use the rich information of computed minimal trap spaces.
 
-\vangiang{n = 431 comes from Table 1 of~\cite{aghamiri2020automated}. I have checked this model. It has only 180 nodes. I will check others models come from~\cite{aghamiri2020automated}.}
-\sylvain{that's actually another model (called RA-map or something in the supplementary material), I think the other models should be ok.}
-\vangiang{Oh. Thank you for confirming that.}
+% \vangiang{n = 431 comes from Table 1 of~\cite{aghamiri2020automated}. I have checked this model. It has only 180 nodes. I will check others models come from~\cite{aghamiri2020automated}.}
+% \sylvain{that's actually another model (called RA-map or something in the supplementary material), I think the other models should be ok.}
+% \vangiang{Oh. Thank you for confirming that.}
 
 \section{Evaluation}
 \label{sec:eval}
@@ -428,15 +447,15 @@ It is notable that unlike existing analysis shown in the literature, we did not 
 To solve the ASP problems, we used the same ASP solver CLINGO~\cite{DBLP:journals/aicom/GebserKKOSS11} and the same configuration as that used in PyBoolNet~\cite{klarner2015computing}.
 Specifically, we used the configuration \texttt{--dom-pref=32, --heu=domain, --dom-mod=7} (subset maximality). We ran all the benchmarks on a virtual machine whose environment is CPU: Intel(R) Core(TM) i7-3630QM 2.40GHz x 4, Memory: 8 GB, Ubuntu 18.04.2 64 bit. Finally, we set a time limit as one hour for each model.
 
-\sylvain{the \texttt{dom-pref} thing is deprecated since 2014 but still used in PyBoolNet, I think we might give the more modern version I used in the Python script, but we'll see}
-\vangiang{I also found that you did not use the \texttt{dom-pref} thing in the Python script. I think we should use the same configuration as that used in PyBoolNet.}
-\sylvain{as said above, this is deprecated, and has been since August 2014 \url{https://github.com/potassco/clasp/blob/master/CHANGES}, so I'd advise against using it, it might break any-time.}
-\vangiang{I see. Let's use the more modern version.}
+% \sylvain{the \texttt{dom-pref} thing is deprecated since 2014 but still used in PyBoolNet, I think we might give the more modern version I used in the Python script, but we'll see}
+% \vangiang{I also found that you did not use the \texttt{dom-pref} thing in the Python script. I think we should use the same configuration as that used in PyBoolNet.}
+% \sylvain{as said above, this is deprecated, and has been since August 2014 \url{https://github.com/potassco/clasp/blob/master/CHANGES}, so I'd advise against using it, it might break any-time.}
+% \vangiang{I see. Let's use the more modern version.}
 
 Table~\ref{tab:result_real} shows the experimental results on real-world models. Hereafter, we analyze in detail the results with respect to minimal trap space computation.
 
 The first observation is that the proposed method much outperforms PyBoolNet in computational time. More specifically, ...
-\vangiang{In the journal version, we can measure the memory consumption of the two methods}
+% \vangiang{In the journal version, we can measure the memory consumption of the two methods}
 
 The second observation is that ...
 
