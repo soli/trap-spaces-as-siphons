@@ -1,10 +1,8 @@
 \documentclass[runningheads]{llncs}
 \usepackage[T1]{fontenc}
-% \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{xcolor}
 \usepackage{booktabs}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Drawing
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -17,12 +15,11 @@
 % for captions in figures
 \usepackage{subcaption}
 
+% hyperref for LNCS
 \renewcommand\UrlFont{\color{blue}\rmfamily}
 
 \newcommand{\vangiang}[1]{\textcolor{magenta}{#1}}
 \newcommand{\sylvain}[1]{\textcolor{teal}{#1}}
-
-\newcommand{\bbbb}{{\rm I\!B}}
 
 \begin{document}
 
@@ -98,7 +95,7 @@ We recall here some definitions from~\cite{klarner2015computing} for the introdu
 Minimal trap spaces prove to be a very good approximation of the attractors of a Boolean model under asynchronous update schemes and have become the \emph{de facto} standard way to analyze models of a few tens of \emph{genes}~\cite{klarner2017pyboolnet,cifuentes2020control}.
 
 %%% Boolean model %%%
-Given a Boolean model \(\mathcal{M} = (V, F)\) with variables \(V=(v_{1},\dots,v_{n})\) and Boolean functions \(F=(f_{1},\dots,f_{n})\), its state-space is \(\mathcal{S}_{\mathcal{M}} =\bbbb^{n}\) with \(\bbbb = \{0, 1\}\). A state \(s \in \bbbb^{n}\) is a mapping \(s : V \mapsto \bbbb\) that assigns either 0 (inactive) or 1 (active) to each node. At each time step \(t\), node \(x_i\) can update its state by
+Given a Boolean model \(\mathcal{M} = (V, F)\) with variables \(V=(v_{1},\dots,v_{n})\) and Boolean functions \(F=(f_{1},\dots,f_{n})\), its state-space is \(\mathcal{S}_{\mathcal{M}} =\mathbb{B}^{n}\) with \(\mathbb{B} = \{0, 1\}\). A state \(s \in \mathbb{B}^{n}\) is a mapping \(s : V \mapsto \mathbb{B}\) that assigns either 0 (inactive) or 1 (active) to each node. At each time step \(t\), node \(x_i\) can update its state by
 \[x_i(t + 1) = f_i(x(t)).\] An update scheme of a Boolean model specifies the way that the nodes of the model update their states through time evolution~\cite{thomas1991regulatory}. There are two main types of update schemes: synchronous and asynchronous.
 
 %%% Trap set %%%
@@ -106,7 +103,7 @@ A non-empty set \(T \subseteq S_{\mathcal{M}}\) is a \emph{trap set} of \(\mathc
 
 %%% Subspace %%%
 A \emph{subspace} \(m\) of \(\mathcal{S}_{\mathcal{M}}\) is characterized by its fixed nodes (denoted by \(D_m\)) and free nodes.
-This subspace can be specified by an assignment \(D_m \mapsto \bbbb\) where \(D_m \subseteq V\) and \(m(u)\) is the value of node \(u \in D_m\).
+This subspace can be specified by an assignment \(D_m \mapsto \mathbb{B}\) where \(D_m \subseteq V\) and \(m(u)\) is the value of node \(u \in D_m\).
 The remaining nodes of \(\mathcal{M}\), \(V \setminus D_m\), are said to be \emph{free}, i.e., they can receive any Boolean value.
 We write subspaces like states but use in addition the symbol \(\star\) to indicate that a node is free.
 A subspace \(m\) thus corresponds to the set of states \(\mathcal{S}_{\mathcal{M}}[m] := \{s \in \mathcal{S}_{\mathcal{M}}\;|\;\forall x_i \in D_m : s_i = m(x_i)\}\).
@@ -201,10 +198,10 @@ We give a Boolean model \(\mathcal{M} = (V, F)\), where \(V = (x_1, x_2)\) and \
   where \(P\) is a non-empty finite set of vertices called \emph{places},
   \(T\) is a non-empty finite set of vertices called \emph{transitions},
   \(P \cap T = \emptyset\),
-  and \(W : (P \times T) \cup (T \times P) \mapsto \bbbn \) is a weight function attached to the arcs.
+  and \(W : (P \times T) \cup (T \times P) \mapsto \mathbb{N} \) is a weight function attached to the arcs.
 
 \end{definition}
-A \emph{marking} for a Petri net is a mapping \(m : P \mapsto \bbbn\) that assigns a number of tokens to each place. A place \(p\) is marked by a marking \(m\) if and only if \(m(p) > 0\). We shall write \(pred(x)\) (resp.\ \(succ(x)\)) to represent the set of vertices that have an (non-zero weighted) arc leading to (resp.\ coming from) \(x\).
+A \emph{marking} for a Petri net is a mapping \(m : P \mapsto \mathbb{N}\) that assigns a number of tokens to each place. A place \(p\) is marked by a marking \(m\) if and only if \(m(p) > 0\). We shall write \(pred(x)\) (resp.\ \(succ(x)\)) to represent the set of vertices that have an (non-zero weighted) arc leading to (resp.\ coming from) \(x\).
 
 The link between Logical models \emph{à la} Thomas and Petri nets was originally established in~\cite{chaouiya2004qualitative} in order to make available formal methods like model-checking for the analysis of such systems.
 The basic encoding into 1-safe (i.e., never more than one token in each place) nets only holds for purely Boolean models but was later extended to multi-valued models in two ways, either in \cite{chaouiya2011petri} with non 1-safe Petri nets or more recently in~\cite{chatain2014characterization} with 1-safe nets but many more places.
