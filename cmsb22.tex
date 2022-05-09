@@ -81,7 +81,7 @@ Siphons are such a concept but they have not been used a lot for the analysis of
 
 In this article we present an alternative method to compute minimal trap spaces, and hence complex attractors, of a Boolean model. It replaces the need for prime-implicants by a completely different technique, namely the enumeration of maximal siphons in the Petri net encoding of the original model.
 After some technical preliminaries, we expose the concrete need for such a method and detail its implementation using Answer Set Programming (ASP).
-We then demonstrate its efficiency and compare it to implicant-based methods on some large Boolean models from the litterature.
+We then demonstrate its efficiency and compare it to implicant-based methods on some large Boolean models from the literature.
 
 All models used for evaluation and the implementation of the presented method are available at\dots.
 
@@ -90,15 +90,19 @@ All models used for evaluation and the implementation of the presented method ar
 \section{Preliminaries}
 
 We will briefly recall here some preliminaries on Boolean models related to trap spaces and Petri nets.
-In the case of multi-level Logical models, an encoding into a Boolean model is always possible.
+In the case of multi-level Logical models, an encoding into a Boolean model is always possible~\cite{Didier2011}.
 
 \subsection{Traps spaces}
 
 We recall here some definitions from~\cite{klarner2015computing} for the introduction of \emph{trap spaces}.
-Minimal trap spaces prove to be a very good approximation of the attractors of a Boolean model under asynchronous updating schemes and have become the \emph{de facto} standard way to analyze models of a few tens of \emph{genes}~\cite{klarner2017pyboolnet,cifuentes2020control}.
+Minimal trap spaces prove to be a very good approximation of the attractors of a Boolean model under asynchronous update schemes and have become the \emph{de facto} standard way to analyze models of a few tens of \emph{genes}~\cite{klarner2017pyboolnet,cifuentes2020control}.
+
+%%% Boolean model %%%
+Given a Boolean model \(\mathcal{M} = (V, F)\) with variables \(V=(v_{1},\dots,v_{n})\) and Boolean functions \(F=(f_{1},\dots,f_{n})\), its state-space is \(\mathcal{S}_{\mathcal{M}} =\bbbb^{n}\) with \(\bbbb = \{0, 1\}\). A state \(s \in \bbbb^{n}\) is a mapping \(s : V \mapsto \bbbb\) that assigns either 0 (inactive) or 1 (active) to each node. At each time step \(t\), node \(x_i\) can update its state by
+\[x_i(t + 1) = f_i(x(t)).\] An update scheme of a Boolean model specifies the way that the nodes of the model update their states through time evolution~\cite{thomas1991regulatory}. There are two main types of update schemes: synchronous and asynchronous.
 
 %%% Trap set %%%
-Given a Boolean model \(\mathcal{M} = (V, F)\) with variables \(V=(v_{1},\dots,v_{n})\) and Boolean functions \(F=(f_{1},\dots,f_{n})\), its state-space is \(\mathcal{S}_{\mathcal{M}} =\bbbb^{n}\) with \(\bbbb = \{0, 1\}\). A state \(s \in \bbbb^{n}\) is a mapping \(s : V \mapsto \bbbb\) that assigns either 0 (inactive) or 1 (active) to each node. A non-empty set \(T \subseteq S_{\mathcal{M}}\) is a \emph{trap set} of \(\mathcal{M}\) if and only if for every \(x \in T\) and \(y \in S_{\mathcal{M}}\) with \(y\) is reachable from \(x\) it holds that \(y \in T\).
+A non-empty set \(T \subseteq S_{\mathcal{M}}\) is a \emph{trap set} of \(\mathcal{M}\) if and only if for every \(x \in T\) and \(y \in S_{\mathcal{M}}\) with \(y\) is reachable from \(x\) it holds that \(y \in T\).
 
 %%% Subspace %%%
 A \emph{subspace} \(m\) of \(\mathcal{S}_{\mathcal{M}}\) is characterized by its fixed nodes (denoted by \(D_m\)) and free nodes.
@@ -111,11 +115,16 @@ Let \(\mathcal{S}_{\mathcal{M}}^{\star}\) denote the set of all possible subspac
 
 %%% Minimal trap space and example %%%
 A \emph{trap space} is defined as a subspace that is also a trap set.
+It is noted that trap spaces of a Boolean model are independent of the update scheme of this model~\cite{klarner2015computing}.
 Then, we define a partial order \(<\) on \(\mathcal{S}_{\mathcal{M}}^{\star}\) as: \(m < m'\) if and only if \(\mathcal{S}_{\mathcal{M}}[m] \subseteq \mathcal{S}_{\mathcal{M}}[m']\) and \(\mathcal{S}_{\mathcal{M}}[m] \neq \mathcal{S}_{\mathcal{M}}[m']\).
 Consequently, a trap space \(m\) is minimal if and only if there is no trap space \(m' \in \mathcal{S}_{\mathcal{M}}^{\star}\) such that \(m' < m\).
-For example, the Boolean model shown in Example~\ref{example:BN} has all two trap spaces, \(m_1 = 11\) and \(m_2 = \star\star\). Since \(m_1 < m_2\), \(m_1\) is a minimal trap space of the Boolean model.
 
 %%% Example %%%
+For example, let us consider the Boolean model shown in Example~\ref{example:BN}.
+Figure~\ref{fig:stg_and_PN}(a) shows the dynamics of this model under the fully asynchronous update (i.e., only one node is nondeterministically selected in order to be updated at each time step).
+The model has all two trap spaces, \(m_1 = 11\) and \(m_2 = \star\star\).
+Since \(m_1 < m_2\), \(m_1\) is a minimal trap space of the Boolean model.
+
 \begin{example}
 We give a Boolean model \(\mathcal{M} = (V, F)\), where \(V = (x_1, x_2)\) and \(F = (f_1, f_2)\) with \(f_1 = (x_1 \land x_2) \lor (\neg x_1 \land \neg x_2), f_2 = (x_1 \land x_2) \lor (\neg x_1 \land \neg x_2)\). Herein, \(\land\), \(\lor\), and \(\neg\) denote the CONJUNCTION, DISJUNCTION, and NEGATION logical operators, respectively.
 \label{example:BN}
@@ -123,13 +132,13 @@ We give a Boolean model \(\mathcal{M} = (V, F)\), where \(V = (x_1, x_2)\) and \
 
 \begin{figure}[!ht]
 \centering
-\begin{subfigure}[b]{0.5\textwidth}
+\begin{subfigure}[b]{0.4\textwidth}
 \centering
 \begin{tikzpicture}[node distance=1cm and 1cm, every node/.style={scale=1.0}]
-   \node[circle,draw] (0) [] {00};
-   \node[circle,draw] (1) [above=of 0] {01};
-   \node[circle,draw] (2) [right=of 0] {10};
-   \node[circle,draw] (3) [above=of 2] {11};
+   \node[] (0) [] {00};
+   \node[] (1) [above=of 0] {01};
+   \node[] (2) [right=of 0] {10};
+   \node[] (3) [above=of 2] {11};
    
    \draw[->] (0) edge [bend left] (1);
    \draw[->] (0) edge [bend right] (2);
@@ -144,15 +153,44 @@ We give a Boolean model \(\mathcal{M} = (V, F)\), where \(V = (x_1, x_2)\) and \
 \end{tikzpicture}
 \caption{}
 \end{subfigure}%
-\begin{subfigure}[b]{0.5\textwidth}
+\begin{subfigure}[b]{0.6\textwidth}
 \centering
+\begin{tikzpicture}[node distance=1cm and 1cm, every node/.style={scale=1.0}]\footnotesize
+  \node[circle,draw,label=left:$p_{x_1}$] (x1) {};
+  \node[circle,draw,label=left:$\overline{p_{x_1}}$] (nx1) [below=of x1, yshift=-0.5cm] {};
+    
+  \node[circle,draw,label=right:$p_{x_2}$] (x2) [right=of x1, xshift=2.0cm] {};
+  \node[circle,draw,label=right:$\overline{p_{x_2}}$] (nx2) [below=of x2, yshift=-0.5cm] {};
+    
+  \node[rectangle,draw,label=above:$t^1_{x_1}$] (t1x1) [right=of x1] {};
+  \node[rectangle,draw,label=above:$t^2_{x_1}$] (t2x1) [right=of nx1] {};
+  
+  \node[rectangle,draw,label=above:$t^1_{x_2}$] (t1x2) [left=of x2] {};
+  \node[rectangle,draw,label=above:$t^2_{x_2}$] (t2x2) [left=of nx2] {};
+  
+  \draw[->] (x1) -- (t1x1);
+  \draw[->] (t1x1) -- (nx1);
+  \draw[<->] (t1x1) -- (nx2);
+  
+  \draw[->] (nx1) -- (t2x1);
+  \draw[->] (t2x1) -- (x1);
+  \draw[<->] (t2x1) edge [bend right] (nx2);
+  
+  \draw[->] (x2) -- (t2x2);
+  \draw[->] (t2x2) -- (nx2);
+  \draw[<->] (t2x2) edge [bend left] (nx1);
+  
+  \draw[->] (nx2) -- (t1x2);
+  \draw[->] (t1x2) -- (x2);
+  \draw[<->] (t1x2) -- (nx1);
+\end{tikzpicture}
 \caption{}
 \end{subfigure}%
-\caption{(a) STG under the fully asynchronous update of the Boolean model. (b) Petri net encoding of the Boolean model.}
+\caption{(a) Dynamics under the fully asynchronous update of the Boolean model. (b) Petri net encoding of the Boolean model. Circles denotes places, whereas rectangles denotes transitions.}
 \label{fig:stg_and_PN}
 \end{figure}
 
-\vangiang{In this small figure, we can show the STG under the fully asynchronous update and the Petri net encoding of the Boolean model.}
+% \vangiang{In this small figure, we can show the STG under the fully asynchronous update and the Petri net encoding of the Boolean model.}
 
 \subsection{Petri net encoding of Logical models}
 \label{sec:encoding}
@@ -177,14 +215,26 @@ Each conjunct of the logical function that activates the \emph{gene} will lead t
 And conversely for the inactivation. 
 Let \(s\) be a state of the Boolean model and \(m_s\) be its the corresponding marking in the encoded Petri net. It holds that \(\forall v \in V\), \(s(v) = 0\) if and only if \(m_s(\overline{p}_v) = 1\) and \(s(v) = 1\) if and only if \(m_s(p_v) = 1\). Note also that at any marking \(m\) of the Petri net encoding a Boolean model, it always holds that \(m(p_v) + m(\overline{p}_v) = 1\).
 
-The main property of this encoding is that it is completely faithful w.r.t.\ the asynchronous semantics.
-Asynchronous transitions of the original model correspond one-to-one with firings of transitions in the Petri net.
+% The main property of this encoding is that it is completely faithful w.r.t.\ the asynchronous semantics.
+% Asynchronous transitions of the original model correspond one-to-one with firings of transitions in the Petri net.
+
+The main property of this encoding is that it is completely faithful with respect to the update scheme of the original Boolean model.
+For each node \(v\) of \(\mathcal{M}\), only transitions corresponding to \(v\) can change the current marking of \(p_v\) or \(\overline{p_v}\).
+In addition, at any marking at most one of such transitions is enabled because \(m(p_v) + m(\overline{p}_v) = 1\) holds.
+Hence, for any update scheme in \(\mathcal{M}\), we have a corresponding firing scheme in \(\mathcal{P}\), which preserves the equivalence between the dynamics of \(\mathcal{M}\) and \(\mathcal{P}\)~\cite{DBLP:journals/nc/ChatainHKPT20}.
+
+For illustration, let us reconsider the Boolean model shown in Example~\ref{example:BN}.
+Figure~\ref{fig:stg_and_PN}(b) shows the Petri net encoding of this Boolean model.
+Place \(p_{x_1}\) (resp. \(\overline{p_{x_1}}\)) in \(\mathcal{P}\) represents the activation (resp. the inactivation) of node \(x_1\) in \(\mathcal{M}\).
+Marking \(\{p_{x_1}, \overline{p_{x_2}}\}\) in \(\mathcal{P}\) represents state 10 in \(\mathcal{M}\). 
+Transitions \(t^{1}_{x_1}\) and \(t^{2}_{x_1}\) represent the update of node \(x_1\).
+Of course, at any marking \(t^{1}_{x_1}\) and \(t^{2}_{x_1}\) cannot be both enabled.
+Then, the fully asynchronous update scheme in \(\mathcal{M}\) corresponds to the classical firing scheme in \(\mathcal{P}\) where only one of the enabled transitions at a marking will be fired~\cite{Murata1989}.
 
 Note that given a Logical model in the standard SBML-Qual format~\cite{chaouiya2013sbml}, i.e., one of the packages of SBML v3~\cite{keating2020sbml}, one can easily obtain its Petri net encoding in the PNML\footnote{\url{https://www.pnml.org/}} standard using the BioLQM\footnote{\url{http://www.colomoto.org/biolqm/}} library.
 This piece of software extracted from GINsim~\cite{chaouiya2012logical} and part of the CoLoMoTo\footnote{\url{http://colomoto.org/}} software suite allows for easy conversion between standard formats.
 It also accepts many other common formats for Logical models, notably the \verb|.bnet| files of the  BoolNet~\cite{mussel2010boolnet,klarner2017pyboolnet} tools.
-
-Conversion is executed as follows:
+The conversion is executed as follows:
 
 \noindent{\small \verb|java -jar GINsim.jar -lqm <input.{sbml,bnet,zginml,...}> <output.pnml>|}
 
@@ -220,7 +270,12 @@ First, we add a definition related to any set of places of a Petri net encoding 
 
 Intuitively, a siphon is a set of places that once empty remains so.
 If it is conflict-free then its dual corresponds to a partial-state of the model such that whatever update, the fixed values remain so (since the empty places remain empty).
-This is precisely the definition of a trap space and maximality of the siphon is equivalent to as many fixed values as possible, hence minimality of the trap space. Hereafter, we formally prove that a maximal conflict-free siphon is equivalent to a minimal trap space.
+This is precisely the definition of a trap space and maximality of the siphon is equivalent to as many fixed values as possible, hence minimality of the trap space.
+For example, the Boolean model given in Example~\ref{example:BN} has two trap spaces, \(m_1 = 11\) and \(m_2 = \star\star\).
+The Petri net encoding of this Boolean model has five generic siphons, \(S_1 = \emptyset\), \(S_2 = \{p_{x_1}, \overline{p_{x_1}}\}\), \(S_3 = \{p_{x_2}, \overline{p_{x_2}}\}\), \(S_4 = \{\overline{p_{x_1}}, \overline{p_{x_2}}\}\), and \(S_5 = \{p_{x_1}, \overline{p_{x_1}}, p_{x_2}, \overline{p_{x_2}}\}\).
+However, only \(S_1\) and \(S_4\) are conflict-free siphons and correspond to \(m_2\) and \(m_1\), respectively.
+Since \(S_1 \subset S_4\), \(S_4\) is a maximal siphon corresponding to the minimal trap space \(m_1\).
+Hereafter, we formally prove that a maximal conflict-free siphon is equivalent to a minimal trap space.
 
 \begin{definition}
 
@@ -238,7 +293,7 @@ This is precisely the definition of a trap space and maximality of the siphon is
 
 \begin{proof}
 
-  First, we show that if \(m\) is a trap space of \(\mathcal{M}\), then \(S\) is a conflict-free siphon of \(\mathcal{P}\) (*). If \(D_m = \emptyset\), then \(S = \emptyset\) is trivially a conflict-free siphon of \(\mathcal{P}\). Thus, we consider the case that \(D_m \neq \emptyset\) (resp. \(S \neq \emptyset\)). Assume that \(S\) is not a siphon of \(\mathcal{P}\). Then, there is a transition \(t \in T\) such that \(S\cap succ(t)\not =\emptyset\) but \(S\cap pred(t)\not =\emptyset\). In other words, there is a place \(p \in S\) such that \(p \in succ(t)\) but \(p \not \in pred(t)\). Let \(v\) be the corresponding node in \(\mathcal{M}\) of \(p\). By the characterization of the encoding~\cite{chaouiya2004qualitative}, there is a directional arc from \(t\) to \(p\) and a directional arc from the complementary place of \(p\) to \(t\). Without loss of generality, we assume that \(p = p_v\), then there is a directional arc from \(t\) to \(p_v\) and a directional arc from \(\overline{p}_v\) to \(t\). In addition, there is also no arc or a bi-directional arc between \(t\) and another place rather than \(p_v\) and \(\overline{p}_v\). Thus, there is no connecting arc between \(t\) and any place in \(S \setminus \{p_v\}\) because \(S\cap pred(t)\not =\emptyset\). In \(\mathcal{S}_{\mathcal{M}}[m]\), a node in \(V \setminus D_m\) can receive any Boolean value. Hence, there is a state \(s \in \mathcal{S}_{\mathcal{M}}[m]\) such that \(m_s(p') = 1, \forall p' \in pred(t) \setminus \{\overline{p_v}\}\) where \(m_s\) is the corresponding marking in \(\mathcal{P}\) of \(s\). We also have \(m_s(p_v) = 0\), leading to \(m_s(\overline{p_v}) = 1\) by the characterization of the encoding~\cite{chaouiya2004qualitative}. Now, \(t\) is enabled at marking \(m_s\). Its firing leads to a new marking \(m'_s\) such that \(m'_s(p_v) = 1\) and \(m'_s(\overline{p}_v) = 0\). Let \(s'\) be the corresponding state in \(\mathcal{M}\) of \(m'_s\). Since \(m\) is a trap space of \(\mathcal{M}\), \(s' \in \mathcal{S}_{\mathcal{M}}[m]\). Then, \(s'(v) = m(v)\), leading to \(m'_s(p_v) = 0\), which is a contradiction. Hence, \(S\) is a siphon of \(\mathcal{P}\). By the definition of a mirror, \(S\) is also a conflict-free one.
+  First, we show that if \(m\) is a trap space of \(\mathcal{M}\), then \(S\) is a conflict-free siphon of \(\mathcal{P}\) (*). If \(D_m = \emptyset\), then \(S = \emptyset\) is trivially a conflict-free siphon of \(\mathcal{P}\). Thus, we consider the case that \(D_m \neq \emptyset\) (resp. \(S \neq \emptyset\)). Assume that \(S\) is not a siphon of \(\mathcal{P}\). Then, there is a transition \(t \in T\) such that \(S\cap succ(t)\not =\emptyset\) but \(S\cap pred(t)=\emptyset\). In other words, there is a place \(p \in S\) such that \(p \in succ(t)\) but \(p \not \in pred(t)\). Let \(v\) be the corresponding node in \(\mathcal{M}\) of \(p\). By the characterization of the encoding~\cite{chaouiya2004qualitative}, there is a directional arc from \(t\) to \(p\) and a directional arc from the complementary place of \(p\) to \(t\). Without loss of generality, we assume that \(p = p_v\), then there is a directional arc from \(t\) to \(p_v\) and a directional arc from \(\overline{p}_v\) to \(t\). In addition, there is also no arc or a bi-directional arc between \(t\) and another place rather than \(p_v\) and \(\overline{p}_v\). Thus, there is no connecting arc between \(t\) and any place in \(S \setminus \{p_v\}\) because \(S\cap pred(t)\not =\emptyset\). In \(\mathcal{S}_{\mathcal{M}}[m]\), a node in \(V \setminus D_m\) can receive any Boolean value. Hence, there is a state \(s \in \mathcal{S}_{\mathcal{M}}[m]\) such that \(m_s(p') = 1, \forall p' \in pred(t) \setminus \{\overline{p_v}\}\) where \(m_s\) is the corresponding marking in \(\mathcal{P}\) of \(s\). We also have \(m_s(p_v) = 0\), leading to \(m_s(\overline{p_v}) = 1\) by the characterization of the encoding~\cite{chaouiya2004qualitative}. Now, \(t\) is enabled at marking \(m_s\). Its firing leads to a new marking \(m'_s\) such that \(m'_s(p_v) = 1\) and \(m'_s(\overline{p}_v) = 0\). Let \(s'\) be the corresponding state in \(\mathcal{M}\) of \(m'_s\). Since \(m\) is a trap space of \(\mathcal{M}\), \(s' \in \mathcal{S}_{\mathcal{M}}[m]\). Then, \(s'(v) = m(v)\), leading to \(m'_s(p_v) = 0\), which is a contradiction. Hence, \(S\) is a siphon of \(\mathcal{P}\). By the definition of a mirror, \(S\) is also a conflict-free one.
   
   Second, we show that if \(S\) is a conflict-free siphon of \(\mathcal{P}\), then \(m\) is a trap space of \(\mathcal{M}\) (**). By the definition of a mirror, \(m\) is a subspace of \(\mathcal{M}\). Let \(s\) be an arbitrary state in \(\mathcal{S}_{\mathcal{M}}[m]\) and \(m_s\) be its corresponding marking in \(\mathcal{P}\). By the characterization of the encoding~\cite{chaouiya2004qualitative}, \(m_s(p) = 0, \forall p \in S\). In any marking \(m'_s\) reachable from \(m_s\) regardless of the update semantics of \(\mathcal{P}\), we have \(m'_s(p) = 0, \forall p \in S\) by the dynamical property on markings of a siphon~\cite{DBLP:journals/isci/LiuB16}. Equivalently, in any state \(s'\) reachable from \(s\) regardless of the update semantics of \(\mathcal{M}\), we have \(s'(v) = s(v) = m(v), \forall v \in D_m\). Then, \(s' \in \mathcal{S}_{\mathcal{M}}[m]\). By the definition of a trap space and the arbitrariness of \(s\), \(m\) is a trap space of \(\mathcal{M}\).
   
