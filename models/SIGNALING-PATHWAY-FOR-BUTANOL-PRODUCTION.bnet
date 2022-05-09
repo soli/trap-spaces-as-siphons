@@ -6,7 +6,7 @@
 #largest scc: 42
 
 targets, factors
-3_hydroxybutyryl_CoA, ((hbd | acetoacetyl_CoA) | crt)
+n3_hydroxybutyryl_CoA, ((hbd | acetoacetyl_CoA) | crt)
 AbrB, !spo0A_p
 EtfAB, NADH
 NADH, (NADH & !NADH)
@@ -36,14 +36,14 @@ butyric_acid, ((butyryl_p & butyrate) & !sporulation)
 butyryl_CoA, ((((bcd | (butyrate & acetoacetyl_CoA)) | ald) | EtfAB) | crotonoyl_CoA)
 butyryl_p, butyryl_CoA
 cell_membrane, ((butyrate & !(acetone | ethanol)) | (glucose & !((butanol | acetone) | ethanol)))
-crotonoyl_CoA, ((crt | ferredoxin) | 3_hydroxybutyryl_CoA)
+crotonoyl_CoA, ((crt | ferredoxin) | n3_hydroxybutyryl_CoA)
 crt, !(sporulation | spo0A_p)
 ctfA, spo0A_p
 ctfB, spo0A_p
 ethanol, (((adhA & !(ald | sporulation)) | (acetaldehyde & !(ald | sporulation))) | (adhB & !(ald | sporulation)))
 fba, (fba & !fba)
 ferredoxin, Rnf
-gap_pgk_tpi_pgm__X276_23705_eno, (gap_pgk_tpi_pgm__X276_23705_eno & !gap_pgk_tpi_pgm__X276_23705_eno)
+gap_pgk_tpi_pgm__X276_n23705_eno, (gap_pgk_tpi_pgm__X276_n23705_eno & !gap_pgk_tpi_pgm__X276_n23705_eno)
 glucose, (glucose & !glucose)
 glucose___PTS, (((PTS & (cell_membrane & glucose)) & !(sporulation & !cell_membrane)) | ((glucose & (cell_membrane & PTS)) & !(sporulation & !cell_membrane)))
 hbd, !(sporulation | spo0A_p)
@@ -56,7 +56,7 @@ phosphorylation, (phosphorylation & !phosphorylation)
 pta, !(spo0A_p | sporulation)
 ptb, !(sporulation | spo0A_p)
 pyk, pfk
-pyruvate, ((((fba | pgi) | glucose___PTS) | pyk) | gap_pgk_tpi_pgm__X276_23705_eno)
+pyruvate, ((((fba | pgi) | glucose___PTS) | pyk) | gap_pgk_tpi_pgm__X276_n23705_eno)
 sigA, (sigA & !sigA)
 sigE, (sigF | spo0A_p)
 sigF, ((spoIIE & !(spoIIAB & !spoIIE)) | (sigH & !(spoIIAB & !spoIIE)))
