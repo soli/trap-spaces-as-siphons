@@ -79,7 +79,6 @@ def write_asp(petri_net: nx.DiGraph, asp_file: IO):
 
 def solve_asp(asp_filename: str, max_output: int, time_limit: int) -> str:
     """Run an ASP solver on program asp_file and get the solutions."""
-    # FIXME we need a limit on number of solutions
     result = subprocess.run(
         [
             "clingo",
@@ -93,7 +92,6 @@ def solve_asp(asp_filename: str, max_output: int, time_limit: int) -> str:
         ],
         capture_output=True,
         text=True,
-        # check=True,
     )
 
     # https://www.mat.unical.it/aspcomp2013/files/aspoutput.txt
