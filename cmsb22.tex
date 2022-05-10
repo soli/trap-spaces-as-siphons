@@ -527,53 +527,50 @@ On the contrary, on every model that was a bit challenging for ByPoolNet, the ne
 \begin{table}[!htb]
   \caption{Timing comparisons between the proposed method and PyBoolNet on selected models from the literature.
     Columns "\(n\)", "\(e\)", and "\(s\)" denote the numbers of nodes, interactions, and source nodes of each model, respectively. Column "\(|M|\)" denotes the number of minimal trap spaces and for each method is given the computation time in seconds.
-    "DNF" means that the method did not finish the computation (with a maximum of 1000 trap spaces) within the timeout of 2 minutes. Number in bold indicate a ratio greater than three.}
+    "DNF" means that the method did not finish the computation (with a maximum of 1000 trap spaces) within the timeout of 2 minutes.}
   \centering
   \label{tab:selected_redone}
   \begin{tabular}{lrrrrrr}
     \toprule
     model & $n$ & $e$ & $s$ & $|M|$ & PyBoolNet (s) & Trappist (s) \\ \midrule
-    CASCADE3 & 183 &&& 1 & 118.54 & 1.03\\
-    KYNURENINE-PATHWAY & 150 &&& 1 & 102.45 & 1.09\\
+    CASCADE3 & 183 &&& 1 & 82.86 & 12.83\\
+    KYNURENINE-PATHWAY & 150 &&& 1000+ & 74.71 & 4.22\\
     SN5 & 2746 &&& ??? & DNF & DNF\\
-    ERBB-RECEPTOR-SIGNALING & 247 &&& 1000+ & DNF & 3.56\\
-    Executable\_file\_for\_cholocystokinin\_model & 404 &&& 1000+ & 1.46 & 1.79\\
-    korkut\_2015a & 99 &&& 1000+ & DNF & 0.56\\
-    SIGNALING-PATHWAY-FOR-BUTANOL-PRODUCTION & 66 &&& 1 & 0.24 & 0.16\\
-    Corral\_ThIL17diff\_15jan2021 & 92 &&& 1000+ & DNF & 0.32\\
-    HIV-1 & 138 &&& 6 & DNF & 0.33\\
-    Executable\_file\_for\_CaSQ\_derived\_mast\_cell\_activation\_model & 80 &&& 1000+ & 0.89 & 0.17\\
-    Colitis\_associated\_colon\_cancer & 70 &&& 5 & 0.22 & 0.07\\
-    INTERFERON-1 & 121 &&& 2 & 13.21 & 0.12\\
-    TLGLSurvival & 61 &&& 3 & 0.73 & 0.16\\
-    cho\_2016\_all\_pos & 200 &&& 1000+ & DNF & 0.64\\
+    ERBB-RECEPTOR-SIGNALING & 247 &&& 1000+ & DNF & 9.27\\
+    Executable\_file\_for\_cholocystokinin\_model & 404 &&& 1000+ & 1.55 & 3.57\\
+    korkut\_2015a & 99 &&& 1000+ & DNF & 3.06\\
+    SIGNALING-PATHWAY-FOR-BUTANOL-PRODUCTION & 66 &&& 1000+ & 0.43 & 0.66\\
+    Corral\_ThIL17diff\_15jan2021 & 92 &&& 1000+ & DNF & 0.91\\
+    HIV-1 & 138 &&& 1000+ & DNF & 3.25\\
+    Executable\_file\_for\_CaSQ\_derived\_mast\_cell\_activation\_model & 80 &&& 1000+ & 0.49 & 0.56\\
+    Colitis\_associated\_colon\_cancer & 70 &&& 10 & 0.15 & 0.22\\
+    INTERFERON-1 & 121 &&& 1000+ & 7.69 & 1.05\\
+    TLGLSurvival & 61 &&& 318 & 0.59 & 0.48\\
+    cho\_2016\_all\_pos & 200 &&& 1000+ & DNF & 3.00\\
     turei\_2016 & 4691 &&& ??? & DNF & DNF\\
-    Human\_network & 1953 &&& 1000+ & DNF & 42.58\\
-    Executable\_file\_for\_CaSQ\_derived\_MAPK\_model & 182 &&& 1000+ & DNF & 0.32\\
-    TCR-TLR5-SIGNALING-2018 & 130 &&& 48 & 1.52 & 0.17\\
-    Hernandez\_TcellCheckPoints\_13april2020 & 218 &&& 1000+ & 53.51 & 0.55\\
-    IMMUNE-SYSTEM & 164 &&& 1000+ & DNF & 0.92\\
-    HMOX1-PATHWAY & 145 &&& 8 & 3.72 & 0.11\\
-    Signaling\_in\_Macrophage\_Activation & 321 &&& 1 & 13.25 & 0.31\\
-    FIBROBLASTS & 139 &&& 1000+ & DNF & 0.61\\
-    S1\_Table & 1659 &&& 1000+ & DNF & 58.98\\
-    Regan2020\_Adhesion\_CIP\_Migration\_CellCycle\_Apoptosis & 121 &&& 78 & 53.30 & 0.53\\
-    SIGNALING-IN-PROSTATE-CANCER & 133 &&& 1000+ & DNF & 0.46\\
-    InflammatoryBowelDisease & 47 &&& 1 & DNF & 33.02\\
-    Influenza\_A\_Virus\_Replication\_Cycle & 131 &&& 17 & 51.17 & 0.13\\
-    IL\_6\_Signalling & 86 &&& 1 & 0.49 & 0.07\\
-    VIRUS-REPLICATION-CYCLE & 154 &&& 2 & DNF & 0.19\\
-    Executable\_file\_for\_Alzheimer\_model & 1169 &&& 1000+ & DNF & 1.53\\
-    ER-STRESS & 182 &&& 32 & 31.99 & 0.21\\
-    RA\_apoptosis\_executable\_module & 180 &&& 1000+ & DNF & 0.23\\
+    Human\_network & 1953 &&& 1000+ & DNF & DNF\\
+    Executable\_file\_for\_CaSQ\_derived\_MAPK\_model & 182 &&& 1000+ & 75.32 & 2.26\\
+    TCR-TLR5-SIGNALING-2018 & 130 &&& 48 & 0.93 & 0.53\\
+    Hernandez\_TcellCheckPoints\_13april2020 & 218 &&& 1000+ & 36.21 & 2.27\\
+    IMMUNE-SYSTEM & 164 &&& 1000+ & DNF & 2.78\\
+    HMOX1-PATHWAY & 145 &&& 1000+ & 3.89 & 0.95\\
+    Signaling\_in\_Macrophage\_Activation & 321 &&& 1000+ & 11.51 & 3.27\\
+    FIBROBLASTS & 139 &&& 1000+ & DNF & 1.91\\
+    S1\_Table & 1659 &&& 1000+ & DNF & DNF\\
+    Regan2020\_Adhesion\_CIP\_Migration\_CellCycle\_Apoptosis & 121 &&& 78 & 40.59 & 2.15\\
+    SIGNALING-IN-PROSTATE-CANCER & 133 &&& 1000+ & DNF & 1.70\\
+    InflammatoryBowelDisease & 47 &&& 1 & DNF & 118.78\\
+    Influenza\_A\_Virus\_Replication\_Cycle & 131 &&& 1000+ & 47.69 & 0.87\\
+    IL\_6\_Signalling & 86 &&& 1000+ & 1.10 & 0.46\\
+    VIRUS-REPLICATION-CYCLE & 154 &&& 1000+ & DNF & 1.16\\
+    Executable\_file\_for\_Alzheimer\_model & 1169 &&& 1000+ & DNF & 6.15\\
+    ER-STRESS & 182 &&& 1000+ & 16.15 & 0.93\\
+    RA\_apoptosis\_executable\_module & 180 &&& 1000+ & DNF & 0.96\\
     \bottomrule
   \end{tabular}
 \end{table}
 
-\sylvain{Some models seem to have a different number of trap spaces here than in the other table (like RA apoptosis), for others quite large time differences (ERBB, inflammatory bowel)\dots}
 \vangiang{Regarding the time differences, the reason might be that my implementation uses an ASP encoding based on choice rules instead of disjunctive rules or constraint rules.}
 \sylvain{Maybe\dots I don't know ASP well enough to be sure. The fact that you go through a predicate \texttt{p} which adds one level of indirection might also have some effect, I'm not sure.}
 
-\vangiang{Regarding the differences in the numbers of minimal trap spaces, I have also observed this phenomenon. For example, for the Colitis\_associated\_colon\_cancer, the number of minimal trap spaces should be 10 (I am sure that this number is correct). For the TLGLSurvival model, the number of minimal trap spaces should be 318. Since PyBoolNet and Trappist return the same results for these models, I do not think that there is a problem with Trappist. Please check the model files.}
-\sylvain{There are not among the files I had to change for BioLQM, so I'm not sure what I can check. For TLGL it should be quite obvious since 3 and 318 are pretty far away, but\dots I don't see any thing obviously wrong in the files. The 3 minimal trap spaces found are 3 stable-states, all 0 or with a single 1. They are the same also found using the BDD of BioLQM, so\dots}
 \end{document}
