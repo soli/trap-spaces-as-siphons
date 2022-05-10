@@ -475,48 +475,49 @@ We thus plan to propose its inclusion in the CoLoMoTo effort to make it readily 
 
 \begin{table}[!htb]
   \caption{Timing comparisons between the proposed method and PyBoolNet on the PyBoolNet's repository.
-    Columns "\(n\)", "\(e\)", and "\(s\)" denote the numbers of nodes, interactions, and source nodes of each model, respectively. Column "\(|M|\)" denotes the number of minimal trap spaces and for each method is given the computation time in seconds.
+    Column "\(n\)" denotes the numbers of nodes of each model. Column "\(|M|\)" denotes the number of minimal trap spaces and for each method is given the computation time in seconds.
     "DNF" means that the method did not finish the computation (with a maximum of 1000 trap spaces) within the timeout of 2 minutes. A number in bold indicates a ratio greater than three.}
   \centering
   \label{tab:pyboolnet_repo}
   \begin{tabular}{lrrrrrr}
     \toprule
-    model & $n$ & $e$ & $s$ & $|M|$ & PyBoolNet (s) & Trappist (s) \\ \midrule
-    arellano\_rootstem & 9 && 1 & 4 & 0.04 & \textbf{0.31}\\
-    calzone\_cellfate & 28 && 3 & 27 & 0.03 & 0.08\\
-    dahlhaus\_neuroplastoma & 23 && 5 & 32 & 0.04 & 0.11\\
-    davidich\_yeast & 10 && 0 & 12 & 0.03 & 0.08\\
-    dinwoodie\_life & 15 && 0 & 7 & 0.03 & 0.08\\
-    dinwoodie\_stomatal & 13 && 0 & 1 & 0.04 & 0.05\\
-    faure\_cellcycle & 10 && 1 & 2 & 0.04 & 0.04\\
-    grieco\_mapk & 53 && 4 & 18 & 0.04 & 0.08\\
-    irons\_yeast & 18 && 0 & 1 & 0.05 & 0.04\\
-    jaoude\_thdiff & 103 && 21 & 1000+ & \textbf{1.73} & 0.40\\
-    klamt\_tcr & 40 && 3 & 8 & 0.06 & 0.04\\
-    krumsiek\_myeloid & 11 && 0 & 6 & 0.03 & 0.03\\
-    multivalued & 13 && 1 & 4 & 0.02 & 0.02\\
-    n12c5 & 11 && 0 & 5 & \textbf{34.37} & 0.06\\
-    n3s1c1a & 2 && 0 & 2 & 0.02 & 0.03\\
-    n3s1c1b & 2 && 0 & 2 & 0.02 & 0.03\\
-    n5s3 & 4 && 0 & 3 & 0.03 & 0.03\\
-    n6s1c2 & 5 && 0 & 3 & 0.03 & 0.04\\
-    n7s3 & 6 && 0 & 3 & 0.02 & 0.02\\
-    raf & 3 && 0 & 2 & 0.03 & 0.02\\
-    randomnet\_n15k3 & 15 && 0 & 3 & 0.04 & 0.05\\
-    randomnet\_n7k3 & 7 && 0 & 10 & 0.03 & \textbf{0.19}\\
-    remy\_tumorigenesis & 34 && 4 & 25 & \textbf{1.79} & 0.13\\
-    saadatpour\_guardcell & 13 && 0 & 1 & 0.02 & 0.03\\
-    selvaggio\_emt & 56 && 10 & 1000+ & \textbf{1.03} & 0.23\\
-    tournier\_apoptosis & 12 && 1 & 3 & 0.05 & 0.06\\
-    xiao\_wnt5a & 7 && 1 & 4 & 0.06 & 0.03\\
-    zhang\_tlgl & 60 && 6 & 156 & 0.26 & 0.17\\
-    zhang\_tlgl\_v2 & 60 && 6 & 258 & 0.19 & 0.17\\
+    model & $n$ & $|M|$ & PyBoolNet (s) & Trappist (s) \\ \midrule
+    arellano\_rootstem & 9 & 4 & 0.04 & \textbf{0.31}\\
+    calzone\_cellfate & 28 & 27 & 0.03 & 0.08\\
+    dahlhaus\_neuroplastoma & 23 & 32 & 0.04 & 0.11\\
+    davidich\_yeast & 10 & 12 & 0.03 & 0.08\\
+    dinwoodie\_life & 15 & 7 & 0.03 & 0.08\\
+    dinwoodie\_stomatal & 13 & 1 & 0.04 & 0.05\\
+    faure\_cellcycle & 10 & 2 & 0.04 & 0.04\\
+    grieco\_mapk & 53 & 18 & 0.04 & 0.08\\
+    irons\_yeast & 18 & 1 & 0.05 & 0.04\\
+    jaoude\_thdiff & 103 & 1000+ & \textbf{1.73} & 0.40\\
+    klamt\_tcr & 40 & 8 & 0.06 & 0.04\\
+    krumsiek\_myeloid & 11 & 6 & 0.03 & 0.03\\
+    multivalued & 13 & 4 & 0.02 & 0.02\\
+    n12c5 & 11 & 5 & \textbf{34.37} & 0.06\\
+    n3s1c1a & 2 & 2 & 0.02 & 0.03\\
+    n3s1c1b & 2 & 2 & 0.02 & 0.03\\
+    n5s3 & 4 & 3 & 0.03 & 0.03\\
+    n6s1c2 & 5 & 3 & 0.03 & 0.04\\
+    n7s3 & 6 & 3 & 0.02 & 0.02\\
+    raf & 3 & 2 & 0.03 & 0.02\\
+    randomnet\_n15k3 & 15 & 3 & 0.04 & 0.05\\
+    randomnet\_n7k3 & 7 & 10 & 0.03 & \textbf{0.19}\\
+    remy\_tumorigenesis & 34 & 25 & \textbf{1.79} & 0.13\\
+    saadatpour\_guardcell & 13 & 1 & 0.02 & 0.03\\
+    selvaggio\_emt & 56 & 1000+ & \textbf{1.03} & 0.23\\
+    tournier\_apoptosis & 12 & 3 & 0.05 & 0.06\\
+    xiao\_wnt5a & 7 & 4 & 0.06 & 0.03\\
+    zhang\_tlgl & 60 & 156 & 0.26 & 0.17\\
+    zhang\_tlgl\_v2 & 60 & 258 & 0.19 & 0.17\\
     \bottomrule
   \end{tabular}
 \end{table}
 
   \sylvain{I'm not sure that \(e\) and \(s\) are very relevant, moreover they are not readily available\dots}
   \vangiang{Indeed, they are not readily available. But if we use more meaningful words, the width of the table may exceed the width of the page. Thus, I use \(e\) and \(s\) along with the explanations shown in the table's caption. Do you have any other option?}
+  \sylvain{just remove them since they are not relevant}
 
 As shown in Table~\ref{tab:pyboolnet_repo}, for most of the models of the official PyBoolNet repository\footnote{\url{https://github.com/hklarner/pyboolnet/tree/master/pyboolnet/repository}}, the results are comparable with all minimal trap spaces found very fast.
 Note however that on some very small models, our proposed method was sometimes slower than PyBoolNet, but still way under one second.
@@ -527,46 +528,46 @@ On the contrary, on every model that was a bit challenging for ByPoolNet, the ne
 
 \begin{table}[!htb]
   \caption{Timing comparisons between the proposed method and PyBoolNet on selected models from the literature.
-    Columns "\(n\)", "\(e\)", and "\(s\)" denote the numbers of nodes, interactions, and source nodes of each model, respectively. Column "\(|M|\)" denotes the number of minimal trap spaces and for each method is given the computation time in seconds.
+    Column "\(n\)" denotes the numbers of nodes of each model. Column "\(|M|\)" denotes the number of minimal trap spaces and for each method is given the computation time in seconds.
     "DNF" means that the method did not finish the computation (with a maximum of 1000 trap spaces) within the timeout of 2 minutes.}
   \centering
   \label{tab:selected_redone}
   \begin{tabular}{lrrrrrr}
     \toprule
-    model & $n$ & $e$ & $s$ & $|M|$ & PyBoolNet (s) & Trappist (s) \\ \midrule
-    CASCADE3 & 183 &&& 1 & 82.86 & 12.83\\
-    KYNURENINE-PATHWAY & 150 &&& 1000+ & 74.71 & 4.22\\
-    SN5 & 2746 &&& ??? & DNF & DNF\\
-    ERBB-RECEPTOR-SIGNALING & 247 &&& 1000+ & DNF & 9.27\\
-    Executable\_file\_for\_cholocystokinin\_model & 404 &&& 1000+ & 1.55 & 3.57\\
-    korkut\_2015a & 99 &&& 1000+ & DNF & 3.06\\
-    SIGNALING-PATHWAY-FOR-BUTANOL-PRODUCTION & 66 &&& 1000+ & 0.43 & 0.66\\
-    Corral\_ThIL17diff\_15jan2021 & 92 &&& 1000+ & DNF & 0.91\\
-    HIV-1 & 138 &&& 1000+ & DNF & 3.25\\
-    Executable\_file\_for\_CaSQ\_derived\_mast\_cell\_activation\_model & 80 &&& 1000+ & 0.49 & 0.56\\
-    Colitis\_associated\_colon\_cancer & 70 &&& 10 & 0.15 & 0.22\\
-    INTERFERON-1 & 121 &&& 1000+ & 7.69 & 1.05\\
-    TLGLSurvival & 61 &&& 318 & 0.59 & 0.48\\
-    cho\_2016\_all\_pos & 200 &&& 1000+ & DNF & 3.00\\
-    turei\_2016 & 4691 &&& ??? & DNF & DNF\\
-    Human\_network & 1953 &&& 1000+ & DNF & DNF\\
-    Executable\_file\_for\_CaSQ\_derived\_MAPK\_model & 182 &&& 1000+ & 75.32 & 2.26\\
-    TCR-TLR5-SIGNALING-2018 & 130 &&& 48 & 0.93 & 0.53\\
-    Hernandez\_TcellCheckPoints\_13april2020 & 218 &&& 1000+ & 36.21 & 2.27\\
-    IMMUNE-SYSTEM & 164 &&& 1000+ & DNF & 2.78\\
-    HMOX1-PATHWAY & 145 &&& 1000+ & 3.89 & 0.95\\
-    Signaling\_in\_Macrophage\_Activation & 321 &&& 1000+ & 11.51 & 3.27\\
-    FIBROBLASTS & 139 &&& 1000+ & DNF & 1.91\\
-    S1\_Table & 1659 &&& 1000+ & DNF & DNF\\
-    Regan2020\_Adhesion\_CIP\_Migration\_CellCycle\_Apoptosis & 121 &&& 78 & 40.59 & 2.15\\
-    SIGNALING-IN-PROSTATE-CANCER & 133 &&& 1000+ & DNF & 1.70\\
-    InflammatoryBowelDisease & 47 &&& 1 & DNF & 118.78\\
-    Influenza\_A\_Virus\_Replication\_Cycle & 131 &&& 1000+ & 47.69 & 0.87\\
-    IL\_6\_Signalling & 86 &&& 1000+ & 1.10 & 0.46\\
-    VIRUS-REPLICATION-CYCLE & 154 &&& 1000+ & DNF & 1.16\\
-    Executable\_file\_for\_Alzheimer\_model & 1169 &&& 1000+ & DNF & 6.15\\
-    ER-STRESS & 182 &&& 1000+ & 16.15 & 0.93\\
-    RA\_apoptosis\_executable\_module & 180 &&& 1000+ & DNF & 0.96\\
+    model & $n$ & $|M|$ & PyBoolNet (s) & Trappist (s) \\ \midrule
+    CASCADE3 & 183 & 1 & 82.86 & 12.83\\
+    KYNURENINE-PATHWAY & 150 & 1000+ & 74.71 & 4.22\\
+    SN5 & 2746 & ??? & DNF & DNF\\
+    ERBB-RECEPTOR-SIGNALING & 247 & 1000+ & DNF & 9.27\\
+    Executable\_file\_for\_cholocystokinin\_model & 383 & 1000+ & 1.55 & 3.57\\
+    korkut\_2015a & 99 & 1000+ & DNF & 3.06\\
+    SIGNALING-PATHWAY-FOR-BUTANOL-PRODUCTION & 66 & 1000+ & 0.43 & 0.66\\
+    Corral\_ThIL17diff\_15jan2021 & 92 & 1000+ & DNF & 0.91\\
+    HIV-1 & 138 & 1000+ & DNF & 3.25\\
+    Executable\_file\_for\_CaSQ\_derived\_mast\_cell\_activation\_model & 73 & 1000+ & 0.49 & 0.56\\
+    Colitis\_associated\_colon\_cancer & 70 & 10 & 0.15 & 0.22\\
+    INTERFERON-1 & 121 & 1000+ & 7.69 & 1.05\\
+    TLGLSurvival & 61 & 318 & 0.59 & 0.48\\
+    cho\_2016\_all\_pos & 200 & 1000+ & DNF & 3.00\\
+    turei\_2016 & 4691 & ??? & DNF & DNF\\
+    Human\_network & 1953 & 1000+ & DNF & DNF\\
+    Executable\_file\_for\_CaSQ\_derived\_MAPK\_model & 181 & 1000+ & 75.32 & 2.26\\
+    TCR-TLR5-SIGNALING-2018 & 130 & 48 & 0.93 & 0.53\\
+    Hernandez\_TcellCheckPoints\_13april2020 & 218 & 1000+ & 36.21 & 2.27\\
+    IMMUNE-SYSTEM & 164 & 1000+ & DNF & 2.78\\
+    HMOX1-PATHWAY & 145 & 1000+ & 3.89 & 0.95\\
+    Signaling\_in\_Macrophage\_Activation & 321 & 1000+ & 11.51 & 3.27\\
+    FIBROBLASTS & 139 & 1000+ & DNF & 1.91\\
+    S1\_Table & 1659 & 1000+ & DNF & DNF\\
+    Regan2020\_Adhesion\_CIP\_Migration\_CellCycle\_Apoptosis & 121 & 78 & 40.59 & 2.15\\
+    SIGNALING-IN-PROSTATE-CANCER & 133 & 1000+ & DNF & 1.70\\
+    InflammatoryBowelDisease & 47 & 1 & DNF & 118.78\\
+    Influenza\_A\_Virus\_Replication\_Cycle & 131 & 1000+ & 47.69 & 0.87\\
+    IL\_6\_Signalling & 86 & 1000+ & 1.10 & 0.46\\
+    VIRUS-REPLICATION-CYCLE & 154 & 1000+ & DNF & 1.16\\
+    Executable\_file\_for\_Alzheimer\_model & 762 & 1000+ & DNF & 6.15\\
+    ER-STRESS & 182 & 1000+ & 16.15 & 0.93\\
+    RA\_apoptosis\_executable\_module & 180 & 1000+ & DNF & 0.96\\
     \bottomrule
   \end{tabular}
 \end{table}

@@ -1,0 +1,154 @@
+# model in BoolNet format
+# the header targets, factors is mandatory to be importable in the R package BoolNet
+
+targets, factors
+csa1,  csa1
+csa16, csa16
+csa17, csa17
+csa2,  sa17&sa26
+csa20, csa20
+csa26, csa26
+csa3,  csa3
+csa34, csa34
+csa35, csa35
+csa36, !sa362
+csa39, sa5&sa355
+sa1,   sa2&sa8
+sa10,  !sa4&!sa12&!sa25&sa38 | !sa4&!sa12&sa25&!sa38&sa41&sa187&sa207 | !sa4&!sa12&sa25&sa38 | !sa4&sa12 | sa4&!sa12&!sa17&!sa24&!sa25&sa38 | sa4&!sa12&!sa17&!sa24&sa25&!sa38&sa41&sa187&sa207 | sa4&!sa12&!sa17&!sa24&sa25&sa38 | sa4&!sa12&!sa17&sa24&!sa25&!sa38&sa352&sa355 | sa4&!sa12&!sa17&sa24&!sa25&sa38 | sa4&!sa12&!sa17&sa24&sa25&!sa38&!sa41&sa352&sa355 | sa4&!sa12&!sa17&sa24&sa25&!sa38&sa41&!sa187&sa352&sa355 | sa4&!sa12&!sa17&sa24&sa25&!sa38&sa41&sa187&!sa207&sa352&sa355 | sa4&!sa12&!sa17&sa24&sa25&!sa38&sa41&sa187&sa207 | sa4&!sa12&!sa17&sa24&sa25&sa38 | sa4&!sa12&sa17&!sa24&!sa25&sa38 | sa4&!sa12&sa17&!sa24&sa25&!sa38&sa41&sa187&sa207 | sa4&!sa12&sa17&!sa24&sa25&sa38 | sa4&!sa12&sa17&sa24&!sa25&!sa38&sa352&sa355 | sa4&!sa12&sa17&sa24&!sa25&sa38 | sa4&!sa12&sa17&sa24&sa25&!sa38&!sa41&!sa352&sa377 | sa4&!sa12&sa17&sa24&sa25&!sa38&!sa41&sa352&!sa355&sa377 | sa4&!sa12&sa17&sa24&sa25&!sa38&!sa41&sa352&sa355 | sa4&!sa12&sa17&sa24&sa25&!sa38&sa41&!sa187&!sa352&sa377 | sa4&!sa12&sa17&sa24&sa25&!sa38&sa41&!sa187&sa352&!sa355&sa377 | sa4&!sa12&sa17&sa24&sa25&!sa38&sa41&!sa187&sa352&sa355 | sa4&!sa12&sa17&sa24&sa25&!sa38&sa41&sa187&!sa207&!sa352&sa377 | sa4&!sa12&sa17&sa24&sa25&!sa38&sa41&sa187&!sa207&sa352&!sa355&sa377 | sa4&!sa12&sa17&sa24&sa25&!sa38&sa41&sa187&!sa207&sa352&sa355 | sa4&!sa12&sa17&sa24&sa25&!sa38&sa41&sa187&sa207 | sa4&!sa12&sa17&sa24&sa25&sa38 | sa4&sa12
+sa100, sa94&sa101&sa106
+sa101, sa102&sa329
+sa102, sa102
+sa104, sa94&sa108&sa324
+sa105, sa94&sa101&sa106
+sa106, sa106
+sa108, sa108
+sa11,  !csa39&sa1&sa4&sa7 | csa39&sa1&!sa3&sa4 | csa39&sa1&sa3&sa4&sa7
+sa12,  csa1&!sa13&!sa14&!sa16&sa17&sa20
+sa13,  sa13
+sa14,  sa14
+sa15,  sa10&sa11&sa18
+sa16,  sa16
+sa17,  sa10&sa11&sa18
+sa18,  sa18
+sa187, sa187
+sa188, sa188
+sa189, sa268
+sa19,  sa19
+sa191, sa191
+sa192, !sa10&!sa25&sa187&sa206&sa221 | !sa10&sa25&sa187&!sa188&!sa189&sa206&sa221 | !sa10&sa25&sa187&!sa188&sa189&!sa191&sa206&sa221 | !sa10&sa25&sa187&!sa188&sa189&sa191 | !sa10&sa25&sa187&sa188&!sa189&sa206&sa221 | !sa10&sa25&sa187&sa188&sa189 | sa10&!sa25&!sa187&sa197&sa200&sa204&sa208 | sa10&!sa25&sa187&!sa197&sa206&sa221 | sa10&!sa25&sa187&sa197&!sa200&sa206&sa221 | sa10&!sa25&sa187&sa197&sa200&!sa204&sa206&sa221 | sa10&!sa25&sa187&sa197&sa200&sa204&!sa206&sa208 | sa10&!sa25&sa187&sa197&sa200&sa204&sa206&!sa208&sa221 | sa10&!sa25&sa187&sa197&sa200&sa204&sa206&sa208 | sa10&sa25&!sa187&sa197&sa200&sa204&sa208 | sa10&sa25&sa187&!sa188&!sa189&!sa197&sa206&sa221 | sa10&sa25&sa187&!sa188&!sa189&sa197&!sa200&sa206&sa221 | sa10&sa25&sa187&!sa188&!sa189&sa197&sa200&!sa204&sa206&sa221 | sa10&sa25&sa187&!sa188&!sa189&sa197&sa200&sa204&!sa206&sa208 | sa10&sa25&sa187&!sa188&!sa189&sa197&sa200&sa204&sa206&!sa208&sa221 | sa10&sa25&sa187&!sa188&!sa189&sa197&sa200&sa204&sa206&sa208 | sa10&sa25&sa187&!sa188&sa189&!sa191&!sa197&sa206&sa221 | sa10&sa25&sa187&!sa188&sa189&!sa191&sa197&!sa200&sa206&sa221 | sa10&sa25&sa187&!sa188&sa189&!sa191&sa197&sa200&!sa204&sa206&sa221 | sa10&sa25&sa187&!sa188&sa189&!sa191&sa197&sa200&sa204&!sa206&sa208 | sa10&sa25&sa187&!sa188&sa189&!sa191&sa197&sa200&sa204&sa206&!sa208&sa221 | sa10&sa25&sa187&!sa188&sa189&!sa191&sa197&sa200&sa204&sa206&sa208 | sa10&sa25&sa187&!sa188&sa189&sa191 | sa10&sa25&sa187&sa188&!sa189&!sa197&sa206&sa221 | sa10&sa25&sa187&sa188&!sa189&sa197&!sa200&sa206&sa221 | sa10&sa25&sa187&sa188&!sa189&sa197&sa200&!sa204&sa206&sa221 | sa10&sa25&sa187&sa188&!sa189&sa197&sa200&sa204&!sa206&sa208 | sa10&sa25&sa187&sa188&!sa189&sa197&sa200&sa204&sa206&!sa208&sa221 | sa10&sa25&sa187&sa188&!sa189&sa197&sa200&sa204&sa206&sa208 | sa10&sa25&sa187&sa188&sa189
+sa197, sa197
+sa199, !sa25&!sa187&sa204&!sa215&sa224&sa236 | !sa25&!sa187&sa204&sa215&sa224 | !sa25&sa187&!sa204&sa206&sa221 | !sa25&sa187&sa204&!sa206&!sa215&sa224&sa236 | !sa25&sa187&sa204&!sa206&sa215&sa224 | !sa25&sa187&sa204&sa206&!sa215&!sa221&sa224&sa236 | !sa25&sa187&sa204&sa206&!sa215&sa221 | !sa25&sa187&sa204&sa206&sa215&!sa221&sa224 | !sa25&sa187&sa204&sa206&sa215&sa221 | sa25&!sa41&!sa187&sa204&!sa215&sa224&sa236 | sa25&!sa41&!sa187&sa204&sa215&sa224 | sa25&!sa41&sa187&!sa188&!sa189&!sa204&sa206&sa221 | sa25&!sa41&sa187&!sa188&!sa189&sa204&!sa206&!sa215&sa224&sa236 | sa25&!sa41&sa187&!sa188&!sa189&sa204&!sa206&sa215&sa224 | sa25&!sa41&sa187&!sa188&!sa189&sa204&sa206&!sa215&!sa221&sa224&sa236 | sa25&!sa41&sa187&!sa188&!sa189&sa204&sa206&!sa215&sa221 | sa25&!sa41&sa187&!sa188&!sa189&sa204&sa206&sa215&!sa221&sa224 | sa25&!sa41&sa187&!sa188&!sa189&sa204&sa206&sa215&sa221 | sa25&!sa41&sa187&!sa188&sa189&!sa191&!sa204&sa206&sa221 | sa25&!sa41&sa187&!sa188&sa189&!sa191&sa204&!sa206&!sa215&sa224&sa236 | sa25&!sa41&sa187&!sa188&sa189&!sa191&sa204&!sa206&sa215&sa224 | sa25&!sa41&sa187&!sa188&sa189&!sa191&sa204&sa206&!sa215&!sa221&sa224&sa236 | sa25&!sa41&sa187&!sa188&sa189&!sa191&sa204&sa206&!sa215&sa221 | sa25&!sa41&sa187&!sa188&sa189&!sa191&sa204&sa206&sa215&!sa221&sa224 | sa25&!sa41&sa187&!sa188&sa189&!sa191&sa204&sa206&sa215&sa221 | sa25&!sa41&sa187&!sa188&sa189&sa191 | sa25&!sa41&sa187&sa188&!sa189&!sa204&sa206&sa221 | sa25&!sa41&sa187&sa188&!sa189&sa204&!sa206&!sa215&sa224&sa236 | sa25&!sa41&sa187&sa188&!sa189&sa204&!sa206&sa215&sa224 | sa25&!sa41&sa187&sa188&!sa189&sa204&sa206&!sa215&!sa221&sa224&sa236 | sa25&!sa41&sa187&sa188&!sa189&sa204&sa206&!sa215&sa221 | sa25&!sa41&sa187&sa188&!sa189&sa204&sa206&sa215&!sa221&sa224 | sa25&!sa41&sa187&sa188&!sa189&sa204&sa206&sa215&sa221 | sa25&!sa41&sa187&sa188&sa189 | sa25&sa41&!sa187&sa204&!sa215&sa224&sa236 | sa25&sa41&!sa187&sa204&sa215&sa224 | sa25&sa41&sa187&!sa188&!sa189&!sa204&!sa206&sa207 | sa25&sa41&sa187&!sa188&!sa189&!sa204&sa206&!sa207&sa221 | sa25&sa41&sa187&!sa188&!sa189&!sa204&sa206&sa207 | sa25&sa41&sa187&!sa188&!sa189&sa204&!sa206&!sa207&!sa215&sa224&sa236 | sa25&sa41&sa187&!sa188&!sa189&sa204&!sa206&!sa207&sa215&sa224 | sa25&sa41&sa187&!sa188&!sa189&sa204&!sa206&sa207 | sa25&sa41&sa187&!sa188&!sa189&sa204&sa206&!sa207&!sa215&!sa221&sa224&sa236 | sa25&sa41&sa187&!sa188&!sa189&sa204&sa206&!sa207&!sa215&sa221 | sa25&sa41&sa187&!sa188&!sa189&sa204&sa206&!sa207&sa215&!sa221&sa224 | sa25&sa41&sa187&!sa188&!sa189&sa204&sa206&!sa207&sa215&sa221 | sa25&sa41&sa187&!sa188&!sa189&sa204&sa206&sa207 | sa25&sa41&sa187&!sa188&sa189&!sa191&!sa204&!sa206&sa207 | sa25&sa41&sa187&!sa188&sa189&!sa191&!sa204&sa206&!sa207&sa221 | sa25&sa41&sa187&!sa188&sa189&!sa191&!sa204&sa206&sa207 | sa25&sa41&sa187&!sa188&sa189&!sa191&sa204&!sa206&!sa207&!sa215&sa224&sa236 | sa25&sa41&sa187&!sa188&sa189&!sa191&sa204&!sa206&!sa207&sa215&sa224 | sa25&sa41&sa187&!sa188&sa189&!sa191&sa204&!sa206&sa207 | sa25&sa41&sa187&!sa188&sa189&!sa191&sa204&sa206&!sa207&!sa215&!sa221&sa224&sa236 | sa25&sa41&sa187&!sa188&sa189&!sa191&sa204&sa206&!sa207&!sa215&sa221 | sa25&sa41&sa187&!sa188&sa189&!sa191&sa204&sa206&!sa207&sa215&!sa221&sa224 | sa25&sa41&sa187&!sa188&sa189&!sa191&sa204&sa206&!sa207&sa215&sa221 | sa25&sa41&sa187&!sa188&sa189&!sa191&sa204&sa206&sa207 | sa25&sa41&sa187&!sa188&sa189&sa191 | sa25&sa41&sa187&sa188&!sa189&!sa204&!sa206&sa207 | sa25&sa41&sa187&sa188&!sa189&!sa204&sa206&!sa207&sa221 | sa25&sa41&sa187&sa188&!sa189&!sa204&sa206&sa207 | sa25&sa41&sa187&sa188&!sa189&sa204&!sa206&!sa207&!sa215&sa224&sa236 | sa25&sa41&sa187&sa188&!sa189&sa204&!sa206&!sa207&sa215&sa224 | sa25&sa41&sa187&sa188&!sa189&sa204&!sa206&sa207 | sa25&sa41&sa187&sa188&!sa189&sa204&sa206&!sa207&!sa215&!sa221&sa224&sa236 | sa25&sa41&sa187&sa188&!sa189&sa204&sa206&!sa207&!sa215&sa221 | sa25&sa41&sa187&sa188&!sa189&sa204&sa206&!sa207&sa215&!sa221&sa224 | sa25&sa41&sa187&sa188&!sa189&sa204&sa206&!sa207&sa215&sa221 | sa25&sa41&sa187&sa188&!sa189&sa204&sa206&sa207 | sa25&sa41&sa187&sa188&sa189
+sa2,   sa2
+sa20,  sa20
+sa200, csa16&sa199
+sa203, csa16&!sa199&sa204&sa223 | csa16&sa199
+sa204, sa204
+sa206, sa206
+sa207, sa207
+sa208, sa208
+sa209, sa209
+sa212, sa10&sa197&sa200&sa204&sa208
+sa214, sa214
+sa215, sa215
+sa216, sa10&sa197&sa200&sa204&sa208
+sa217, !csa17&sa204&!sa215&!sa224&sa236&sa238 | !csa17&sa204&!sa215&sa224&sa236 | !csa17&sa204&sa215&!sa224&sa238 | !csa17&sa204&sa215&sa224 | csa17&!sa45&sa204&!sa215&!sa224&sa236&sa238 | csa17&!sa45&sa204&!sa215&sa224&sa236 | csa17&!sa45&sa204&sa215&!sa224&sa238 | csa17&!sa45&sa204&sa215&sa224 | csa17&sa45&sa204
+sa220, sa214&sa221&sa232
+sa221, sa45&sa209&sa233
+sa223, sa204&!sa215&sa236&sa238 | sa204&sa215&sa238
+sa224, sa224
+sa23,  !csa17&sa4&!sa17&sa24&!sa60&sa352&sa355 | !csa17&sa4&!sa17&sa24&sa60&!sa352&sa378 | !csa17&sa4&!sa17&sa24&sa60&sa352&!sa355&sa378 | !csa17&sa4&!sa17&sa24&sa60&sa352&sa355 | !csa17&sa4&sa17&sa24&!sa25&!sa60&sa352&sa355 | !csa17&sa4&sa17&sa24&!sa25&sa60&!sa352&sa378 | !csa17&sa4&sa17&sa24&!sa25&sa60&sa352&!sa355&sa378 | !csa17&sa4&sa17&sa24&!sa25&sa60&sa352&sa355 | !csa17&sa4&sa17&sa24&sa25&!sa60&!sa352&sa377 | !csa17&sa4&sa17&sa24&sa25&!sa60&sa352&!sa355&sa377 | !csa17&sa4&sa17&sa24&sa25&!sa60&sa352&sa355 | !csa17&sa4&sa17&sa24&sa25&sa60&!sa352&!sa377&sa378 | !csa17&sa4&sa17&sa24&sa25&sa60&!sa352&sa377 | !csa17&sa4&sa17&sa24&sa25&sa60&sa352&!sa355&!sa377&sa378 | !csa17&sa4&sa17&sa24&sa25&sa60&sa352&!sa355&sa377 | !csa17&sa4&sa17&sa24&sa25&sa60&sa352&sa355 | csa17&!sa4&sa45&sa204 | csa17&sa4&!sa17&!sa24&sa45&sa204 | csa17&sa4&!sa17&sa24&!sa45&!sa60&sa352&sa355 | csa17&sa4&!sa17&sa24&!sa45&sa60&!sa352&sa378 | csa17&sa4&!sa17&sa24&!sa45&sa60&sa352&!sa355&sa378 | csa17&sa4&!sa17&sa24&!sa45&sa60&sa352&sa355 | csa17&sa4&!sa17&sa24&sa45&!sa60&!sa204&sa352&sa355 | csa17&sa4&!sa17&sa24&sa45&!sa60&sa204 | csa17&sa4&!sa17&sa24&sa45&sa60&!sa204&!sa352&sa378 | csa17&sa4&!sa17&sa24&sa45&sa60&!sa204&sa352&!sa355&sa378 | csa17&sa4&!sa17&sa24&sa45&sa60&!sa204&sa352&sa355 | csa17&sa4&!sa17&sa24&sa45&sa60&sa204 | csa17&sa4&sa17&!sa24&sa45&sa204 | csa17&sa4&sa17&sa24&!sa25&!sa45&!sa60&sa352&sa355 | csa17&sa4&sa17&sa24&!sa25&!sa45&sa60&!sa352&sa378 | csa17&sa4&sa17&sa24&!sa25&!sa45&sa60&sa352&!sa355&sa378 | csa17&sa4&sa17&sa24&!sa25&!sa45&sa60&sa352&sa355 | csa17&sa4&sa17&sa24&!sa25&sa45&!sa60&!sa204&sa352&sa355 | csa17&sa4&sa17&sa24&!sa25&sa45&!sa60&sa204 | csa17&sa4&sa17&sa24&!sa25&sa45&sa60&!sa204&!sa352&sa378 | csa17&sa4&sa17&sa24&!sa25&sa45&sa60&!sa204&sa352&!sa355&sa378 | csa17&sa4&sa17&sa24&!sa25&sa45&sa60&!sa204&sa352&sa355 | csa17&sa4&sa17&sa24&!sa25&sa45&sa60&sa204 | csa17&sa4&sa17&sa24&sa25&!sa45&!sa60&!sa352&sa377 | csa17&sa4&sa17&sa24&sa25&!sa45&!sa60&sa352&!sa355&sa377 | csa17&sa4&sa17&sa24&sa25&!sa45&!sa60&sa352&sa355 | csa17&sa4&sa17&sa24&sa25&!sa45&sa60&!sa352&!sa377&sa378 | csa17&sa4&sa17&sa24&sa25&!sa45&sa60&!sa352&sa377 | csa17&sa4&sa17&sa24&sa25&!sa45&sa60&sa352&!sa355&!sa377&sa378 | csa17&sa4&sa17&sa24&sa25&!sa45&sa60&sa352&!sa355&sa377 | csa17&sa4&sa17&sa24&sa25&!sa45&sa60&sa352&sa355 | csa17&sa4&sa17&sa24&sa25&sa45&!sa60&!sa204&!sa352&sa377 | csa17&sa4&sa17&sa24&sa25&sa45&!sa60&!sa204&sa352&!sa355&sa377 | csa17&sa4&sa17&sa24&sa25&sa45&!sa60&!sa204&sa352&sa355 | csa17&sa4&sa17&sa24&sa25&sa45&!sa60&sa204 | csa17&sa4&sa17&sa24&sa25&sa45&sa60&!sa204&!sa352&!sa377&sa378 | csa17&sa4&sa17&sa24&sa25&sa45&sa60&!sa204&!sa352&sa377 | csa17&sa4&sa17&sa24&sa25&sa45&sa60&!sa204&sa352&!sa355&!sa377&sa378 | csa17&sa4&sa17&sa24&sa25&sa45&sa60&!sa204&sa352&!sa355&sa377 | csa17&sa4&sa17&sa24&sa25&sa45&sa60&!sa204&sa352&sa355 | csa17&sa4&sa17&sa24&sa25&sa45&sa60&sa204
+sa231, sa214&sa221&sa232
+sa232, sa232
+sa233, sa233
+sa234, sa45&sa209&sa233
+sa236, sa236
+sa238, sa238
+sa24,  sa24
+sa249, sa249
+sa25,  !sa4&!sa10&sa204&!sa215&!sa224&sa236&sa238 | !sa4&!sa10&sa204&!sa215&sa224&sa236 | !sa4&!sa10&sa204&sa215&!sa224&sa238 | !sa4&!sa10&sa204&sa215&sa224 | !sa4&sa10&!sa45&sa204&!sa215&!sa224&sa236&sa238 | !sa4&sa10&!sa45&sa204&!sa215&sa224&sa236 | !sa4&sa10&!sa45&sa204&sa215&!sa224&sa238 | !sa4&sa10&!sa45&sa204&sa215&sa224 | !sa4&sa10&sa45&!sa47&sa204&!sa215&!sa224&sa236&sa238 | !sa4&sa10&sa45&!sa47&sa204&!sa215&sa224&sa236 | !sa4&sa10&sa45&!sa47&sa204&sa215&!sa224&sa238 | !sa4&sa10&sa45&!sa47&sa204&sa215&sa224 | !sa4&sa10&sa45&sa47 | sa4&!sa10&!sa24&sa204&!sa215&!sa224&sa236&sa238 | sa4&!sa10&!sa24&sa204&!sa215&sa224&sa236 | sa4&!sa10&!sa24&sa204&sa215&!sa224&sa238 | sa4&!sa10&!sa24&sa204&sa215&sa224 | sa4&!sa10&sa24&!sa60&sa204&!sa215&!sa224&sa236&sa238 | sa4&!sa10&sa24&!sa60&sa204&!sa215&sa224&sa236 | sa4&!sa10&sa24&!sa60&sa204&sa215&!sa224&sa238 | sa4&!sa10&sa24&!sa60&sa204&sa215&sa224 | sa4&!sa10&sa24&sa60&!sa204&sa378 | sa4&!sa10&sa24&sa60&sa204&!sa215&!sa224&!sa236&sa378 | sa4&!sa10&sa24&sa60&sa204&!sa215&!sa224&sa236&!sa238&sa378 | sa4&!sa10&sa24&sa60&sa204&!sa215&!sa224&sa236&sa238 | sa4&!sa10&sa24&sa60&sa204&!sa215&sa224&!sa236&sa378 | sa4&!sa10&sa24&sa60&sa204&!sa215&sa224&sa236 | sa4&!sa10&sa24&sa60&sa204&sa215&!sa224&!sa238&sa378 | sa4&!sa10&sa24&sa60&sa204&sa215&!sa224&sa238 | sa4&!sa10&sa24&sa60&sa204&sa215&sa224 | sa4&sa10&!sa24&!sa45&sa204&!sa215&!sa224&sa236&sa238 | sa4&sa10&!sa24&!sa45&sa204&!sa215&sa224&sa236 | sa4&sa10&!sa24&!sa45&sa204&sa215&!sa224&sa238 | sa4&sa10&!sa24&!sa45&sa204&sa215&sa224 | sa4&sa10&!sa24&sa45&!sa47&sa204&!sa215&!sa224&sa236&sa238 | sa4&sa10&!sa24&sa45&!sa47&sa204&!sa215&sa224&sa236 | sa4&sa10&!sa24&sa45&!sa47&sa204&sa215&!sa224&sa238 | sa4&sa10&!sa24&sa45&!sa47&sa204&sa215&sa224 | sa4&sa10&!sa24&sa45&sa47 | sa4&sa10&sa24&!sa45&!sa60&sa204&!sa215&!sa224&sa236&sa238 | sa4&sa10&sa24&!sa45&!sa60&sa204&!sa215&sa224&sa236 | sa4&sa10&sa24&!sa45&!sa60&sa204&sa215&!sa224&sa238 | sa4&sa10&sa24&!sa45&!sa60&sa204&sa215&sa224 | sa4&sa10&sa24&!sa45&sa60&!sa204&sa378 | sa4&sa10&sa24&!sa45&sa60&sa204&!sa215&!sa224&!sa236&sa378 | sa4&sa10&sa24&!sa45&sa60&sa204&!sa215&!sa224&sa236&!sa238&sa378 | sa4&sa10&sa24&!sa45&sa60&sa204&!sa215&!sa224&sa236&sa238 | sa4&sa10&sa24&!sa45&sa60&sa204&!sa215&sa224&!sa236&sa378 | sa4&sa10&sa24&!sa45&sa60&sa204&!sa215&sa224&sa236 | sa4&sa10&sa24&!sa45&sa60&sa204&sa215&!sa224&!sa238&sa378 | sa4&sa10&sa24&!sa45&sa60&sa204&sa215&!sa224&sa238 | sa4&sa10&sa24&!sa45&sa60&sa204&sa215&sa224 | sa4&sa10&sa24&sa45&!sa47&!sa60&sa204&!sa215&!sa224&sa236&sa238 | sa4&sa10&sa24&sa45&!sa47&!sa60&sa204&!sa215&sa224&sa236 | sa4&sa10&sa24&sa45&!sa47&!sa60&sa204&sa215&!sa224&sa238 | sa4&sa10&sa24&sa45&!sa47&!sa60&sa204&sa215&sa224 | sa4&sa10&sa24&sa45&!sa47&sa60&!sa204&sa378 | sa4&sa10&sa24&sa45&!sa47&sa60&sa204&!sa215&!sa224&!sa236&sa378 | sa4&sa10&sa24&sa45&!sa47&sa60&sa204&!sa215&!sa224&sa236&!sa238&sa378 | sa4&sa10&sa24&sa45&!sa47&sa60&sa204&!sa215&!sa224&sa236&sa238 | sa4&sa10&sa24&sa45&!sa47&sa60&sa204&!sa215&sa224&!sa236&sa378 | sa4&sa10&sa24&sa45&!sa47&sa60&sa204&!sa215&sa224&sa236 | sa4&sa10&sa24&sa45&!sa47&sa60&sa204&sa215&!sa224&!sa238&sa378 | sa4&sa10&sa24&sa45&!sa47&sa60&sa204&sa215&!sa224&sa238 | sa4&sa10&sa24&sa45&!sa47&sa60&sa204&sa215&sa224 | sa4&sa10&sa24&sa45&sa47
+sa250, sa250
+sa251, sa255&sa256&!sa264&sa265 | sa255&sa256&sa264
+sa253, sa255&sa256&!sa264&sa265 | sa255&sa256&sa264
+sa254, csa20&sa249&sa250&sa251
+sa255, sa255
+sa256, csa20&sa249&sa250&sa251
+sa258, sa255&sa256&!sa264&sa265 | sa255&sa256&sa264
+sa259, csa35&sa255&!sa256&sa260 | csa35&sa255&sa256
+sa26,  sa26
+sa260, csa35&sa255&sa256
+sa263, csa35&sa255&sa260
+sa264, sa264
+sa265, sa265
+sa268, sa268
+sa269, sa269
+sa28,  sa12
+sa284, sa284
+sa285, sa284&sa286&sa288&sa289
+sa286, sa286
+sa287, sa284&sa286&sa288&sa289
+sa288, sa288
+sa289, sa289
+sa29,  !csa1&!sa10&sa17&sa19&sa20 | !csa1&sa10&!sa17&sa32&sa34 | !csa1&sa10&sa17&!sa19&sa32&sa34 | !csa1&sa10&sa17&sa19&!sa20&sa32&sa34 | !csa1&sa10&sa17&sa19&sa20 | csa1&!sa10&!sa13&!sa14&!sa16&sa17&sa20 | csa1&!sa10&!sa13&!sa14&sa16&sa17&sa19&sa20 | csa1&!sa10&!sa13&sa14&sa17&sa19&sa20 | csa1&!sa10&sa13&sa17&sa19&sa20 | csa1&sa10&!sa13&!sa14&!sa16&!sa17&sa32&sa34 | csa1&sa10&!sa13&!sa14&!sa16&sa17&!sa20&sa32&sa34 | csa1&sa10&!sa13&!sa14&!sa16&sa17&sa20 | csa1&sa10&!sa13&!sa14&sa16&!sa17&sa32&sa34 | csa1&sa10&!sa13&!sa14&sa16&sa17&!sa19&sa32&sa34 | csa1&sa10&!sa13&!sa14&sa16&sa17&sa19&!sa20&sa32&sa34 | csa1&sa10&!sa13&!sa14&sa16&sa17&sa19&sa20 | csa1&sa10&!sa13&sa14&!sa17&sa32&sa34 | csa1&sa10&!sa13&sa14&sa17&!sa19&sa32&sa34 | csa1&sa10&!sa13&sa14&sa17&sa19&!sa20&sa32&sa34 | csa1&sa10&!sa13&sa14&sa17&sa19&sa20 | csa1&sa10&sa13&!sa17&sa32&sa34 | csa1&sa10&sa13&sa17&!sa19&sa32&sa34 | csa1&sa10&sa13&sa17&sa19&!sa20&sa32&sa34 | csa1&sa10&sa13&sa17&sa19&sa20
+sa290, csa26&sa291&sa293
+sa291, sa291
+sa292, csa26&sa291&sa293
+sa293, sa293
+sa3,   sa3
+sa30,  sa30
+sa31,  sa10&sa32&sa34
+sa315, sa315
+sa316, sa317&sa339
+sa317, !csa34&!sa220&sa315&sa319&sa320&sa321 | !csa34&sa220&sa319&sa320&sa321
+sa318, !csa34&!sa220&sa315&sa319&sa320&sa321 | !csa34&sa220&sa319&sa320&sa321
+sa319, sa319
+sa32,  sa4&sa17&sa24&sa25&sa377
+sa320, sa320
+sa321, sa321
+sa324, sa324
+sa329, sa329
+sa334, sa269&sa336&sa338
+sa336, sa336
+sa337, sa269&sa336&sa338
+sa338, sa338
+sa339, sa339
+sa34,  sa34
+sa341, !sa31&!sa62&sa64 | !sa31&sa62 | sa31
+sa35,  !csa2&sa31 | csa2
+sa350, sa350
+sa351, sa341
+sa352, sa350&sa351
+sa355, sa355
+sa357, sa4&sa24&sa352&sa355
+sa361, sa4&sa24&sa352&sa355
+sa362, sa4&sa24&sa352&sa355
+sa37,  sa37
+sa371, !sa2
+sa373, sa31
+sa374, !sa31
+sa375, !sa17&sa373 | sa17&!sa31&sa373 | sa17&sa31&!sa32&sa373 | sa17&sa31&sa32
+sa376, sa31&sa32
+sa377, sa377
+sa378, sa378
+sa38,  sa4&sa30&sa31
+sa382, sa4&sa24&sa60&sa378
+sa4,   sa4
+sa40,  !sa25&sa37&sa38 | sa25&!sa37&sa41&sa187&sa207 | sa25&sa37&!sa38&sa41&sa187&sa207 | sa25&sa37&sa38
+sa41,  sa38
+sa44,  sa10&sa45&sa47
+sa45,  !csa16&sa10&sa197&sa200&sa204&sa208 | csa16&!sa10&sa204&sa223 | csa16&sa10&!sa197&sa204&sa223 | csa16&sa10&sa197&!sa200&sa204&sa223 | csa16&sa10&sa197&sa200&sa204&!sa208&sa223 | csa16&sa10&sa197&sa200&sa204&sa208
+sa47,  sa37&sa38
+sa49,  sa10&sa45&sa47
+sa5,   sa65
+sa59,  !csa36&sa62&!sa362 | csa36&!sa362
+sa60,  sa59
+sa62,  sa62
+sa64,  sa4&sa24&sa60&sa378
+sa65,  sa62&!sa64
+sa7,   sa7
+sa8,   sa8
+sa94,  sa94
+sa95,  sa95
+sa96,  csa3&sa94&sa95
+sa97,  csa3&sa94&sa95
+sa98,  sa94&!sa101&sa108&sa324 | sa94&sa101&!sa106&sa108&sa324 | sa94&sa101&sa106
+sa99,  sa94&!sa101&sa108&sa324 | sa94&sa101&!sa106&sa108&sa324 | sa94&sa101&sa106

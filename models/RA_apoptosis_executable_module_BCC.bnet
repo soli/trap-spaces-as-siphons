@@ -1,10 +1,5 @@
 # model in BoolNet format
 # the header targets, factors is mandatory to be importable in the R package BoolNet
-# n = 431
-# Automated inference of Boolean models from molecular interaction maps using CaSQ
-# max SCC = 13
-# source node = 59 
-# frozen core =
 
 targets, factors
 csa1,   !csa44&!csa45&!csa70&sa740&sa741 | !csa44&!csa45&csa70&sa740 | !csa44&csa45&sa740 | csa44

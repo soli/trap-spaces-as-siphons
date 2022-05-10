@@ -1,10 +1,5 @@
 # model in BoolNet format
 # the header targets, factors is mandatory to be importable in the R package BoolNet
-# n = 404
-# Automated inference of Boolean models from molecular interaction maps using CaSQ
-# max SCC = 15
-# source node = 95
-# frozen core =
 
 targets, factors
 csa1,   csa63&csa77&sa777
@@ -94,18 +89,12 @@ sa116,  csa14
 sa119,  csa64
 sa12,   !sa18&sa19&sa639 | sa18&sa19
 sa120,  !sa126&sa133&sa847 | sa126&sa133
-sa121,  sa121
-sa122,  sa122
 sa123,  sa123
 sa124,  csa77
 sa125,  !sa126&sa129&sa850 | sa126&sa129
 sa126,  sa126
-sa127,  sa127
-sa128,  sa128
 sa129,  !csa56&!csa77&!sa22&sa123&sa125 | !csa56&!csa77&sa22&sa125 | !csa56&csa77&sa125 | csa56&sa125
 sa13,   !sa18&sa19&sa639 | sa18&sa19
-sa130,  sa130
-sa131,  sa131
 sa132,  sa132
 sa133,  !csa56&!csa78&sa120&sa124 | !csa56&csa78&sa120 | csa56&sa120
 sa134,  sa126&sa135
@@ -113,14 +102,12 @@ sa135,  !csa78&!sa22&sa132&sa134 | !csa78&sa22&sa134 | csa78&sa134
 sa136,  sa136
 sa138,  sa133
 sa139,  !csa20&!sa129&sa135&sa136 | !csa20&sa129&sa136 | csa20&sa136
-sa14,   sa14
 sa140,  !sa860&!sa994&sa995 | !sa860&sa994 | sa860
 sa142,  sa142
 sa143,  sa143
 sa145,  csa16
 sa147,  sa145
 sa149,  csa16
-sa15,   sa15
 sa150,  sa150
 sa151,  !csa14&!csa15&sa119 | !csa14&csa15 | csa14
 sa152,  csa77
@@ -223,11 +210,8 @@ sa449,  csa39
 sa471,  csa46
 sa472,  sa471&sa473
 sa473,  sa473
-sa477,  sa477
-sa482,  sa482
 sa483,  csa47&sa775
 sa484,  sa484
-sa485,  sa485
 sa5,    sa13
 sa515,  csa71
 sa516,  csa71
@@ -239,9 +223,7 @@ sa556,  sa556
 sa559,  csa55
 sa561,  sa563
 sa563,  csa55
-sa571,  sa571
 sa572,  csa57&sa775
-sa573,  sa573
 sa59,   sa820
 sa6,    sa26
 sa609,  sa978
@@ -271,11 +253,9 @@ sa640,  sa27
 sa641,  sa39
 sa642,  sa5
 sa643,  !sa25&sa642
-sa66,   sa66
 sa677,  sa677
 sa678,  sa678
 sa679,  !sa677&sa678&sa680 | sa677&sa680
-sa68,   sa68
 sa680,  sa683&sa685
 sa682,  sa682
 sa683,  sa683
@@ -358,7 +338,6 @@ sa904,  sa904
 sa906,  csa20
 sa907,  sa906
 sa908,  !sa907&sa912 | sa907
-sa91,   sa91
 sa911,  csa20
 sa912,  sa911
 sa916,  csa34
@@ -374,7 +353,6 @@ sa93,   sa38
 sa934,  csa34
 sa935,  sa934
 sa936,  sa936
-sa944,  sa944
 sa949,  csa39
 sa95,   !csa77&!sa25&sa643 | !csa77&sa25 | csa77
 sa950,  sa95&sa904
@@ -388,14 +366,10 @@ sa959,  sa959
 sa96,   sa95
 sa960,  sa227
 sa961,  sa960
-sa966,  sa966
 sa97,   sa95
 sa978,  sa611
 sa979,  sa159
 sa98,   sa95
-sa980,  sa980
-sa981,  sa981
-sa982,  sa982
 sa983,  sa34
 sa984,  sa38
 sa986,  sa775
