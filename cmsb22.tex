@@ -516,6 +516,7 @@ We thus plan to propose its inclusion in the CoLoMoTo effort to make it readily 
 \end{table}
 
   \sylvain{I'm not sure that \(e\) and \(s\) are very relevant, moreover they are not readily available\dots}
+  \vangiang{Indeed, they are not readily available. But if we use more meaningful words, the width of the table may exceed the width of the page. Thus, I use \(e\) and \(s\) along with the explanations shown in the table's caption. Do you have any other option?}
 
 As shown in Table~\ref{tab:pyboolnet_repo}, for most of the models of the official PyBoolNet repository\footnote{\url{https://github.com/hklarner/pyboolnet/tree/master/pyboolnet/repository}}, the results are comparable with all minimal trap spaces found very fast.
 Note however that on some very small models, our proposed method was sometimes slower than PyBoolNet, but still way under one second.
@@ -572,5 +573,6 @@ On the contrary, on every model that was a bit challenging for ByPoolNet, the ne
 
 \vangiang{Regarding the time differences, the reason might be that my implementation uses an ASP encoding based on choice rules instead of disjunctive rules or constraint rules.}
 \sylvain{Maybe\dots I don't know ASP well enough to be sure. The fact that you go through a predicate \texttt{p} which adds one level of indirection might also have some effect, I'm not sure.}
+\vangiang{Oh. I think that this may be a reason. However, I think we should still use a predicate \texttt{p(v, x)} in the paper because of the readability.}
 
 \end{document}
