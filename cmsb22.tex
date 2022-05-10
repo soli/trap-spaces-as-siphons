@@ -331,21 +331,21 @@ p_v \in S \Rightarrow \overline{p_v} \not \in S \wedge \overline{p_v} \in S \Rig
 \end{equation}for each node \(v \in V\).
 By definition, the final system fully characterizes all conflict-free siphons of the encoded Petri net.
 
-Then, we translate the above characterization into the ASP \(\mathcal{A}\) as follows.
-We introduce atom \verb|p(v, 1)| (resp. \verb|p(v, 0)|) to denote place \(p_v\) (resp. \(\overline{p_v}\)), \(\forall v \in V\). For each pair \((p, t)\) where \(p \in P, t \in T, t \in pred(p)\), we translate the rule (\ref{eq:siphon}) into the ASP rule
+Then, we translate the above characterization into the ASP \(\mathcal{L}\) as follows.
+We introduce atom \verb|p-v| (resp. \verb|n-v|) to denote place \(p_v\) (resp. \(\overline{p_v}\)), \(\forall v \in V\). The set of all atoms in \(\mathcal{L}\) is given as \(\mathcal{A} = \bigcup_{v \in V}\{\verb|p-v|, \verb|n-v|\}\). For each pair \((p, t)\) where \(p \in P, t \in T, t \in pred(p)\), we translate the rule (\ref{eq:siphon}) into the ASP rule
 \[
-\verb|p(v_1, x_1); ... ; p(v_k, x_k) :- p(v, x).|
+\verb|a_1; ... ; a_k :- a.|
 \]
-where \verb|p(v, x)| is the atom representing place \(p\) and \{\verb|p(v_1, x_1)|, \dots,\linebreak \verb|p(v_k, x_k)|\} is the set of atoms representing places in \(pred(t)\). The rule (\ref{eq:conflict}) is translated into the ASP rule
-\[\verb|:- p(v, 1), p(v, 0).|\]
+where \(\verb|a| \in \mathcal{A}\) is the atom representing place \(p\) and \(\{\verb|a_1|, \dots,\verb|a_k|\} \subseteq \mathcal{A}\) is the set of atoms representing places in \(pred(t)\). The rule (\ref{eq:conflict}) is translated into the ASP rule
+\[\verb|:- p-v, n-v.|\]
 for each \(v \in V\). This ASP rule guarantees that two places representing the same node in \(\mathcal{M}\) never belong to the same siphon of \(\mathcal{P}\), representing the conflict-freeness.
-Naturally, a Herbrand model (see, e.g,~\cite{DBLP:journals/aicom/GebserKKOSS11}) of \(\mathcal{A}\) is equivalent to a conflict-free siphon of \(\mathcal{P}\).
-To guarantee that a Herbrand model is also a stable model (an answer set), we need to add to \(\mathcal{A}\) the choice rule
+Naturally, a Herbrand model (see, e.g,~\cite{DBLP:journals/aicom/GebserKKOSS11}) of \(\mathcal{L}\) is equivalent to a conflict-free siphon of \(\mathcal{P}\).
+To guarantee that a Herbrand model is also a stable model (an answer set), we need to add to \(\mathcal{L}\) the two choice rules
 \[
-\verb|{p(v, 1) ; p(v, 0)}.|
+\verb|{p-v}. {n-v}.|
 \]
 for each \(v \in V\).
-Note that the number of atoms of \(\mathcal{A}\) is only \(2n\), whereas the ASP encoding shown in~\cite{klarner2015computing} has as many atoms as the number of prime-implicants of the Boolean model and that number might be exponential in \(n\).
+Note that the number of atoms of \(\mathcal{L}\) is only \(2n\), whereas the ASP encoding shown in~\cite{klarner2015computing} has as many atoms as the number of prime-implicants of the Boolean model and that number might be exponential in \(n\).
 
 % For illustration, we consider the Petri net encoding \(\mathcal{P}\) shown in Figure~\ref{fig:stg_and_PN}(b).
 % If \(p_{x_1}\) is in a siphon \(S\), then \(\overline{p_{x_1}}\) or \(\overline{p_{x_2}}\) should be in \(S\).
@@ -357,7 +357,7 @@ Note that the number of atoms of \(\mathcal{A}\) is only \(2n\), whereas the ASP
 % \verb|:- p(x_1, 1) , p(x_2, 0).|
 % \] Analogously for other places in \(\mathcal{P}\), we obtain the final ASP as follows:
 
-Now, a solution (simply an answer set) \(A\) of \(\mathcal{A}\) is equivalent to a conflict-free siphon \(S\) of \(\mathcal{P}\), thus a minimal trap space \(m\) of \(\mathcal{M}\). The conversion from \(A\) to \(m\) is straightforward. If \(\verb|p(v, 1)| \in A\) then \(v \in D_m\) and \(m(v) = 0\). Conversely, if \(\verb|p(v, 0)| \in A\) then \(v \in D_m\) and \(m(v) = 1\). Otherwise, \(v \not \in D_m\). Computing multiple answer sets is built into ASP solvers and the solving collection POTASSCO~\cite{DBLP:journals/aicom/GebserKKOSS11} also features the option to find set-inclusion maximal answer sets with respect to the predicates that are true. By using this built-in option, we can compute all the answer sets of \(\mathcal{A}\) in one execution.
+Now, a solution (simply an answer set) \(A \subseteq \mathcal{A}\) of \(\mathcal{L}\) is equivalent to a conflict-free siphon \(S\) of \(\mathcal{P}\), thus a trap space \(m\) of \(\mathcal{M}\). The conversion from \(A\) to \(m\) is straightforward. If \(\verb|p-v| \in A\) then \(v \in D_m\) and \(m(v) = 0\). Conversely, if \(\verb|n-v| \in A\) then \(v \in D_m\) and \(m(v) = 1\). Otherwise, \(v \not \in D_m\). Computing multiple answer sets is built into ASP solvers and the solving collection POTASSCO~\cite{DBLP:journals/aicom/GebserKKOSS11} also features the option to find set-inclusion maximal answer sets with respect to the set of atoms. Naturally, a set-inclusion maximal answer set of \(\mathcal{L}\) is equivalent to a maximal conflict-free siphon of \(\mathcal{P}\), thus a minimal trap space of \(\mathcal{M}\). By using this built-in option, we can compute all the set-inclusion maximal answer sets of \(\mathcal{L}\) (resp. all the minimal trap spaces of \(\mathcal{M}\)) in one execution.
 
 \section{Motivating example}
 
