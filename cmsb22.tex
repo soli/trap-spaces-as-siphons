@@ -72,9 +72,9 @@ This is even more true for very large models where such data is frequently missi
 Besides simulation, the analysis of such models is mostly based on attractor computation, since those correspond roughly to observable biological \emph{phenotypes}. The recent use of trap spaces~\cite{klarner2015computing} made a real breakthrough in that field allowing to consider medium-sized models that used to be out of reach.
 However, with the continuing increase in model-size, the state-of-the-art computation of minimal trap spaces based on \emph{prime-implicants} shows its limits as there can be a huge number of implicants.
 
-Petri nets were introduced in the 60’s as simple formalism for describing and analyzing information processing systems that are characterized as being concurrent, asynchronous, non-deterministic and possibly distributed~\cite{peterson1981petri,Murata1989}.
+Petri nets were introduced in the 60s as a simple formalism for describing and analyzing information processing systems that are characterized as being concurrent, asynchronous, non-deterministic and possibly distributed~\cite{peterson1981petri,Murata1989}.
 The use of Petri nets for representing biochemical reaction systems, by mapping molecular species to places and reactions to transitions, was introduced quite late in~\cite{reddy1993petri}, together with some Petri net concepts and tools for the analysis of metabolic networks.
-Siphons are such a concept but they have not been used a lot for the analysis of biochemical systems even if the practical cost of computing their minimal/maximal elements appear much more manageable than the theoretical complexity would indicate~\cite{nabli2016enumerating}.
+Siphons are such a concept, but they have not been used a lot for the analysis of biochemical systems even if the practical cost of computing their minimal/maximal elements appear much more manageable than the theoretical complexity would indicate~\cite{nabli2016enumerating}.
 
 In this article we present an alternative method to compute minimal trap spaces, and hence complex attractors, of a Boolean model. It replaces the need for prime-implicants by a completely different technique, namely the enumeration of maximal siphons in the Petri net encoding of the original model.
 After some technical preliminaries, we expose the concrete need for such a method and detail its implementation using Answer Set Programming.
@@ -200,16 +200,16 @@ We give a Boolean model \(\mathcal{M} = (V, F)\), where \(V = (x_1, x_2)\) and \
   and \(W : (P \times T) \cup (T \times P) \mapsto \mathbb{N} \) is a weight function attached to the arcs.
 
 \end{definition}
-A \emph{marking} for a Petri net is a mapping \(m : P \mapsto \mathbb{N}\) that assigns a number of tokens to each place. A place \(p\) is marked by a marking \(m\) if and only if \(m(p) > 0\). We shall write \(pred(x)\) (resp.\ \(succ(x)\)) to represent the set of vertices that have an (non-zero weighted) arc leading to (resp.\ coming from) \(x\).
+A \emph{marking} for a Petri net is a mapping \(m : P \mapsto \mathbb{N}\) that assigns a number of tokens to each place. A place \(p\) is marked by a marking \(m\) if and only if \(m(p) > 0\). We shall write \(pred(x)\) (resp.\ \(succ(x)\)) to represent the set of vertices that have a (non-zero weighted) arc leading to (resp.\ coming from) \(x\).
 
 The link between Logical models \emph{à la} Thomas and Petri nets was originally established in~\cite{chaouiya2004qualitative} in order to make available formal methods like model-checking for the analysis of such systems.
-The basic encoding into 1-safe (i.e., never more than one token in each place) nets only holds for purely Boolean models but was later extended to multi-valued models in two ways, either in \cite{chaouiya2011petri} with non 1-safe Petri nets or more recently in~\cite{chatain2014characterization} with 1-safe nets but many more places.
+The basic encoding into 1-safe (i.e., never more than one token in each place) nets only holds for purely Boolean models but was later extended to multivalued models in two ways, either in~\cite{chaouiya2011petri} with non 1-safe Petri nets or more recently in~\cite{chatain2014characterization} with 1-safe nets but many more places.
 
 Since our study is focused on Boolean models, we briefly recall the original encoding here.
 Its basis is that every node (\emph{gene}) \(v\) of the original model \(\mathcal{M} = (V, F)\) is represented by two separate places (\(p_v\) and \(\overline{p}_v\)), corresponding to its two states, active, and inactive, respectively.
-Each conjunct of the logical function that activates the \emph{gene} will lead to a transition \(t\), consuming the inactive place (i.e., a directional arc from \(\overline{p}_v\) to \(t\)), producing the active place (i.e., a directional arc from \(t\) to \(p_v\)), and with all other literals both consumed and produced (i.e., a bi-directional arc).
+Each conjunct of the logical function that activates the \emph{gene} will lead to a transition \(t\), consuming the inactive place (i.e., a directional arc from \(\overline{p}_v\) to \(t\)), producing the active place (i.e., a directional arc from \(t\) to \(p_v\)), and with all other literals both consumed and produced (i.e., a bidirectional arc).
 And conversely for the inactivation. 
-Let \(s\) be a state of the Boolean model and \(m_s\) be its the corresponding marking in the encoded Petri net. It holds that \(\forall v \in V\), \(s(v) = 0\) if and only if \(m_s(\overline{p}_v) = 1\) and \(s(v) = 1\) if and only if \(m_s(p_v) = 1\). Note also that at any marking \(m\) of the Petri net encoding a Boolean model, it always holds that \(m(p_v) + m(\overline{p}_v) = 1\).
+Let \(s\) be a state of the Boolean model and \(m_s\) be its corresponding marking in the encoded Petri net. It holds that \(\forall v \in V\), \(s(v) = 0\) if and only if \(m_s(\overline{p}_v) = 1\) and \(s(v) = 1\) if and only if \(m_s(p_v) = 1\). Note also that at any marking \(m\) of the Petri net encoding a Boolean model, it always holds that \(m(p_v) + m(\overline{p}_v) = 1\).
 
 % The main property of this encoding is that it is completely faithful w.r.t.\ the asynchronous semantics.
 % Asynchronous transitions of the original model correspond one-to-one with firings of transitions in the Petri net.
@@ -289,7 +289,7 @@ Hereafter, we formally prove that a maximal conflict-free siphon is equivalent t
 
 \begin{proof}
 
-  First, we show that if \(m\) is a trap space of \(\mathcal{M}\), then \(S\) is a conflict-free siphon of \(\mathcal{P}\) (*). If \(D_m = \emptyset\), then \(S = \emptyset\) is trivially a conflict-free siphon of \(\mathcal{P}\). Thus, we consider the case that \(D_m \neq \emptyset\) (resp. \(S \neq \emptyset\)). Assume that \(S\) is not a siphon of \(\mathcal{P}\). Then, there is a transition \(t \in T\) such that \(S\cap succ(t)\not =\emptyset\) but \(S\cap pred(t)=\emptyset\). In other words, there is a place \(p \in S\) such that \(p \in succ(t)\) but \(p \not \in pred(t)\). Let \(v\) be the corresponding node in \(\mathcal{M}\) of \(p\). By the characterization of the encoding~\cite{chaouiya2004qualitative}, there is a directional arc from \(t\) to \(p\) and a directional arc from the complementary place of \(p\) to \(t\). Without loss of generality, we assume that \(p = p_v\), then there is a directional arc from \(t\) to \(p_v\) and a directional arc from \(\overline{p}_v\) to \(t\). In addition, there is also no arc or a bi-directional arc between \(t\) and another place rather than \(p_v\) and \(\overline{p}_v\). Thus, there is no connecting arc between \(t\) and any place in \(S \setminus \{p_v\}\) because \(S\cap pred(t)\not =\emptyset\). In \(\mathcal{S}_{\mathcal{M}}[m]\), a node in \(V \setminus D_m\) can receive any Boolean value. Hence, there is a state \(s \in \mathcal{S}_{\mathcal{M}}[m]\) such that \(m_s(p') = 1, \forall p' \in pred(t) \setminus \{\overline{p_v}\}\) where \(m_s\) is the corresponding marking in \(\mathcal{P}\) of \(s\). We also have \(m_s(p_v) = 0\), leading to \(m_s(\overline{p_v}) = 1\) by the characterization of the encoding~\cite{chaouiya2004qualitative}. Now, \(t\) is enabled at marking \(m_s\). Its firing leads to a new marking \(m'_s\) such that \(m'_s(p_v) = 1\) and \(m'_s(\overline{p}_v) = 0\). Let \(s'\) be the corresponding state in \(\mathcal{M}\) of \(m'_s\). Since \(m\) is a trap space of \(\mathcal{M}\), \(s' \in \mathcal{S}_{\mathcal{M}}[m]\). Then, \(s'(v) = m(v)\), leading to \(m'_s(p_v) = 0\), which is a contradiction. Hence, \(S\) is a siphon of \(\mathcal{P}\). By the definition of a mirror, \(S\) is also a conflict-free one.
+  First, we show that if \(m\) is a trap space of \(\mathcal{M}\), then \(S\) is a conflict-free siphon of \(\mathcal{P}\) (*). If \(D_m = \emptyset\), then \(S = \emptyset\) is trivially a conflict-free siphon of \(\mathcal{P}\). Thus, we consider the case that \(D_m \neq \emptyset\) (resp. \(S \neq \emptyset\)). Assume that \(S\) is not a siphon of \(\mathcal{P}\). Then, there is a transition \(t \in T\) such that \(S\cap succ(t)\not =\emptyset\) but \(S\cap pred(t)=\emptyset\). In other words, there is a place \(p \in S\) such that \(p \in succ(t)\) but \(p \not \in pred(t)\). Let \(v\) be the corresponding node in \(\mathcal{M}\) of \(p\). By the characterization of the encoding~\cite{chaouiya2004qualitative}, there is a directional arc from \(t\) to \(p\) and a directional arc from the complementary place of \(p\) to \(t\). Without loss of generality, we assume that \(p = p_v\), then there is a directional arc from \(t\) to \(p_v\) and a directional arc from \(\overline{p}_v\) to \(t\). In addition, there is also no arc or a bidirectional arc between \(t\) and another place rather than \(p_v\) and \(\overline{p}_v\). Thus, there is no connecting arc between \(t\) and any place in \(S \setminus \{p_v\}\) because \(S\cap pred(t)\not =\emptyset\). In \(\mathcal{S}_{\mathcal{M}}[m]\), a node in \(V \setminus D_m\) can receive any Boolean value. Hence, there is a state \(s \in \mathcal{S}_{\mathcal{M}}[m]\) such that \(m_s(p') = 1, \forall p' \in pred(t) \setminus \{\overline{p_v}\}\) where \(m_s\) is the corresponding marking in \(\mathcal{P}\) of \(s\). We also have \(m_s(p_v) = 0\), leading to \(m_s(\overline{p_v}) = 1\) by the characterization of the encoding~\cite{chaouiya2004qualitative}. Now, \(t\) is enabled at marking \(m_s\). Its firing leads to a new marking \(m'_s\) such that \(m'_s(p_v) = 1\) and \(m'_s(\overline{p}_v) = 0\). Let \(s'\) be the corresponding state in \(\mathcal{M}\) of \(m'_s\). Since \(m\) is a trap space of \(\mathcal{M}\), \(s' \in \mathcal{S}_{\mathcal{M}}[m]\). Then, \(s'(v) = m(v)\), leading to \(m'_s(p_v) = 0\), which is a contradiction. Hence, \(S\) is a siphon of \(\mathcal{P}\). By the definition of a mirror, \(S\) is also a conflict-free one.
   
   Second, we show that if \(S\) is a conflict-free siphon of \(\mathcal{P}\), then \(m\) is a trap space of \(\mathcal{M}\) (**). By the definition of a mirror, \(m\) is a subspace of \(\mathcal{M}\). Let \(s\) be an arbitrary state in \(\mathcal{S}_{\mathcal{M}}[m]\) and \(m_s\) be its corresponding marking in \(\mathcal{P}\). By the characterization of the encoding~\cite{chaouiya2004qualitative}, \(m_s(p) = 0, \forall p \in S\). In any marking \(m'_s\) reachable from \(m_s\) regardless of the firing scheme of \(\mathcal{P}\), we have \(m'_s(p) = 0, \forall p \in S\) by the dynamical property on markings of a siphon~\cite{DBLP:journals/isci/LiuB16}. Equivalently, in any state \(s'\) reachable from \(s\) regardless of the update scheme of \(\mathcal{M}\), we have \(s'(v) = s(v) = m(v), \forall v \in D_m\). Then, \(s' \in \mathcal{S}_{\mathcal{M}}[m]\). By the definition of a trap space and the arbitrariness of \(s\), \(m\) is a trap space of \(\mathcal{M}\).
   
@@ -322,7 +322,8 @@ First, we show the characterization of all conflict-free siphons of the encoded 
 \begin{equation}
 \label{eq:siphon}
 p \in S \Rightarrow \bigvee_{p' \in pred(t)}p' \in S.
-\end{equation}The system of all the rules of the above form with respect to all pairs \((p, t)\) where \(p \in P, t \in T, t \in pred(p)\) fully characterizes all generic siphons of a Petri net~\cite{nabli2016enumerating}.
+\end{equation}
+The system of all the rules of the above form with respect to all pairs \((p, t)\) where \(p \in P, t \in T, t \in pred(p)\) fully characterizes all generic siphons of a Petri net~\cite{nabli2016enumerating}.
 To make \(S\) to be a conflict-free siphon, we need to add to the system the rule
 \begin{equation}
 \label{eq:conflict}
@@ -342,7 +343,8 @@ Naturally, a Herbrand model (see, e.g,~\cite{DBLP:journals/aicom/GebserKKOSS11})
 To guarantee that a Herbrand model is also a stable model (an answer set), we need to add to \(\mathcal{A}\) the choice rule
 \[
 \verb|{p(v, 1) ; p(v, 0)}.|
-\] for each \(v \in V\).
+\]
+for each \(v \in V\).
 Note that the number of atoms of \(\mathcal{A}\) is only \(2n\), whereas the ASP encoding shown in~\cite{klarner2015computing} has as many atoms as the number of prime-implicants of the Boolean model and that number might be exponential in \(n\).
 
 % For illustration, we consider the Petri net encoding \(\mathcal{P}\) shown in Figure~\ref{fig:stg_and_PN}(b).
@@ -368,7 +370,7 @@ Indeed, as stated in the article about another model of the same size:
 
 In practice, even if there is a huge number of attractors in such a model, obtaining a sample of those can reveal very useful to invalidate the model and lead to further refinement.
 In particular, it provides a feature-rich alternative to random simulations for this type of very non-deterministic model.
-Being able to detect that there are inconsistencies with published experimental data in some of the, say first 100 attractors, can lead to a much quicker Systems Biology loop: model, invalidate, refine.
+Being able to detect that there are inconsistencies with published experimental data in some of the first 1000 attractors, for instance, can lead to a much quicker Systems Biology loop: model, invalidate, refine.
 
 However, using a state-of-the-art tool like PyBoolNet~\cite{klarner2015computing} on that model actually fails at the phase of prime-implicant generation.
 And hence, it is not possible to extract any (complex) attractor at all.
@@ -440,7 +442,7 @@ These models are quite big (in size), complex (i.e., having high average in-degr
 We then applied the proposed method and PyBoolNet to computing minimal trap spaces of these real-world models.
 It is notable that unlike existing analysis shown in the literature, we did not fix specific values for source nodes (i.e., some node \(v\) such that \(f_v = v\)) in these models.
 To solve the ASP problems, we used the same ASP solver CLINGO~\cite{DBLP:journals/aicom/GebserKKOSS11} and the same configuration as that used in PyBoolNet~\cite{klarner2015computing}.
-Specifically, we used the configuration \texttt{-heuristic=Domain -enum-mod=domRec -dom-mod=3} (subset maximality, equivalent to the deprecated \texttt{--dom-pref=32 --heu=domain --dom-mod=7} used by PyBoolNet). We ran all the benchmarks on a virtual machine whose environment is CPU: Intel(R) Core(TM) i7-3630QM 2.40GHz x 4, Memory: 8 GB, Ubuntu 18.04.2 64 bit. Finally, we set a time limit as one hour for each model.
+Specifically, we used the configuration \texttt{-heuristic=Domain -enum-mod=domRec -dom-mod=3} (subset maximality, equivalent to the deprecated \texttt{--dom-pref=32 --heu=domain --dom-mod=7} used by PyBoolNet). We ran all the benchmarks on a virtual machine whose environment is CPU: Intel® Core™ i7-3630QM 2.40GHz x 4, Memory: 8 GB, Ubuntu 18.04.2 64 bit. Finally, we set a time limit as one hour for each model.
 
 Table~\ref{tab:result_real} shows the experimental results on real-world models. Hereafter, we analyze in detail the results with respect to minimal trap space computation.
 
