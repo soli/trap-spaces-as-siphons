@@ -1,74 +1,70 @@
-#url: https://research.cellcollective.org/?dashboard=true#module/36604:1/signaling-pathway-for-butanol-production-in-clostridium-beijerinckii-nrrl-b598/10
-#variables: 66
-#inputs: 13
-#outputs: 5
-#regulations: 139
-#largest scc: 42
+# model in BoolNet format
+# the header targets, factors is mandatory to be importable in the R package BoolNet
 
 targets, factors
-n3_hydroxybutyryl_CoA, ((hbd | acetoacetyl_CoA) | crt)
-AbrB, !spo0A_p
-EtfAB, NADH
-NADH, NADH
-NAD_P_H, NAD_P_H
-PTS, PTS
-Rnf, Rnf
-acetaldehyde, (ald | acetyl_CoA)
-acetate, ((ack | (glucose___PTS & acetone)) | (pta & acetone))
-acetic_acid, ((acetyl_p & acetate) & !sporulation)
-acetoacetate, ((acetoacetyl_CoA | ctfA) | ctfB)
-acetoacetyl_CoA, (((acetyl_CoA | hbd) | ctfB) | thlA)
-acetone, ((adc & !sporulation) | (acetoacetate & !sporulation))
-acetyl_CoA, (((thlA | pyruvate) | (acetate & acetoacetyl_CoA)) | pfo)
-acetyl_p, acetyl_CoA
-ack, !(spo0A_p | sporulation)
-adc, spo0A_p
-adhA, spo0A_p
-adhB, spo0A_p
-ald, (sigK | spo0A_p)
-bcd, !(spo0A_p | sporulation)
-bdhAB, spo0A_p
-buk1, !(spo0A_p | sporulation)
-butanal, ((butyryl_CoA | bdhAB) | ald)
-butanol, (((((bdhAB & !sporulation) | (adhB & !sporulation)) | (NAD_P_H & !sporulation)) | (butanal & !sporulation)) | (adhA & !sporulation))
-butyrate, (((buk1 & !butyrate) | (ptb & !butyrate)) | (glucose___PTS & !butyrate))
-butyric_acid, ((butyryl_p & butyrate) & !sporulation)
-butyryl_CoA, ((((bcd | (butyrate & acetoacetyl_CoA)) | ald) | EtfAB) | crotonoyl_CoA)
-butyryl_p, butyryl_CoA
-cell_membrane, ((butyrate & !(acetone | ethanol)) | (glucose & !((butanol | acetone) | ethanol)))
-crotonoyl_CoA, ((crt | ferredoxin) | n3_hydroxybutyryl_CoA)
-crt, !(sporulation | spo0A_p)
-ctfA, spo0A_p
-ctfB, spo0A_p
-ethanol, (((adhA & !(ald | sporulation)) | (acetaldehyde & !(ald | sporulation))) | (adhB & !(ald | sporulation)))
-fba, fba
-ferredoxin, Rnf
-gap_pgk_tpi_pgm__X276_n23705_eno, gap_pgk_tpi_pgm__X276_n23705_eno
-glucose, glucose
-glucose___PTS, (((PTS & (cell_membrane & glucose)) & !(sporulation & !cell_membrane)) | ((glucose & (cell_membrane & PTS)) & !(sporulation & !cell_membrane)))
-hbd, !(sporulation | spo0A_p)
-lactate, (pyruvate & !ferredoxin)
-lactic_acid, (lactate & !sporulation)
-pfk, pfk
-pfo, pfo
-pgi, pgi
-phosphorylation, phosphorylation
-pta, !(spo0A_p | sporulation)
-ptb, !(sporulation | spo0A_p)
-pyk, pfk
-pyruvate, ((((fba | pgi) | glucose___PTS) | pyk) | gap_pgk_tpi_pgm__X276_n23705_eno)
-sigA, sigA
-sigE, (sigF | spo0A_p)
-sigF, ((spoIIE & !(spoIIAB & !spoIIE)) | (sigH & !(spoIIAB & !spoIIE)))
-sigG, sigE
-sigH, sigA
-sigK, sigG
-spo0A, (sigK | spo0A_p)
-spo0A_p, ((((spo0A & phosphorylation) & !sporulation) | ((sigA & (spo0A & phosphorylation)) & !sporulation)) | ((phosphorylation & spo0A) & !sporulation))
-spoIIAA, (spoIIE | (spo0A_p & sigH))
-spoIIAB, ((spo0A_p & sigH) & !(spoIIAA & spoIIE))
-spoIIAB_p, ((spoIIAB & phosphorylation) | (phosphorylation & spoIIAB))
-spoIIA_p, (spoIIAB & spoIIAA)
-spoIIE, spoIIE
-sporulation, (((((spo0A_p & !cell_membrane) | (sigE & (sigA & !cell_membrane))) | (sigG & (sigA & !cell_membrane))) | (sigH & !cell_membrane)) | (sigK & (!cell_membrane & sigA)))
-thlA, spo0A_p
+S_1,   S_1
+S_10,  S_56
+S_11,  !S_29&!S_56
+S_12,  !S_8&!S_29&S_33 | S_8&!S_29
+S_13,  !S_24&!S_54&S_66 | !S_24&S_54 | S_24
+S_14,  !S_43&S_5&S_56 | S_43
+S_15,  !S_53&!S_9&!S_10&!S_29&!S_51&S_58 | !S_53&!S_9&!S_10&!S_29&S_51 | !S_53&!S_9&S_10&!S_29 | !S_53&S_9&!S_29 | S_53&!S_29
+S_16,  S_35
+S_17,  S_17
+S_18,  !S_29&!S_56
+S_19,  !S_17&!S_12&S_30&!S_31 | S_17&!S_12&!S_15&!S_31 | S_17&!S_12&S_15&S_30&!S_31
+S_2,   !S_12&S_27 | S_12&!S_18&!S_27&S_60 | S_12&!S_18&S_27 | S_12&S_18
+S_20,  S_20
+S_21,  S_21
+S_22,  S_22
+S_23,  !S_4&!S_24&!S_52&!S_55&S_63 | !S_4&!S_24&!S_52&S_55 | !S_4&!S_24&S_52 | !S_4&S_24&!S_30&!S_52&!S_55&S_63 | !S_4&S_24&!S_30&!S_52&S_55 | !S_4&S_24&!S_30&S_52 | !S_4&S_24&S_30 | S_4
+S_24,  !S_36&!S_37&!S_65&S_66 | !S_36&!S_37&S_65 | !S_36&S_37 | S_36
+S_25,  !S_37&S_63 | S_37
+S_26,  !S_56
+S_27,  !S_29&!S_56
+S_28,  !S_1&!S_38&!S_44&!S_46&S_60 | !S_1&!S_38&!S_44&S_46 | !S_1&!S_38&S_44 | !S_1&S_38 | S_1
+S_29,  !S_48&!S_5&!S_19&S_56 | !S_48&S_5&!S_19 | S_48&!S_5&!S_16&!S_19&!S_32&!S_35&S_56 | S_48&!S_5&!S_16&!S_19&!S_32&S_35 | S_48&!S_5&!S_16&!S_19&S_32 | S_48&!S_5&S_16&!S_19 | S_48&S_5&!S_19
+S_3,   !S_43&S_5&!S_7 | S_43
+S_30,  !S_11&!S_30&!S_39&S_60 | !S_11&!S_30&S_39 | S_11&!S_30
+S_31,  !S_9&!S_25&!S_29&S_58&!S_63 | !S_9&S_25&!S_29&!S_63 | S_9&!S_29&!S_63
+S_32,  S_16
+S_33,  !S_24&!S_36&S_40 | !S_24&S_36 | S_24
+S_34,  S_61
+S_35,  !S_3&S_56 | S_3
+S_36,  S_56
+S_37,  !S_2&!S_21&!S_28&S_65 | !S_2&!S_21&S_28 | !S_2&S_21 | S_2&!S_21&!S_24&!S_28&S_65 | S_2&!S_21&!S_24&S_28 | S_2&!S_21&S_24 | S_2&S_21
+S_38,  S_38
+S_39,  !S_29&!S_56
+S_4,   S_22
+S_40,  S_56
+S_41,  !S_29&S_30&S_57
+S_42,  S_2&!S_29&S_47
+S_43,  S_43
+S_44,  S_20
+S_45,  S_6&S_7
+S_46,  S_46
+S_47,  S_37
+S_48,  S_48
+S_49,  S_7&S_14
+S_5,   S_48
+S_50,  !S_32&S_56 | S_32
+S_51,  !S_10&!S_23&S_63 | !S_10&S_23 | S_10
+S_52,  !S_29&!S_56
+S_53,  S_53
+S_54,  !S_29&!S_56
+S_55,  !S_13&!S_34&S_54 | !S_13&S_34 | S_13
+S_56,  S_6&!S_29&S_50
+S_57,  S_23
+S_58,  S_56
+S_59,  S_59
+S_6,   S_6
+S_60,  S_17&S_59&S_19
+S_61,  S_61
+S_62,  S_28&!S_34
+S_63,  !S_32&S_56 | S_32
+S_64,  !S_29&S_62
+S_65,  S_56
+S_66,  !S_29&!S_56
+S_7,   !S_43&S_5&S_56 | S_43&S_5&!S_14&S_56
+S_8,   S_56
+S_9,   S_56

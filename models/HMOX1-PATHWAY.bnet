@@ -1,157 +1,149 @@
-#url: https://git-r3lab.uni.lu/covid/models/-/blob/4ed915a55687f626f9e7b3d4ada249cbaa5945b8/Executable%20Modules/SBML_qual_build/sbml/HMOX1_Pathway_stable.sbml
-#variables: 145
-#inputs: 56
-#outputs: 26
-#regulations: 228
-#largest scc: 14
-# n = 145
-# max SCC = 14
-# source node = 2
-# frozen core = no
+# model in BoolNet format
+# the header targets, factors is mandatory to be importable in the R package BoolNet
 
 targets, factors
-ABCC1, ORF9c
-ABCG2, ABCG2
-ADP_simple_molecule, (((Heme_simple_molecule_cell & ATP_simple_molecule) & H2O_simple_molecule_cell) & ABCG2)
-ALAD_Zn2__complex, ALAD_Zn2__complex
-ALAS1_ALAS2_complex, ALAS1_ALAS2_complex
-ALB_BIL_complex, (Bilirubin_simple_molecule & ABCC1)
-ASC, ASC
-ATP_simple_molecule, ATP_simple_molecule
-BACH1, !miRNA_155_rna
-BACH1_Maf_complex, (MAF & BACH1)
-BLVRA_Zn2__complex, BLVRA_rna
-BLVRA_rna, NRF2_phosphorylated_nucleus
-BLVRB, BLVRB_rna
-BLVRB_rna, NRF2_phosphorylated_nucleus
-Bilirubin_simple_molecule, (((BLVRB | BLVRA_Zn2__complex) & Biliverdin_simple_molecule) & NADPH_simple_molecule)
-Biliverdin_simple_molecule, (((Heme_simple_molecule_cell & O2_simple_molecule_cell) & NADPH_simple_molecule) & HMOX1_cell_active)
-CAND1, CAND1
-CASP1_120_197__CASP1_317_404__complex, ((NLRP3_oligomer_ASC_Caspase1_complex & CTSG) | (NLRP3_oligomer_ASC_Caspase1_complex & CTSG))
-CK2, CK2
-CO2_simple_molecule_mitochondrial_matrix, (((((SUCC_CoA_simple_molecule & Gly_simple_molecule) & H__ion_mitochondrial_matrix) & ALAS1_ALAS2_complex) & !Heme_simple_molecule_mitochondrial_matrix) & !Panhematin_drug)
-CO2_simple_molecule_mitochondrion, ((COPRO3_simple_molecule_mitochondrion & O2_simple_molecule_mitochondrion) & CPOX)
-COPRO3_simple_molecule_cell, (URO3_simple_molecule & UROD)
-COPRO3_simple_molecule_mitochondrion, COPRO3_simple_molecule_cell
-CO_simple_molecule, (((Heme_simple_molecule_cell & O2_simple_molecule_cell) & NADPH_simple_molecule) & HMOX1_cell_active)
-CPOX, CPOX
-CTSG, CTSG
-CUL3_RBX1_complex, CUL3_RBX1_complex
-CYBRD1_Heme_complex, CYBRD1_Heme_complex
-Caspase_1_Tetramer_complex, CASP1_120_197__CASP1_317_404__complex
-CoA_SH_simple_molecule, (((((SUCC_CoA_simple_molecule & Gly_simple_molecule) & H__ion_mitochondrial_matrix) & ALAS1_ALAS2_complex) & !Heme_simple_molecule_mitochondrial_matrix) & !Panhematin_drug)
-DAMPs_phenotype, DAMPs_phenotype
-Dimethly_fumarate_drug, Dimethly_fumarate_drug
-FECH, FECH_rna
-FECH_rna, NRF2_phosphorylated_nucleus
-FLVCR1_1, FLVCR1_1
-FLVCR1_2, FLVCR1_2
-FTH1_rna, NRF2_phosphorylated_nucleus
-FTL_rna, NRF2_phosphorylated_nucleus
-Fe2__ion_cell, ((((((Heme_simple_molecule_cell & O2_simple_molecule_cell) & NADPH_simple_molecule) & HMOX1_cell_active) | (Fe2__ion_default_compartment & SLC11A2)) | Fe2__ion_cell) | (Fe2__ion_endosome & MCOLN1))
-Fe2__ion_default_compartment, (((Fe2__ion_cell & SLC40A1_CP_Cu2__complex) | (Fe2__ion_cell & SLC40A1_HEPH_Cu2__complex)) | ((Fe3__ion_default_compartment & e__ion_default_compartment) & CYBRD1_Heme_complex))
-Fe2__ion_endosome, ((Fe3__ion_endosome & e__ion_endosome) & STEAP3)
-Fe2__ion_mitochondrial_matrix, Fe2__ion_mitochondrial_matrix
-Fe3__ion_default_compartment, ((((Fe2__ion_default_compartment & O2_simple_molecule_default_compartment) & H__ion_default_compartment) & SLC40A1_CP_Cu2__complex) | (((Fe2__ion_default_compartment & H__ion_default_compartment) & O2_simple_molecule_default_compartment) & SLC40A1_HEPH_Cu2__complex))
-Fe3__ion_endosome, TFRC_holoTF_complex_endosome
-Fe_3__O_OH__simple_molecule, (((Fe2__ion_cell & O2_simple_molecule_cell) & H__ion_cell) & Ferritin_complex)
-Ferritin_complex, (FTH1_rna | FTL_rna)
-Ferroptosis_phenotype, Lipid_Peroxide_simple_molecule
-GPX4, GPX4
-Gly_simple_molecule, Gly_simple_molecule
-H2O2_simple_molecule, (((COPRO3_simple_molecule_mitochondrion & O2_simple_molecule_mitochondrion) & CPOX) | ((PPGEN9_simple_molecule & O2_simple_molecule_mitochondrion) & PPO_FAD_complex))
-H2O_simple_molecule_cell, ((((Heme_simple_molecule_cell & O2_simple_molecule_cell) & NADPH_simple_molecule) & HMOX1_cell_active) | (dALA_simple_molecule_cell & ALAD_Zn2__complex))
-H2O_simple_molecule_default_compartment, ((((Fe2__ion_default_compartment & O2_simple_molecule_default_compartment) & H__ion_default_compartment) & SLC40A1_CP_Cu2__complex) | (((Fe2__ion_default_compartment & H__ion_default_compartment) & O2_simple_molecule_default_compartment) & SLC40A1_HEPH_Cu2__complex))
-HMBL_simple_molecule, ((PBG_simple_molecule & H2O_simple_molecule_cell) & HMBS_DIPY_complex)
-HMBS_DIPY_complex, HMBS_DIPY_complex
-HMOX1_cell, HMOX1_rna
-HMOX1_cell_active, (HMOX1_cell & ORF3a)
-HMOX1_rna, (Nrf2_Maf_complex & !BACH1_Maf_complex)
-H__ion_cell, (dALA_simple_molecule_cell & ALAD_Zn2__complex)
-H__ion_default_compartment, H__ion_default_compartment
-H__ion_mitochondrial_matrix, (((PRIN9_simple_molecule_mitochondrial_matrix & Fe2__ion_mitochondrial_matrix) & FECH) & !Pb2__ion)
-Heme_simple_molecule_cell, (Heme_simple_molecule_mitochondrial_matrix & FLVCR1_2)
-Heme_simple_molecule_default_compartment, ((Heme_simple_molecule_cell & FLVCR1_1) | (((Heme_simple_molecule_cell & ATP_simple_molecule) & H2O_simple_molecule_cell) & ABCG2))
-Heme_simple_molecule_mitochondrial_matrix, (((PRIN9_simple_molecule_mitochondrial_matrix & Fe2__ion_mitochondrial_matrix) & FECH) & !Pb2__ion)
-IL_18_cell, (sa463_proIL_18_cell & Caspase_1_Tetramer_complex)
-IL_18_default_compartment, IL_18_cell
-IL_1B_cell, (sa462_proIL_1B_cell & Caspase_1_Tetramer_complex)
-IL_1B_default_compartment, IL_1B_cell
-KEAP1, KEAP1
-Lipid_Peroxide_simple_molecule, (Poly_unsaturated_fatty_acid_simple_molecule & Reactive_Oxygen_Species_simple_molecule)
-Lipid_alcohol_simple_molecule, (Lipid_Peroxide_simple_molecule & GPX4)
-MAF, MAF
-MCOLN1, MCOLN1
-NADPH_simple_molecule, NADPH_simple_molecule
-NADP__simple_molecule, ((((Heme_simple_molecule_cell & O2_simple_molecule_cell) & NADPH_simple_molecule) & HMOX1_cell_active) | (((BLVRB | BLVRA_Zn2__complex) & Biliverdin_simple_molecule) & NADPH_simple_molecule))
-NCOA4, NCOA4
-NH4__ion, ((PBG_simple_molecule & H2O_simple_molecule_cell) & HMBS_DIPY_complex)
-NLRP3_Elicitor_Proteins, NLRP3_Elicitor_Proteins
-NLRP3_Elicitor_Small_Molecules_simple_molecule, NLRP3_Elicitor_Small_Molecules_simple_molecule
-NLRP3_SUGT1_HSP90_complex, (NLRP3_SUGT1_HSP90_complex | NLRP3_rna)
-NLRP3_cell, NLRP3_SUGT1_HSP90_complex
-NLRP3_cell_active, ((((((((TXNIP_NLRP3_complex | SARS_E) | PAMPs_phenotype) | DAMPs_phenotype) | SARS_Orf3a) | NLRP3_Elicitor_Small_Molecules_simple_molecule) | NLRP3_Elicitor_Proteins) | Reactive_Oxygen_Species_simple_molecule) & NLRP3_cell)
-NLRP3_oligomer_ASC_Caspase1_complex, ((NLRP3_cell_active & ASC) | (NLRP3_oligomer_ASC_Caspase1_complex & CTSG))
-NLRP3_rna, Nf_KB_Complex_complex
-NRF2_empty, NRF2_empty
-NRF2_phosphorylated_cell, ((PKC | CK2) & NRF2_empty)
-NRF2_phosphorylated_nucleus, NRF2_phosphorylated_cell
-NRF2_ubiquitinated, csa10_Ubiquitin_Ligase_Complex_complex_cell
-Nf_KB_Complex_complex, Nf_KB_Complex_complex
-Nrf2_Maf_complex, (NRF2_phosphorylated_nucleus & MAF)
-O2_simple_molecule_cell, O2_simple_molecule_cell
-O2_simple_molecule_default_compartment, O2_simple_molecule_default_compartment
-O2_simple_molecule_mitochondrion, O2_simple_molecule_mitochondrion
-ORF3a, ORF3a
-ORF9c, ORF9c
-PAMPs_phenotype, PAMPs_phenotype
-PBG_simple_molecule, (dALA_simple_molecule_cell & ALAD_Zn2__complex)
-PKC, PKC
-PPGEN9_simple_molecule, ((COPRO3_simple_molecule_mitochondrion & O2_simple_molecule_mitochondrion) & CPOX)
-PPO_FAD_complex, PPO_FAD_complex
-PRIN9_simple_molecule_mitochondrial_matrix, PRIN9_simple_molecule_mitochondrion
-PRIN9_simple_molecule_mitochondrion, ((PPGEN9_simple_molecule & O2_simple_molecule_mitochondrion) & PPO_FAD_complex)
-PSTPIP1, PSTPIP1
-PSTPIP1_trimer_Pyrin_trimer_complex, (Pyrin_trimer_complex & PSTPIP1)
-Panhematin_drug, Panhematin_drug
-Pb2__ion, Pb2__ion
-Pi_simple_molecule, (((Heme_simple_molecule_cell & ATP_simple_molecule) & H2O_simple_molecule_cell) & ABCG2)
-Poly_unsaturated_fatty_acid_simple_molecule, Poly_unsaturated_fatty_acid_simple_molecule
-Pyrin_trimer_ASC_complex, (ASC & Pyrin_trimer_complex)
-Pyrin_trimer_complex, Pyrin_trimer_complex
-Reactive_Oxygen_Species_simple_molecule, (Fe2__ion_cell | !CO_simple_molecule)
-SARS_E, SARS_E
-SARS_Orf3a, SARS_Orf3a
-SLC11A2, SLC11A2
-SLC40A1_CP_Cu2__complex, SLC40A1_rna
-SLC40A1_HEPH_Cu2__complex, SLC40A1_HEPH_Cu2__complex
-SLC40A1_rna, NRF2_phosphorylated_nucleus
-STEAP3, STEAP3
-SUCC_CoA_simple_molecule, SUCC_CoA_simple_molecule
-TFRC_TF_complex_cell, TFRC_TF_complex_endosome
-TFRC_TF_complex_endosome, TFRC_holoTF_complex_endosome
-TFRC_holoTF_complex_cell, (TFRC_TF_complex_cell | (Fe3__ion_default_compartment & Transferrin))
-TFRC_holoTF_complex_endosome, TFRC_holoTF_complex_cell
-TXNIP, (Thioredoxin_TXNIP_complex & Reactive_Oxygen_Species_simple_molecule)
-TXNIP_NLRP3_complex, (NLRP3_cell & TXNIP)
-Thioredoxin_TXNIP_complex, (TXNIP & sa364_TXN_cell)
-Transferrin, TFRC_TF_complex_cell
-URO3_simple_molecule, (HMBL_simple_molecule & UROS)
-UROD, UROD
-UROS, UROS
-csa10_Ubiquitin_Ligase_Complex_complex_cell, csa8_Ubiquitin_Ligase_Complex_complex_cell
-csa32_Ubiquitin_Ligase_Complex_complex_cell, csa10_Ubiquitin_Ligase_Complex_complex_cell
-csa8_Ubiquitin_Ligase_Complex_complex_cell, ((!CAND1 | CUL3_RBX1_complex) | ((NRF2_empty & KEAP1) & !Dimethly_fumarate_drug))
-dALA_simple_molecule_cell, dALA_simple_molecule_mitochondrial_matrix
-dALA_simple_molecule_mitochondrial_matrix, (((((SUCC_CoA_simple_molecule & Gly_simple_molecule) & H__ion_mitochondrial_matrix) & ALAS1_ALAS2_complex) & !Heme_simple_molecule_mitochondrial_matrix) & !Panhematin_drug)
-e__ion_default_compartment, e__ion_default_compartment
-e__ion_endosome, e__ion_endosome
-miRNA_155_rna, miRNA_155_rna
-sa364_TXN_cell, sa364_TXN_cell
-sa366_TXN_cell, ((Thioredoxin_TXNIP_complex & Reactive_Oxygen_Species_simple_molecule) | (sa364_TXN_cell & Reactive_Oxygen_Species_simple_molecule))
-sa382_CASP1_cell, (NLRP3_oligomer_ASC_Caspase1_complex & CTSG)
-sa385_CASP1_cell, (NLRP3_oligomer_ASC_Caspase1_complex & CTSG)
-sa460_proIL_1B_cell, (sa462_proIL_1B_cell & Caspase_1_Tetramer_complex)
-sa461_proIL_18_cell, (sa463_proIL_18_cell & Caspase_1_Tetramer_complex)
-sa462_proIL_1B_cell, sa462_proIL_1B_cell
-sa463_proIL_18_cell, sa463_proIL_18_cell
+csa10,  csa8
+csa101, csa101
+csa11,  !sa144&sa145 | sa144
+csa12,  sa140
+csa13,  csa13
+csa14,  csa14
+csa15,  csa15
+csa17,  csa17
+csa19,  csa19
+csa2,   sa5&sa43
+csa21,  sa150
+csa22,  csa22
+csa27,  !csa31&sa138&sa214 | csa31
+csa29,  csa27
+csa3,   sa32&sa39
+csa30,  csa29
+csa31,  csa30
+csa32,  csa10
+csa4,   sa5&sa44
+csa5,   csa5
+csa69,  sa363&sa364
+csa72,  !csa72&sa367 | csa72
+csa74,  sa362&sa363
+csa78,  !csa78&sa375&sa468 | csa78&!sa375&sa381 | csa78&sa375&!sa381&sa468 | csa78&sa375&sa381
+csa8,   !csa19&!sa6&!sa189 | !csa19&sa6&!sa78&!sa189 | !csa19&sa6&sa78&!sa126 | !csa19&sa6&sa78&sa126&!sa189 | csa19
+csa83,  csa85&sa377
+csa85,  csa85
+csa88,  csa85&sa375
+csa93,  csa94
+csa94,  csa78&sa381
+sa101,  csa14&sa72
+sa104,  csa14&sa72
+sa105,  csa15&sa26&sa101
+sa107,  csa15&sa26&sa101
+sa111,  sa105&sa112
+sa112,  sa112
+sa113,  sa111&sa114
+sa114,  sa114
+sa115,  sa113
+sa116,  sa115&sa118&sa121
+sa117,  csa17&sa116&sa121
+sa118,  sa118
+sa121,  sa121
+sa122,  sa115&sa118&sa121
+sa123,  !csa17&sa115&sa118&sa121 | csa17&!sa115&sa116&sa121 | csa17&sa115&!sa116&sa118&sa121 | csa17&sa115&sa116&sa121
+sa126,  sa126
+sa127,  sa130
+sa128,  sa128
+sa130,  sa128&sa165
+sa135,  !csa12&!csa13&csa22&sa28 | !csa12&csa13&!csa22&sa138&sa195 | !csa12&csa13&csa22&!sa28&sa138&sa195 | !csa12&csa13&csa22&sa28 | csa12&!csa13&sa28 | csa12&csa13&!sa28&sa138&sa195 | csa12&csa13&sa28
+sa138,  !csa12&csa22&sa135&sa156&sa157 | csa12&sa135&sa156&sa157
+sa140,  sa43
+sa141,  sa141
+sa144,  sa43
+sa145,  sa43
+sa147,  sa43
+sa150,  sa43
+sa151,  sa43
+sa152,  csa11&sa24&sa28&sa104
+sa156,  sa156
+sa157,  sa157
+sa158,  !csa12&csa22&sa135&sa156&sa157 | csa12&sa135&sa156&sa157
+sa164,  sa164
+sa165,  !sa28&!sa31 | sa28
+sa166,  sa130&sa167
+sa167,  sa167
+sa168,  sa29&sa169
+sa169,  sa169
+sa171,  sa171
+sa189,  sa189
+sa190,  sa190
+sa195,  sa195
+sa196,  sa196
+sa197,  sa21&!sa26&sa196 | sa21&sa26&!sa196&sa198&sa203 | sa21&sa26&sa196
+sa198,  sa198
+sa20,   sa20
+sa203,  sa203
+sa204,  sa21&sa26&sa198&sa203
+sa205,  sa21&sa26&sa198&sa203
+sa21,   sa23&sa30
+sa214,  csa31
+sa22,   sa21&sa24&sa25&sa168
+sa229,  csa29
+sa23,   sa53&sa54&sa55&!sa56
+sa238,  sa229&sa242&sa243
+sa24,   sa24
+sa241,  sa241
+sa242,  sa242
+sa243,  sa243
+sa249,  csa10
+sa25,   sa25
+sa26,   !csa14&sa21&sa24&sa25&sa168 | csa14&!sa21&sa72 | csa14&sa21&!sa24&sa72 | csa14&sa21&sa24&!sa25&sa72 | csa14&sa21&sa24&sa25&!sa72&sa168 | csa14&sa21&sa24&sa25&sa72
+sa27,   !csa21&!sa21&sa22&sa25&sa36 | !csa21&sa21&!sa22&sa24&sa25&sa168 | !csa21&sa21&sa22&!sa24&sa25&sa36 | !csa21&sa21&sa22&sa24&sa25&!sa36&sa168 | !csa21&sa21&sa22&sa24&sa25&sa36 | csa21&!sa21&sa22&sa25 | csa21&sa21&!sa22&sa24&sa25&sa168 | csa21&sa21&sa22&sa25
+sa28,   !sa21&!sa28&!sa135&sa238&sa241 | !sa21&!sa28&sa135&!sa164&sa238&sa241 | !sa21&!sa28&sa135&sa164 | !sa21&sa28 | sa21&!sa24&!sa28&!sa135&sa238&sa241 | sa21&!sa24&!sa28&sa135&!sa164&sa238&sa241 | sa21&!sa24&!sa28&sa135&sa164 | sa21&!sa24&sa28 | sa21&sa24&!sa25&!sa28&!sa135&sa238&sa241 | sa21&sa24&!sa25&!sa28&sa135&!sa164&sa238&sa241 | sa21&sa24&!sa25&!sa28&sa135&sa164 | sa21&sa24&!sa25&sa28 | sa21&sa24&sa25&!sa28&!sa135&!sa168&sa238&sa241 | sa21&sa24&sa25&!sa28&!sa135&sa168 | sa21&sa24&sa25&!sa28&sa135&!sa164&!sa168&sa238&sa241 | sa21&sa24&sa25&!sa28&sa135&!sa164&sa168 | sa21&sa24&sa25&!sa28&sa135&sa164 | sa21&sa24&sa25&sa28
+sa29,   sa50
+sa3,    sa6&!sa190&sa526 | sa6&sa190
+sa30,   sa30
+sa31,   sa21&sa24&sa25&sa168
+sa32,   !csa21&sa22&sa25&sa36 | csa21&sa22&sa25
+sa36,   sa151
+sa362,  csa72
+sa363,  csa69&sa165
+sa364,  sa364
+sa366,  !csa69&sa165&sa364 | csa69&sa165
+sa367,  csa101
+sa375,  sa375
+sa377,  sa377
+sa381,  sa381
+sa382,  csa78&sa381
+sa385,  csa78&sa381
+sa39,   sa171
+sa43,   sa3
+sa44,   !sa48
+sa460,  csa93&sa462
+sa461,  csa93&sa463
+sa462,  sa462
+sa463,  sa463
+sa464,  csa93&sa462
+sa465,  csa93&sa463
+sa466,  sa464
+sa467,  sa465
+sa468,  !csa74&!sa165&sa362&!sa469&!sa471&!sa494&!sa495&!sa527&sa528 | !csa74&!sa165&sa362&!sa469&!sa471&!sa494&!sa495&sa527 | !csa74&!sa165&sa362&!sa469&!sa471&!sa494&sa495 | !csa74&!sa165&sa362&!sa469&!sa471&sa494 | !csa74&!sa165&sa362&!sa469&sa471 | !csa74&!sa165&sa362&sa469 | !csa74&sa165&sa362 | csa74&sa362
+sa469,  sa469
+sa471,  sa471
+sa48,   sa48
+sa494,  sa494
+sa495,  sa495
+sa5,    sa5
+sa50,   csa2&!csa4
+sa526,  sa526
+sa527,  sa527
+sa528,  sa528
+sa53,   sa147
+sa54,   sa117
+sa55,   sa55
+sa56,   sa56
+sa57,   sa53&sa54&sa55&!sa56
+sa6,    sa6
+sa65,   sa65
+sa68,   sa68
+sa69,   csa5&!sa20&!sa23&sa57&sa65&sa68
+sa70,   csa5&!sa20&!sa23&sa57&sa65&sa68
+sa71,   csa5&!sa20&!sa23&sa57&sa65&sa68
+sa72,   sa69
+sa78,   sa78

@@ -1,78 +1,74 @@
-#url: https://research.cellcollective.org/?dashboard=true#module/4601:1/colitisassociated-colon-cancer/1
-#variables: 70
-#inputs: 1
-#outputs: 2
-#regulations: 153
-#largest scc: 65
+# model in BoolNet format
+# the header targets, factors is mandatory to be importable in the R package BoolNet
 
 targets, factors
-AKT, (PI3K & !(CASP3 | PP2A))
-APC, APC
-ASK1, (ROS & !P21)
-ATM, ROS
-Apoptosis, CASP3
-BAX, (((TBID & PP2A) & !AKT) | ((P53 & PP2A) & !AKT))
-BCATENIN, !(APC & GSK3B)
-BCL2, ((STAT3 & !(PP2A | P53)) | (NFKB & !(PP2A | P53)))
-CASP3, ((CASP8 & !IAP) | (CASP9 & !IAP))
-CASP8, (FADD_ & !(CFLIP | P21))
-CASP9, (CYTC & !(IAP | P21))
-CCL2, NFKB
-CERAMIDE, (SMASE & !SPHK1)
-CFLIP, NFKB
-COX2, (TNFR & S1P)
-CTL, (IFNG & !TGFB)
-CYCLIND1, (((BCATENIN & !GSK3B) | (STAT3 & !GSK3B)) | (JUN & !GSK3B))
-CYTC, MOMP
-DC, ((CCL2 & !IL10) | (TNFA & !IL10))
-EP2, PGE2
-ERK, MEK
-FADD_, (FAS | TNFR)
-FAS, CTL
-FOS, ERK
-GP130, IL6
-GSK3B, !(AKT | EP2)
-IAP, ((NFKB & !SMAC) | (STAT3 & !SMAC))
-IFNG, (CTL | TH1)
-IKB, !IKK
-IKK, (AKT | (TNFR & S1P))
-IL10, (TREG | TH2)
-IL12, (DC | MAC)
-IL4, (DC | TH2)
-IL6, ((MAC | DC) | NFKB)
-JAK, (GP130 & !SOCS)
-JNK, (MEKK1 | ASK1)
-JUN, (((BCATENIN & JNK) & !GSK3B) | ((ERK & JNK) & !GSK3B))
-MAC, ((CCL2 & !IL10) | (IFNG & !IL10))
-MDM2, ((P53 & AKT) & !(ATM | GSK3B))
-MEK, (RAF | ROS)
-MEKK1, ((TNFR | TGFR) | CERAMIDE)
-MOMP, (((TBID & !BCL2) | (BAX & !BCL2)) | (CERAMIDE & !BCL2))
-NFKB, !IKB
-P21, ((SMAD & !(GSK3B | CASP3)) | (P53 & !(GSK3B | CASP3)))
-P53, (((ATM & !MDM2) | (JNK & !MDM2)) | (PTEN & !MDM2))
-PGE2, COX2
-PI3K, ((EP2 & !PTEN) | (RAS & !PTEN))
-PP2A, (CERAMIDE & !AKT)
-PTEN, (P53 & !(NFKB | JUN))
-Proliferation, ((CYCLIND1 & FOS) & !(P21 | CASP3))
-RAF, (CERAMIDE | RAS)
-RAS, (EP2 | GP130)
-ROS, (TNFR & !SOD)
-S1P, SPHK1
-SMAC, MOMP
-SMAD, (TGFR & !JUN)
-SMAD7, (NFKB | SMAD)
-SMASE, (FADD_ | P53)
-SOCS, STAT3
-SOD, (NFKB | STAT3)
-SPHK1, (ERK | TNFR)
-STAT3, JAK
-TBID, (CASP8 & !BCL2)
-TGFB, TREG
-TGFR, (TGFB & !SMAD7)
-TH1, ((IFNG & !((TGFB | IL4) | IL10)) | (IL12 & !((TGFB | IL4) | IL10)))
-TH2, (IL4 & !(IFNG | TGFB))
-TNFA, MAC
-TNFR, TNFA
-TREG, ((DC & !IL6) | (IL10 & !IL6))
+S_1,   !S_12&S_18 | S_12
+S_10,  S_28&!S_36&!S_57
+S_11,  !S_12&S_29&!S_42&S_56 | S_12&!S_42&S_56
+S_12,  !S_6&!S_9&!S_22&S_70 | !S_6&!S_9&S_22 | S_6&!S_9
+S_13,  S_46
+S_14,  !S_19
+S_15,  S_60
+S_16,  S_15&S_65
+S_17,  !S_46&S_55 | S_46
+S_18,  !S_2&S_15 | S_2
+S_19,  !S_15&S_42 | S_15&!S_42&S_65 | S_15&S_42
+S_2,   S_27
+S_20,  !S_46&!S_64&S_68 | !S_46&S_64 | S_46
+S_21,  !S_48&S_63 | S_48
+S_22,  S_12&!S_38&!S_46
+S_23,  !S_4&S_25 | S_4
+S_24,  !S_8&!S_11&!S_29&S_45 | !S_8&!S_11&S_29 | !S_8&S_11
+S_25,  !S_32&S_45 | S_32
+S_26,  !S_27&S_61 | S_27
+S_27,  S_26&!S_58
+S_28,  S_24
+S_29,  !S_8&S_49
+S_3,   !S_33&!S_42
+S_30,  !S_3&!S_38&!S_39&S_55 | !S_3&!S_38&S_39 | !S_3&S_38
+S_31,  !S_22&!S_32&S_33 | !S_22&S_32
+S_32,  !S_33&S_67 | S_33
+S_33,  S_51
+S_34,  !S_15&!S_44&S_45 | !S_15&S_44 | S_15
+S_35,  !S_10&!S_36&S_49 | S_10&!S_36
+S_36,  !S_46&!S_54&S_55 | S_46&!S_54
+S_37,  !S_41&S_46 | S_41
+S_38,  !S_3&S_6&!S_39&S_52 | !S_3&S_6&S_39
+S_39,  !S_66 | S_66&!S_3
+S_4,   S_15&!S_17
+S_40,  !S_50&S_67
+S_41,  !S_38&S_44
+S_42,  S_31&!S_35&!S_56
+S_43,  S_46
+S_44,  !S_37&S_58
+S_45,  S_1&!S_69
+S_46,  !S_14
+S_47,  S_35
+S_48,  !S_26&!S_58&S_62
+S_49,  S_18&!S_43&!S_57
+S_5,   S_4&!S_57
+S_50,  S_55
+S_51,  S_16
+S_52,  S_23
+S_53,  S_52
+S_54,  S_24
+S_55,  S_40
+S_56,  !S_42&S_45
+S_57,  !S_3&!S_12&!S_35&S_41 | !S_3&S_12&!S_35
+S_58,  S_63
+S_59,  !S_64&S_68 | S_64
+S_6,   !S_5&S_34 | S_5
+S_60,  S_68
+S_61,  !S_21&!S_26&!S_58&S_59&!S_62 | !S_21&S_26&!S_58&!S_62
+S_62,  !S_48&S_64 | S_48
+S_63,  !S_20&!S_21&S_64 | !S_20&S_21
+S_64,  !S_13&!S_21&S_60 | S_13&!S_21
+S_65,  S_69
+S_66,  S_66
+S_67,  S_20
+S_68,  !S_13&!S_21&S_26 | S_13&!S_21
+S_69,  !S_15&S_52 | S_15
+S_7,   S_30&!S_35&S_53&!S_57
+S_70,  S_4
+S_8,   !S_12&!S_46&S_55&!S_56 | !S_12&S_46&!S_56
+S_9,   !S_3&S_12&S_42&!S_70

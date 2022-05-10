@@ -1,56 +1,7 @@
 # model in BoolNet format
 # the header targets, factors is mandatory to be importable in the R package BoolNet
-# Computational Verification of Large Logical Models—Application to the Prediction of T Cell Response to Checkpoint Inhibitors
-# n = 218
-# max SCC = 14
-# source node = 34
-# frozen core = 
 
 targets, factors
-DUSP5,                       DUSP5 & !DUSP5
-INPP5D,                      DUSP5 & !DUSP5
-Th2,                         DUSP5 & !DUSP5
-f_14_3_3,                    DUSP5 & !DUSP5
-f_ABI1,                      DUSP5 | !DUSP5
-f_ABI2,                      DUSP5 | !DUSP5
-f_ACTR2,                     DUSP5 | !DUSP5
-f_ACTR3,                     DUSP5 | !DUSP5
-f_AKAP5,                     DUSP5 & !DUSP5
-f_APAF1,                     DUSP5 & !DUSP5
-f_Axin1,                     DUSP5 & !DUSP5
-f_BAIAP2,                    DUSP5 | !DUSP5
-f_BAT3,                      DUSP5 & !DUSP5
-f_BBC3,                      DUSP5 & !DUSP5
-f_BRK1,                      DUSP5 | !DUSP5
-f_CABIN1,                    DUSP5 & !DUSP5
-f_CRACR2A,                   DUSP5 | !DUSP5
-f_CYFIP1,                    DUSP5 | !DUSP5
-f_DEPTOR,                    DUSP5 & !DUSP5
-f_DUSP10,                    DUSP5 & !DUSP5
-f_DUSP2,                     DUSP5 & !DUSP5
-f_DUSP22,                    DUSP5 & !DUSP5
-f_DUSP4,                     DUSP5 & !DUSP5
-f_DUSP6,                     DUSP5 & !DUSP5
-f_Glucose,                   DUSP5 | !DUSP5
-f_MAL,                       DUSP5 | !DUSP5
-f_MDM2,                      DUSP5 & !DUSP5
-f_MLST8,                     DUSP5 | !DUSP5
-f_MTOR,                      DUSP5 | !DUSP5
-f_NCKAP1,                    DUSP5 | !DUSP5
-f_NCKAP1L,                   DUSP5 | !DUSP5
-f_PRDX1,                     DUSP5 & !DUSP5
-f_PRKDC,                     DUSP5 | !DUSP5
-f_PTPRJ,                     DUSP5 & !DUSP5
-f_RAB11A,                    DUSP5 | !DUSP5
-f_RCAN1,                     DUSP5 & !DUSP5
-f_RICTOR,                    DUSP5 | !DUSP5
-f_ROS,                       DUSP5 & !DUSP5
-f_SMAD3,                     DUSP5 & !DUSP5
-f_Th1,                       DUSP5 & !DUSP5
-f_UNC119,                    DUSP5 | !DUSP5
-f_WASF2,                     DUSP5 | !DUSP5
-i_cAMP,                      DUSP5 & !DUSP5
-
 ABL1,                        !f_PRDX1&!LCK_activity&FYN | !f_PRDX1&LCK_activity
 AKT1,                        f_PRKDC&!PP2A&PDPK1&mTORC2
 ARP2_3,                      f_ACTR2&f_ACTR3&!WAS&WAVE_cplx | f_ACTR2&f_ACTR3&WAS
@@ -94,7 +45,7 @@ Caspase9,                    f_APAF1&CYCS
 DAG,                         !PIP2&DAG | PIP2&!DAG&PLCG1 | PIP2&DAG
 DGKA,                        FOXO1&NFAT_nuc
 DUSP1,                       CREBBP&CREB1
-
+DUSP5,                       0
 Differentiation,             IL2
 ELK1,                        !MAPK3&!MAPK1&!JNK&p38 | !MAPK3&!MAPK1&JNK | !MAPK3&MAPK1 | MAPK3
 FOS,                         ELK1&CREB1
@@ -120,7 +71,7 @@ IKBKB,                       !MAP3K7&MAP3K3 | MAP3K7
 IKBKG,                       CARD11&MALT1
 IL2,                         NF_KB&NFAT_nuc&FOS&JUN
 INF2,                        !CDC42&RAC1 | CDC42
-
+INPP5D,                      0
 IP3,                         !PIP2&IP3 | PIP2&!IP3&PLCG1 | PIP2&IP3
 IP3R1,                       IP3
 ITK,                         !CD28&LCK_activity&LCP2&PIP3 | CD28&LCK_activity&PIP3
@@ -200,7 +151,7 @@ TIM3,                        i_LGALS9&f_Th1&!f_BAT3
 TP53,                        !f_MDM2 | f_MDM2&p38
 TSC1_TSC2,                   !AKT1&!RPS6KA1
 TXK,                         FYN&LCP2
-
+Th2,                         0
 Treg,                        FOXP3
 Triglyceride_synthesis,      f_Glucose
 VAV1,                        !CD6&!PTPN22&!CBL&!CBLB&!ZAP70&!LCP2&ITK&PIP3&!HCLS1&SH3BP2 | !CD6&!PTPN22&!CBL&!CBLB&!ZAP70&!LCP2&ITK&PIP3&HCLS1 | !CD6&!PTPN22&!CBL&!CBLB&!ZAP70&LCP2&ITK&PIP3 | !CD6&!PTPN22&!CBL&!CBLB&ZAP70&!LCP2&PIP3&!HCLS1&SH3BP2 | !CD6&!PTPN22&!CBL&!CBLB&ZAP70&!LCP2&PIP3&HCLS1 | !CD6&!PTPN22&!CBL&!CBLB&ZAP70&LCP2&PIP3 | CD6&!PTPN22&!CBL&!CBLB&!ZAP70&ITK&PIP3 | CD6&!PTPN22&!CBL&!CBLB&ZAP70&PIP3
@@ -208,7 +159,45 @@ VDAC1,                       !BCL2L1
 WAS,                         PIP2&NCK1&CDC42
 WAVE_cplx,                   !f_NCKAP1L&f_NCKAP1&f_BAIAP2&f_CYFIP1&f_BRK1&f_WASF2&!f_ABI1&f_ABI2&PIP3&RAC1&ABL1 | !f_NCKAP1L&f_NCKAP1&f_BAIAP2&f_CYFIP1&f_BRK1&f_WASF2&f_ABI1&PIP3&RAC1&ABL1 | f_NCKAP1L&f_BAIAP2&f_CYFIP1&f_BRK1&f_WASF2&!f_ABI1&f_ABI2&PIP3&RAC1&ABL1 | f_NCKAP1L&f_BAIAP2&f_CYFIP1&f_BRK1&f_WASF2&f_ABI1&PIP3&RAC1&ABL1
 ZAP70,                       pTCR&LCK_activity&!PTPN6&!PTPN22&!PTPN11&!PP2A&!CBL&!INPP5D
-
+f_14_3_3,                    0
+f_ABI1,                      1
+f_ABI2,                      1
+f_ACTR2,                     1
+f_ACTR3,                     1
+f_AKAP5,                     0
+f_APAF1,                     0
+f_Axin1,                     0
+f_BAIAP2,                    1
+f_BAT3,                      0
+f_BBC3,                      0
+f_BRK1,                      1
+f_CABIN1,                    0
+f_CRACR2A,                   1
+f_CYFIP1,                    1
+f_DEPTOR,                    0
+f_DUSP10,                    0
+f_DUSP2,                     0
+f_DUSP22,                    0
+f_DUSP4,                     0
+f_DUSP6,                     0
+f_Glucose,                   1
+f_MAL,                       1
+f_MDM2,                      0
+f_MLST8,                     1
+f_MTOR,                      1
+f_NCKAP1,                    1
+f_NCKAP1L,                   1
+f_PRDX1,                     0
+f_PRKDC,                     1
+f_PTPRJ,                     0
+f_RAB11A,                    1
+f_RCAN1,                     0
+f_RICTOR,                    1
+f_ROS,                       0
+f_SMAD3,                     0
+f_Th1,                       0
+f_UNC119,                    1
+f_WASF2,                     1
 i_ALCAM,                     i_ALCAM
 i_CD274,                     i_CD274
 i_CD5,                       i_CD5
@@ -219,7 +208,7 @@ i_LGALS9,                    i_LGALS9
 i_OX40L,                     i_OX40L
 i_PDCD1LG2,                  i_PDCD1LG2
 i_TNFRSF14,                  i_TNFRSF14
-
+i_cAMP,                      0
 i_pMHCII_affinity,           i_pMHCII_affinity
 i_pMHCII_agonist,            i_pMHCII_agonist
 i_pMHCII_binding,            i_pMHCII_binding

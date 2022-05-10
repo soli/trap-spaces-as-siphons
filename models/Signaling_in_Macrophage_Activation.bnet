@@ -1,329 +1,325 @@
-#url: https://doi.org/10.1186/1752-0509-2-36
-#variables: 321
-#inputs: 19
-#outputs: 62
-#regulations: 533
-#largest scc: 18
+# model in BoolNet format
+# the header targets, factors is mandatory to be importable in the R package BoolNet
 
 targets, factors
-APAF1, External_Activator
-APAF1_CYCS, (APAF1 & CYCScytoplasm)
-APAF1gene, TP53nucleus
-ATF2, External_Activator
-Apoptosis, (((DNA_Fragmentation | Inactive_DNA_Repair) | Inactivation_of_Protein_Synthesis) | Cell_Shrinkage)
-Apoptosome, (APAF1_CYCS & CASP9)
-BAD, Mitochondrial_Activator
-BAG4, (External_Activator | TNF_BAG4_TNFRSF1A)
-BAG4_TNFRSF1A, (BAG4 & TNFRSF1A)
-BAK1, Mitochondrial_Activator
-BAK1gene, IRF5_IRF5nucleus
-BAX, Mitochondrial_Activator
-BBC3gene, TP53nucleus
-BCL2, Mitochondrial_Activator
-BCL2A1, RELAp65_NFBK1p50nucleus
-BCL2A1gene, RELAp65_NFBK1p50nucleus
-BCL2L1_BAD, (BCL2L1mitochondria & BAD)
-BCL2L1gene, RELAp65_NFBK1p50nucleus
-BCL2L1mitochondria, Mitochondrial_Activator
-BCL2_BAX, (BCL2 & BAX)
-BCL3, External_Activator
-BCL3_NFKB2p52_NFKB2p52, (BCL3 & NFKB2p52_NFKB2p52nucleus)
-BID, External_Activator
-BIRC2, External_Activator
-BIRC3gene, RELAp65_NFBK1p50nucleus
-BIRC4cytoplasm, !(DIABLOcytoplasm | HTRA2cytoplasm)
-BIRC4gene, RELAp65_NFBK1p50nucleus
-Bacteria, Bacteria
-CASP1, (ProCASP1 & CASP4)
-CASP10, (ProCASP10 & TNF_TNFRSF1A_FADD_TRADD)
-CASP2, (ProCASP2 & Fragmented_DNAcytoplasm)
-CASP3_Activator, CASP3_Activator
-CASP3cytoplasm, (ProCASP3 & ((Apoptosome | CASP8) | CASP4))
-CASP3gene, (IRF5_IRF5nucleus | CASP3cytoplasm)
-CASP3nucleus, CASP3cytoplasm
-CASP4, ProCASP4
-CASP6_Activator, CASP6_Activator
-CASP6cytoplasm, (ProCASP6 & CASP9)
-CASP6nucleus, CASP6cytoplasm
-CASP7_Activator, CASP7_Activator
-CASP7cytoplasm, (ProCASP7 & ((Apoptosome | CASP8) | CASP10))
-CASP7nucleus, CASP7cytoplasm
-CASP8, (ProCASP8 & (((FASLG_FAS_FADD_FAF1_DAXX_CFLAR | FASLG_FAS_FADD_FAF1_DAXX) | TNFSF10_TNFRSF10A_FADD) | TNFSF10_TNFSF10B_FADD))
-CASP9, CASP6_Activator
-CBP, (EP300 & CREBBP)
-CCL5gene, IRF1_IRF1nucleus
-CD40, External_Activator
-CD40LG, CD40LG
-CD40_CD40LG, (CD40 & CD40LG)
-CD40_CD40LG_TRAF3, (CD40_CD40LG & TRAF3)
-CFLAR, External_Activator
-CFLARgene, RELAp65_NFBK1p50nucleus
-CHUK, External_Activator
-CHUK_CHUK, (CHUK & MAP3K14)
-CIITAgene, (IRF2 | IRF1_IRF1nucleus)
-CKII, IRF1_IRF1_Activator
-CREBBP, External_Activator
-CXCL10gene, ((CBP & (IRF3_IRF7nucleus | IRF3_IRF3nucleus)) | ISGF3nucleus)
-CXCL11gene, IRF5_IRF5nucleus
-CXCL9gene, STAT1_STAT1nucleus_p2
-CYBBgene, (IRF8 & SPI1)
-CYCScytoplasm, (CYCSmytochondria & ((BAK1 | tBID) | BAX))
-CYCSmytochondria, Mitochondrial_Activator
-Cell_Shrinkage, (cLMNA | cGAS2)
-DAXX, External_Activator
-DFFA, External_Activator
-DIABLOcytoplasm, (DIABLOmitochondria & ((BAK1 | tBID) | BAX))
-DIABLOmitochondria, Mitochondrial_Activator
-DNA, External_Activator
-DNA_Fragmentation, (Fragmented_DNAnucleus | IDFFA)
-Diacyl_Lipopeptides, Bacteria
-EIF2AK2_PRKRA, (EIF2AK2cytoplasm & PRKRA)
-EIF2AK2cytoplasm, dsRNA
-EIF2AK2gene, (ISGF3nucleus | IRF1_IRF1nucleus)
-EIF2S1, EIF2AK2gene
-ENDOGcytoplasm, (tBID & ENDOGmitochondria)
-ENDOGmitochondria, Mitochondrial_Activator
-ENDOGnucleus, ENDOGcytoplasm
-EP300, External_Activator
-External_Activator, External_Activator
-FADD, External_Activator
-FAF1, External_Activator
-FAS, External_Activator
-FASLG, FASLG
-FASLG_FAS, (FASLG & FAS)
-FASLG_FAS_FADD_FAF1_DAXX, (FASLG_FAS & ((FADD & FAF1) & DAXX))
-FASLG_FAS_FADD_FAF1_DAXX_CFLAR, (FASLG_FAS_FADD_FAF1_DAXX & CFLAR)
-FASLGgene, (TP53nucleus | IRF1_IRF1nucleus)
-FASgene, RELAp65_NFBK1p50nucleus
-Flagellin, Bacteria
-Fragmented_DNAcytoplasm, DNA_Fragmentation
-Fragmented_DNAnucleus, (DNA & (ENDOGnucleus | PDCD8nucleus))
-G1P2gene, ((((IRF1_IRF1nucleus & ((SPI1 & IRF8) & IRF4)) | (CBP & (IRF3_IRF7nucleus | IRF3_IRF3nucleus))) | (IRF2 & ((SPI1 & IRF8) & IRF4))) | ISGF3nucleus)
-G1P3gene, IRF8
-GAS2, External_Activator
-GBP1gene, (IRF2 | IRF1_IRF1nucleus)
-HIST2H4gene, (IRF2 | IRF1_IRF1nucleus)
-HLA_Bgene, IRF8
-HSPA1A, External_Activator
-HTRA2cytoplasm, (tBID & HTRA2mitochondria)
-HTRA2mitochondria, Mitochondrial_Activator
-ICAM1gene, STAT1_STAT1nucleus_p2
-IDFFA, (DFFA & CASP3nucleus)
-IER3gene, RELAp65_NFBK1p50nucleus
-IFIT1gene, IRF5_IRF5nucleus
-IFIT2gene, ((CBP & (IRF3_IRF7nucleus | IRF3_IRF3nucleus)) | ISGF3nucleus)
-IFNA, IFNA
-IFNAR, ((IFNB1 & (((IFNAR2 & IFNAR1) & TYK2) & JAK1)) | (IFNA & (((IFNAR2 & IFNAR1) & TYK2) & JAK1)))
-IFNAR1, External_Activator
-IFNAR2, External_Activator
-IFNA_IFNA, IFNA
-IFNAgene, (((((((IRF3_IRF5nucleus | IRF5_IRF5nucleus) | IRF7_IRF7nucleus) | ISGF3nucleus) | IRF3_IRF3nucleus) | IRF1_IRF1nucleus) | IRF3_IRF7nucleus) | STAT1_STAT1_IRF9nucleus)
-IFNB1, IFNB1
-IFNB1_IFNB1, IFNB1
-IFNB1gene, ((((((RELAp65_NFBK1p50nucleus & (((ATF2 & IRF3_IRF7nucleus) & CBP) & IRF3_IRF3nucleus)) | IRF5_IRF5nucleus) | STAT1_STAT1nucleus_p2) | IRF3_IRF3nucleus) | ISGF3nucleus) | IRF1_IRF1nucleus)
-IFNG, IFNG
-IFNGR, (IFNG & ((IFNGR1 & IFNGR2) & JAK2))
-IFNGR1, External_Activator
-IFNGR2, External_Activator
-IFR5gene, (STAT1_STAT1_IRF9nucleus | TP53nucleus)
-IKBKB, External_Activator
-IKBKE, External_Activator
-IKBKE_TBK1, (TLR4_TICAM1_TICAM2 & (TBK1 & IKBKE))
-IKBKG, External_Activator
-IKBKG_CHUK_IKBKB, ((IKBKG & ((CHUK & MAP3K7IP1_MAP3K7IP2_MAP3K7) & IKBKB)) | (TLR3_TICAM1_TICAM2_RIPK1_RIPK3 & ((CHUK & IKBKG) & IKBKB)))
-IL12Bgene, IRF1_IRF1nucleus
-IL15gene, IRF1_IRF1nucleus
-IL1Bgene, (IRF8 & SPI1)
-IL1R1, External_Activator
-ILIB, ILIB
-ILIB_IL1R1, (ILIB & IL1R1)
-ILIB_IL1R1_MYD88_IRAK1_IRAK4, (ILIB_IL1R1 & ((IRAK1 & IRAK4) & MYD88))
-ILIB_IL1R1_MYD88_IRAK1_IRAK4_TRAF6, (ILIB_IL1R1_MYD88_IRAK1_IRAK4 & TRAF6)
-IPARP, (PARP & (CASP7nucleus | CASP3nucleus))
-IRAK1, External_Activator
-IRAK2, External_Activator
-IRAK4, External_Activator
-IRF1_IRF1_Activator, IRF1_IRF1_Activator
-IRF1_IRF1cytoplasm, IRF1cytoplasm
-IRF1_IRF1nucleus, IRF1_IRF1cytoplasm
-IRF1cytoplasm, ((PKC | CKII) | PKA)
-IRF1gene, STAT1_STAT1nucleus_p2
-IRF2, IRF2_Activator
-IRF2_Activator, IRF2_Activator
-IRF2gene, IRF1_IRF1nucleus
-IRF3, (IKBKE_TBK1 | TLR3_TICAM1_TICAM2_TBK1)
-IRF3_IRF3cytoplasm, IRF3
-IRF3_IRF3nucleus, IRF3_IRF3cytoplasm
-IRF3_IRF5cytoplasm, IRF5
-IRF3_IRF5nucleus, IRF3_IRF5cytoplasm
-IRF3_IRF7cytoplasm, (IRF3 & IRF7)
-IRF3_IRF7nucleus, IRF3_IRF7cytoplasm
-IRF4, External_Activator
-IRF5, ((Virus | TLR9_MYD88_TRAF6_IRF5) | TLR7_MYD88_TRAF6_IRF5)
-IRF5_IRF5cytoplasm, IRF5
-IRF5_IRF5nucleus, IRF5_IRF5cytoplasm
-IRF5_IRF7cytoplasm, IRF5
-IRF5_IRF7nucleus, IRF5_IRF7cytoplasm
-IRF7, IKBKE_TBK1
-IRF7_IRF7cytoplasm, IRF7
-IRF7_IRF7nucleus, IRF7_IRF7cytoplasm
-IRF8, (IRF2 | IRF1_IRF1nucleus)
-IRF9, External_Activator
-ISGF3cytoplasm, (STAT1_STAT2 & IRF9)
-ISGF3nucleus, ISGF3cytoplasm
-Inactivation_of_Protein_Synthesis, EIF2S1
-Inactive_DNA_Repair, IPARP
-JAK1, External_Activator
-JAK2, External_Activator
-LMNA, External_Activator
-LPS, Bacteria
-MAP3K14, ((TNFSF13B_TNFRSF17_TRAF5 | CD40_CD40LG_TRAF3) | TNF_TNFRSF1B_TRAF2)
-MAP3K7, External_Activator
-MAP3K7IP1, External_Activator
-MAP3K7IP1_MAP3K7IP2_MAP3K7, (((((((TLR1_TLR2_TIRAP_MYD88_IRAK2_IRAK1_IRAK4_TRAF6 & ((MAP3K7IP2 & MAP3K7) & MAP3K7IP1)) | (TLR3_TICAM1_TICAM2_TRAF6 & ((MAP3K7IP2 & MAP3K7) & MAP3K7IP1))) | (TLR7_MYD88_IRAK1_IRAK4_TRAF6 & ((MAP3K7IP2 & MAP3K7) & MAP3K7IP1))) | (TLR5_MYD88_IRAK1_IRAK4_TRAF6 & ((MAP3K7IP2 & MAP3K7) & MAP3K7IP1))) | (TLR2_TLR6_TOLLIP_MYD88_IRAK1_IRAK4_TRAF6 & ((MAP3K7IP2 & MAP3K7) & MAP3K7IP1))) | (TLR9_MYD88_IRAK1_IRAK4_TRAF6 & ((MAP3K7IP2 & MAP3K7) & MAP3K7IP1))) | (ILIB_IL1R1_MYD88_IRAK1_IRAK4_TRAF6 & ((MAP3K7IP2 & MAP3K7) & MAP3K7IP1)))
-MAP3K7IP2, External_Activator
-MDM2gene, TP53nucleus
-MYD88, External_Activator
-Mitochondrial_Activator, Mitochondrial_Activator
-NFKB1_p50, RELA_NFKB1_Activator
-NFKB2p100, External_Activator
-NFKB2p100_NFKB2p100_Ub, (NFKB2p100_NFKB2p100cytoplasm & Ub)
-NFKB2p100_NFKB2p100cytoplasm, (NFKB2p100 & IKBKG_CHUK_IKBKB)
-NFKB2p100_RELB_Ub, (NFKB2p100_RELBcytoplasm & Ub)
-NFKB2p100_RELBcytoplasm, (NFKB2p100 & (CHUK_CHUK & RELB))
-NFKB2p52_NFKB2p52cytoplasm, (NFKB2p100_NFKB2p100_Ub & Proteasome)
-NFKB2p52_NFKB2p52nucleus, NFKB2p52_NFKB2p52cytoplasm
-NFKB2p52_RELBcytoplasm, (NFKB2p100_RELB_Ub & Proteasome)
-NFKB2p52_RELBnucleus, NFKB2p52_RELBcytoplasm
-NFKBIA, (RELA_NFKB1_Activator | NFKBIA_RELAp65_NFKB1p50)
-NFKBIA_RELAp65_NFKB1p50, ((IKBKG_CHUK_IKBKB & ((RELA_p65 & NFKBIA) & NFKB1_p50)) | (TNF_IKBKG_Complex & ((RELA_p65 & NFKBIA) & NFKB1_p50)))
-NOS2Agene, External_Activator
-OAS1gene, (((IRF1_IRF1nucleus | ISGF3nucleus) | IRF5_IRF5nucleus) | IRF8)
-PARP, External_Activator
-PDCD8_HSPA1A, (PDCD8cytoplasm & HSPA1A)
-PDCD8cytoplasm, (tBID & PDCD8mitochondria)
-PDCD8mitochondria, Mitochondrial_Activator
-PDCD8nucleus, PDCD8cytoplasm
-PKA, IRF1_IRF1_Activator
-PKC, IRF1_IRF1_Activator
-PLSCR1gene, IRF5_IRF5nucleus
-PMAIPgene, IRF5_IRF5nucleus
-PRKCD, External_Activator
-PRKCZ, External_Activator
-PRKRA, External_Activator
-PRKRAgene, IRF5_IRF5nucleus
-PSMB9gene, (IRF2 | IRF1_IRF1nucleus)
-PTP, External_Activator
-PTPN2, External_Activator
-ProCASP1, External_Activator
-ProCASP10, External_Activator
-ProCASP2, External_Activator
-ProCASP3, CASP3_Activator
-ProCASP4, External_Activator
-ProCASP6, CASP6_Activator
-ProCASP7, CASP7_Activator
-ProCASP8, External_Activator
-Proteasome, External_Activator
-RELA_NFKB1_Activator, RELA_NFKB1_Activator
-RELA_p65, RELA_NFKB1_Activator
-RELAp65_NFBK1p50nucleus, RELAp65_NFKB1p50cytoplasm
-RELAp65_NFKB1p50cytoplasm, (NFKBIA_RELAp65_NFKB1p50 & (((((RPS6KA5 | CHUK) | PRKCZ) | TBK1) | MAP3K7) | IKBKB))
-RELB, External_Activator
-RIPK1, External_Activator
-RIPK1gene, IRF5_IRF5nucleus
-RIPK3, External_Activator
-RPS6KA5, External_Activator
-SOCS1, External_Activator
-SOCS3, External_Activator
-SOD2gene, RELAp65_NFBK1p50nucleus
-SP100gene, IRF5_IRF5nucleus
-SPI1, External_Activator
-STAT1, IFNGR
-STAT1_STAT1_IRF9cytoplasm, (STAT1 & IRF9)
-STAT1_STAT1_IRF9nucleus, STAT1_STAT1_IRF9cytoplasm
-STAT1_STAT1cytoplasm, (STAT1 & PRKCD)
-STAT1_STAT1nucleus_p1, STAT1_STAT1cytoplasm
-STAT1_STAT1nucleus_p2, STAT1_STAT1nucleus_p1
-STAT1_STAT2, (STAT1 & STAT2)
-STAT1gene, IRF1_IRF1nucleus
-STAT2, IFNAR
-TAP1gene, (IRF1_IRF1nucleus | IRF2)
-TBK1, External_Activator
-TICAM1, External_Activator
-TICAM2, External_Activator
-TIRAP, External_Activator
-TLR1_TLR2, Triacyl_Lipopeptides
-TLR1_TLR2_TIRAP_MYD88_IRAK2_IRAK1_IRAK4, (TLR1_TLR2 & ((((IRAK1 & IRAK2) & IRAK4) & TIRAP) & MYD88))
-TLR1_TLR2_TIRAP_MYD88_IRAK2_IRAK1_IRAK4_TRAF6, (TLR1_TLR2_TIRAP_MYD88_IRAK2_IRAK1_IRAK4 & TRAF6)
-TLR2, External_Activator
-TLR2_TLR6, (TLR2 & (Diacyl_Lipopeptides & TLR6))
-TLR2_TLR6_TOLLIP_MYD88_IRAK1_IRAK4, (TLR2_TLR6 & (((IRAK1 & IRAK4) & TOLLIP) & MYD88))
-TLR2_TLR6_TOLLIP_MYD88_IRAK1_IRAK4_TRAF6, (TLR2_TLR6_TOLLIP_MYD88_IRAK1_IRAK4 & TRAF6)
-TLR3, External_Activator
-TLR3_TICAM1_TICAM2, (TLR3_TLR3 & (TICAM1 & TICAM2))
-TLR3_TICAM1_TICAM2_RIPK1, (TLR3_TICAM1_TICAM2 & RIPK1)
-TLR3_TICAM1_TICAM2_RIPK1_RIPK3, (TLR3_TICAM1_TICAM2_RIPK1 & RIPK3)
-TLR3_TICAM1_TICAM2_TBK1, (TLR3_TICAM1_TICAM2 & TBK1)
-TLR3_TICAM1_TICAM2_TRAF6, (TLR3_TICAM1_TICAM2 & TRAF6)
-TLR3_TLR3, (dsRNA & TLR3)
-TLR4, LPS
-TLR4_TICAM1_TICAM2, (TLR4 & (TICAM1 & TICAM2))
-TLR5, External_Activator
-TLR5_MYD88_IRAK1_IRAK4, (TLR5_TLR5 & ((IRAK1 & IRAK4) & MYD88))
-TLR5_MYD88_IRAK1_IRAK4_TRAF6, (TLR5_MYD88_IRAK1_IRAK4 & TRAF6)
-TLR5_TLR5, (TLR5 & Flagellin)
-TLR6, External_Activator
-TLR7, External_Activator
-TLR7_MYD88_IRAK1_IRAK4, (TLR7_TLR7 & ((IRAK1 & IRAK4) & MYD88))
-TLR7_MYD88_IRAK1_IRAK4_TRAF6, (TLR7_MYD88_IRAK1_IRAK4 & TRAF6)
-TLR7_MYD88_TRAF6_IRF5, ((TLR7_TLR7 & (TRAF6 & MYD88)) & !IRF5)
-TLR7_TLR7, (TLR7 & ssRNA)
-TLR9, External_Activator
-TLR9_MYD88_IRAK1_IRAK4, (TLR9_TLR9 & ((IRAK1 & IRAK4) & MYD88))
-TLR9_MYD88_IRAK1_IRAK4_TRAF6, (TLR9_MYD88_IRAK1_IRAK4 & TRAF6)
-TLR9_MYD88_TRAF6, TLR9_MYD88_IRAK1_IRAK4_TRAF6
-TLR9_MYD88_TRAF6_IRF5, ((TLR9_TLR9 & (TRAF6 & MYD88)) & !IRF5)
-TLR9_TLR9, (TLR9 & Viral_Bacterial_CpG)
-TNF, TNF
-TNFRSF10A, External_Activator
-TNFRSF10B, External_Activator
-TNFRSF10Bgene, TP53nucleus
-TNFRSF17, External_Activator
-TNFRSF1A, External_Activator
-TNFRSF1B, External_Activator
-TNFSF10, TNFSF10
-TNFSF10_TNFRSF10A, (TNFSF10 & TNFRSF10A)
-TNFSF10_TNFRSF10A_FADD, (TNFSF10_TNFRSF10A & FADD)
-TNFSF10_TNFSF10B, (TNFSF10 & TNFRSF10B)
-TNFSF10_TNFSF10B_FADD, (TNFSF10_TNFSF10B & FADD)
-TNFSF10gene, (IRF1_IRF1nucleus | IRF5_IRF5nucleus)
-TNFSF13B, TNFSF13B
-TNFSF13B_TNFRSF17, (TNFSF13B & TNFRSF17)
-TNFSF13B_TNFRSF17_TRAF5, (TNFSF13B_TNFRSF17 & TRAF5)
-TNF_BAG4_TNFRSF1A, (TNF & BAG4_TNFRSF1A)
-TNF_IKBKG_Complex, (TNF_TNFRSF1A_FADD_TRADD_TRAF2_RIPK1 & ((CHUK & IKBKG) & IKBKB))
-TNF_TNFRSF1A, TNF_BAG4_TNFRSF1A
-TNF_TNFRSF1A_FADD_TRADD, (TNF_TNFRSF1A & (TRADD & FADD))
-TNF_TNFRSF1A_FADD_TRADD_TRAF2_RIPK1, (TNF_TNFRSF1A_FADD_TRADD & (RIPK1 & TRAF2cytoplasm))
-TNF_TNFRSF1B, (TNF & TNFRSF1B)
-TNF_TNFRSF1B_TRAF2, (TNF_TNFRSF1B & TRAF2cytoplasm)
-TOLLIP, External_Activator
-TP53cytoplasm, EIF2AK2_PRKRA
-TP53nucleus, TP53cytoplasm
-TRADD, External_Activator
-TRAF1gene, RELAp65_NFBK1p50nucleus
-TRAF2cytoplasm, External_Activator
-TRAF2gene, RELAp65_NFBK1p50nucleus
-TRAF3, External_Activator
-TRAF5, External_Activator
-TRAF6, External_Activator
-TYK2, External_Activator
-Triacyl_Lipopeptides, Bacteria
-Ub, External_Activator
-Viral_Bacterial_CpG, (Bacteria | Virus)
-Virus, Virus
-cGAS2, (GAS2 & CASP3nucleus)
-cLMNA, (LMNA & CASP6nucleus)
-dsRNA, Virus
-ssRNA, Virus
-tBID, (BID & (CASP2 | CASP8))
+S_1,   S_117
+S_10,  S_117
+S_100, S_100
+S_101, S_91&S_229
+S_102, S_15
+S_103, S_3
+S_104, S_125&S_262
+S_105, S_259
+S_106, S_301
+S_107, S_292
+S_108, !S_249&!S_250&S_284 | !S_249&S_250 | S_249
+S_109, S_259
+S_11,  S_289
+S_110, S_3
+S_111, S_259
+S_112, !S_53&S_163 | S_53
+S_113, S_259
+S_114, !S_145&S_214&!S_261&S_297 | !S_145&S_214&S_261 | S_145&S_214
+S_115, S_102
+S_116, S_259
+S_117, S_117
+S_118, S_259
+S_119, !S_181&S_291 | S_181
+S_12,  S_43
+S_120, S_259
+S_121, S_259
+S_122, S_259
+S_123, S_259
+S_124, S_124
+S_125, S_259
+S_126, !S_7&S_207&S_240 | S_7&S_207
+S_127, S_127
+S_128, S_43
+S_129, S_129
+S_13,  S_91
+S_130, S_259
+S_131, !S_53&S_163 | S_53
+S_132, S_281
+S_133, S_21&S_226
+S_134, !S_172&S_176 | S_172
+S_135, S_135
+S_136, S_34&S_208
+S_137, S_259
+S_138, S_11
+S_139, S_259
+S_14,  S_259
+S_140, S_11
+S_141, S_116&S_269
+S_142, S_142
+S_143, S_281
+S_144, S_259
+S_145, S_72&S_237
+S_146, S_146
+S_147, S_259
+S_148, S_11
+S_149, S_146
+S_15,  S_15
+S_150, S_130&S_158
+S_151, S_146
+S_152, S_15
+S_153, !S_259&S_290 | S_259
+S_154, S_127
+S_155, S_259
+S_156, S_220&S_227
+S_157, S_88&S_316
+S_158, !S_15&S_117 | S_15
+S_159, S_259
+S_16,  S_79&S_237
+S_160, S_301
+S_161, S_48&S_108
+S_162, S_3
+S_163, S_265
+S_164, S_247
+S_165, S_210
+S_166, S_259
+S_167, S_259
+S_168, S_11
+S_169, S_259
+S_17,  S_129&S_279
+S_170, !S_8&!S_11&!S_53&!S_204&S_216 | !S_8&!S_11&!S_53&S_204 | !S_8&!S_11&S_53 | !S_8&S_11 | S_8
+S_171, S_259
+S_172, S_172
+S_173, S_146
+S_174, S_301
+S_175, S_157
+S_176, S_54&S_134&!S_183&S_220&S_285 | S_54&S_134&S_183&S_285
+S_177, S_83&S_161&S_227
+S_178, S_259
+S_179, S_43
+S_18,  !S_11&!S_53&!S_58&S_216 | !S_11&!S_53&S_58 | !S_11&S_53 | S_11
+S_180, S_259
+S_181, S_262&S_275
+S_182, S_259
+S_183, S_37&S_48&S_64&S_223
+S_184, S_251
+S_185, !S_59&!S_149&S_173&S_317 | !S_59&S_149&S_173 | S_59&S_173
+S_186, S_259
+S_187, S_259
+S_188, S_259
+S_189, S_291
+S_19,  S_60&S_233
+S_190, S_146
+S_191, S_99&S_240
+S_192, S_259
+S_193, S_193
+S_194, S_259
+S_195, S_25&S_211&S_224
+S_196, S_3
+S_197, S_82&S_153
+S_198, S_208&S_215
+S_199, S_135
+S_2,   S_8
+S_20,  S_259
+S_200, S_155&S_261
+S_201, S_46&S_78&S_111&!S_136&!S_198&!S_209&!S_235&!S_247&!S_256&S_295 | S_46&S_78&S_111&!S_136&!S_198&!S_209&!S_235&!S_247&S_256 | S_46&S_78&S_111&!S_136&!S_198&!S_209&!S_235&S_247 | S_46&S_78&S_111&!S_136&!S_198&!S_209&S_235 | S_46&S_78&S_111&!S_136&!S_198&S_209 | S_46&S_78&S_111&!S_136&S_198 | S_46&S_78&S_111&S_136
+S_202, S_70&S_84&S_118&S_144
+S_203, !S_43&S_53 | S_43
+S_204, S_49
+S_205, S_259
+S_206, S_146
+S_207, S_259
+S_208, S_259
+S_209, S_76&S_208
+S_21,  S_259
+S_210, S_30
+S_211, S_290
+S_212, S_3
+S_213, S_252&S_320
+S_214, S_100
+S_215, S_70&S_118&S_144&S_221&S_253
+S_216, S_65
+S_217, S_88&S_304
+S_218, S_171&S_238
+S_219, S_22&S_120
+S_22,  S_303
+S_220, S_37&S_48&!S_201&S_223&S_276 | S_37&S_48&S_201&S_223
+S_221, S_50&S_139&S_230
+S_222, S_94
+S_223, S_259
+S_224, S_259
+S_225, S_193
+S_226, S_15
+S_227, S_259
+S_228, S_188&S_274
+S_229, S_259
+S_23,  S_228
+S_230, S_259
+S_231, S_3
+S_232, S_3
+S_233, S_259
+S_234, S_259
+S_235, S_208&S_243
+S_236, S_259
+S_237, S_32
+S_238, S_14&S_25&S_266&S_267
+S_239, S_259
+S_24,  S_259
+S_240, S_114
+S_241, !S_11&S_53 | S_11
+S_242, S_205&S_309
+S_243, S_70&S_118&S_133&S_144
+S_244, S_58&S_271
+S_245, S_156&S_167
+S_246, S_73
+S_247, S_208&S_298
+S_248, S_259
+S_249, S_90&S_315
+S_25,  S_259
+S_250, S_17&S_109
+S_251, S_88&S_180
+S_252, S_252
+S_253, S_259
+S_254, S_141
+S_255, S_259
+S_256, S_208&S_262
+S_257, S_3
+S_258, !S_13&S_98&S_178 | S_13&S_178
+S_259, S_259
+S_26,  S_259
+S_260, S_259
+S_261, S_169
+S_262, S_6&S_121&S_186
+S_263, S_53
+S_264, !S_19&S_216 | S_19&!S_27&!S_204&S_216 | S_19&!S_27&S_204 | S_19&S_27
+S_265, S_265
+S_266, S_259
+S_267, S_67&S_299
+S_268, S_142&S_159
+S_269, S_1
+S_27,  S_44
+S_270, !S_19&S_216 | S_19&!S_27&!S_204&S_216 | S_19&!S_27&S_204 | S_19&S_27
+S_271, S_259
+S_272, S_124&S_312
+S_273, !S_11&S_114 | S_11
+S_274, S_167&S_177
+S_275, S_259
+S_276, S_104&S_122
+S_277, S_58&S_271
+S_278, S_146
+S_279, S_259
+S_28,  S_28
+S_280, !S_39&!S_185
+S_281, !S_117&!S_57&S_308 | !S_117&S_57 | S_117
+S_282, !S_11&!S_27&!S_38&!S_53&!S_107&!S_175&!S_204&S_216 | !S_11&!S_27&!S_38&!S_53&!S_107&!S_175&S_204 | !S_11&!S_27&!S_38&!S_53&!S_107&S_175 | !S_11&!S_27&!S_38&!S_53&S_107 | !S_11&!S_27&!S_38&S_53 | !S_11&!S_27&S_38 | !S_11&S_27 | S_11
+S_283, S_3
+S_284, S_92&S_272
+S_285, S_172
+S_286, S_3
+S_287, S_126
+S_288, S_288
+S_289, S_281
+S_29,  S_259
+S_290, S_28&S_197
+S_291, S_33&S_182&S_275
+S_292, S_189
+S_293, !S_59&!S_149&S_151&S_317 | !S_59&S_149&S_151 | S_59&S_151
+S_294, S_41&S_240
+S_295, S_202&S_208
+S_296, S_53
+S_297, !S_9&!S_47&S_89&!S_218&S_238 | !S_9&!S_47&S_89&S_218 | !S_9&S_47&S_89 | S_9&S_89
+S_298, S_70&S_118&S_144&S_150
+S_299, S_259
+S_3,   S_68
+S_30,  !S_53&S_216 | S_53
+S_300, S_59&S_206
+S_301, S_301
+S_302, S_53
+S_303, S_188&S_245
+S_304, S_35
+S_305, S_278&S_317
+S_306, S_259
+S_307, !S_53&S_163 | S_53
+S_308, S_118&S_150&S_208&!S_281
+S_309, S_16
+S_31,  S_11
+S_310, S_259
+S_311, S_146
+S_312, S_259
+S_313, S_8
+S_314, S_3
+S_315, S_28&S_105
+S_316, S_259
+S_317, S_146
+S_318, !S_191&S_242 | S_191
+S_319, S_146
+S_32,  S_32
+S_320, S_259
+S_321, S_95&S_190
+S_33,  S_62&S_121&S_186
+S_34,  S_70&S_118&S_144&S_213
+S_35,  !S_127&S_135&S_24&S_42&S_87&S_306 | S_127&S_24&S_42&S_87&S_306
+S_36,  S_11
+S_37,  S_259
+S_38,  S_143
+S_39,  S_59&S_319
+S_4,   !S_53&S_163 | S_53
+S_40,  S_43
+S_41,  S_259
+S_42,  S_259
+S_43,  S_254
+S_44,  S_119&S_189
+S_45,  S_5&S_195
+S_46,  S_259
+S_47,  S_25&S_268
+S_48,  S_259
+S_49,  S_119
+S_5,   S_259
+S_50,  S_15
+S_51,  S_259
+S_52,  S_288&S_192&S_194&S_239
+S_53,  S_222
+S_54,  S_172
+S_55,  !S_73&!S_165&!S_287&S_318 | !S_73&!S_165&S_287 | !S_73&S_165 | S_73
+S_56,  S_132
+S_57,  S_84&S_118&S_208&!S_281
+S_58,  !S_53&S_163 | S_53
+S_59,  !S_63&S_147&S_297 | S_63&S_147
+S_6,   S_1&S_187
+S_60,  S_259
+S_61,  S_259
+S_62,  S_152
+S_63,  S_26&S_246
+S_64,  S_90&S_125&S_195
+S_65,  S_217&S_316
+S_66,  S_11
+S_67,  S_67
+S_68,  !S_20&!S_48&!S_61&!S_111&S_176&!S_223&S_275 | !S_20&!S_48&!S_61&!S_111&S_176&S_223 | !S_20&!S_48&!S_61&S_111&S_176 | !S_20&!S_48&S_61&S_176 | !S_20&S_48&S_176 | S_20&S_176
+S_69,  !S_19&!S_53&!S_58&S_216 | !S_19&!S_53&S_58&!S_163&S_216 | !S_19&!S_53&S_58&S_163&!S_216&S_271&S_310 | !S_19&!S_53&S_58&S_163&S_216 | !S_19&S_53&!S_58&S_216 | !S_19&S_53&S_58&!S_216&S_271&S_310 | !S_19&S_53&S_58&S_216 | S_19&!S_27&!S_53&!S_58&!S_204&S_216 | S_19&!S_27&!S_53&!S_58&S_204 | S_19&!S_27&!S_53&S_58&!S_163&!S_204&S_216 | S_19&!S_27&!S_53&S_58&!S_163&S_204 | S_19&!S_27&!S_53&S_58&S_163&!S_204&!S_216&S_271&S_310 | S_19&!S_27&!S_53&S_58&S_163&!S_204&S_216 | S_19&!S_27&!S_53&S_58&S_163&S_204 | S_19&!S_27&S_53&!S_58&!S_204&S_216 | S_19&!S_27&S_53&!S_58&S_204 | S_19&!S_27&S_53&S_58&!S_204&!S_216&S_271&S_310 | S_19&!S_27&S_53&S_58&!S_204&S_216 | S_19&!S_27&S_53&S_58&S_204 | S_19&S_27
+S_7,   S_93
+S_70,  S_259
+S_71,  S_259
+S_72,  S_123&S_293
+S_73,  !S_258&S_294 | S_258
+S_74,  S_53
+S_75,  S_58
+S_76,  S_70&S_113&S_115&S_118&S_144&S_255
+S_77,  S_8
+S_78,  S_259
+S_79,  S_32
+S_8,   S_184
+S_80,  S_58
+S_81,  !S_53&S_163 | S_53
+S_82,  S_259
+S_83,  S_259
+S_84,  S_10&S_29
+S_85,  !S_43&S_175 | S_43
+S_86,  S_142&S_234
+S_87,  S_259
+S_88,  S_52
+S_89,  S_259
+S_9,   S_25&S_86
+S_90,  S_259
+S_91,  S_59&S_311
+S_92,  S_259
+S_93,  !S_45&!S_145&S_225&S_297 | !S_45&S_145&S_225 | S_45&S_225
+S_94,  !S_106&!S_160&S_174 | !S_106&S_160 | S_106
+S_95,  S_146
+S_96,  S_53
+S_97,  S_11
+S_98,  S_300
+S_99,  S_259
