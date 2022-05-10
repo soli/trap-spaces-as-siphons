@@ -33,19 +33,19 @@ BIRC2, External_Activator
 BIRC3gene, RELAp65_NFBK1p50nucleus
 BIRC4cytoplasm, !(DIABLOcytoplasm | HTRA2cytoplasm)
 BIRC4gene, RELAp65_NFBK1p50nucleus
-Bacteria, (Bacteria & !Bacteria)
+Bacteria, Bacteria
 CASP1, (ProCASP1 & CASP4)
 CASP10, (ProCASP10 & TNF_TNFRSF1A_FADD_TRADD)
 CASP2, (ProCASP2 & Fragmented_DNAcytoplasm)
-CASP3_Activator, (CASP3_Activator & !CASP3_Activator)
+CASP3_Activator, CASP3_Activator
 CASP3cytoplasm, (ProCASP3 & ((Apoptosome | CASP8) | CASP4))
 CASP3gene, (IRF5_IRF5nucleus | CASP3cytoplasm)
 CASP3nucleus, CASP3cytoplasm
 CASP4, ProCASP4
-CASP6_Activator, (CASP6_Activator & !CASP6_Activator)
+CASP6_Activator, CASP6_Activator
 CASP6cytoplasm, (ProCASP6 & CASP9)
 CASP6nucleus, CASP6cytoplasm
-CASP7_Activator, (CASP7_Activator & !CASP7_Activator)
+CASP7_Activator, CASP7_Activator
 CASP7cytoplasm, (ProCASP7 & ((Apoptosome | CASP8) | CASP10))
 CASP7nucleus, CASP7cytoplasm
 CASP8, (ProCASP8 & (((FASLG_FAS_FADD_FAF1_DAXX_CFLAR | FASLG_FAS_FADD_FAF1_DAXX) | TNFSF10_TNFRSF10A_FADD) | TNFSF10_TNFSF10B_FADD))
@@ -53,7 +53,7 @@ CASP9, CASP6_Activator
 CBP, (EP300 & CREBBP)
 CCL5gene, IRF1_IRF1nucleus
 CD40, External_Activator
-CD40LG, (CD40LG & !CD40LG)
+CD40LG, CD40LG
 CD40_CD40LG, (CD40 & CD40LG)
 CD40_CD40LG_TRAF3, (CD40_CD40LG & TRAF3)
 CFLAR, External_Activator
@@ -85,11 +85,11 @@ ENDOGcytoplasm, (tBID & ENDOGmitochondria)
 ENDOGmitochondria, Mitochondrial_Activator
 ENDOGnucleus, ENDOGcytoplasm
 EP300, External_Activator
-External_Activator, (External_Activator & !External_Activator)
+External_Activator, External_Activator
 FADD, External_Activator
 FAF1, External_Activator
 FAS, External_Activator
-FASLG, (FASLG & !FASLG)
+FASLG, FASLG
 FASLG_FAS, (FASLG & FAS)
 FASLG_FAS_FADD_FAF1_DAXX, (FASLG_FAS & ((FADD & FAF1) & DAXX))
 FASLG_FAS_FADD_FAF1_DAXX_CFLAR, (FASLG_FAS_FADD_FAF1_DAXX & CFLAR)
@@ -112,16 +112,16 @@ IDFFA, (DFFA & CASP3nucleus)
 IER3gene, RELAp65_NFBK1p50nucleus
 IFIT1gene, IRF5_IRF5nucleus
 IFIT2gene, ((CBP & (IRF3_IRF7nucleus | IRF3_IRF3nucleus)) | ISGF3nucleus)
-IFNA, (IFNA & !IFNA)
+IFNA, IFNA
 IFNAR, ((IFNB1 & (((IFNAR2 & IFNAR1) & TYK2) & JAK1)) | (IFNA & (((IFNAR2 & IFNAR1) & TYK2) & JAK1)))
 IFNAR1, External_Activator
 IFNAR2, External_Activator
 IFNA_IFNA, IFNA
 IFNAgene, (((((((IRF3_IRF5nucleus | IRF5_IRF5nucleus) | IRF7_IRF7nucleus) | ISGF3nucleus) | IRF3_IRF3nucleus) | IRF1_IRF1nucleus) | IRF3_IRF7nucleus) | STAT1_STAT1_IRF9nucleus)
-IFNB1, (IFNB1 & !IFNB1)
+IFNB1, IFNB1
 IFNB1_IFNB1, IFNB1
 IFNB1gene, ((((((RELAp65_NFBK1p50nucleus & (((ATF2 & IRF3_IRF7nucleus) & CBP) & IRF3_IRF3nucleus)) | IRF5_IRF5nucleus) | STAT1_STAT1nucleus_p2) | IRF3_IRF3nucleus) | ISGF3nucleus) | IRF1_IRF1nucleus)
-IFNG, (IFNG & !IFNG)
+IFNG, IFNG
 IFNGR, (IFNG & ((IFNGR1 & IFNGR2) & JAK2))
 IFNGR1, External_Activator
 IFNGR2, External_Activator
@@ -135,7 +135,7 @@ IL12Bgene, IRF1_IRF1nucleus
 IL15gene, IRF1_IRF1nucleus
 IL1Bgene, (IRF8 & SPI1)
 IL1R1, External_Activator
-ILIB, (ILIB & !ILIB)
+ILIB, ILIB
 ILIB_IL1R1, (ILIB & IL1R1)
 ILIB_IL1R1_MYD88_IRAK1_IRAK4, (ILIB_IL1R1 & ((IRAK1 & IRAK4) & MYD88))
 ILIB_IL1R1_MYD88_IRAK1_IRAK4_TRAF6, (ILIB_IL1R1_MYD88_IRAK1_IRAK4 & TRAF6)
@@ -143,13 +143,13 @@ IPARP, (PARP & (CASP7nucleus | CASP3nucleus))
 IRAK1, External_Activator
 IRAK2, External_Activator
 IRAK4, External_Activator
-IRF1_IRF1_Activator, (IRF1_IRF1_Activator & !IRF1_IRF1_Activator)
+IRF1_IRF1_Activator, IRF1_IRF1_Activator
 IRF1_IRF1cytoplasm, IRF1cytoplasm
 IRF1_IRF1nucleus, IRF1_IRF1cytoplasm
 IRF1cytoplasm, ((PKC | CKII) | PKA)
 IRF1gene, STAT1_STAT1nucleus_p2
 IRF2, IRF2_Activator
-IRF2_Activator, (IRF2_Activator & !IRF2_Activator)
+IRF2_Activator, IRF2_Activator
 IRF2gene, IRF1_IRF1nucleus
 IRF3, (IKBKE_TBK1 | TLR3_TICAM1_TICAM2_TBK1)
 IRF3_IRF3cytoplasm, IRF3
@@ -184,7 +184,7 @@ MAP3K7IP1_MAP3K7IP2_MAP3K7, (((((((TLR1_TLR2_TIRAP_MYD88_IRAK2_IRAK1_IRAK4_TRAF6
 MAP3K7IP2, External_Activator
 MDM2gene, TP53nucleus
 MYD88, External_Activator
-Mitochondrial_Activator, (Mitochondrial_Activator & !Mitochondrial_Activator)
+Mitochondrial_Activator, Mitochondrial_Activator
 NFKB1_p50, RELA_NFKB1_Activator
 NFKB2p100, External_Activator
 NFKB2p100_NFKB2p100_Ub, (NFKB2p100_NFKB2p100cytoplasm & Ub)
@@ -224,7 +224,7 @@ ProCASP6, CASP6_Activator
 ProCASP7, CASP7_Activator
 ProCASP8, External_Activator
 Proteasome, External_Activator
-RELA_NFKB1_Activator, (RELA_NFKB1_Activator & !RELA_NFKB1_Activator)
+RELA_NFKB1_Activator, RELA_NFKB1_Activator
 RELA_p65, RELA_NFKB1_Activator
 RELAp65_NFBK1p50nucleus, RELAp65_NFKB1p50cytoplasm
 RELAp65_NFKB1p50cytoplasm, (NFKBIA_RELAp65_NFKB1p50 & (((((RPS6KA5 | CHUK) | PRKCZ) | TBK1) | MAP3K7) | IKBKB))
@@ -284,20 +284,20 @@ TLR9_MYD88_IRAK1_IRAK4_TRAF6, (TLR9_MYD88_IRAK1_IRAK4 & TRAF6)
 TLR9_MYD88_TRAF6, TLR9_MYD88_IRAK1_IRAK4_TRAF6
 TLR9_MYD88_TRAF6_IRF5, ((TLR9_TLR9 & (TRAF6 & MYD88)) & !IRF5)
 TLR9_TLR9, (TLR9 & Viral_Bacterial_CpG)
-TNF, (TNF & !TNF)
+TNF, TNF
 TNFRSF10A, External_Activator
 TNFRSF10B, External_Activator
 TNFRSF10Bgene, TP53nucleus
 TNFRSF17, External_Activator
 TNFRSF1A, External_Activator
 TNFRSF1B, External_Activator
-TNFSF10, (TNFSF10 & !TNFSF10)
+TNFSF10, TNFSF10
 TNFSF10_TNFRSF10A, (TNFSF10 & TNFRSF10A)
 TNFSF10_TNFRSF10A_FADD, (TNFSF10_TNFRSF10A & FADD)
 TNFSF10_TNFSF10B, (TNFSF10 & TNFRSF10B)
 TNFSF10_TNFSF10B_FADD, (TNFSF10_TNFSF10B & FADD)
 TNFSF10gene, (IRF1_IRF1nucleus | IRF5_IRF5nucleus)
-TNFSF13B, (TNFSF13B & !TNFSF13B)
+TNFSF13B, TNFSF13B
 TNFSF13B_TNFRSF17, (TNFSF13B & TNFRSF17)
 TNFSF13B_TNFRSF17_TRAF5, (TNFSF13B_TNFRSF17 & TRAF5)
 TNF_BAG4_TNFRSF1A, (TNF & BAG4_TNFRSF1A)
@@ -321,7 +321,7 @@ TYK2, External_Activator
 Triacyl_Lipopeptides, Bacteria
 Ub, External_Activator
 Viral_Bacterial_CpG, (Bacteria | Virus)
-Virus, (Virus & !Virus)
+Virus, Virus
 cGAS2, (GAS2 & CASP3nucleus)
 cLMNA, (LMNA & CASP6nucleus)
 dsRNA, Virus

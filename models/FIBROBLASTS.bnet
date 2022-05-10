@@ -28,11 +28,11 @@ Csk, ((Cbp & (((((!PKA & !Gbg_i) & !Gbg_q) & !Gbg_1213) & !SHP2) | (((PKA | Gbg_
 DAG, ((((PLC_B & PIP2_45) & !(DGK & DAG)) | (DAG & !DGK)) | ((PLC_g & PIP2_45) & !(DGK & DAG)))
 DGK, (((Src & (Ca & PA)) | EGFR) | (PKC & DAG))
 DOCK180, (Crk & (Cas & PIP3_345))
-ECM, (ECM & !ECM)
-EGF, (EGF & !EGF)
+ECM, ECM
+EGF, EGF
 EGFR, ((((alpha_1213R & (Ca & PKC)) | (alpha_iR & (Ca & PKC))) | (EGF & !PKC)) | (alpha_qR & (Ca & PKC)))
 Erk, ((Erk & !(MKPs | PP2A)) | Mek)
-ExtPump, (ExtPump & !ExtPump)
+ExtPump, ExtPump
 Fak, (((Src & Fak) & !(PTEN & Fak)) | ((Integrins & Talin) & !(PTEN & Fak)))
 GCK, Trafs
 GRK, ((((((Gbg_1213 & PIP2_45) & !(Erk | RKIP)) | ((Gbg_i & PIP2_45) & !(Erk | RKIP))) | ((B_Arrestin & Src) & !(Erk | RKIP))) | ((Gbg_s & PIP2_45) & !(Erk | RKIP))) | ((Gbg_q & PIP2_45) & !(Erk | RKIP)))
@@ -47,7 +47,7 @@ Gbg_q, (Gaq | (alpha_qR & (!Gaq & !Gbg_q)))
 Gbg_s, ((alpha_sR & (!Gas & !Gbg_s)) | Gas)
 Graf, (Fak & Src)
 Grb2, (((Src & Fak) | Shc) | EGFR)
-IL1_TNF, (IL1_TNF & !IL1_TNF)
+IL1_TNF, IL1_TNF
 IL1_TNFR, IL1_TNF
 ILK, PIP3_345
 IP3, ((PLC_g & PIP2_45) | (PLC_B & PIP2_45))
@@ -120,7 +120,7 @@ Sek1, (((((((((MLK1 & ASK1) | (Mekk1 & ASK1)) | (MLK2 & ASK1)) | (Mekk4 & ASK1))
 Shc, ((EGFR & (Src & Fak)) & !(Shc & (((PTEN & Src) & EGFR) & Fak)))
 Sos, ((Nck & (Crk & PIP3_345)) | ((Grb2 & PIP3_345) & !Erk))
 Src, (((((((EGFR & !(Csk & Src)) | ((Cas & PTP1b) & !(Csk & Src))) | ((Gas & B_Arrestin) & !(Csk & Src))) | (PTPa & !(Csk & Src))) | ((Gai & B_Arrestin) & !(Csk & Src))) | ((Fak & PTP1b) & !(Csk & Src))) | ((alpha_sR & B_Arrestin) & !(Csk & Src)))
-Stress, (Stress & !Stress)
+Stress, Stress
 TAK1, Tab_12
 TAO_12, Stress
 Tab_12, (Trafs & !p38)
@@ -131,13 +131,13 @@ Trafs, IL1_TNFR
 Trx, (Trafs | Stress)
 Vinc, ((Actin & (!PIP2_45 & (Vinc & Talin))) | (Talin & Src))
 WASP, ((((Cdc42 & ((((Grb2 | PIP2_45) | Nck) & (Src | Fak)) & (!Crk & !PTPPEST))) & !PTPPEST) | ((Fak & (((Grb2 | PIP2_45) | Nck) & (Cdc42 & Crk))) & !PTPPEST)) | ((Src & (((Grb2 | PIP2_45) | Nck) & (Cdc42 & Crk))) & !PTPPEST))
-alpha_1213L, (alpha_1213L & !alpha_1213L)
+alpha_1213L, alpha_1213L
 alpha_1213R, (((alpha_1213L & !(B_Arrestin & (((!alpha_1213L & !alpha_1213R) & !Palpha_1213R) | Palpha_1213R))) | ((Palpha_1213R & !B_Arrestin) & !(B_Arrestin & (((!alpha_1213L & !alpha_1213R) & !Palpha_1213R) | Palpha_1213R)))) | (alpha_1213R & !(B_Arrestin & (((!alpha_1213L & !alpha_1213R) & !Palpha_1213R) | Palpha_1213R))))
-alpha_iL, (alpha_iL & !alpha_iL)
+alpha_iL, alpha_iL
 alpha_iR, ((((Palpha_iR & !B_Arrestin) & !(B_Arrestin & (((!Palpha_iR & !alpha_iR) & !alpha_iL) | Palpha_iR))) | (alpha_iL & !(B_Arrestin & (((!Palpha_iR & !alpha_iR) & !alpha_iL) | Palpha_iR)))) | (alpha_iR & !(B_Arrestin & (((!Palpha_iR & !alpha_iR) & !alpha_iL) | Palpha_iR))))
-alpha_qL, (alpha_qL & !alpha_qL)
+alpha_qL, alpha_qL
 alpha_qR, (((alpha_qR & !(B_Arrestin & (((!Palpha_iR & !alpha_qL) & !alpha_qR) | Palpha_iR))) | (alpha_qL & !(B_Arrestin & (((!Palpha_iR & !alpha_qL) & !alpha_qR) | Palpha_iR)))) | ((Palpha_iR & !B_Arrestin) & !(B_Arrestin & (((!Palpha_iR & !alpha_qL) & !alpha_qR) | Palpha_iR))))
-alpha_sL, (alpha_sL & !alpha_sL)
+alpha_sL, alpha_sL
 alpha_sR, (((alpha_sL & !(B_Arrestin & (Palpha_sR | ((!alpha_sL & !alpha_sR) & !Palpha_sR)))) | (alpha_sR & !(B_Arrestin & (Palpha_sR | ((!alpha_sL & !alpha_sR) & !Palpha_sR))))) | ((Palpha_sR & !B_Arrestin) & !(B_Arrestin & (Palpha_sR | ((!alpha_sL & !alpha_sR) & !Palpha_sR)))))
 cAMP, ((cAMP & !PDE4) | (AC & !PDE4))
 p115RhoGEF, (Ga_1213 & PIP3_345)

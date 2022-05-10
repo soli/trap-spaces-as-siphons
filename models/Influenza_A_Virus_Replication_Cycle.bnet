@@ -6,10 +6,10 @@
 #largest scc: 60
 
 targets, factors
-Bisindolylmaleimide_I, (Bisindolylmaleimide_I & !Bisindolylmaleimide_I)
+Bisindolylmaleimide_I, Bisindolylmaleimide_I
 ERK, MEK
 HA_LipidRafts, (HA_cyto & !Methyl_Beta_Cyclodextrin)
-HA_SialicAcid_Affinity, (HA_SialicAcid_Affinity & !HA_SialicAcid_Affinity)
+HA_SialicAcid_Affinity, HA_SialicAcid_Affinity
 HA_cyto, mRNA_HA_cyto
 IVA_EE, (IVA_SialicAcid_CCV & PIP3)
 IVA_HA1_HA2, Viral_Dose
@@ -23,9 +23,9 @@ M1_M1, (M1_cyto & !(((((((vRNA_M_M1 | vRNA_PB1_M1) | vRNA_NP_M1) | vRNA_PA_M1) |
 M1_cyto, mRNA_M1_cyto
 M1_nuc, M1_cyto
 M2_cyto, mRNA_M2_cyto
-M2_inhibitor, (M2_inhibitor & !M2_inhibitor)
+M2_inhibitor, M2_inhibitor
 MEK, (Raf & !U0126)
-Methyl_Beta_Cyclodextrin, (Methyl_Beta_Cyclodextrin & !Methyl_Beta_Cyclodextrin)
+Methyl_Beta_Cyclodextrin, Methyl_Beta_Cyclodextrin
 NA_LipidRafts, ((NA_cyto & HA_LipidRafts) & !(Methyl_Beta_Cyclodextrin | Neuraminidase_inhibitor))
 NA_cyto, mRNA_NA_cyto
 NP_cyto, mRNA_NP_cyto
@@ -33,10 +33,10 @@ NP_nuc, NP_cyto
 NS1_cyto, mRNA_NS1_cyto
 NS2_CellularFactor, ERK
 NS2_cyto, mRNA_NS2_cyto
-Neuraminidase_inhibitor, (Neuraminidase_inhibitor & !Neuraminidase_inhibitor)
+Neuraminidase_inhibitor, Neuraminidase_inhibitor
 PA_cyto, mRNA_PA_cyto
-PB1_Inhibitor, (PB1_Inhibitor & !PB1_Inhibitor)
-PB1_PA_Interface_Inhibitor, (PB1_PA_Interface_Inhibitor & !PB1_PA_Interface_Inhibitor)
+PB1_Inhibitor, PB1_Inhibitor
+PB1_PA_Interface_Inhibitor, PB1_PA_Interface_Inhibitor
 PB1_PA_cyto, ((PB1_cyto & PA_cyto) & !PB1_PA_Interface_Inhibitor)
 PB1_PA_nuc, PB1_PA_cyto
 PB1_cyto, (mRNA_PB1_cyto & !PB1_Inhibitor)
@@ -48,11 +48,11 @@ PIP3, PIP2
 PKC, ((PI3K & !Bisindolylmaleimide_I) | (HA_LipidRafts & !Bisindolylmaleimide_I))
 Progeny_Virion, (NA_LipidRafts & (((((((((HA_LipidRafts & pro_vRNP_NA_M1_cyto) & M2_cyto) & pro_vRNP_NP_M1_cyto) & pro_vRNP_HA_M1_cyto) & pro_vRNP_M_M1_cyto) & pro_vRNP_NS_M1_cyto) & pro_vRNP_PB2_M1_cyto) & pro_vRNP_PA_M1_cyto) & pro_vRNP_PB1_M1_cyto))
 RTK, (IVA_SialicAcid & !(RTK_Inhibitor | Methyl_Beta_Cyclodextrin))
-RTK_Inhibitor, (RTK_Inhibitor & !RTK_Inhibitor)
+RTK_Inhibitor, RTK_Inhibitor
 Raf, (PKC & Infected)
-U0126, (U0126 & !U0126)
-Viral_Dose, (Viral_Dose & !Viral_Dose)
-Wortmannin, (Wortmannin & !Wortmannin)
+U0126, U0126
+Viral_Dose, Viral_Dose
+Wortmannin, Wortmannin
 cRNA_HA, ((cRNP_HA & ((PB2_nuc & PB1_PA_nuc) | ((NP_nuc & PB2_nuc) & PB1_PA_nuc))) | (temp_vRNP_HA_nuc & ((PB2_nuc & PB1_PA_nuc) | ((NP_nuc & PB2_nuc) & PB1_PA_nuc))))
 cRNA_M, ((cRNP_M & ((PB2_nuc & PB1_PA_nuc) | ((NP_nuc & PB2_nuc) & PB1_PA_nuc))) | (temp_vRNP_M_nuc & (((NP_nuc & PB2_nuc) & PB1_PA_nuc) | (PB2_nuc & PB1_PA_nuc))))
 cRNA_NA, ((cRNP_NA & ((PB2_nuc & PB1_PA_nuc) | ((NP_nuc & PB2_nuc) & PB1_PA_nuc))) | (temp_vRNP_NA_nuc & (((NP_nuc & PB2_nuc) & PB1_PA_nuc) | (PB2_nuc & PB1_PA_nuc))))

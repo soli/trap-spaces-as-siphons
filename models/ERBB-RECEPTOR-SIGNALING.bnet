@@ -8,7 +8,7 @@
 targets, factors
 AA, PLA2
 AC, ((Integrins & ECM) & (Gas & Gbg_i))
-AG, (AG & !AG)
+AG, AG
 AMSH, ((ESCRT_0 | Alix) | ESCRT_I)
 AND_34, Cas
 AP2, (((((((EGFR_EGFR_EGF_PM | Eps15) | PIP2_45) | Epsin) | EGFR_EGFR_TGFa_PM) | Hip1R) | PIP3_345) | CIN85)
@@ -43,10 +43,10 @@ DAG, ((((PLC_g & PIP2_45) & !(DGK & DAG)) | ((PLC_B & PIP2_45) & !(DGK & DAG))) 
 DGK, ((((((((((((((EGFR_ErbB3 | EGFR_EGFR_EGF_End) | EGFR_EGFR_EGF_CCP) | EGFR_EGFR_EGF_MVB) | (PKC & DAG)) | EGFR_ErbB2) | EGFR_EGFR_TGFa_CCP) | EGFR_EGFR_EGF_CCV) | EGFR_EGFR_TGFa_CCV) | EGFR_EGFR) | (Src & (Ca & PA))) | EGFR_EGFR_EGF_PM) | EGFR_ErbB4) | EGFR_EGFR_TGFa_End) | EGFR_EGFR_TGFa_PM)
 DOCK180, (Crk & (PIP3_345 & Cas))
 Dynamin, ((((Grb2 | PIP2_45) | EGFR_EGFR_EGF_PM) | Endophilin) | EGFR_EGFR_TGFa_PM)
-ECM, (ECM & !ECM)
+ECM, ECM
 EEA1, (Rab5 & PIP3_345)
-EGF, (EGF & !EGF)
-EGFR_Contr, (EGFR_Contr & !EGFR_Contr)
+EGF, EGF
+EGFR_Contr, EGFR_Contr
 EGFR_EGFR, (((alpha_1213R & ((EGFR_T654 & EGFR_Free) & Ca)) | (alpha_qR & ((Ca & EGFR_T654) & EGFR_Free))) | (alpha_iR & ((EGFR_Free & EGFR_T654) & Ca)))
 EGFR_EGFR_EGF_CCP, (((((Eps15 & ((((PIP2_45 & Cbl_RTK) & Clathrin) & EGFR_EGFR_EGF_PM) & Rab5)) & !EGFR_EGFR_EGF_CCV) | ((AP2 & ((((Cbl_RTK & EGFR_EGFR_EGF_PM) & PIP2_45) & Rab5) & Clathrin)) & !EGFR_EGFR_EGF_CCV)) | (EGFR_EGFR_EGF_CCP & !EGFR_EGFR_EGF_CCV)) | ((Epsin & ((((EGFR_EGFR_EGF_PM & Rab5) & Cbl_RTK) & Clathrin) & PIP2_45)) & !EGFR_EGFR_EGF_CCV))
 EGFR_EGFR_EGF_CCV, ((EGFR_EGFR_EGF_CCV & !EGFR_EGFR_EGF_End) | ((EGFR_EGFR_EGF_CCP & (Actin & Dynamin)) & !EGFR_EGFR_EGF_End))
@@ -84,8 +84,8 @@ E_cadherin, ((B_catenin & ExtE_cadherin) & !((IQGAP1 & (!Rac & !Cdc42)) | (Hakai
 Endophilin, ((((Endophilin & PIP2_45) | CIN85) | Eps15) | Epsin)
 Eps15, ((EGFR_Ub | EGFR_EGFR_EGF_PM) | EGFR_EGFR_TGFa_PM)
 Epsin, (((PIP2_45 | EGFR_EGFR_TGFa_PM) | EGFR_Ub) | EGFR_EGFR_EGF_PM)
-ErbB2Deg_Contr, (ErbB2Deg_Contr & !ErbB2Deg_Contr)
-ErbB2_Contr, (ErbB2_Contr & !ErbB2_Contr)
+ErbB2Deg_Contr, ErbB2Deg_Contr
+ErbB2_Contr, ErbB2_Contr
 ErbB2_ErbB3, (((NRG & (ErbB2_Free & ErbB3_Free)) & !(Pertuzumab | (ErbB2_Lysosome & ErbB2_ErbB3))) | (ErbB2_ErbB3 & !(ErbB2_Lysosome & ErbB2_ErbB3)))
 ErbB2_ErbB4, ((NRG & (ErbB2_Free & ErbB4_Free)) & !ErbB3_Free)
 ErbB2_Free, ((ErbB2_Contr & !Trastuzumab) | (ErbB2_Free & !(((Trastuzumab | ErbB2_ErbB3) | ErbB2_ErbB4) | EGFR_ErbB2)))
@@ -96,7 +96,7 @@ ErbB2_Y1139, ((ErbB2_ErbB3 | EGFR_ErbB2) | ErbB2_ErbB4)
 ErbB2_Y1196, ((ErbB2_ErbB3 | ErbB2_ErbB4) | EGFR_ErbB2)
 ErbB2_Y1221_22, ((EGFR_ErbB2 | ErbB2_ErbB3) | ErbB2_ErbB4)
 ErbB2_Y1248, ((ErbB2_ErbB4 | ErbB2_ErbB3) | EGFR_ErbB2)
-ErbB3_Contr, (ErbB3_Contr & !ErbB3_Contr)
+ErbB3_Contr, ErbB3_Contr
 ErbB3_ErbB4, ((NRG & (ErbB4_Free & ErbB3_Free)) & !ErbB2_Free)
 ErbB3_Free, (ErbB3_Contr | (ErbB3_Free & !((ErbB3_ErbB4 | ErbB2_ErbB3) | EGFR_ErbB3)))
 ErbB3_Y1035, ((ErbB2_ErbB3 | EGFR_ErbB3) | ErbB3_ErbB4)
@@ -108,15 +108,15 @@ ErbB3_Y1243, ((EGFR_ErbB3 | ErbB2_ErbB3) | ErbB3_ErbB4)
 ErbB3_Y1257, ((ErbB3_ErbB4 | ErbB2_ErbB3) | EGFR_ErbB3)
 ErbB3_Y1270, ((ErbB2_ErbB3 | EGFR_ErbB3) | ErbB3_ErbB4)
 ErbB3_Y1309, ((EGFR_ErbB3 | ErbB2_ErbB3) | ErbB3_ErbB4)
-ErbB4_Contr, (ErbB4_Contr & !ErbB4_Contr)
+ErbB4_Contr, ErbB4_Contr
 ErbB4_ErbB4, ((NRG & ErbB4_Free) & !ErbB2_Free)
 ErbB4_Free, (ErbB4_Contr | (ErbB4_Free & !(((EGFR_ErbB4 | ErbB2_ErbB4) | ErbB3_ErbB4) | ErbB4_ErbB4)))
 ErbB4_Y1056, (((ErbB3_ErbB4 | ErbB2_ErbB4) | EGFR_ErbB4) | ErbB4_ErbB4)
 ErbB4_Y1188, (((EGFR_ErbB4 | ErbB3_ErbB4) | ErbB2_ErbB4) | ErbB4_ErbB4)
 ErbB4_Y1242, (((EGFR_ErbB4 | ErbB3_ErbB4) | ErbB2_ErbB4) | ErbB4_ErbB4)
 Erk, ((Erk & !(PP2A | MKPs)) | Mek)
-ExtE_cadherin, (ExtE_cadherin & !ExtE_cadherin)
-ExtPump, (ExtPump & !ExtPump)
+ExtE_cadherin, ExtE_cadherin
+ExtPump, ExtPump
 Fak, (((Integrins & Talin) & !(PTEN & Fak)) | ((Src & Fak) & !(PTEN & Fak)))
 Fer, (E_cadherin & p120_catenin)
 GAK, (((EGFR_EGFR_EGF_CCP & ((AP2 | Dynamin) | Clathrin)) | (GAK & (EGFR_EGFR_EGF_CCV | EGFR_EGFR_TGFa_CCV))) | (EGFR_EGFR_TGFa_CCP & ((AP2 | Dynamin) | Clathrin)))
@@ -137,7 +137,7 @@ Hakai, (Src & (!Ca & E_cadherin))
 Hip1R, (Clathrin | CIN85)
 Hsc70, (GAK | Dynamin)
 Hsp90, (((EGFR_ErbB2 & !(CHIP & Hsp90)) | (ErbB2_ErbB4 & !(CHIP & Hsp90))) | (ErbB2_ErbB3 & !(CHIP & Hsp90)))
-IL1_TNF, (IL1_TNF & !IL1_TNF)
+IL1_TNF, IL1_TNF
 IL1_TNFR, IL1_TNF
 ILK, PIP3_345
 IP3, ((PLC_g & PIP2_45) | (PLC_B & PIP2_45))
@@ -160,14 +160,14 @@ Mekk3, (((Rac & !Gab1) | (Trafs & !Gab1)) | (IL1_TNFR & !Gab1))
 Mekk4, (Rac | Cdc42)
 Myosin, (((((((MLCK & (CaM & !MLCP)) & !(MLCP & Myosin)) | ((RhoK & (!Myosin | !MLCP)) & !(MLCP & Myosin))) | ((CaM & (!Myosin & MLCK)) & !(MLCP & Myosin))) | ((Myosin & !MLCP) & !(MLCP & Myosin))) | ((ILK & (!MLCP | !Myosin)) & !(MLCP & Myosin))) | ((PAK & (!MLCP | !Myosin)) & !(MLCP & Myosin)))
 NIK, (Nck | TAK1)
-NRG, (NRG & !NRG)
+NRG, NRG
 Nck, (((((((((((((EGFR_EGFR_EGF_End | EGFR_ErbB2) | Cas) | EGFR_EGFR_EGF_CCV) | EGFR_EGFR) | EGFR_EGFR_TGFa_CCP) | EGFR_ErbB3) | EGFR_EGFR_EGF_MVB) | EGFR_EGFR_TGFa_End) | EGFR_EGFR_TGFa_PM) | EGFR_EGFR_TGFa_CCV) | EGFR_EGFR_EGF_PM) | EGFR_ErbB4) | EGFR_EGFR_EGF_CCP)
 PA, PLD
 PAK, ((((Cdc42 & (Grb2 | (Nck & !Akt))) & !PKA) | ((Rac & ((Nck & !Akt) | Grb2)) & !PKA)) | (((Src & PAK) & (Rac | Cdc42)) & !(PKA | PTP1b)))
 PDE4, ((PKA & B_Arrestin) | (B_Arrestin & !Erk))
 PDK1, (p90RSK | Src)
 PI3K, ((((((((((((((((Gbg_i & !PI3K_I) | (ErbB3_Y1203_05 & !PI3K_I)) | (Ras & !PI3K_I)) | (Fak & !PI3K_I)) | (ErbB4_Y1056 & !PI3K_I)) | (Gab1 & !PI3K_I)) | (ErbB3_Y1035 & !PI3K_I)) | (ErbB3_Y1270 & !PI3K_I)) | (ErbB3_Y1178 & !PI3K_I)) | (EGFR_Y845 & !PI3K_I)) | (ErbB3_Y1257 & !PI3K_I)) | (Crk & !PI3K_I)) | (EGFR_Y920 & !PI3K_I)) | (ErbB3_Y1241 & !PI3K_I)) | ((Src & Cbl_RTK) & !PI3K_I)) | (E_cadherin & !PI3K_I))
-PI3K_I, (PI3K_I & !PI3K_I)
+PI3K_I, PI3K_I
 PI4K, ((((Gaq | Gai) | ARF) | PKC) | Rho)
 PI5K, ((((PA | RhoK) | (PI5K & Talin)) | ARF) | (Src & ((Fak & !Talin) & !PI5K)))
 PIP2_34, ((PI4K & (!PIP2_34 & PI3K)) | (PIP2_34 & (!PTEN & !PI5K)))
@@ -183,7 +183,7 @@ PLC_g, ((((EGFR_Y1068 & ((((((((((((EGFR_EGFR | EGFR_EGFR_TGFa_CCV) | EGFR_ErbB4
 PLD, (((((Cdc42 & (!ARF & (Actin & (PIP3_345 | PIP2_45)))) | (ARF & (PIP2_45 | PIP3_345))) | (Rac & (!ARF & (Actin & (PIP2_45 | PIP3_345))))) | (PKC & (!ARF & (Actin & (PIP2_45 | PIP3_345))))) | (Rho & (!ARF & (Actin & (PIP2_45 | PIP3_345)))))
 PP2A, (((((((((((((((EGFR_EGFR_EGF_End & !PP2A) | (EGFR_ErbB2 & !PP2A)) | (EGFR_EGFR_EGF_PM & !PP2A)) | (EGFR_EGFR_EGF_CCP & !PP2A)) | (EGFR_EGFR_EGF_CCV & !PP2A)) | (EGFR_EGFR & !PP2A)) | (EGFR_EGFR_TGFa_PM & !PP2A)) | (EGFR_ErbB4 & !PP2A)) | (EGFR_EGFR_EGF_MVB & !PP2A)) | (EGFR_EGFR_TGFa_CCV & !PP2A)) | (EGFR_EGFR_TGFa_End & !PP2A)) | (EGFR_ErbB3 & !PP2A)) | (EGFR_EGFR_TGFa_CCP & !PP2A)) | (PP2A & ((((((((((((!EGFR_EGFR & !EGFR_EGFR_TGFa_CCV) & !EGFR_ErbB4) & !EGFR_ErbB2) & !EGFR_EGFR_EGF_MVB) & !EGFR_ErbB3) & !EGFR_EGFR_TGFa_CCP) & !EGFR_EGFR_EGF_CCP) & !EGFR_EGFR_EGF_CCV) & !EGFR_EGFR_TGFa_End) & !EGFR_EGFR_EGF_PM) & !EGFR_EGFR_EGF_End) & !EGFR_EGFR_TGFa_PM))) | !(((((((((((((EGFR_EGFR | EGFR_EGFR_TGFa_CCV) | EGFR_ErbB2) | EGFR_ErbB4) | EGFR_EGFR_EGF_MVB) | EGFR_ErbB3) | EGFR_EGFR_TGFa_CCP) | EGFR_EGFR_EGF_CCP) | EGFR_EGFR_EGF_CCV) | EGFR_EGFR_EGF_PM) | EGFR_EGFR_TGFa_End) | EGFR_EGFR_EGF_End) | PP2A) | EGFR_EGFR_TGFa_PM))
 PTEN, ((Stress & !PTEN_I) | ((Pix_Cool & ((PI3K & Rho) & Cdc42)) & !PTEN_I))
-PTEN_I, (PTEN_I & !PTEN_I)
+PTEN_I, PTEN_I
 PTP1b, (!((((((((((((EGFR_ErbB3 | EGFR_EGFR_EGF_PM) | Stress) | EGFR_EGFR_EGF_CCP) | EGFR_EGFR_TGFa_PM) | EGFR_ErbB2) | EGFR_ErbB4) | EGFR_EGFR_EGF_MVB) | EGFR_EGFR_TGFa_CCP) | EGFR_EGFR_TGFa_CCV) | EGFR_EGFR) | EGFR_EGFR_EGF_End) | EGFR_EGFR_EGF_CCV) | !((((((((((((EGFR_EGFR | EGFR_EGFR_TGFa_CCV) | EGFR_ErbB2) | EGFR_ErbB4) | EGFR_EGFR_EGF_MVB) | EGFR_ErbB3) | EGFR_EGFR_TGFa_CCP) | EGFR_EGFR_EGF_CCP) | Stress) | EGFR_EGFR_EGF_CCV) | EGFR_EGFR_EGF_PM) | EGFR_EGFR_EGF_End) | EGFR_EGFR_TGFa_PM))
 PTPPEST, ((Integrins & ECM) & !(PKA | PKC))
 PTPa, PKC
@@ -191,7 +191,7 @@ Palpha_1213R, (alpha_1213R & GRK)
 Palpha_iR, (alpha_iR & GRK)
 Palpha_qR, (alpha_qR & GRK)
 Palpha_sR, (alpha_sR & GRK)
-Pertuzumab, (Pertuzumab & !Pertuzumab)
+Pertuzumab, Pertuzumab
 Pix_Cool, ((PIP2_34 & B_Parvin) | (PIP3_345 & B_Parvin))
 RGS, (CaM & PIP3_345)
 RIN, Ras
@@ -222,29 +222,29 @@ Shc, ((((((((((((ErbB4_Y1188 & ((((((((((((((EGFR_EGFR | EGFR_EGFR_TGFa_CCV) | E
 Sos, (((Crk & ((((!Nck & !Erk) & !PIP2_45) & PIP3_345) & Grb2)) | ((Grb2 & PIP3_345) & !Cbl_RTK)) | (Nck & (PIP3_345 & Crk)))
 Spry2, (((((((((((((EGFR_ErbB3 & !Cbl_RTK) | (EGFR_EGFR_TGFa_PM & !Cbl_RTK)) | (EGFR_EGFR_EGF_End & !Cbl_RTK)) | (EGFR_EGFR_TGFa_End & !Cbl_RTK)) | (EGFR_EGFR_TGFa_CCV & !Cbl_RTK)) | (EGFR_ErbB4 & !Cbl_RTK)) | (EGFR_EGFR_EGF_CCP & !Cbl_RTK)) | (EGFR_ErbB2 & !Cbl_RTK)) | (EGFR_EGFR_EGF_PM & !Cbl_RTK)) | (EGFR_EGFR_EGF_CCV & !Cbl_RTK)) | (EGFR_EGFR_TGFa_CCP & !Cbl_RTK)) | (EGFR_EGFR_EGF_MVB & !Cbl_RTK)) | (EGFR_EGFR & !Cbl_RTK))
 Src, (((((((((EGFR_Y1148 & !(Csk & Src)) | ((Fak & PTP1b) & !(Csk & Src))) | ((Gai & B_Arrestin) & !(Csk & Src))) | ((PTPa & !Src) & !(Csk & Src))) | (EGFR_Y1086 & !(Csk & Src))) | ((Cas & PTP1b) & !(Csk & Src))) | ((Gas & B_Arrestin) & !(Csk & Src))) | (EGFR_Y992 & !(Csk & Src))) | ((alpha_sR & B_Arrestin) & !(Csk & Src)))
-Stress, (Stress & !Stress)
+Stress, Stress
 TAK1, Tab_12
 TAO_12, Stress
-TGFa, (TGFa & !TGFa)
+TGFa, TGFa
 Tab_12, (Trafs & !p38)
 Talin, ((Talin & !Src) | (PIP2_45 & !Talin))
 Tiam, (((PKC & (((Rap1 | Ras) | PIP2_45) & (PIP3_345 | PIP2_34))) | (Src & ((PIP3_345 | PIP2_34) & ((Rap1 | Ras) | PIP2_45)))) | (CaMK & ((PIP3_345 | PIP2_34) & ((Rap1 | Ras) | PIP2_45))))
 Tpl2, Trafs
 Trafs, IL1_TNFR
-Trastuzumab, (Trastuzumab & !Trastuzumab)
+Trastuzumab, Trastuzumab
 Trx, (Stress | Trafs)
 UBPY, ((ESCRT_I | Alix) | ESCRT_III)
 VPS4, ESCRT_III
 Vinc, ((Actin & ((Talin & Vinc) & !PIP2_45)) | (Talin & Src))
 WASP, ((((Cdc42 & (((!PTPPEST & !Crk) & ((Nck | Grb2) | PIP2_45)) & (Fak | Src))) & !PTPPEST) | ((Fak & ((Crk & Cdc42) & ((Nck | Grb2) | PIP2_45))) & !PTPPEST)) | ((Src & (((Nck | Grb2) | PIP2_45) & (Crk & Cdc42))) & !PTPPEST))
-alpha_1213L, (alpha_1213L & !alpha_1213L)
+alpha_1213L, alpha_1213L
 alpha_1213R, (((alpha_1213L & !(B_Arrestin & (((!alpha_1213L & !alpha_1213R) & !Palpha_1213R) | Palpha_1213R))) | ((Palpha_1213R & !B_Arrestin) & !(B_Arrestin & (((!alpha_1213L & !alpha_1213R) & !Palpha_1213R) | Palpha_1213R)))) | (alpha_1213R & !(B_Arrestin & (((!alpha_1213L & !alpha_1213R) & !Palpha_1213R) | Palpha_1213R))))
 alpha_catenin, B_catenin
-alpha_iL, (alpha_iL & !alpha_iL)
+alpha_iL, alpha_iL
 alpha_iR, ((((Palpha_iR & !B_Arrestin) & !(B_Arrestin & (Palpha_iR | ((!Palpha_iR & !alpha_iR) & !alpha_iL)))) | (alpha_iR & !(B_Arrestin & (Palpha_iR | ((!Palpha_iR & !alpha_iR) & !alpha_iL))))) | (alpha_iL & !(B_Arrestin & (Palpha_iR | ((!Palpha_iR & !alpha_iR) & !alpha_iL)))))
-alpha_qL, (alpha_qL & !alpha_qL)
+alpha_qL, alpha_qL
 alpha_qR, (((alpha_qL & !(B_Arrestin & (((!alpha_qL & !Palpha_iR) & !alpha_qR) | Palpha_iR))) | ((Palpha_iR & !B_Arrestin) & !(B_Arrestin & (((!alpha_qL & !Palpha_iR) & !alpha_qR) | Palpha_iR)))) | (alpha_qR & !(B_Arrestin & (((!alpha_qL & !Palpha_iR) & !alpha_qR) | Palpha_iR))))
-alpha_sL, (alpha_sL & !alpha_sL)
+alpha_sL, alpha_sL
 alpha_sR, (((alpha_sR & !(B_Arrestin & (Palpha_sR | ((!alpha_sL & !alpha_sR) & !Palpha_sR)))) | (alpha_sL & !(B_Arrestin & (Palpha_sR | ((!alpha_sL & !alpha_sR) & !Palpha_sR))))) | ((Palpha_sR & !B_Arrestin) & !(B_Arrestin & (Palpha_sR | ((!alpha_sL & !alpha_sR) & !Palpha_sR)))))
 cAMP, ((cAMP & !PDE4) | (AC & !PDE4))
 p115RhoGEF, (Ga_1213 & PIP3_345)
