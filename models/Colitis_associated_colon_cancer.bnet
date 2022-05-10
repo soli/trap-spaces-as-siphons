@@ -7,7 +7,7 @@
 
 targets, factors
 AKT, (PI3K & !(CASP3 | PP2A))
-APC, (APC & !APC)
+APC, APC
 ASK1, (ROS & !P21)
 ATM, ROS
 Apoptosis, CASP3
