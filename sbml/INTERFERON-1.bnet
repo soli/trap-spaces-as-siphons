@@ -1,0 +1,125 @@
+# model in BoolNet format
+# the header targets, factors is mandatory to be importable in the R package BoolNet
+
+targets, factors
+csa1,  csa1
+csa10, !csa8&sa36&sa87&sa131 | csa8&sa36&sa87
+csa19, sa61&!sa83&sa116&!sa123&!sa170&sa297 | sa61&!sa83&sa116&!sa123&sa170 | sa61&sa83&sa116&!sa123
+csa2,  csa1&sa5&sa31
+csa20, !sa55&sa57&!sa166&!sa238&sa259&sa292 | !sa55&sa57&!sa166&sa238&sa292 | !sa55&sa57&sa166&sa292 | sa55&sa57&sa292
+csa21, csa42
+csa23, !sa129&!sa134&!sa140&sa154&sa155&sa186&!sa317&!sa318&!sa319
+csa25, csa19&sa83&!sa184
+csa26, csa25&sa172&!sa184
+csa27, csa27
+csa29, csa26&!csa37&!sa134&sa151&sa209 | csa26&csa37&!sa134&sa209
+csa3,  csa1&sa3&sa27
+csa30, !csa34&sa131&!sa237 | csa34&!sa237
+csa32, sa50&sa51&sa76&sa80
+csa34, csa21
+csa35, csa10
+csa37, !sa170&sa240&sa259 | sa170&sa240
+csa38, csa37&sa247
+csa39, csa38&sa59&sa254&sa255&sa257
+csa4,  !csa9&sa68&sa69&sa70&!sa127&sa166&!sa251 | csa9&sa68&sa69&sa70&!sa127&!sa251
+csa40, csa39&sa265&sa266&sa267
+csa41, sa268&sa269&sa270
+csa42, csa40&csa41
+csa44, csa29&sa213
+csa45, !csa29&!csa27&sa120&!sa123&!sa127&!sa129&!sa140&sa151&!sa184&!sa304 | csa29&!csa27&sa120&!sa123&!sa127&!sa129&!sa140&!sa184&!sa304
+csa46, csa45&!sa127
+csa47, sa240&sa292
+csa48, sa123&!sa168&sa301
+csa6,  csa4&!sa127
+csa8,  !sa61&sa63&sa64&sa86 | sa61&sa63&sa64
+csa9,  !csa2&csa3&sa9&sa19 | csa2&sa9&sa19
+sa116, sa61&!sa123
+sa120, sa120
+sa123, sa123
+sa127, sa127
+sa129, sa129
+sa131, sa131
+sa132, sa132
+sa134, sa134
+sa139, sa139
+sa140, sa140
+sa151, csa23&!sa139&!sa204
+sa154, !sa129&sa170
+sa155, !sa140&!sa170&!sa201&sa202&!sa251 | !sa140&!sa170&sa201&!sa251 | !sa140&sa170&!sa251
+sa157, sa78
+sa158, sa74
+sa159, sa45
+sa162, sa162
+sa166, sa166
+sa167, sa167
+sa168, sa168
+sa170, sa170
+sa172, sa151&!sa184
+sa184, sa184
+sa186, !sa27&!sa31&sa162&sa186
+sa19,  sa19
+sa194, sa194
+sa195, sa195
+sa196, !csa30&csa34 | csa30
+sa201, sa201
+sa202, sa202
+sa204, sa139
+sa209, sa209
+sa213, sa213
+sa237, sa237
+sa238, sa238
+sa240, sa240
+sa247, sa247
+sa251, sa251
+sa254, sa254
+sa255, sa255
+sa257, sa257
+sa259, sa259
+sa26,  sa34
+sa260, !sa27&sa31 | sa27
+sa265, sa265
+sa266, sa266
+sa267, sa267
+sa268, sa268
+sa269, sa269
+sa27,  sa26
+sa270, sa270
+sa278, csa42
+sa292, sa292
+sa297, csa47
+sa299, csa6
+sa3,   sa3
+sa30,  sa39
+sa301, sa299
+sa304, sa304
+sa308, sa308
+sa31,  sa30
+sa317, sa317
+sa318, sa318
+sa319, sa319
+sa34,  csa35&csa34&csa46&csa44&sa170
+sa36,  sa36
+sa39,  csa35&csa34&csa44
+sa45,  csa6&csa46
+sa48,  csa6&csa46
+sa5,   sa5
+sa50,  !sa129&sa159
+sa51,  !sa48&!sa129 | sa48
+sa55,  sa55
+sa57,  sa57
+sa59,  csa20&!sa123&!sa204
+sa61,  !sa116&!sa151&!sa167&sa172 | !sa116&sa151&!sa167 | sa116&!sa167
+sa63,  sa63
+sa64,  sa64
+sa68,  !sa132&!sa134&!sa167&!sa194&!sa304&!sa308
+sa69,  !sa167&!sa195&!sa304&!sa308
+sa70,  sa70
+sa74,  csa6&csa46
+sa76,  !sa129&sa158
+sa78,  csa6&csa46
+sa80,  !sa129&sa157
+sa81,  !csa32&!csa34&!sa123 | !csa32&!csa34&sa123&!sa170&sa301 | !csa32&!csa34&sa123&sa170 | !csa32&csa34 | csa32
+sa83,  csa20&!sa123
+sa86,  sa59
+sa87,  sa87
+sa9,   sa9
