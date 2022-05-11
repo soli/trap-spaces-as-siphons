@@ -384,97 +384,12 @@ Unfortunately since this was not available at the time, the analysis of the mode
 \section{Evaluation}
 \label{sec:eval}
 
-\begin{table}[!htb]
-  \caption{Timing comparisons between the proposed method and PyBoolNet on the selected real-world models.
-    Columns "\(n\)", "\(e\)", and "\(s\)" denote the numbers of nodes, interactions, and source nodes of each model, respectively. For each method, Column "\(|M|\)" denotes the number of minimal trap spaces and Column "time (s)" denotes the computation time in seconds.
-    "DNF" means that the method did not finish the computation within one hour.}
-  \centering
-  \label{tab:result_real}
-  \begin{tabular}{lrrrrrrr}
-    \toprule
-    & & & & \multicolumn{2}{c}{PyBoolNet} & \multicolumn{2}{c}{Proposed method}\\
-    \cmidrule(lr){5-6}\cmidrule(lr){7-8}
-    model & $n$ & $e$ & $s$ & $|M|$ & time (s) & $|M|$ & time (s) \\ \midrule
-    inflammatory-bowel-disease~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 47 & 287 & 0 & DNF & DNF & 1 & 296.23 \\
-    T-LGL-survival-network-2008~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 61 & 193 & 7 & - & - & 318 & 0.24 \\
-    butanol-production~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 66 & 139 & 13 & - & - & 512 & 0.17 \\
-    colitis-associated-colon-cancer~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 70 & 153 & 1 & - & - & 10 & 0.18 \\
-    IL-6-signalling~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 86 & 149 & 15 & - & - & 512 & 0.32 \\
-    Corral-ThIL-17-diff~\cite{corral2021interplay} & 92 & 246 & 16 & - & - & 5724 & 0.90 \\
-    Korkut-2015~\cite{lee2019signal} & 99 & - & 12 & DNF & DNF & 2060 & 2.86 \\ \midrule
-    
-    adhesion-cip-migration-cell-cycle~\cite{guberman2020boolean} & 121 & 493 & 4 & - & - & 78 & 3.72 \\
-    interferon-1~\cite{ostaszewski2021covid19} & 121 & 190 & 55 & - & - & 512 & 0.43 \\
-    TCR-TLR5-signaling-2018~\cite{rodriguez2019cooperation} & 130 & 273 & 2 & - & - & 48 & 0.50 \\
-    influenza-virus-replication-cycle~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 131 & 302 & 11 & - & - & 2560 & 1.07 \\
-    signaling-in-prostate-cancer~\cite{Montagud2021} & 133 & 431 & 0 & - & - & 812 & 1.40 \\
-    HIV-1-with-T-cell-signaling~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 138 & 368 & 14 & DNF & DNF & 1408 & 1.44 \\
-    signal-transduction-in-fibroblasts~\cite{helikar2008emergent} & 139 & 557 & 9 & - & - & 375850 & 331.87 \\
-    HMOX-1-pathway~\cite{ostaszewski2021covid19} & 145 & 228 & 56 & - & - & 5120 & 0.99 \\
-    kynurenine-pathway~\cite{ostaszewski2021covid19} & 150 & 304 & 72 & - & - & 512 & 3.79 \\
-    virus-replication-cycle~\cite{ostaszewski2021covid19} & 154 & 268 & 25 & - & - & 1024 & 0.67 \\
-    immune-system~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 164 & 506 & 13 & DNF & DNF & 36852 & 14.19 \\
-    RA-apoptosis~\cite{aghamiri2020automated} & 181 & - & 59 & DNF & DNF & 640 & 0.70 \\
-    er-stress~\cite{ostaszewski2021covid19} & 182 & 266 & 75 & - & - & 25600 & 4.54 \\
-    cascade-3~\cite{Tsirvouli2020} & 183 & 603 & 0 & - & - & 1 & 1.65 \\
-    CHO-2016~\cite{lee2019signal} & 200 & 696 & 13 & - & - & 1024 & 2.10 \\ \midrule
-    
-    T-cell-check-point~\cite{hernandez2020computational} & 218 & - & 34 & - & - & 15360 & 4.33 \\
-    ErbB-receptor-signaling~\cite{helikar2013comprehensive} & 247 & 1100 & 22 & DNF & DNF & DNF & DNF \\
-    signaling-macrophage-activation~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 321 & 533 & 19 & - & - & 512 & 1.58 \\
-    cholocystokinin~\cite{aghamiri2020automated} & 404 & - & 95 & - & - & 705024 & 1080.35 \\ \midrule
-    
-    Alzheimer~\cite{aghamiri2020automated} & 1169 & - & 469 & - & - & 49152 & 66.17 \\
-    KEGG-network~\cite{DBLP:journals/bmcsb/Kwon16} & 1659 & - & 522 & DNF & DNF & 1024 & 1511.07 \\
-    human-network~\cite{kim2011reduction} & 1953 & - & 675 & DNF & DNF & 2048 & 1770.98 \\ \midrule
-    
-    SN-5~\cite{kim2013rmod} & 2746 & - & 835 & DNF & DNF & 2048 & 3094.04 \\
-    turei-2016~\cite{lee2019signal} & 4691 & - & 1257 & DNF & DNF & DNF & DNF \\
-    
-    \bottomrule
-  \end{tabular}
+To assess the efficiency of the proposed method, we compared it with the state-of-the-art method PyBoolNet~\cite{klarner2017pyboolnet} on both its own repository of models and on large models from the literature.
 
-\end{table}
-
-To assess the efficiency of the proposed method, we compared it with the state-of-the-art method PyBoolNet~\cite{klarner2017pyboolnet}.
-We used a set of real-world Boolean models lying in various scales collected from various bibliographic sources.
-These models are quite big (in size), complex (i.e., having high average in-degree, which is related to the number of prime-implicants) and most of them have never been fully analyzed.
-We then applied the proposed method and PyBoolNet to computing minimal trap spaces of these real-world models.
-It is notable that unlike existing analysis shown in the literature, we did not fix specific values for source nodes (i.e., some node \(v\) such that \(f_v = v\)) in these models.
 To solve the ASP problems, we used the same ASP solver CLINGO~\cite{DBLP:journals/aicom/GebserKKOSS11} and the same configuration as that used in PyBoolNet~\cite{klarner2015computing}.
-Specifically, we used the configuration \texttt{-heuristic=Domain -enum-mod=domRec -dom-mod=3} (subset maximality, equivalent to the deprecated \texttt{--dom-pref=32 --heu=domain --dom-mod=7} used by PyBoolNet). We ran all the benchmarks on a virtual machine whose environment is CPU: Intel® Core™ i7-3630QM 2.40GHz x 4, Memory: 8 GB, Ubuntu 18.04.2 64 bit. Finally, we set a time limit as one hour for each model.
+Specifically, we used the configuration \texttt{-heuristic=Domain -enum-mod=domRec -dom-mod=3} (subset maximality, equivalent to the deprecated \texttt{--dom-pref=32 --heu=domain --dom-mod=7} used by PyBoolNet). We ran all the benchmarks on an apple laptop whose environment is CPU: Intel\textregistered\ Core\texttrademark\ i7 1.20GHz x 4, 16 GB DDR4 RAM, MacOS 12.3.1. Finally, we set a time limit of two minutes for each model.
 
-Table~\ref{tab:result_real} shows the experimental results on real-world models. Hereafter, we analyze in detail the results with respect to minimal trap space computation.
-
-The first observation is that the proposed method much outperforms PyBoolNet in computational time. More specifically, ...
-% \vangiang{In the journal version, we can measure the memory consumption of the two methods}
-
-The second observation is that ...
-
-\section{Conclusion}
-
-In this article we proposed a new method for the computation of minimal trap spaces of Boolean models, based on a new concept called maximal conflict-free siphons.
-This method is evaluated on large models from the literature and shows that it can scale up much better than the state-of-the-art prime-implicants based techniques.
-We believe that this opens up the way to a much better analysis of large Boolean models, which is needed with the advent of automatic model-generation pipelines~\cite{ostaszewski2021covid19}.
-
-Though we benchmarked this new approach against the state-of-the-art tool PyBoolNet, there are many more evaluations that we plan to do in the future.
-First, the BioLQM platform that we are using is providing another implicant-based method using BDDs in \url{http://colomoto.org/biolqm/doc/tools-trapspace.html} and though we expect it to behave mostly like PyBoolNet, that remains to be checked.
-Note that this also raises the question of replacing altogether the BioLQM preprocessing step we use to obtain the Petri net encoding, since its use of BDDs might not be optimal for that step.
-The trade-off between a small Petri net, and hence small ASP, and the time it takes to compute it has to be evaluated in depth.
-
-Moreover, there are possibly other methods for the maximal siphon computation, like SAT/MaxSAT approaches~\cite{nabli2016enumerating}. We also plan to investigate them in the future. They could replace our ASP program if they outperform it.
-
-However, the current method already appears to perform very well even on the biggest models we have considered.
-We thus plan to propose its inclusion in the CoLoMoTo effort to make it readily available to modellers.
-
-% \subsubsection{Acknowledgments}
-
-\bibliographystyle{splncs04}
-\bibliography{cmsb22.bib}
-
-\appendix
-
-\section{PyBoolNet repo}
+\subsection{PyBoolNet repo}
 
 \begin{table}[!htb]
   \caption{Timing comparisons between the proposed method and PyBoolNet on the PyBoolNet's repository.
@@ -518,68 +433,97 @@ We thus plan to propose its inclusion in the CoLoMoTo effort to make it readily 
   \end{tabular}
 \end{table}
 
-%   \sylvain{I'm not sure that \(e\) and \(s\) are very relevant, moreover they are not readily available\dots}
-%   \vangiang{Indeed, they are not readily available. But if we use more meaningful words, the width of the table may exceed the width of the page. Thus, I use \(e\) and \(s\) along with the explanations shown in the table's caption. Do you have any other option?}
-%   \sylvain{just remove them since they are not relevant}
-
 As shown in Table~\ref{tab:pyboolnet_repo}, for most of the models of the official PyBoolNet repository\footnote{\url{https://github.com/hklarner/pyboolnet/tree/master/pyboolnet/repository}}, the results are comparable with all minimal trap spaces found very fast.
 Note however that on some very small models, our proposed method was sometimes slower than PyBoolNet, but still way under one second.
 Moreover, we believe that the result on the Arellano model is caused by the cold start of the JVM for BioLQM.
 On the contrary, on every model that was a bit challenging for ByPoolNet, the new method was far more efficient with speedups between one and two orders of magnitude.
 
-\section{Selected models}
+\subsection{Selected models}
+
+We used a set of real-world Boolean models lying in various scales collected from various bibliographic sources.
+These models are quite big (in size), complex (i.e., having high average in-degree, which is related to the number of prime-implicants) and most of them have never been fully analyzed.
+We then applied the proposed method and PyBoolNet to computing minimal trap spaces of these real-world models.
+It is notable that unlike existing analysis shown in the literature, we did not fix specific values for source nodes (i.e., some node \(v\) such that \(f_v = v\)) in these models.
+Table~\ref{tab:result_real} shows the experimental results on real-world models. Hereafter, we analyze in detail the results with respect to minimal trap space computation.
 
 \begin{table}[!htb]
   \caption{Timing comparisons between the proposed method and PyBoolNet on selected models from the literature.
     Columns \(n\) and \(s\) denote the numbers of nodes (resp.\ input nodes) of each model. Column \(|M|\) denotes the number of minimal trap spaces and for each method is given the computation time in seconds.
     ``DNF'' means that the method did not finish the computation (stopping at the first 1000 minimal trap spaces, or all for the last column) within the timeout of 2 minutes.}
   \centering
-  \label{tab:selected_redone}
+  \label{tab:result_real}
   \begin{tabular}{lrrrrrr}
     \toprule
     & & & & PyBoolNet & \multicolumn{2}{c}{Trappist} \\
     \cmidrule(lr){6-7}
     model & \(n\) & \(s\) & \(|M|\) & 1000 & 1000 & all \\
     \midrule
-    inflammatory-bowel-disease & 47 & 0 & 1 & DNF & 21.90 & 25.75\\
-    T-LGL-survival-network-2008 & 61 & 7 & 318 & 0.73 & 0.14 & 0.14\\
-    butanol-production & 66 & 13 & 8192 & 0.59 & 0.13 & 0.64\\
-    colitis-associated-colon-cancer & 70 & 1 & 10 & 0.16 & 0.08 & 0.06\\
-    mast-cell-activation & 73 & 19 & 1000+ & 0.64 & 0.15 & DNF\\
-    IL-6-signalling & 86 & 15 & 32768 & 3.30 & 0.10 & 5.06\\
-    Corral-ThIL-17-diff & 92 & 16 & 1000+ & DNF & 0.38 & DNF\\
-    Korkut-2015 & 99 & 12 & 18556 & DNF & 0.61 & 5.01\\
-    adhesion-cip-migration-cell-cycle & 121 & 4 & 78 & 40.81 & 0.33 & 0.45\\
-    interferon-1 & 121 & 55 & 1000+ & 8.36 & 0.19 & DNF\\
-    TCR-TLR5-signaling-2018 & 130 & 5 & 48 & 0.88 & 0.12 & 0.11\\
-    influenza-virus-replication-cycle & 131 & 11 & 10128 & 63.62 & 0.21 & 1.95\\
-    signaling-in-prostate-cancer & 133 & 11 & 2760 & DNF & 0.32 & 0.72\\
-    HIV-1-with-T-cell-signaling & 138 & 14 & 39424 & DNF & 0.87 & 7.72\\
-    signal-transduction-in-fibroblasts & 139 & 9 & 1000+ & DNF & 0.56 & DNF\\
-    HMOX-1-pathway & 145 & 56 & 1000+ & 5.16 & 0.18 & DNF\\
-    kynurenine-pathway & 150 & 72 & 1000+ & DNF & 0.74 & DNF\\
-    virus-replication-cycle & 154 & 25 & 1000+ & DNF & 0.19 & DNF\\
-    immune-system & 164 & 13 & 1000+ & DNF & 0.67 & DNF\\
-    RA-apoptosis & 180 & 59 & 1000+ & DNF & 0.16 & DNF\\
-    MAPK & 181 & 37 & 1000+ & 68.62 & 0.64 & DNF\\
-    er-stress & 182 & 75 & 1000+ & 28.65 & 0.21 & DNF\\
-    cascade-3 & 183 & 0 & 1 & 92.75 &  0.65 & 0.83\\
-    CHO-2016 & 200 & 13 & 13312 & DNF & 1.01 & 1.99\\
-    T-cell-check-point & 218 & 14 & 1000+ & 37.40 & 0.35 & DNF\\
-    ErbB-receptor-signaling & 247 & 22 & 1000+ & DNF & 1.07 & DNF\\
-    signaling-macrophage-activation & 321 & 19 & 1000+ & 15.82 & 0.63 & DNF\\
-    cholocystokinin & 383 & 74 & 1000+ & 1.22 & 0.73 & DNF\\
-    Alzheimer & 762 & 237 & 1000+ & DNF & 1.03 & DNF\\
-    KEGG-network & 1659 & 521 & 1000+ & DNF & 44.85 & DNF\\
-    human-network & 1953 & 669 & 1000+ & DNF & 42.97 & DNF\\
-    SN-5 & 2746 & 829 & ??? & DNF & DNF & DNF\\
-    turei-2016 & 4691 & 1257 & ??? & DNF & DNF & DNF\\
+    inflammatory-bowel-disease~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 47 & 0 & 1 & DNF & 21.90 & 25.75\\
+    T-LGL-survival-network-2008~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 61 & 7 & 318 & 0.73 & 0.14 & 0.14\\
+    butanol-production~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 66 & 13 & 8192 & 0.59 & 0.13 & 0.64\\
+    colitis-associated-colon-cancer~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 70 & 1 & 10 & 0.16 & 0.08 & 0.06\\
+    mast-cell-activation~\cite{aghamiri2020automated} & 73 & 19 & 1000+ & 0.64 & 0.15 & DNF\\
+    IL-6-signalling~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 86 & 15 & 32768 & 3.30 & 0.10 & 5.06\\
+    Corral-ThIL-17-diff~\cite{corral2021interplay} & 92 & 16 & 1000+ & DNF & 0.38 & DNF\\
+    Korkut-2015~\cite{lee2019signal} & 99 & 12 & 18556 & DNF & 0.61 & 5.01\\ \midrule
+    adhesion-cip-migration-cell-cycle~\cite{guberman2020boolean} & 121 & 4 & 78 & 40.81 & 0.33 & 0.45\\
+    interferon-1~\cite{ostaszewski2021covid19} & 121 & 55 & 1000+ & 8.36 & 0.19 & DNF\\
+    TCR-TLR5-signaling-2018~\cite{rodriguez2019cooperation} & 130 & 5 & 48 & 0.88 & 0.12 & 0.11\\
+    influenza-virus-replication-cycle~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 131 & 11 & 10128 & 63.62 & 0.21 & 1.95\\
+    signaling-in-prostate-cancer~\cite{Montagud2021} & 133 & 11 & 2760 & DNF & 0.32 & 0.72\\
+    HIV-1-with-T-cell-signaling~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 138 & 14 & 39424 & DNF & 0.87 & 7.72\\
+    signal-transduction-in-fibroblasts~\cite{helikar2008emergent} & 139 & 9 & 1000+ & DNF & 0.56 & DNF\\
+    HMOX-1-pathway~\cite{ostaszewski2021covid19} & 145 & 56 & 1000+ & 5.16 & 0.18 & DNF\\
+    kynurenine-pathway~\cite{ostaszewski2021covid19} & 150 & 72 & 1000+ & DNF & 0.74 & DNF\\
+    virus-replication-cycle~\cite{ostaszewski2021covid19} & 154 & 25 & 1000+ & DNF & 0.19 & DNF\\
+    immune-system~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 164 & 13 & 1000+ & DNF & 0.67 & DNF\\
+    RA-apoptosis~\cite{aghamiri2020automated} & 180 & 59 & 1000+ & DNF & 0.16 & DNF\\
+    MAPK~\cite{aghamiri2020automated} & 181 & 37 & 1000+ & 68.62 & 0.64 & DNF\\
+    er-stress~\cite{ostaszewski2021covid19} & 182 & 75 & 1000+ & 28.65 & 0.21 & DNF\\
+    cascade-3~\cite{Tsirvouli2020} & 183 & 0 & 1 & 92.75 &  0.65 & 0.83\\
+    CHO-2016~\cite{lee2019signal} & 200 & 13 & 13312 & DNF & 1.01 & 1.99\\
+    T-cell-check-point~\cite{hernandez2020computational} & 218 & 14 & 1000+ & 37.40 & 0.35 & DNF\\
+    ErbB-receptor-signaling~\cite{helikar2013comprehensive} & 247 & 22 & 1000+ & DNF & 1.07 & DNF\\
+    signaling-macrophage-activation~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 321 & 19 & 1000+ & 15.82 & 0.63 & DNF\\
+    cholocystokinin~\cite{aghamiri2020automated} & 383 & 74 & 1000+ & 1.22 & 0.73 & DNF\\
+    Alzheimer~\cite{aghamiri2020automated} & 762 & 237 & 1000+ & DNF & 1.03 & DNF\\
+    KEGG-network~\cite{DBLP:journals/bmcsb/Kwon16} & 1659 & 521 & 1000+ & DNF & 44.85 & DNF\\
+    human-network~\cite{kim2011reduction} & 1953 & 669 & 1000+ & DNF & 42.97 & DNF\\
+    SN-5~\cite{kim2013rmod} & 2746 & 829 & ??? & DNF & DNF & DNF\\
+    turei-2016~\cite{lee2019signal} & 4691 & 1257 & ??? & DNF & DNF & DNF\\
     \bottomrule
   \end{tabular}
 \end{table}
-
-Note that for all the cases wher PyBoolNet did not manage to finish before the timeout, as marked by ``DNF'' in Table~\ref{tab:selected_redone}, the timeout occurred during the computation of the prime-invariants.
-Hence, not even a single minimal trap-space was output by the method.
 % s obtained by: grep -c '^\([a-zA-Z0-9_-]*\),\s*\1\s*\(#.*\)\?$' models/*.bnet
+
+Note that for all the cases where PyBoolNet did not manage to finish before the timeout, as marked by ``DNF'' in Table~\ref{tab:result_real}, the timeout occurred during the computation of the prime-invariants.
+Hence, not even a single minimal trap-space was output by the method.
+
+The first observation is that the proposed method much outperforms PyBoolNet in computational time. More specifically, ...
+% \vangiang{In the journal version, we can measure the memory consumption of the two methods}
+
+The second observation is that ...
+
+\section{Conclusion}
+
+In this article we proposed a new method for the computation of minimal trap spaces of Boolean models, based on a new concept called maximal conflict-free siphons.
+This method is evaluated on large models from the literature and shows that it can scale up much better than the state-of-the-art prime-implicants based techniques.
+We believe that this opens up the way to a much better analysis of large Boolean models, which is needed with the advent of automatic model-generation pipelines~\cite{ostaszewski2021covid19}.
+
+Though we benchmarked this new approach against the state-of-the-art tool PyBoolNet, there are many more evaluations that we plan to do in the future.
+First, the BioLQM platform that we are using is providing another implicant-based method using BDDs in \url{http://colomoto.org/biolqm/doc/tools-trapspace.html} and though we expect it to behave mostly like PyBoolNet, that remains to be checked.
+Note that this also raises the question of replacing altogether the BioLQM preprocessing step we use to obtain the Petri net encoding, since its use of BDDs might not be optimal for that step.
+The trade-off between a small Petri net, and hence small ASP, and the time it takes to compute it has to be evaluated in depth.
+
+Moreover, there are possibly other methods for the maximal siphon computation, like SAT/MaxSAT approaches~\cite{nabli2016enumerating}. We also plan to investigate them in the future. They could replace our ASP program if they outperform it.
+
+However, the current method already appears to perform very well even on the biggest models we have considered.
+We thus plan to propose its inclusion in the CoLoMoTo effort to make it readily available to modellers.
+
+% \subsubsection{Acknowledgments}
+
+\bibliographystyle{splncs04}
+\bibliography{cmsb22.bib}
+
 
 \end{document}
