@@ -387,7 +387,9 @@ Unfortunately since this was not available at the time, the analysis of the mode
 To assess the efficiency of the proposed method, we compared it with the state-of-the-art method PyBoolNet~\cite{klarner2017pyboolnet} on both its own repository of models and on large models from the literature.
 
 To solve the ASP problems, we used the same ASP solver CLINGO~\cite{DBLP:journals/aicom/GebserKKOSS11} and the same configuration as that used in PyBoolNet~\cite{klarner2015computing}.
-Specifically, we used the configuration \texttt{-heuristic=Domain -enum-mod=domRec -dom-mod=3} (subset maximality, equivalent to the deprecated \texttt{--dom-pref=32 --heu=domain --dom-mod=7} used by PyBoolNet). We ran all the benchmarks on an apple laptop whose environment is CPU: Intel\textregistered\ Core\texttrademark\ i7 1.20GHz x 4, 16 GB DDR4 RAM, MacOS 12.3.1. Finally, we set a time limit of two minutes for each model.
+Specifically, we used the configuration \texttt{-heuristic=Domain -enum-mod=domRec -dom-mod=3} (subset maximality, equivalent to the deprecated \texttt{--dom-pref=32 --heuristic=domain --dom-mod=7} used by PyBoolNet). We ran all the benchmarks on an apple laptop whose environment is CPU: Intel\textregistered\ Core\texttrademark\ i7 1.20GHz x 4, 16 GB DDR4 RAM, MacOS 12.3.1. Finally, we set a time limit of two minutes for each model.
+
+All the models and a CoLoMoTo notebook realizing the benchmarks can be found at \url{https://github.com/soli/trap-spaces-as-siphons}. These can be run on a Docker image in the cloud by clicking the Binder button.
 
 \subsection{PyBoolNet repo}
 
