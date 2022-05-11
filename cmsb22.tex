@@ -395,13 +395,13 @@ All the models and a CoLoMoTo notebook realizing the benchmarks can be found at 
 
 \begin{table}[!htb]
   \caption{Timing comparisons between the proposed method and PyBoolNet on the PyBoolNet's repository.
-    Column \(n\) denotes the numbers of nodes of each model. Column \(|M|\) denotes the number of minimal trap spaces and for each method is given the computation time in seconds.
-    ``DNF'' means that the method did not finish the computation (with a maximum of 1000 trap spaces) within the timeout of 2 minutes. A number in bold indicates a ratio greater than three.}
+    Column \(n\) denotes the numbers of nodes of each model, column \(|M|\) denotes the number of minimal trap spaces and for each method is given the computation time in seconds.
+    A number in bold indicates a ratio greater than three.}
   \centering
   \label{tab:pyboolnet_repo}
   \begin{tabular}{lrrrrrr}
     \toprule
-    model & $n$ & $|M|$ & PyBoolNet (s) & Trappist (s) \\ \midrule
+    model & $n$ & $|M|$ & PyBoolNet & Trappist \\ \midrule
     arellano\_rootstem & 9 & 4 & 0.04 & \textbf{0.31}\\
     calzone\_cellfate & 28 & 27 & 0.03 & 0.08\\
     dahlhaus\_neuroplastoma & 23 & 32 & 0.04 & 0.11\\
@@ -411,7 +411,7 @@ All the models and a CoLoMoTo notebook realizing the benchmarks can be found at 
     faure\_cellcycle & 10 & 2 & 0.04 & 0.04\\
     grieco\_mapk & 53 & 18 & 0.04 & 0.08\\
     irons\_yeast & 18 & 1 & 0.05 & 0.04\\
-    jaoude\_thdiff & 103 & 1000+ & \textbf{1.73} & 0.40\\
+    jaoude\_thdiff & 103 & >1000 & \textbf{1.73} & 0.40\\
     klamt\_tcr & 40 & 8 & 0.06 & 0.04\\
     krumsiek\_myeloid & 11 & 6 & 0.03 & 0.03\\
     multivalued & 13 & 4 & 0.02 & 0.02\\
@@ -426,7 +426,7 @@ All the models and a CoLoMoTo notebook realizing the benchmarks can be found at 
     randomnet\_n7k3 & 7 & 10 & 0.03 & \textbf{0.19}\\
     remy\_tumorigenesis & 34 & 25 & \textbf{1.79} & 0.13\\
     saadatpour\_guardcell & 13 & 1 & 0.02 & 0.03\\
-    selvaggio\_emt & 56 & 1000+ & \textbf{1.03} & 0.23\\
+    selvaggio\_emt & 56 & >1000 & \textbf{1.03} & 0.23\\
     tournier\_apoptosis & 12 & 3 & 0.05 & 0.06\\
     xiao\_wnt5a & 7 & 4 & 0.06 & 0.03\\
     zhang\_tlgl & 60 & 156 & 0.26 & 0.17\\
@@ -448,6 +448,7 @@ We then applied the proposed method and PyBoolNet to computing minimal trap spac
 It is notable that unlike existing analysis shown in the literature, we did not fix specific values for source nodes (i.e., some node \(v\) such that \(f_v = v\)) in these models.
 Table~\ref{tab:result_real} shows the experimental results on real-world models. Hereafter, we analyze in detail the results with respect to minimal trap space computation.
 
+\setlength{\tabcolsep}{4pt}
 \begin{table}[!htb]
   \caption{Timing comparisons between the proposed method and PyBoolNet on selected models from the literature.
     Columns \(n\) and \(s\) denote the numbers of nodes (resp.\ input nodes) of each model. Column \(|M|\) denotes the number of minimal trap spaces and for each method is given the computation time in seconds.
@@ -464,33 +465,33 @@ Table~\ref{tab:result_real} shows the experimental results on real-world models.
     T-LGL-survival-network-2008~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 61 & 7 & 318 & 0.73 & 0.14 & 0.14\\
     butanol-production~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 66 & 13 & 8192 & 0.59 & 0.13 & 0.64\\
     colitis-associated-colon-cancer~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 70 & 1 & 10 & 0.16 & 0.08 & 0.06\\
-    mast-cell-activation~\cite{aghamiri2020automated} & 73 & 19 & 1000+ & 0.64 & 0.15 & DNF\\
+    mast-cell-activation~\cite{aghamiri2020automated} & 73 & 19 & >1000 & 0.64 & 0.15 & DNF\\
     IL-6-signalling~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 86 & 15 & 32768 & 3.30 & 0.10 & 5.06\\
-    Corral-ThIL-17-diff~\cite{corral2021interplay} & 92 & 16 & 1000+ & DNF & 0.38 & DNF\\
+    Corral-ThIL-17-diff~\cite{corral2021interplay} & 92 & 16 & >1000 & DNF & 0.38 & DNF\\
     Korkut-2015~\cite{lee2019signal} & 99 & 12 & 18556 & DNF & 0.61 & 5.01\\ \midrule
     adhesion-cip-migration-cell-cycle~\cite{guberman2020boolean} & 121 & 4 & 78 & 40.81 & 0.33 & 0.45\\
-    interferon-1~\cite{ostaszewski2021covid19} & 121 & 55 & 1000+ & 8.36 & 0.19 & DNF\\
+    interferon-1~\cite{ostaszewski2021covid19} & 121 & 55 & >1000 & 8.36 & 0.19 & DNF\\
     TCR-TLR5-signaling-2018~\cite{rodriguez2019cooperation} & 130 & 5 & 48 & 0.88 & 0.12 & 0.11\\
     influenza-virus-replication-cycle~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 131 & 11 & 10128 & 63.62 & 0.21 & 1.95\\
     signaling-in-prostate-cancer~\cite{Montagud2021} & 133 & 11 & 2760 & DNF & 0.32 & 0.72\\
     HIV-1-with-T-cell-signaling~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 138 & 14 & 39424 & DNF & 0.87 & 7.72\\
-    signal-transduction-in-fibroblasts~\cite{helikar2008emergent} & 139 & 9 & 1000+ & DNF & 0.56 & DNF\\
-    HMOX-1-pathway~\cite{ostaszewski2021covid19} & 145 & 56 & 1000+ & 5.16 & 0.18 & DNF\\
-    kynurenine-pathway~\cite{ostaszewski2021covid19} & 150 & 72 & 1000+ & DNF & 0.74 & DNF\\
-    virus-replication-cycle~\cite{ostaszewski2021covid19} & 154 & 25 & 1000+ & DNF & 0.19 & DNF\\
-    immune-system~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 164 & 13 & 1000+ & DNF & 0.67 & DNF\\
-    RA-apoptosis~\cite{aghamiri2020automated} & 180 & 59 & 1000+ & DNF & 0.16 & DNF\\
-    MAPK~\cite{aghamiri2020automated} & 181 & 37 & 1000+ & 68.62 & 0.64 & DNF\\
-    er-stress~\cite{ostaszewski2021covid19} & 182 & 75 & 1000+ & 28.65 & 0.21 & DNF\\
+    signal-transduction-in-fibroblasts~\cite{helikar2008emergent} & 139 & 9 & >1000 & DNF & 0.56 & DNF\\
+    HMOX-1-pathway~\cite{ostaszewski2021covid19} & 145 & 56 & >1000 & 5.16 & 0.18 & DNF\\
+    kynurenine-pathway~\cite{ostaszewski2021covid19} & 150 & 72 & >1000 & DNF & 0.74 & DNF\\
+    virus-replication-cycle~\cite{ostaszewski2021covid19} & 154 & 25 & >1000 & DNF & 0.19 & DNF\\
+    immune-system~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 164 & 13 & >1000 & DNF & 0.67 & DNF\\
+    RA-apoptosis~\cite{aghamiri2020automated} & 180 & 59 & >1000 & DNF & 0.16 & DNF\\
+    MAPK~\cite{aghamiri2020automated} & 181 & 37 & >1000 & 68.62 & 0.64 & DNF\\
+    er-stress~\cite{ostaszewski2021covid19} & 182 & 75 & >1000 & 28.65 & 0.21 & DNF\\
     cascade-3~\cite{Tsirvouli2020} & 183 & 0 & 1 & 92.75 &  0.65 & 0.83\\
     CHO-2016~\cite{lee2019signal} & 200 & 13 & 13312 & DNF & 1.01 & 1.99\\
-    T-cell-check-point~\cite{hernandez2020computational} & 218 & 14 & 1000+ & 37.40 & 0.35 & DNF\\
-    ErbB-receptor-signaling~\cite{helikar2013comprehensive} & 247 & 22 & 1000+ & DNF & 1.07 & DNF\\
-    signaling-macrophage-activation~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 321 & 19 & 1000+ & 15.82 & 0.63 & DNF\\
-    cholocystokinin~\cite{aghamiri2020automated} & 383 & 74 & 1000+ & 1.22 & 0.73 & DNF\\
-    Alzheimer~\cite{aghamiri2020automated} & 762 & 237 & 1000+ & DNF & 1.03 & DNF\\
-    KEGG-network~\cite{DBLP:journals/bmcsb/Kwon16} & 1659 & 521 & 1000+ & DNF & 44.85 & DNF\\
-    human-network~\cite{kim2011reduction} & 1953 & 669 & 1000+ & DNF & 42.97 & DNF\\
+    T-cell-check-point~\cite{hernandez2020computational} & 218 & 14 & >1000 & 37.40 & 0.35 & DNF\\
+    ErbB-receptor-signaling~\cite{helikar2013comprehensive} & 247 & 22 & >1000 & DNF & 1.07 & DNF\\
+    signaling-macrophage-activation~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 321 & 19 & >1000 & 15.82 & 0.63 & DNF\\
+    cholocystokinin~\cite{aghamiri2020automated} & 383 & 74 & >1000 & 1.22 & 0.73 & DNF\\
+    Alzheimer~\cite{aghamiri2020automated} & 762 & 237 & >1000 & DNF & 1.03 & DNF\\ \midrule
+    KEGG-network~\cite{DBLP:journals/bmcsb/Kwon16} & 1659 & 521 & >1000 & DNF & 44.85 & DNF\\
+    human-network~\cite{kim2011reduction} & 1953 & 669 & >1000 & DNF & 42.97 & DNF\\
     SN-5~\cite{kim2013rmod} & 2746 & 829 & ??? & DNF & DNF & DNF\\
     turei-2016~\cite{lee2019signal} & 4691 & 1257 & ??? & DNF & DNF & DNF\\
     \bottomrule
