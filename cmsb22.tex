@@ -378,7 +378,7 @@ This is also true for the Alzheimer model also mentioned in that same article an
 The current practice usually revolves then around fixing some inputs to plausible values and reducing the model accordingly.
 While this approach makes sense, it relies on potentially arbitrary decisions, and \emph{hides away} critical modelling choices that were actually not part of the original Boolean model.
 
-Using the method presented above, it is possible to convert the model to PNML in about 1s and to obtain the all 640 minimal trap spaces (including ones that contain more than one state) in a few milliseconds.
+Using the method presented above, it is possible to convert the model to PNML in about one second and to obtain the first 1000 minimal trap spaces (including ones that contain more than one state) in a few milliseconds.
 Unfortunately since this was not available at the time, the analysis of the model remained very high-level and qualitative, instead of being able to use the rich information of computed minimal trap spaces.
 
 \section{Evaluation}
@@ -438,7 +438,7 @@ All the models and a CoLoMoTo notebook realizing the benchmarks can be found at 
 As shown in Table~\ref{tab:pyboolnet_repo}, for most of the models of the official PyBoolNet repository\footnote{\url{https://github.com/hklarner/pyboolnet/tree/master/pyboolnet/repository}}, the results are comparable with all minimal trap spaces found very fast.
 Note however that on some very small models, our proposed method was sometimes slower than PyBoolNet, but still way under one second.
 Moreover, we believe that the result on the Arellano model is caused by the cold start of the JVM for BioLQM.
-On the contrary, on every model that was a bit challenging for PyPoolNet, the new method was far more efficient with speedups between one and two orders of magnitude.
+On the contrary, on every model that was a bit challenging for PyBoolNet, the new method was far more efficient with speedups between one and two orders of magnitude.
 
 \subsection{Selected models}
 
@@ -452,7 +452,7 @@ Table~\ref{tab:result_real} shows the experimental results on real-world models.
 \begin{table}[!htb]
   \caption{Timing comparisons between the proposed method and PyBoolNet on selected models from the literature.
     Columns \(n\) and \(s\) denote the numbers of nodes (resp.\ input nodes) of each model. Column \(|M|\) denotes the number of minimal trap spaces and for each method is given the computation time in seconds.
-    ``DNF'' means that the method did not finish the computation (stopping at the first 1000 minimal trap spaces, or all for the last column) within the timeout of 2 minutes.}
+    ``DNF'' means that the method did not finish the computation (stopping at the first 1000 minimal trap spaces, or all for the last column) within the timeout of two minutes.}
   \centering
   \label{tab:result_real}
   \begin{tabular}{lrrrrrr}
@@ -518,7 +518,7 @@ First, the BioLQM platform that we are using is providing another implicant-base
 Note that this also raises the question of replacing altogether the BioLQM preprocessing step we use to obtain the Petri net encoding, since its use of BDDs might not be optimal for that step.
 The trade-off between a small Petri net, and hence small ASP, and the time it takes to compute it has to be evaluated in depth.
 
-Moreover, there are possibly other methods for the maximal siphon computation, like SAT/MaxSAT approaches~\cite{nabli2016enumerating}. We also plan to investigate them in the future. They could replace our ASP program if they outperform it.
+In addition, there are possibly other methods for computing maximal conflict-free siphons in Petri nets, like SAT/MaxSAT approaches~\cite{nabli2016enumerating}. Although these approaches do not directly support the maximal conflict-free siphon computation now, we plan to investigate them in the future. They could replace our ASP program if they outperform it.
 
 However, the current method already appears to perform very well even on the biggest models we have considered.
 We thus plan to propose its inclusion in the CoLoMoTo effort to make it readily available to modellers.
