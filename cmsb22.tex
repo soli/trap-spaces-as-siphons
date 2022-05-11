@@ -532,53 +532,52 @@ On the contrary, on every model that was a bit challenging for ByPoolNet, the ne
 \begin{table}[!htb]
   \caption{Timing comparisons between the proposed method and PyBoolNet on selected models from the literature.
     Columns \(n\) and \(s\) denote the numbers of nodes (resp.\ input nodes) of each model. Column \(|M|\) denotes the number of minimal trap spaces and for each method is given the computation time in seconds.
-    ``DNF'' means that the method did not finish the computation (with a maximum of 1000 trap spaces) within the timeout of 2 minutes.}
+    ``DNF'' means that the method did not finish the computation (stopping at the first 1000 minimal trap spaces, or all for the last column) within the timeout of 2 minutes.}
   \centering
   \label{tab:selected_redone}
   \begin{tabular}{lrrrrrr}
     \toprule
-    model & \(n\) & \(s\) & \(|M|\) & PyBoolNet (s) & Trappist (s) \\
+    & & & & PyBoolNet & \multicolumn{2}{c}{Trappist} \\
+    \cmidrule(lr){6-7}
+    model & \(n\) & \(s\) & \(|M|\) & first 1000 & first 1000 & all \\
     \midrule
-    inflammatory-bowel-disease & 47 & 0 & 1 & DNF & 21.90\\
-    T-LGL-survival-network-2008 & 61 & 7 & 318 & 0.73 & 0.14\\
-    butanol-production & 66 & 13 & 1000+ & 0.59 & 0.13\\
-    colitis-associated-colon-cancer & 70 & 1 & 10 & 0.16 & 0.08\\
-    mast-cell-activation & 73 & 19 & 1000+ & 0.64 & 0.15\\
-    IL-6-signalling & 86 & 15 & 1000+ & 3.30 & 0.10\\
-    Corral-ThIL-17-diff & 92 & 16 & 1000+ & DNF & 0.38\\
-    Korkut-2015 & 99 & 12 & 1000+ & DNF & 0.61\\
-    adhesion-cip-migration-cell-cycle & 121 & 4 & 78 & 40.81 & 0.33\\
-    interferon-1 & 121 & 55 & 1000+ & 8.36 & 0.19\\
-    TCR-TLR5-signaling-2018 & 130 & 5 & 48 & 0.88 & 0.12\\
-    influenza-virus-replication-cycle & 131 & 11 & 1000+ & 63.62 & 0.21\\
-    signaling-in-prostate-cancer & 133 & 11 & 1000+ & DNF & 0.32\\
-    HIV-1-with-T-cell-signaling & 138 & 14 & 1000+ & DNF & 0.87\\
-    signal-transduction-in-fibroblasts & 139 & 9 & 1000+ & DNF & 0.56\\
-    HMOX-1-pathway & 145 & 56 & 1000+ & 5.16 & 0.18\\
-    kynurenine-pathway & 150 & 72 & 1000+ & DNF & 0.74\\
-    virus-replication-cycle & 154 & 25 & 1000+ & DNF & 0.19\\
-    immune-system & 164 & 13 & 1000+ & DNF & 0.67\\
-    RA-apoptosis & 180 & 59 & 1000+ & DNF & 0.16\\
-    MAPK & 181 & 37 & 1000+ & 68.62 & 0.64\\
-    er-stress & 182 & 75 & 1000+ & 28.65 & 0.21\\
-    cascade-3 & 183 & 0 & 1 & 92.75 &  0.65\\
-    CHO-2016 & 200 & 13 & 1000+ & DNF & 1.01\\
-    T-cell-check-point & 218 & 14 & 1000+ & 37.40 & 0.35\\
-    ErbB-receptor-signaling & 247 & 22 & 1000+ & DNF & 1.07\\
-    signaling-macrophage-activation & 321 & 19 & 1000+ & 15.82 & 0.63\\
-    cholocystokinin & 383 & 74 & 1000+ & 1.22 & 0.73\\
-    Alzheimer & 762 & 237 & 1000+ & DNF & 1.03\\
-    KEGG-network & 1659 & 521 & 1000+ & DNF & 44.85\\
-    human-network & 1953 & 669 & 1000+ & DNF & 42.97\\
-    SN-5 & 2746 & 829 & ??? & DNF & DNF\\
-    turei-2016 & 4691 & 1257 & ??? & DNF & DNF\\
+    inflammatory-bowel-disease & 47 & 0 & 1 & DNF & 21.90 & 25.75\\
+    T-LGL-survival-network-2008 & 61 & 7 & 318 & 0.73 & 0.14 & 0.14\\
+    butanol-production & 66 & 13 & 8192 & 0.59 & 0.13 & 0.64\\
+    colitis-associated-colon-cancer & 70 & 1 & 10 & 0.16 & 0.08 & 0.06\\
+    mast-cell-activation & 73 & 19 & 1000+ & 0.64 & 0.15 & DNF\\
+    IL-6-signalling & 86 & 15 & 32768 & 3.30 & 0.10 & 5.06\\
+    Corral-ThIL-17-diff & 92 & 16 & 1000+ & DNF & 0.38 & DNF\\
+    Korkut-2015 & 99 & 12 & 18556 & DNF & 0.61 & 5.01\\
+    adhesion-cip-migration-cell-cycle & 121 & 4 & 78 & 40.81 & 0.33 & 0.45\\
+    interferon-1 & 121 & 55 & 1000+ & 8.36 & 0.19 & DNF\\
+    TCR-TLR5-signaling-2018 & 130 & 5 & 48 & 0.88 & 0.12 & 0.11\\
+    influenza-virus-replication-cycle & 131 & 11 & 10128 & 63.62 & 0.21 & 1.95\\
+    signaling-in-prostate-cancer & 133 & 11 & 2760 & DNF & 0.32 & 0.72\\
+    HIV-1-with-T-cell-signaling & 138 & 14 & 39424 & DNF & 0.87 & 7.72\\
+    signal-transduction-in-fibroblasts & 139 & 9 & 1000+ & DNF & 0.56 & DNF\\
+    HMOX-1-pathway & 145 & 56 & 1000+ & 5.16 & 0.18 & DNF\\
+    kynurenine-pathway & 150 & 72 & 1000+ & DNF & 0.74 & DNF\\
+    virus-replication-cycle & 154 & 25 & 1000+ & DNF & 0.19 & DNF\\
+    immune-system & 164 & 13 & 1000+ & DNF & 0.67 & DNF\\
+    RA-apoptosis & 180 & 59 & 1000+ & DNF & 0.16 & DNF\\
+    MAPK & 181 & 37 & 1000+ & 68.62 & 0.64 & DNF\\
+    er-stress & 182 & 75 & 1000+ & 28.65 & 0.21 & DNF\\
+    cascade-3 & 183 & 0 & 1 & 92.75 &  0.65 & 0.83\\
+    CHO-2016 & 200 & 13 & 13312 & DNF & 1.01 & 1.99\\
+    T-cell-check-point & 218 & 14 & 1000+ & 37.40 & 0.35 & DNF\\
+    ErbB-receptor-signaling & 247 & 22 & 1000+ & DNF & 1.07 & DNF\\
+    signaling-macrophage-activation & 321 & 19 & 1000+ & 15.82 & 0.63 & DNF\\
+    cholocystokinin & 383 & 74 & 1000+ & 1.22 & 0.73 & DNF\\
+    Alzheimer & 762 & 237 & 1000+ & DNF & 1.03 & DNF\\
+    KEGG-network & 1659 & 521 & 1000+ & DNF & 44.85 & DNF\\
+    human-network & 1953 & 669 & 1000+ & DNF & 42.97 & DNF\\
+    SN-5 & 2746 & 829 & ??? & DNF & DNF & DNF\\
+    turei-2016 & 4691 & 1257 & ??? & DNF & DNF & DNF\\
     \bottomrule
   \end{tabular}
 \end{table}
 
 % s obtained by: grep -c '^\([a-zA-Z0-9_-]*\),\s*\1\s*\(#.*\)\?$' models/*.bnet
-
-\vangiang{Oh. I think that this may be a reason. However, I think we should still use a predicate \texttt{p(v, x)} in the paper because of the readability.}
-\sylvain{To be honest, I don't think it is more readable\dots}
 
 \end{document}
