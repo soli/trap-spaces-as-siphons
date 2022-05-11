@@ -539,7 +539,7 @@ On the contrary, on every model that was a bit challenging for ByPoolNet, the ne
     \toprule
     & & & & PyBoolNet & \multicolumn{2}{c}{Trappist} \\
     \cmidrule(lr){6-7}
-    model & \(n\) & \(s\) & \(|M|\) & first 1000 & first 1000 & all \\
+    model & \(n\) & \(s\) & \(|M|\) & 1000 & 1000 & all \\
     \midrule
     inflammatory-bowel-disease & 47 & 0 & 1 & DNF & 21.90 & 25.75\\
     T-LGL-survival-network-2008 & 61 & 7 & 318 & 0.73 & 0.14 & 0.14\\
@@ -578,6 +578,8 @@ On the contrary, on every model that was a bit challenging for ByPoolNet, the ne
   \end{tabular}
 \end{table}
 
+Note that for all the cases wher PyBoolNet did not manage to finish before the timeout, as marked by ``DNF'' in Table~\ref{tab:selected_redone}, the timeout occurred during the computation of the prime-invariants.
+Hence, not even a single minimal trap-space was output by the method.
 % s obtained by: grep -c '^\([a-zA-Z0-9_-]*\),\s*\1\s*\(#.*\)\?$' models/*.bnet
 
 \end{document}
