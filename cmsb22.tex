@@ -518,9 +518,9 @@ We thus plan to propose its inclusion in the CoLoMoTo effort to make it readily 
   \end{tabular}
 \end{table}
 
-  \sylvain{I'm not sure that \(e\) and \(s\) are very relevant, moreover they are not readily available\dots}
-  \vangiang{Indeed, they are not readily available. But if we use more meaningful words, the width of the table may exceed the width of the page. Thus, I use \(e\) and \(s\) along with the explanations shown in the table's caption. Do you have any other option?}
-  \sylvain{just remove them since they are not relevant}
+%   \sylvain{I'm not sure that \(e\) and \(s\) are very relevant, moreover they are not readily available\dots}
+%   \vangiang{Indeed, they are not readily available. But if we use more meaningful words, the width of the table may exceed the width of the page. Thus, I use \(e\) and \(s\) along with the explanations shown in the table's caption. Do you have any other option?}
+%   \sylvain{just remove them since they are not relevant}
 
 As shown in Table~\ref{tab:pyboolnet_repo}, for most of the models of the official PyBoolNet repository\footnote{\url{https://github.com/hklarner/pyboolnet/tree/master/pyboolnet/repository}}, the results are comparable with all minimal trap spaces found very fast.
 Note however that on some very small models, our proposed method was sometimes slower than PyBoolNet, but still way under one second.
@@ -577,6 +577,28 @@ On the contrary, on every model that was a bit challenging for ByPoolNet, the ne
     \bottomrule
   \end{tabular}
 \end{table}
+
+\begin{table}[!htb]
+  \caption{Timing comparisons between the proposed method and PyBoolNet on selected models from the literature.
+    Columns \(n\) and \(s\) denote the numbers of nodes (resp.\ input nodes) of each model. For each method, Column \(|M|\) denotes the number of minimal trap spaces and the computation time is given in seconds.
+    ``DNF'' means that the method did not finish the computation within the timeout of 2 minutes.}
+  \centering
+  \label{tab:selected_new_option}
+  \begin{tabular}{lrrrrrr}
+    \toprule
+    & & & \multicolumn{2}{c}{PyBoolNet} & \multicolumn{2}{c}{Trappist} \\
+    \cmidrule(lr){4-5} \cmidrule(lr){6-7}
+    model & \(n\) & \(s\) & \(|M|\) & time (s) & \(|M|\) & time (s) \\
+    \midrule
+    inflammatory-bowel-disease & 47 & 0 & 0+ & DNF & 1 & 25.75 \\
+    T-LGL-survival-network-2008 & 61 & 7 & 318 & 0.73 & 318 & 0.14 \\
+    ErbB-receptor-signaling & 247 & 22 & 0+ & DNF & 1456394+ & DNF \\
+    SN-5 & 2746 & 829 & 0+ & DNF & 0+ & DNF \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\vangiang{What do you think about the following option? We do not set a limit for the number of minimal trap space but a limit of 2 minutes for the computation time. There will be 4 cases (see Table~\ref{tab:selected_new_option}). Case 1: both methods finished (e.g., the T-LGL-survival-network-2008 model). In this case, we compare the computation time between two methods. Case 2: PyBoolNet finished and Trappist did not finish. In this case, PyBoolNet is of course better than Trappist (but no model for this case). Case 3: PyBoolNet did not finish and Trappist finished (e.g., the inflammatory-bowel-disease). In this case, Trappist is of course better than PyBoolNet. Moreover, 0+ indicates that PyBoolNet even failed at the computation of prime-implicants. Case 4: both method did not finish (e.g., the ErbB-receptor-signaling model). In this case, we compare the numbers of minimal trap spaces obtained by the two methods within the timeout (more is better). Moreover, 0+ also indicates that Trappist even failed at the conversion to PNML models.}
 
 % s obtained by: grep -c '^\([a-zA-Z0-9_-]*\),\s*\1\s*\(#.*\)\?$' models/*.bnet
 
