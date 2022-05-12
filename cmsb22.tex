@@ -10,10 +10,11 @@
 \usepackage{amsfonts}
 
 \usetikzlibrary{positioning,automata} % drawing automa
-\usetikzlibrary{calc,fit,tikzmark}
+% \usetikzlibrary{calc,fit,tikzmark}
 
 % for captions in figures
-\usepackage{subcaption}
+\usepackage[labelformat=simple]{subcaption}
+\renewcommand\thesubfigure{(\alph{subfigure})}
 
 % hyperref for LNCS
 \renewcommand\UrlFont{\color{blue}\rmfamily}
@@ -119,7 +120,7 @@ Consequently, a trap space \(m\) is minimal if and only if there is no trap spac
 
 %%% Example %%%
 For example, let us consider the Boolean model shown in Example~\ref{example:BN}.
-Figure~\ref{fig:stg_and_PN}(a) shows the dynamics of this model under the fully asynchronous update (i.e., only one node is nondeterministically selected in order to be updated at each time step).
+Figure~\ref{fig:stg} shows the dynamics of this model under the fully asynchronous update (i.e., only one node is nondeterministically selected in order to be updated at each time step).
 The model has all two trap spaces, \(m_1 = 11\) and \(m_2 = \star\star\).
 Since \(m_1 < m_2\), \(m_1\) is a minimal trap space of the Boolean model.
 
@@ -130,7 +131,7 @@ We give a Boolean model \(\mathcal{M} = (V, F)\), where \(V = (x_1, x_2)\) and \
 
 \begin{figure}[!ht]
 \centering
-\begin{subfigure}[b]{0.4\textwidth}
+\begin{subfigure}[b]{0.3\textwidth}
 \centering
 \begin{tikzpicture}[node distance=1cm and 1cm, every node/.style={scale=1.0}]
    \node[] (0) [] {00};
@@ -149,8 +150,9 @@ We give a Boolean model \(\mathcal{M} = (V, F)\), where \(V = (x_1, x_2)\) and \
    
    \draw[->] (3) edge [loop right] (3);
 \end{tikzpicture}
-\caption{}
-\end{subfigure}%
+\caption{State transition graph, under the fully asynchronous update.}
+\label{fig:stg}
+\end{subfigure}\hfill%
 \begin{subfigure}[b]{0.6\textwidth}
 \centering
 \begin{tikzpicture}[node distance=1cm and 1cm, every node/.style={scale=1.0}]\footnotesize
@@ -182,9 +184,10 @@ We give a Boolean model \(\mathcal{M} = (V, F)\), where \(V = (x_1, x_2)\) and \
   \draw[->] (t1x2) -- (x2);
   \draw[<->] (t1x2) -- (nx1);
 \end{tikzpicture}
-\caption{}
+\caption{Petri net encoding of the model. Circles denote places, whereas rectangles denote transitions.}
+\label{fig:PN}
 \end{subfigure}%
-\caption{(a) Dynamics under the fully asynchronous update of the Boolean model. (b) Petri net encoding of the Boolean model. Circles denote places, whereas rectangles denote transitions.}
+\caption{Dynamics and encoding of the Boolean model of Example~\ref{example:BN}}
 \label{fig:stg_and_PN}
 \end{figure}
 
@@ -222,7 +225,7 @@ In addition, at any marking at most one of such transitions is enabled because \
 Hence, for any update scheme in \(\mathcal{M}\), we have a corresponding firing scheme in \(\mathcal{P}\), which preserves the equivalence between the dynamics of \(\mathcal{M}\) and \(\mathcal{P}\)~\cite{DBLP:journals/nc/ChatainHKPT20}.
 
 For illustration, let us reconsider the Boolean model shown in Example~\ref{example:BN}.
-Figure~\ref{fig:stg_and_PN}(b) shows the Petri net encoding of this Boolean model.
+Figure~\ref{fig:PN} shows the Petri net encoding of this Boolean model.
 Place \(p_{x_1}\) (resp. \(\overline{p_{x_1}}\)) in \(\mathcal{P}\) represents the activation (resp.\ the inactivation) of node \(x_1\) in \(\mathcal{M}\).
 Marking \(\{p_{x_1}, \overline{p_{x_2}}\}\) in \(\mathcal{P}\) represents state 10 in \(\mathcal{M}\). 
 Transitions \(t^{1}_{x_1}\) and \(t^{2}_{x_1}\) represent the update of node \(x_1\).
@@ -350,7 +353,7 @@ To guarantee that a Herbrand model is also a stable model (an answer set), we ne
 for each \(v \in V\).
 Note that the number of atoms of \(\mathcal{L}\) is only \(2n\), whereas the ASP encoding shown in~\cite{klarner2015computing} has as many atoms as the number of prime-implicants of the Boolean model and that number might be exponential in \(n\).
 
-% For illustration, we consider the Petri net encoding \(\mathcal{P}\) shown in Figure~\ref{fig:stg_and_PN}(b).
+% For illustration, we consider the Petri net encoding \(\mathcal{P}\) shown in Figure~\ref{fig:PN}.
 % If \(p_{x_1}\) is in a siphon \(S\), then \(\overline{p_{x_1}}\) or \(\overline{p_{x_2}}\) should be in \(S\).
 % This rule is translated into the ASP rule
 % \[
