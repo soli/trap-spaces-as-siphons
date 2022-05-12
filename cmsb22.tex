@@ -263,7 +263,7 @@ First, we add a definition related to any set of places of a Petri net encoding 
 
 \begin{definition}
 
-  A set of places of Petri net \(P\) encoding logical model \(\mathcal{M}\) is \emph{conflict-free} if it does not contain any two places corresponding to the active and inactive states of the same \emph{gene} of \(\mathcal{M}\). Then, a conflict-free siphon \(S\) is said to be \emph{maximal} if and only if there is no other conflict-free siphon \(S'\) such that \(S \subset S'\).
+  A set of places of Petri net \(\mathcal{P}\) encoding logical model \(\mathcal{M}\) is \emph{conflict-free} if it does not contain any two places corresponding to the active and inactive states of the same \emph{gene} of \(\mathcal{M}\). Then, a conflict-free siphon \(S\) is said to be \emph{maximal} if and only if there is no other conflict-free siphon \(S'\) such that \(S \subset S'\).
 
 \end{definition}
 
@@ -364,9 +364,9 @@ Now, a solution (simply an answer set) \(A \subseteq \mathcal{A}\) of \(\mathcal
 
 \section{Motivating example}
 
-For a few years now the second author has been collaborating with biologists who have been building very large detailed and annotated maps and now wish to analyze the dynamics of the corresponding models.
-One of the main maps studied this way is a map representing knowledge about the Rheumatoïd Arthritis~\cite{singh2018computational}, which was the main motivation for the development of a tool to automatically transform it into an executable Boolean model~\cite{aghamiri2020automated}.
-In the supplementary material of the paper, an excerpt of the map, focused around the apoptosis (cell death) module is transformed into a model of \emph{reasonable} size, namely 181 Boolean variables (model \verb|F5_RA_apoptosis_executable_module.sbml| of supplementary material S3, and model ``RA-apoptosis'' of Section~\ref{sec:eval}).
+For a few years now we have been collaborating with biologists who build very large detailed and annotated maps and now wish to analyze the dynamics of the corresponding models.
+One of the main maps studied this way represents knowledge about the Rheumatoïd Arthritis~\cite{singh2018computational}, and was the main motivation for the development of a tool to automatically transform it into an executable Boolean model~\cite{aghamiri2020automated}.
+In the supplementary material of the paper, an excerpt of the map, focused around the apoptosis (cell death) module is transformed into a model of \emph{reasonable} size, namely 180 Boolean variables (model \verb|F5_RA_apoptosis_executable_module.sbml| of supplementary material S3, and model ``RA-apoptosis'' of Section~\ref{sec:eval}).
 The study of such model, though, is a big hurdle.
 Indeed, as stated in the article about another model of the same size:
 \emph{``The size of the CaSQ-inferred MAPK model (181 nodes) made the calculation of stable states a non-realistic endeavour.''}
@@ -379,7 +379,7 @@ However, using a state-of-the-art tool like PyBoolNet~\cite{klarner2015computing
 And hence, it is not possible to extract any (complex) attractor at all.
 This is also true for the Alzheimer model also mentioned in that same article and originally from~\cite{ogishima2016alzpathway} (\verb|F4| file in the original supplementary material, and ``Alzheimer'' in Table~\ref{tab:result_real}), but actually not for the MAPK model for which the first trap spaces can be obtained in reasonable time.
 The current practice usually revolves then around fixing some inputs to plausible values and reducing the model accordingly.
-While this approach makes sense, it relies on potentially arbitrary decisions, and \emph{hides away} critical modelling choices that were actually not part of the original Boolean model.
+While this approach makes sense, it relies on potentially arbitrary decisions, and \emph{hides away} critical modelling choices that were actually not part of the original Boolean model or even of the starting map.
 
 Using the method presented above, it is possible to convert the model to PNML in about one second and to obtain the first 1000 minimal trap spaces (including ones that contain more than one state) in a few milliseconds.
 Unfortunately since this was not available at the time, the analysis of the model remained very high-level and qualitative, instead of being able to use the rich information of computed minimal trap spaces.
@@ -387,12 +387,12 @@ Unfortunately since this was not available at the time, the analysis of the mode
 \section{Evaluation}
 \label{sec:eval}
 
-To assess the efficiency of the proposed method, we compared it with the state-of-the-art method PyBoolNet~\cite{klarner2015computing,klarner2017pyboolnet} on both its own repository of models and large models from the literature.
+To assess the efficiency of the proposed method, we compare it with the state-of-the-art method implemented in the tool PyBoolNet~\cite{klarner2015computing,klarner2017pyboolnet} on both its own repository of models and large models from the literature.
 
 To solve the ASP problems, we used the same ASP solver CLINGO~\cite{DBLP:journals/aicom/GebserKKOSS11} and the same configuration as that used in PyBoolNet~\cite{klarner2015computing,klarner2017pyboolnet}.
 Specifically, we used the configuration \texttt{-heuristic=Domain -enum-mod=domRec -dom-mod=3} (subset maximality, equivalent to the deprecated \texttt{--dom-pref=32 --heuristic=domain --dom-mod=7} used by PyBoolNet). We ran all the benchmarks on an apple laptop whose environment is CPU: Intel\textregistered\ Core\texttrademark\ i7 1.20GHz x 4, 16 GB DDR4 RAM, MacOS 12.3.1. Finally, we set a time limit of two minutes for each model.
 
-All the models and a CoLoMoTo notebook realizing the benchmarks can be found at \url{https://github.com/soli/trap-spaces-as-siphons}. These can be run on a Docker image in the cloud by clicking the Binder button.
+All the models and a CoLoMoTo notebook realizing the benchmarks can be found at \url{https://github.com/soli/trap-spaces-as-siphons}. These can be run on a Docker image in the cloud by clicking the ``Binder'' button.
 
 \subsection{PyBoolNet repository}
 
