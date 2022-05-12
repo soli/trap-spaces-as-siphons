@@ -502,12 +502,15 @@ Table~\ref{tab:result_real} shows the experimental results on those models. Here
 \end{table}
 % s obtained by: grep -c '^\([a-zA-Z0-9_-]*\),\s*\1\s*\(#.*\)\?$' models/*.bnet
 
+%%% The proposed method outperforms PyBoolNet %%%
+The first observation is that the proposed method vastly outperforms PyBoolNet in computational time, on each and every model, and sometimes with orders of magnitude of difference (e.g., for most models in the 100-1000 nodes size range).
 Note that for all the cases where PyBoolNet did not manage to finish before the timeout, as marked by ``DNF'' in Table~\ref{tab:result_real}, the timeout occurred during the computation of the prime-implicants.
 Hence, not even a single minimal trap-space was output by the method.
+The computational advantage is therefore immediately a practical advantage since on the one hand the state-of-the-art method did not allow any analysis whatsoever of the models, and on the other hand the proposed method could provide, very often under one second, the first thousand minimal trap spaces.
+For modellers having a critical look at a model and in a \emph{model, invalidate, refine} loop this means a huge difference in the models that are amenable to study.
 
-%%% The proposed method outperforms PyBoolNet %%%
-The first observation is that the proposed method much outperforms PyBoolNet in computational time.
-More specifically, ...
+Note that even with a very restricted time-limit of two minutes, it was possible with the proposed technique to find all minimal trap spaces of small models (roughly under 130 nodes, i.e., considered as quite big up to now).
+Though it might seem impractical to handle tens of thousands of such possible complex attractors in a manual way, i.e., to compare them to specific experimental conditions and corresponding data, we hope that an automatic analysis of such attractors might become possible with systematic verification methods, not unlike that described in~\cite{hernandez2020computational}.
 
 %%% It is not clear to show the advantage in ASP encoding %%%
 The second observation is that ...
