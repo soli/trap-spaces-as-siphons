@@ -50,7 +50,7 @@
 
 \begin{abstract}
 
-  Boolean modelling of gene regulation but also of post-transcri\-ptomic systems has proven over the years that it can bring powerful analyses and corresponding insight to the many cases where precise biological data is not sufficiently available to build a detailed quantitative model.
+  Boolean modelling of gene regulation but also of post-trans\-criptomic systems has proven over the years that it can bring powerful analyses and corresponding insight to the many cases where precise biological data is not sufficiently available to build a detailed quantitative model.
   This is even more true for very large models where such data is frequently missing and led to a constant increase in size of logical models \emph{à la} Thomas.
   Besides simulation, the analysis of such models is mostly based on attractor computation, since those correspond roughly to observable biological \emph{phenotypes}. The recent use of trap spaces made a real breakthrough in that field allowing to consider medium-sized models that used to be out of reach.
   However, with the continuing increase in model-size, the state-of-the-art computation of minimal trap spaces based on \emph{prime-implicants} shows its limits as there can be a huge number of implicants.
@@ -89,6 +89,8 @@ We will briefly recall here some preliminaries on Boolean models related to trap
 In the case of multi-level Logical models, an encoding into a Boolean model is always possible~\cite{Didier2011}.
 
 \subsection{Traps spaces}
+
+\sylvain{This section might be better with real ``Definitions'', but when I tried rewriting it it led to a lot of changes\dots I guess we can do that for the journal version but for now keep things as they are.}
 
 We recall here some definitions from~\cite{klarner2015computing} for the introduction of \emph{trap spaces}.
 Minimal trap spaces prove to be a very good approximation of the attractors of a Boolean model under asynchronous update schemes and have become the \emph{de facto} standard way to analyze models of a few tens of \emph{genes}~\cite{klarner2017pyboolnet,cifuentes2020control}.
@@ -221,14 +223,15 @@ Hence, for any update scheme in \(\mathcal{M}\), we have a corresponding firing 
 
 For illustration, let us reconsider the Boolean model shown in Example~\ref{example:BN}.
 Figure~\ref{fig:stg_and_PN}(b) shows the Petri net encoding of this Boolean model.
-Place \(p_{x_1}\) (resp. \(\overline{p_{x_1}}\)) in \(\mathcal{P}\) represents the activation (resp. the inactivation) of node \(x_1\) in \(\mathcal{M}\).
+Place \(p_{x_1}\) (resp. \(\overline{p_{x_1}}\)) in \(\mathcal{P}\) represents the activation (resp.\ the inactivation) of node \(x_1\) in \(\mathcal{M}\).
 Marking \(\{p_{x_1}, \overline{p_{x_2}}\}\) in \(\mathcal{P}\) represents state 10 in \(\mathcal{M}\). 
 Transitions \(t^{1}_{x_1}\) and \(t^{2}_{x_1}\) represent the update of node \(x_1\).
-Of course, at any marking \(t^{1}_{x_1}\) and \(t^{2}_{x_1}\) cannot be both enabled.
-Then, the fully asynchronous update scheme in \(\mathcal{M}\) corresponds to the classical firing scheme in \(\mathcal{P}\) where only one of the enabled transitions at a marking will be fired~\cite{Murata1989}.
+Of course, in any marking \(t^{1}_{x_1}\) and \(t^{2}_{x_1}\) cannot be both enabled.
+Then, the fully asynchronous update scheme in \(\mathcal{M}\) corresponds to the classical firing scheme in \(\mathcal{P}\) where only one of the enabled transitions for a given marking will be fired~\cite{Murata1989}.
 
-Note that given a Logical model in the standard SBML-Qual format~\cite{chaouiya2013sbml}, i.e., one of the packages of SBML v3~\cite{keating2020sbml}, one can easily obtain its Petri net encoding in the PNML\footnote{\url{https://www.pnml.org/}} standard using the BioLQM\footnote{\url{http://www.colomoto.org/biolqm/}} library.
-This piece of software extracted from GINsim~\cite{chaouiya2012logical} and part of the CoLoMoTo\footnote{\url{http://colomoto.org/}} software suite allows for easy conversion between standard formats.
+
+Note that given a Logical model in the standard SBML-Qual format~\cite{chaouiya2013sbml}, i.e., the package of SBML v3~\cite{keating2020sbml} for such models, one can easily obtain its Petri net encoding in the Petri Net Markup Language  (PNML)\footnote{\url{https://www.pnml.org/}} standard using the BioLQM\footnote{\url{http://www.colomoto.org/biolqm/}} library.
+This piece of software extracted from GINsim~\cite{chaouiya2012logical} and part of the CoLoMoTo\footnote{\url{http://colomoto.org/}}~\cite{naldi2015cooperative} software suite allows for easy conversion between standard formats.
 It also accepts many other common formats for Logical models, notably the \verb|.bnet| files of the  BoolNet~\cite{mussel2010boolnet,klarner2017pyboolnet} tools.
 The conversion is executed as follows:
 
@@ -357,7 +360,7 @@ Note that the number of atoms of \(\mathcal{L}\) is only \(2n\), whereas the ASP
 % \verb|:- p(x_1, 1) , p(x_2, 0).|
 % \] Analogously for other places in \(\mathcal{P}\), we obtain the final ASP as follows:
 
-Now, a solution (simply an answer set) \(A \subseteq \mathcal{A}\) of \(\mathcal{L}\) is equivalent to a conflict-free siphon \(S\) of \(\mathcal{P}\), thus a trap space \(m\) of \(\mathcal{M}\). The conversion from \(A\) to \(m\) is straightforward. If \(\verb|p-v| \in A\) then \(v \in D_m\) and \(m(v) = 0\). Conversely, if \(\verb|n-v| \in A\) then \(v \in D_m\) and \(m(v) = 1\). Otherwise, \(v \not \in D_m\). Computing multiple answer sets is built into ASP solvers and the solving collection POTASSCO~\cite{DBLP:journals/aicom/GebserKKOSS11} also features the option to find set-inclusion maximal answer sets with respect to the set of atoms. Naturally, a set-inclusion maximal answer set of \(\mathcal{L}\) is equivalent to a maximal conflict-free siphon of \(\mathcal{P}\), thus a minimal trap space of \(\mathcal{M}\). By using this built-in option, we can compute all the set-inclusion maximal answer sets of \(\mathcal{L}\) (resp. all the minimal trap spaces of \(\mathcal{M}\)) in one execution.
+Now, a solution (simply an answer set) \(A \subseteq \mathcal{A}\) of \(\mathcal{L}\) is equivalent to a conflict-free siphon \(S\) of \(\mathcal{P}\), thus a trap space \(m\) of \(\mathcal{M}\). The conversion from \(A\) to \(m\) is straightforward. If \(\verb|p-v| \in A\) then \(v \in D_m\) and \(m(v) = 0\). Conversely, if \(\verb|n-v| \in A\) then \(v \in D_m\) and \(m(v) = 1\). Otherwise, \(v \not \in D_m\). Computing multiple answer sets is built into ASP solvers and the solving collection POTASSCO~\cite{DBLP:journals/aicom/GebserKKOSS11} also features the option to find set-inclusion maximal answer sets with respect to the set of atoms. Naturally, a set-inclusion maximal answer set of \(\mathcal{L}\) is equivalent to a maximal conflict-free siphon of \(\mathcal{P}\), thus a minimal trap space of \(\mathcal{M}\). By using this built-in option, we can compute all the set-inclusion maximal answer sets of \(\mathcal{L}\) (resp.\ all the minimal trap spaces of \(\mathcal{M}\)) in one execution.
 
 \section{Motivating example}
 
