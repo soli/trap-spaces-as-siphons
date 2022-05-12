@@ -384,9 +384,9 @@ Unfortunately since this was not available at the time, the analysis of the mode
 \section{Evaluation}
 \label{sec:eval}
 
-To assess the efficiency of the proposed method, we compared it with the state-of-the-art method PyBoolNet~\cite{klarner2017pyboolnet} on both its own repository of models and large models from the literature.
+To assess the efficiency of the proposed method, we compared it with the state-of-the-art method PyBoolNet~\cite{klarner2015computing,klarner2017pyboolnet} on both its own repository of models and large models from the literature.
 
-To solve the ASP problems, we used the same ASP solver CLINGO~\cite{DBLP:journals/aicom/GebserKKOSS11} and the same configuration as that used in PyBoolNet~\cite{klarner2015computing}.
+To solve the ASP problems, we used the same ASP solver CLINGO~\cite{DBLP:journals/aicom/GebserKKOSS11} and the same configuration as that used in PyBoolNet~\cite{klarner2015computing,klarner2017pyboolnet}.
 Specifically, we used the configuration \texttt{-heuristic=Domain -enum-mod=domRec -dom-mod=3} (subset maximality, equivalent to the deprecated \texttt{--dom-pref=32 --heuristic=domain --dom-mod=7} used by PyBoolNet). We ran all the benchmarks on an apple laptop whose environment is CPU: Intel\textregistered\ Core\texttrademark\ i7 1.20GHz x 4, 16 GB DDR4 RAM, MacOS 12.3.1. Finally, we set a time limit of two minutes for each model.
 
 All the models and a CoLoMoTo notebook realizing the benchmarks can be found at \url{https://github.com/soli/trap-spaces-as-siphons}. These can be run on a Docker image in the cloud by clicking the Binder button.
@@ -394,8 +394,8 @@ All the models and a CoLoMoTo notebook realizing the benchmarks can be found at 
 \subsection{PyBoolNet repository}
 
 \begin{table}[!htb]
-  \caption{Timing comparisons between the proposed method and PyBoolNet on the PyBoolNet's repository.
-    Column \(n\) denotes the numbers of nodes of each model, column \(|M|\) denotes the number of minimal trap spaces and for each method is given the computation time in seconds.
+  \caption{Timing comparisons between the proposed method (i.e., Trappist) and PyBoolNet on the PyBoolNet's repository.
+    Column \(n\) denotes the number of nodes of each model, Column \(|M|\) denotes the number of minimal trap spaces and for each method is given the computation time in seconds.
     A number in bold indicates a ratio greater than three.}
   \centering
   \label{tab:pyboolnet_repo}
@@ -437,7 +437,7 @@ All the models and a CoLoMoTo notebook realizing the benchmarks can be found at 
 
 As shown in Table~\ref{tab:pyboolnet_repo}, for most of the models of the official PyBoolNet repository\footnote{\url{https://github.com/hklarner/pyboolnet/tree/master/pyboolnet/repository}}, the results are comparable with all minimal trap spaces found very fast.
 Note however that on some very small models, our proposed method was sometimes slower than PyBoolNet, but still way under one second.
-Moreover, we believe that the result on the Arellano model is caused by the cold start of the JVM for BioLQM.
+Moreover, we believe that the result on the arellano\_rootstem model is caused by the cold start of the JVM for BioLQM.
 On the contrary, on every model that was a bit challenging for PyBoolNet, the new method was far more efficient with speedups between one and two orders of magnitude.
 
 \subsection{Selected models}
@@ -450,8 +450,8 @@ Table~\ref{tab:result_real} shows the experimental results on real-world models.
 
 \setlength{\tabcolsep}{4pt}
 \begin{table}[!htb]
-  \caption{Timing comparisons between the proposed method and PyBoolNet on selected models from the literature.
-    Columns \(n\) and \(s\) denote the numbers of nodes (resp.\ input nodes) of each model. Column \(|M|\) denotes the number of minimal trap spaces and for each method is given the computation time in seconds.
+  \caption{Timing comparisons between the proposed method (i.e., Trappist) and PyBoolNet on selected models from the literature.
+    Column \(n\) (resp.\ \(s\)) denotes the number of nodes (resp.\ source nodes) of each model. Column \(|M|\) denotes the number of minimal trap spaces and for each method is given the computation time in seconds.
     ``DNF'' means that the method did not finish the computation (stopping at the first 1000 minimal trap spaces, or all for the last column) within the timeout of two minutes.}
   \centering
   \label{tab:result_real}
@@ -499,13 +499,18 @@ Table~\ref{tab:result_real} shows the experimental results on real-world models.
 \end{table}
 % s obtained by: grep -c '^\([a-zA-Z0-9_-]*\),\s*\1\s*\(#.*\)\?$' models/*.bnet
 
-Note that for all the cases where PyBoolNet did not manage to finish before the timeout, as marked by ``DNF'' in Table~\ref{tab:result_real}, the timeout occurred during the computation of the prime-invariants.
+Note that for all the cases where PyBoolNet did not manage to finish before the timeout, as marked by ``DNF'' in Table~\ref{tab:result_real}, the timeout occurred during the computation of the prime-implicants.
 Hence, not even a single minimal trap-space was output by the method.
 
-The first observation is that the proposed method much outperforms PyBoolNet in computational time. More specifically, ...
-% \vangiang{In the journal version, we can measure the memory consumption of the two methods}
+%%% The proposed method outperforms PyBoolNet %%%
+The first observation is that the proposed method much outperforms PyBoolNet in computational time.
+More specifically, ...
 
+%%% It is not clear to show the advantage in ASP encoding %%%
 The second observation is that ...
+
+%%% For very huge models %%%
+The third observation is that for very huge models (), the proposed method did not manage to finish the Petri net conversion before the timeout, as marked by ``???'' in Table~\ref{tab:result_real}.
 
 \section{Conclusion}
 
@@ -517,6 +522,8 @@ Though we benchmarked this new approach against the state-of-the-art tool PyBool
 First, the BioLQM platform that we are using is providing another implicant-based method using BDDs in \url{http://colomoto.org/biolqm/doc/tools-trapspace.html} and though we expect it to behave mostly like PyBoolNet, that remains to be checked.
 Note that this also raises the question of replacing altogether the BioLQM preprocessing step we use to obtain the Petri net encoding, since its use of BDDs might not be optimal for that step.
 The trade-off between a small Petri net, and hence small ASP, and the time it takes to compute it has to be evaluated in depth.
+Second, with the experimental results shown in this paper, it is not enough information to distinctly expose the practical differences between our ASP encoding and that of PyBoolNet.
+Hence, we plan to conduct experiments on more real-world models or maybe random models that can be randomly generated by using BoolNet~\cite{mussel2010boolnet}.
 
 In addition, there are possibly other methods for computing maximal conflict-free siphons in Petri nets, like SAT/MaxSAT approaches~\cite{nabli2016enumerating}. Although these approaches do not directly support the maximal conflict-free siphon computation now, we plan to investigate them in the future. They could replace our ASP program if they outperform it.
 
