@@ -92,8 +92,8 @@ In the case of multi-level Logical models, an encoding into a Boolean model is a
 
 \subsection{Traps spaces}
 
-\sylvain{This section might be better with real ``Definitions'', but when I tried rewriting it, this led to a lot of changes\dots I guess we can do that for the journal version but for now keep things as they are.}
-\vangiang{Yes. This should be better. We can do that for the journal version.}
+% \sylvain{This section might be better with real ``Definitions'', but when I tried rewriting it, this led to a lot of changes\dots I guess we can do that for the journal version but for now keep things as they are.}
+% \vangiang{Yes. This should be better. We can do that for the journal version.}
 
 We recall here some definitions from~\cite{klarner2015computing} for the introduction of \emph{trap spaces}.
 Minimal trap spaces prove to be a very good approximation of the attractors of a Boolean model under asynchronous update schemes and have become the \emph{de facto} standard way to analyze models of a few tens of \emph{genes}~\cite{klarner2017pyboolnet,cifuentes2020control}.
@@ -505,7 +505,7 @@ Table~\ref{tab:result_real} shows the experimental results on those models. Here
 %%% The proposed method outperforms PyBoolNet %%%
 The first observation is that the proposed method vastly outperforms PyBoolNet in computational time, on each and every model, and sometimes with orders of magnitude of difference (e.g., for most models in the 100--1000 nodes size range).
 Note that for all the cases where PyBoolNet did not manage to finish before the timeout, as marked by ``DNF'' in Table~\ref{tab:result_real}, the timeout occurred during the computation of the prime-implicants.
-Hence, not even a single minimal trap-space was output by the method.
+Hence, not even a single minimal trap space was output by the method.
 The computational advantage is therefore immediately a practical advantage since on the one hand the state-of-the-art method did not allow any analysis whatsoever of the models, and on the other hand the proposed method could provide, very often under one second, the first thousand minimal trap spaces.
 For modellers having a critical look at a model and in a \emph{model, invalidate, refine} loop this means a huge difference in the models that are amenable to study.
 
@@ -513,7 +513,9 @@ Note that even with a very restricted time-limit of two minutes, it was possible
 Though it might seem impractical to handle tens of thousands of such possible complex attractors in a manual way, i.e., to compare them to specific experimental conditions and corresponding data, we hope that an automatic analysis of such attractors might become possible with systematic verification methods, not unlike that described in~\cite{hernandez2020computational}.
 
 %%% It is not clear to show the advantage in ASP encoding %%%
-The second observation is that\dots
+The second observation is that for all the models where PyBoolNet finished before the timeout, once PyBoolNet went through the prime-implicant phase, its ASP solving phase quickly returned the first 1000 minimal trap spaces, all under one second.
+For these models, the ASP solving phase of the proposed method also took very short time, all under one second.
+Hence, with the experimental results shown in this paper, the practical differences between our ASP encoding and that of PyBoolNet are not distinctly exposed.
 
 %%% For very huge models %%%
 The third observation is that for very large models (i.e., more than two thousand nodes) the proposed method did not manage to finish the Petri net conversion before the timeout, as marked by ``???'' in Table~\ref{tab:result_real}.
