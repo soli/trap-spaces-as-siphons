@@ -27,8 +27,7 @@ from typing import Generator, IO, List, Optional
 
 import networkx as nx  # TODO maybe replace with lists/dicts
 
-
-version = "0.1.0"
+from . import version
 
 
 def read_pnml(fileobj: IO) -> nx.DiGraph:
