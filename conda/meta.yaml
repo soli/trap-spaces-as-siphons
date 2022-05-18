@@ -1,0 +1,28 @@
+{% set data = load_setup_py_data(setup_file='../setup.py', from_recipe_dir=True) %}
+
+package:
+  name: {{ data.get('name') }}
+  version: {{ data.get('version') }}
+
+source:
+  git_rev: submitted
+  path: https://github.com/soli/trap-spaces-as-siphons.git
+
+build:
+  noarch: python
+  number: 0
+  script: {{ PYTHON }} -m pip install --no-deps --ignore-installed .
+
+requirements:
+  build:
+    - python
+    - setuptools
+  run:
+    - clingo
+    - python
+
+about:
+  home: {{ data.get('url') }}
+  summary: {{ data.get('description') }}
+  license: {{ data.get('license') }}
+  license_file: LICENSE
