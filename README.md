@@ -1,4 +1,4 @@
-![trappist logo](trappist.svg | width=200)
+![trappist logo](trappist.svg)
 
 Trappist is a tool for computing _minimal trap spaces_ of a Boolean model.
 
@@ -10,7 +10,7 @@ Latest version: [![Binder](https://mybinder.org/badge.svg)](https://mybinder.or
 
 # Read about trappist
 
-The article describing trappist is [here](trappist.pdf)
+The article describing trappist is [here](cmsb22.pdf)
 
 # Run trappist from the command line
 
