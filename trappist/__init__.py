@@ -21,4 +21,4 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 version = "0.2.0"  # pylint: disable=invalid-name
 
 
-from .trappist import compute_trap_spaces
+from .trappist import compute_trap_spaces   # noqa

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="266.79691"
+   height="93.585999"
+   viewBox="0 0 70.590013 24.761295"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.2 (dc2aeda, 2022-05-15)"
+   sodipodi:docname="trappist.svg"
+   inkscape:export-filename="trappist.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     showborder="false"
+     inkscape:zoom="2.63"
+     inkscape:cx="176.9962"
+     inkscape:cy="60.26616"
+     inkscape:window-width="1385"
+     inkscape:window-height="803"
+     inkscape:window-x="0"
+     inkscape:window-y="25"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-59.920171,-112.07436)">
+    <rect
+       style="fill:#ffffff;stroke:#000000;stroke-width:0.586607;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1;fill-opacity:1"
+       id="rect166"
+       width="70.00341"
+       height="24.174688"
+       x="60.213474"
+       y="112.36766"
+       ry="3.2420866" />
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.619723;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       id="rect333"
+       width="26.201208"
+       height="18.09004"
+       x="86.96788"
+       y="114.60587"
+       ry="3.2182262" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.1111px;font-family:'RobotoMono Nerd Font';-inkscape-font-specification:'RobotoMono Nerd Font, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#78182b;fill-opacity:1;stroke-width:0.265;stroke-dasharray:none"
+       x="61.716248"
+       y="131.14702"
+       id="text63"><tspan
+         sodipodi:role="line"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:14.1111px;font-family:'RobotoMono Nerd Font';-inkscape-font-specification:'RobotoMono Nerd Font, Normal';font-variant-ligatures:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-east-asian:normal;fill:#78182b;fill-opacity:1;stroke-width:0.265;stroke-dasharray:none"
+         x="61.716248"
+         y="131.14702"
+         id="tspan277">Trappıst</tspan></text>
+    <path
+       sodipodi:type="star"
+       style="fill:#78182b;fill-opacity:1;stroke:none;stroke-width:0.264999;stroke-linejoin:round;stroke-miterlimit:10;stroke-dasharray:none;stroke-opacity:1"
+       id="path14928"
+       inkscape:flatsided="false"
+       sodipodi:sides="5"
+       sodipodi:cx="25.664583"
+       sodipodi:cy="72.495834"
+       sodipodi:r1="3.3883197"
+       sodipodi:r2="1.1859119"
+       sodipodi:arg1="0.89605538"
+       sodipodi:arg2="1.5243739"
+       inkscape:rounded="0"
+       inkscape:randomized="0"
+       d="m 27.78125,75.141668 -2.061634,-1.461199 -1.917284,1.646042 0.752603,-2.412265 -2.157953,-1.31479 2.526768,-0.02966 0.583596,-2.458628 0.809025,2.393932 2.518635,-0.204725 -2.026762,1.509195 z"
+       inkscape:transform-center-x="0.0082883534"
+       inkscape:transform-center-y="-0.31566526"
+       transform="rotate(2.2064012,-1145.1688,2246.1013)" />
+  </g>
+</svg>
