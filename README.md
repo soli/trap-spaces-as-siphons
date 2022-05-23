@@ -11,7 +11,7 @@ $ python3 -m pip install -e git+https://github.com/soli/trap-spaces-as-siphons.g
 ```
 
 You will also need the `clingo` ASP solver in your PATH. Instructions are provided directly on the [Potassco pages](https://github.com/potassco/clingo/releases/).
-`
+
 # Run trappist in a Binder image
 
 Submitted version: [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/soli/trap-spaces-as-siphons/submitted)
