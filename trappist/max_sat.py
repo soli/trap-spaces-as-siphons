@@ -55,7 +55,7 @@ def solve_maxsat(
     """Run an MaxSAT solver on given WCNF and get the solutions."""
     # print(cnf.hard)
     rc2 = RC2(cnf)
-    sol = rc2.enumerate(block=-1)  # TODO check if 1 is equivalent
+    sol = rc2.enumerate(block=1)  # maximal satisfiable subsets
     yield from islice(sol, 1000)
 
 
