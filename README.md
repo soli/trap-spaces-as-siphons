@@ -10,7 +10,9 @@ You can install trappist with `pip`:
 $ python3 -m pip install -e git+https://github.com/soli/trap-spaces-as-siphons.git
 ```
 
-You will also need the `clingo` ASP solver in your PATH. Instructions are provided directly on the [Potassco pages](https://github.com/potassco/clingo/releases/).
+You will also need the `clingo` ASP solver in your PATH for the `asp` method of computing the trap spaces (default). Instructions are provided directly on the [Potassco pages](https://github.com/potassco/clingo/releases/).
+
+Note that Trappist does install the [PySAT](https://pysathq.github.io/docs/html/index.html) module so that the `sat` method is always available even if you do not have `clingo`.
 
 # Run trappist in a Binder image
 
@@ -24,8 +26,8 @@ The article describing trappist is [here](cmsb22.pdf)
 
 # Run trappist from the command line
 
-After installing `trappist` (and `clingo`), just run
+After installing `trappist` (and maybe `clingo`), just run
 
 ``` sh
-$ trappist [-m maximum number of solutions] [-t maximum time to use in seconds] <PNML input file>
+$ trappist [-m maximum number of solutions] [-t maximum time to use in seconds] [-s solver (asp|sat)] <PNML input file>
 ```
