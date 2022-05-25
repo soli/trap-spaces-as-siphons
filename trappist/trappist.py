@@ -28,6 +28,7 @@ from typing import Generator, IO, List, Optional
 import networkx as nx  # TODO maybe replace with lists/dicts
 
 from . import version
+from .max_sat import get_sat_solutions
 
 
 def read_pnml(fileobj: IO) -> nx.DiGraph:
@@ -120,44 +121,56 @@ def place_in_sol(sol: List[str], place: str) -> str:
 
 
 def get_solutions(
-    asp_output: str, petri_net: nx.DiGraph, display: bool
-) -> Optional[Generator[List[str], None, None]]:
+    asp_output: str, places: List[str]
+) -> Generator[List[str], None, None]:
     """Display the ASP output back as trap-spaces."""
+    solutions = json.loads(asp_output)
+    yield from (
+        solution_to_bool(places, sol["Value"])
+        for sol in solutions["Call"][0]["Witnesses"]
+    )
+
+
+def get_asp_output(
+    petri_net: nx.DiGraph, max_output: int, time_limit: int
+) -> List[str]:
+    """Generate and solve ASP file."""
+    (_, tmpname) = tempfile.mkstemp(suffix=".lp", text=True)
+    with open(tmpname, "wt") as asp_file:
+        write_asp(petri_net, asp_file)
+    solutions = solve_asp(tmpname, max_output, time_limit)
+    os.unlink(tmpname)
+    return solutions
+
+
+def compute_trap_spaces(
+    infile: IO,
+    display: bool = False,
+    max_output: int = 0,
+    time_limit: int = 0,
+    method: str = "asp",
+) -> Generator[List[str], None, None]:
+    """Do the minimal trap-space computation on input file infile."""
+    petri_net = read_pnml(infile)
     places = []
     for node, kind in petri_net.nodes(data="kind"):
         if kind == "place" and not node.startswith("-"):
             places.append(node)
     if display:
         print(" ".join(places))
-    solutions = json.loads(asp_output)
+
+    if method == "asp":
+        solutions = get_asp_output(petri_net, max_output, time_limit)
+        solutions = get_solutions(solutions, places)
+    if method == "sat":
+        solutions = get_sat_solutions(petri_net, max_output, time_limit, places)
+
     if display:
-        print(
-            "\n".join(
-                " ".join(solution_to_bool(places, sol["Value"]))
-                for sol in solutions["Call"][0]["Witnesses"]
-            )
-        )
-        print("Total time:", solutions["Time"]["Total"], "s")
-        return None
+        print("\n".join(" ".join(sol) for sol in solutions))
+        # print("Total time:", solutions["Time"]["Total"], "s")
+        return
     else:
-        return (
-            solution_to_bool(places, sol["Value"])
-            for sol in solutions["Call"][0]["Witnesses"]
-        )
-
-
-def compute_trap_spaces(
-    infile: IO, display: bool = False, max_output: int = 0, time_limit: int = 0
-) -> Optional[Generator[List[str], None, None]]:
-    """Do the minimal trap-space computation on input file infile."""
-    petri_net = read_pnml(infile)
-
-    (_, tmpname) = tempfile.mkstemp(suffix=".lp", text=True)
-    with open(tmpname, "wt") as asp_file:
-        write_asp(petri_net, asp_file)
-    solutions = solve_asp(tmpname, max_output, time_limit)
-    os.unlink(tmpname)
-    return get_solutions(solutions, petri_net, display)
+        yield from solutions
 
 
 def main():
@@ -186,6 +199,14 @@ def main():
         help="Maximum number of seconds for search (0 for no-limit).",
     )
     parser.add_argument(
+        "-s",
+        "--solver",
+        choices=["asp", "sat"],
+        default="asp",
+        type=str,
+        help="Solver to compute the Maximal conflict-free sihpons.",
+    )
+    parser.add_argument(
         "infile",
         type=argparse.FileType("r", encoding="utf-8"),
         nargs="?",
@@ -194,9 +215,16 @@ def main():
     )
     args = parser.parse_args()
 
-    compute_trap_spaces(
-        args.infile, display=True, max_output=args.max, time_limit=args.time
-    )
+    try:
+        next(compute_trap_spaces(
+            args.infile,
+            display=True,
+            max_output=args.max,
+            time_limit=args.time,
+            method=args.solver,
+        ))
+    except StopIteration:
+        pass
 
 
 if __name__ == "__main__":
