@@ -23,11 +23,12 @@ import subprocess
 import sys
 import tempfile
 import xml.etree.ElementTree as etree
-from typing import Generator, IO, List, Optional
+from typing import Generator, IO, List
 
 import networkx as nx  # TODO maybe replace with lists/dicts
 
 from . import version
+from .bnet import read_bnet
 from .max_sat import get_sat_solutions
 
 
@@ -151,7 +152,22 @@ def compute_trap_spaces(
     method: str = "asp",
 ) -> Generator[List[str], None, None]:
     """Do the minimal trap-space computation on input file infile."""
-    petri_net = read_pnml(infile)
+    toclose = False
+    if isinstance(infile, str):
+        infile = open(infile, "r", encoding="utf-8")
+        toclose = True
+
+    if infile.name.endswith(".pnml"):
+        petri_net = read_pnml(infile)
+    elif infile.name.endswith(".bnet"):
+        petri_net = read_bnet(infile)
+    else:
+        infile.close()
+        raise ValueError("Currently limited to parsing PNML files")
+
+    if toclose:
+        infile.close()
+
     places = []
     for node, kind in petri_net.nodes(data="kind"):
         if kind == "place" and not node.startswith("-"):
