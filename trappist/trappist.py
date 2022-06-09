@@ -134,7 +134,7 @@ def get_solutions(
 
 def get_asp_output(
     petri_net: nx.DiGraph, max_output: int, time_limit: int
-) -> List[str]:
+) -> str:
     """Generate and solve ASP file."""
     (_, tmpname) = tempfile.mkstemp(suffix=".lp", text=True)
     with open(tmpname, "wt") as asp_file:
@@ -176,8 +176,8 @@ def compute_trap_spaces(
         print(" ".join(places))
 
     if method == "asp":
-        solutions = get_asp_output(petri_net, max_output, time_limit)
-        solutions = get_solutions(solutions, places)
+        solutions_output = get_asp_output(petri_net, max_output, time_limit)
+        solutions = get_solutions(solutions_output, places)
     if method == "sat":
         solutions = get_sat_solutions(petri_net, max_output, time_limit, places)
 
