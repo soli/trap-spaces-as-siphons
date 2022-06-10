@@ -77,7 +77,7 @@ Besides simulation, the analysis of such models is mostly based on attractor com
 However, with the continuing increase in model-size, the state-of-the-art computation of minimal trap spaces based on \emph{prime-implicants} shows its limits as there can be a huge number of implicants.
 
 Petri nets were introduced in the 60s as simple formalism for describing and analyzing information-processing systems that are characterized as being concurrent, asynchronous, non-deterministic and possibly distributed~\cite{peterson1981petri,Murata1989}.
-The use of Petri nets for representing biochemical reaction systems, by mapping molecular species to places and reactions to transitions, hinted at already in~\cite{peterson1981, Murata1989} was used more thoroughly quite late in~\cite{reddy1993petri}, together with some Petri net concepts and tools for the analysis of metabolic networks.
+The use of Petri nets for representing biochemical reaction systems, by mapping molecular species to places and reactions to transitions, hinted at already in~\cite{peterson1981petri,Murata1989} was used more thoroughly quite late in~\cite{reddy1993petri}, together with some Petri net concepts and tools for the analysis of metabolic networks.
 Siphons are such a concept, but they have not been used a lot for the study of biochemical systems~\cite{zevedei2003topological,blatke2015biomodel} even if the practical cost of computing their minimal/maximal elements appear much more manageable than the theoretical complexity would indicate~\cite{oanea2010new,nabli2016enumerating}.
 
 In this article we present an alternative method to compute minimal trap spaces, and hence complex attractors, of a Boolean model. It replaces the need for prime-implicants by a completely different technique, namely the enumeration of maximal siphons in the Petri net encoding of the original model.
@@ -245,7 +245,7 @@ Siphons are a static and classical property of Petri nets~\cite{peterson1981petr
 Note however that the use of siphons for the analysis of biological models, though it is not new, has been mostly relevant to the ODE-based continuous semantics of Chemical Reaction Networks~\cite{angeli2007petri,angeli2011persistence,degrand2020graphical}.
 
 We recall here the basic definition establishing that to produce something in a siphon you must consume something from the siphon.
-This corresponds to the idea that a siphon is a set of places that once empty remains empty.
+This corresponds to the idea that a siphon is a set of places that once unmarked remains unmarked.
 
 \begin{definition}
 
@@ -265,8 +265,8 @@ First, we add a definition related to any set of places of a Petri net encoding 
 
 \end{definition}
 
-Intuitively, a siphon is a set of places that once empty remains so.
-If it is conflict-free then its dual corresponds to a partial-state of the model such that whatever update, the fixed values remain so (since the empty places remain empty).
+Intuitively, a siphon is a set of places that once unmarked remains so.
+If it is conflict-free then its dual corresponds to a partial-state of the model such that whatever update, the fixed values remain so (since the unmarked places remain unmarked).
 This is precisely the definition of a trap space and maximality of the siphon is equivalent to as many fixed values as possible, hence minimality of the trap space.
 For example, the Boolean model given in Example~\ref{example:BN} has two trap spaces, \(m_1 = 11\) and \(m_2 = \star\star\).
 The Petri net encoding of this Boolean model has five generic siphons, \(S_1 = \emptyset\), \(S_2 = \{p_{x_1}, \overline{p_{x_1}}\}\), \(S_3 = \{p_{x_2}, \overline{p_{x_2}}\}\), \(S_4 = \{\overline{p_{x_1}}, \overline{p_{x_2}}\}\), and \(S_5 = \{p_{x_1}, \overline{p_{x_1}}, p_{x_2}, \overline{p_{x_2}}\}\).
@@ -321,7 +321,7 @@ First, we show the characterization of all conflict-free siphons of the encoded 
 \label{eq:siphon}
 p \in S \Rightarrow \bigvee_{p' \in pred(t)}p' \in S.
 \end{equation}
-The system of all the rules of the above form with respect to all pairs \((p, t)\) where \(p \in P, t \in T, t \in pred(p)\) fully characterizes all generic siphons of a Petri net~\cite{nabli2016enumerating}.
+The system of all the rules of the above form with respect to all pairs \((p, t)\) where \(p \in P, t \in T, t \in pred(p)\) fully characterizes all generic siphons of a Petri net and has been used with SAT solvers in~\cite{oanea2010new,nabli2016enumerating}.
 To make \(S\) to be a conflict-free siphon, we need to add to the system the rule
 \begin{equation}
 \label{eq:conflict}
@@ -426,9 +426,10 @@ All the models and a CoLoMoTo notebook realizing the benchmarks can be found at 
 \setcounter{rownumber}{0}
 
 As shown in Table~\ref{tab:pyboolnet_repo}, for most of the models of the official PyBoolNet repository\footnote{\url{https://github.com/hklarner/pyboolnet/tree/master/pyboolnet/repository}}, the results are comparable with all minimal trap spaces found very fast.
-Note however that on some very small models, our proposed method is sometimes slower than PyBoolNet, but still significantly under one second.
+For 5 of the 29 models, mpbn does not give any answer since these models are not locally-monotonic.
+Note that on some very small models, Trappist is sometimes slower than PyBoolNet and/or mpbn, but still significantly under one second.
 Moreover, we believe that the result on the arellano\_rootstem model is caused by the cold start of the JVM for BioLQM.\@
-On the contrary, on every model that was a bit challenging for PyBoolNet, the new method is far more efficient with speedups between one and two orders of magnitude.
+On the contrary, on every model that was a bit challenging for PyBoolNet or mpbn, the new method is far more efficient with speedups between one and two orders of magnitude.
 
 \subsection{Selected models}
 
@@ -450,39 +451,39 @@ Table~\ref{tab:result_real} shows the experimental results on those models. Here
     \cmidrule(lr){8-9}
     & model & \(n\) & \(s\) & \(|M|\) & 1000 & 1000 & 1000 & all \\
     \midrule
-    \rownb & inflammatory-bowel-disease~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 47 & 0 & 1 & DNF & & 21.90 & 25.75\\
-    \rownb & T-LGL-survival-network-2008~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 61 & 7 & 318 & 0.73 & & 0.14 & 0.14\\
-    \rownb & butanol-production~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 66 & 13 & 8192 & 0.59 & & 0.13 & 0.64\\
-    \rownb & colitis-associated-colon-cancer~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 70 & 1 & 10 & 0.16 & & 0.08 & 0.06\\
-    \rownb & mast-cell-activation~\cite{aghamiri2020automated} & 73 & 19 & >1000 & 0.64 & & 0.15 & DNF\\
-    \rownb & IL-6-signalling~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 86 & 15 & 32768 & 3.30 & & 0.10 & 5.06\\
-    \rownb & Corral-ThIL-17-diff~\cite{corral2021interplay} & 92 & 16 & >1000 & DNF & & 0.38 & DNF\\
-    \rownb & Korkut-2015~\cite{lee2019signal} & 99 & 12 & 18556 & DNF & & 0.61 & 5.01\\ \midrule
-    \rownb & adhesion-cip-migration-cell-cycle~\cite{guberman2020boolean} & 121 & 4 & 78 & 40.81 & & 0.33 & 0.45\\
-    \rownb & interferon-1~\cite{ostaszewski2021covid19} & 121 & 55 & >1000 & 8.36 & & 0.19 & DNF\\
-    \rownb & TCR-TLR5-signaling-2018~\cite{rodriguez2019cooperation} & 130 & 5 & 48 & 0.88 & & 0.12 & 0.11\\
-    \rownb & influenza-virus-replication-cycle~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 131 & 11 & 10128 & 63.62 & & 0.21 & 1.95\\
-    \rownb & signaling-in-prostate-cancer~\cite{Montagud2021} & 133 & 11 & 2760 & DNF & & 0.32 & 0.72\\
-    \rownb & HIV-1-with-T-cell-signaling~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 138 & 14 & 39424 & DNF & & 0.87 & 7.72\\
-    \rownb & signal-transduction-in-fibroblasts~\cite{helikar2008emergent} & 139 & 9 & >1000 & DNF & & 0.56 & DNF\\
-    \rownb & HMOX-1-pathway~\cite{ostaszewski2021covid19} & 145 & 56 & >1000 & 5.16 & & 0.18 & DNF\\
-    \rownb & kynurenine-pathway~\cite{ostaszewski2021covid19} & 150 & 72 & >1000 & DNF & & 0.74 & DNF\\
-    \rownb & virus-replication-cycle~\cite{ostaszewski2021covid19} & 154 & 25 & >1000 & DNF & & 0.19 & DNF\\
-    \rownb & immune-system~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 164 & 13 & >1000 & DNF & & 0.67 & DNF\\
-    \rownb & RA-apoptosis~\cite{aghamiri2020automated} & 180 & 59 & >1000 & DNF & & 0.16 & DNF\\
-    \rownb & MAPK~\cite{aghamiri2020automated} & 181 & 37 & >1000 & 68.62 & & 0.64 & DNF\\
-    \rownb & er-stress~\cite{ostaszewski2021covid19} & 182 & 75 & >1000 & 28.65 & & 0.21 & DNF\\
-    \rownb & cascade-3~\cite{Tsirvouli2020} & 183 & 0 & 1 & 92.75 & &  0.65 & 0.83\\
-    \rownb & CHO-2016~\cite{lee2019signal} & 200 & 13 & 13312 & DNF & & 1.01 & 1.99\\
-    \rownb & T-cell-check-point~\cite{hernandez2020computational} & 218 & 14 & >1000 & 37.40 & & 0.35 & DNF\\
-    \rownb & ErbB-receptor-signaling~\cite{helikar2013comprehensive} & 247 & 22 & >1000 & DNF & & 1.07 & DNF\\
-    \rownb & signaling-macrophage-activation~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 321 & 19 & >1000 & 15.82 & & 0.63 & DNF\\
-    \rownb & cholocystokinin~\cite{aghamiri2020automated} & 383 & 74 & >1000 & 1.22 & & 0.73 & DNF\\
-    \rownb & Alzheimer~\cite{aghamiri2020automated} & 762 & 237 & >1000 & DNF & & 1.03 & DNF\\ \midrule
-    \rownb & KEGG-network~\cite{DBLP:journals/bmcsb/Kwon16} & 1659 & 521 & >1000 & DNF & & 44.85 & DNF\\
-    \rownb & human-network~\cite{kim2011reduction} & 1953 & 669 & >1000 & DNF & & 42.97 & DNF\\
-    \rownb & SN-5~\cite{kim2013rmod} & 2746 & 829 & ??? & DNF & & DNF & DNF\\
-    \rownb & turei-2016~\cite{lee2019signal} & 4691 & 1257 & ??? & DNF & & DNF & DNF\\
+    \rownb & inflammatory-bowel-disease~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 47 & 0 & 1 & DNF & NM & 0.82 & 0.69\\
+    \rownb & T-LGL-survival-network-2008~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 61 & 7 & 318 & 0.84 & NM & 0.01 & 0.01\\
+    \rownb & butanol-production~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 66 & 13 & 8192 & 0.71 & NM & 0.02 & 0.02\\
+    \rownb & colitis-associated-colon-cancer~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 70 & 1 & 10 & 0.20 & NM & 0.01 & 0.01\\
+    \rownb & mast-cell-activation~\cite{aghamiri2020automated} & 73 & 19 & >1000 & 0.76 & NM & 0.01 & DNF\\
+    \rownb & IL-6-signalling~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 86 & 15 & 32768 & 1.29 & NM & 0.01 & 0.01\\
+    \rownb & Corral-ThIL-17-diff~\cite{corral2021interplay} & 92 & 16 & >1000 & DNF & NM & 0.06 & DNF\\
+    \rownb & Korkut-2015~\cite{lee2019signal} & 99 & 12 & 18556 & DNF & 1.50 & 0.07 & 0.08\\ \midrule
+    \rownb & adhesion-cip-migration-cell-cycle~\cite{guberman2020boolean} & 121 & 4 & 78 & 36.80 & 0.35 & 0.08 & 0.09\\
+    \rownb & interferon-1~\cite{ostaszewski2021covid19} & 121 & 55 & >1000 & 10.11 & NM & 0.02 & DNF\\
+    \rownb & TCR-TLR5-signaling-2018~\cite{rodriguez2019cooperation} & 130 & 5 & 48 & 2.06 & NM & 0.03 & 0.02\\
+    \rownb & influenza-virus-replication-cycle~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 131 & 11 & 10128 & 46.67 & NM & 0.03 & 0.02\\
+    \rownb & signaling-in-prostate-cancer~\cite{Montagud2021} & 133 & 11 & 2760 & DNF & NM & 0.05 & 0.04\\
+    \rownb & HIV-1-with-T-cell-signaling~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 138 & 14 & 39424 & DNF & NM & 0.03 & 0.06\\
+    \rownb & signal-transduction-in-fibroblasts~\cite{helikar2008emergent} & 139 & 9 & >1000 & DNF & NM & 0.06 & DNF\\
+    \rownb & HMOX-1-pathway~\cite{ostaszewski2021covid19} & 145 & 56 & >1000 & 6.52 & NM & 0.02 & DNF\\
+    \rownb & kynurenine-pathway~\cite{ostaszewski2021covid19} & 150 & 72 & >1000 & DNF & NM & 0.11 & DNF\\
+    \rownb & virus-replication-cycle~\cite{ostaszewski2021covid19} & 154 & 25 & >1000 & DNF & NM & 0.19 & DNF\\
+    \rownb & immune-system~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 164 & 13 & >1000 & DNF & NM & 0.11 & DNF\\
+    \rownb & RA-apoptosis~\cite{aghamiri2020automated} & 180 & 59 & >1000 & DNF & NM & 0.05 & DNF\\
+    \rownb & MAPK~\cite{aghamiri2020automated} & 181 & 37 & >1000 & 87.13 & NM & 0.04 & DNF\\
+    \rownb & er-stress~\cite{ostaszewski2021covid19} & 182 & 75 & >1000 & 17.88 & NM & 0.03 & DNF\\
+    \rownb & cascade-3~\cite{Tsirvouli2020} & 183 & 0 & 1 & 101.18 & NM & 0.40 & 0.07\\
+    \rownb & CHO-2016~\cite{lee2019signal} & 200 & 13 & 13312 & DNF & 3.19 & 0.06 & 0.08\\
+    \rownb & T-cell-check-point~\cite{hernandez2020computational} & 218 & 14 & >1000 & 69.94 & NM & 0.05 & DNF\\
+    \rownb & ErbB-receptor-signaling~\cite{helikar2013comprehensive} & 247 & 22 & >1000 & DNF & NM & 0.23 & DNF\\
+    \rownb & signaling-macrophage-activation~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 321 & 19 & >1000 & 16.43 & NM & 0.04 & DNF\\
+    \rownb & cholocystokinin~\cite{aghamiri2020automated} & 383 & 74 & >1000 & 1.42 & NM & 0.14 & DNF\\
+    \rownb & Alzheimer~\cite{aghamiri2020automated} & 762 & 237 & >1000 & DNF & NM & 0.27 & DNF\\ \midrule
+    \rownb & KEGG-network~\cite{DBLP:journals/bmcsb/Kwon16} & 1659 & 521 & >1000 & DNF & 23.44 & 3.60 & DNF\\
+    \rownb & human-network~\cite{kim2011reduction} & 1953 & 669 & >1000 & DNF & 25.63 & 5.77 & DNF\\
+    \rownb & SN-5~\cite{kim2013rmod} & 2746 & 829 & >1000 & DNF & 33.57 & DNF & DNF\\
+    \rownb & turei-2016~\cite{lee2019signal} & 4691 & 1257 & ??? & DNF & DNF & DNF & DNF\\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -529,6 +530,9 @@ In addition, there are possibly other methods for computing maximal conflict-fre
 
 However, the current method already appears to perform very well even on the biggest models we have considered.
 We thus plan to propose its inclusion in the CoLoMoTo effort to make it readily available to modellers.
+
+\sylvain{Question of reviewer 3:
+Thanks to the performance improvement coming with Trappist, we now do know for sure that logical models may come with an overwhelming number of trap spaces, often exceeding 1000, which leaves the intriguing question how to evaluate these 1000 or more (even with Trappist so far not always computable) attractors/phenotypes?}
 
 % \subsubsection{Acknowledgments}
 
