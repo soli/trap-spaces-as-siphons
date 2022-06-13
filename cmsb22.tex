@@ -380,7 +380,8 @@ Unfortunately since this was not available at the time, the analysis of the mode
 \section{Evaluation}%
 \label{sec:eval}
 
-\revise{To assess the efficiency of the proposed method, implemented as a Python package named Trappist, we compare it with the state-of-the-art method implemented in the tool PyBoolNet~\cite{klarner2015computing,klarner2017pyboolnet} on both its own repository of models and large models from the literature.}
+\revise{To assess the efficiency of the proposed method, implemented as a Python package named Trappist, we compare it with the state-of-the-art method implemented in the tool PyBoolNet~\cite{klarner2015computing,klarner2017pyboolnet} on both its own repository of models and large models from the literature.
+In addition, we also include the tool mpbn~\cite{Paulev2020}\footnote{We use the latest version of mpbn available at submission time through CoLoMoTo.} to the benchmarks although it only handle locally-monotonic models, whereas both Trappist and PyBoolNet can handle general models.}
 
 To solve the ASP problems, we used the same ASP solver CLINGO~\cite{DBLP:journals/aicom/GebserKKOSS11} and the same configuration as that used in PyBoolNet~\cite{klarner2015computing,klarner2017pyboolnet}.
 Specifically, we used the configuration \texttt{-heuristic=Domain -enum-mod=domRec -dom-mod=3} (subset maximality, equivalent to the deprecated \texttt{--dom-pref=32 --heuristic=domain --dom-mod=7} used by PyBoolNet). We ran all the benchmarks on an apple laptop whose environment is CPU:\@ Intel\textregistered\ Core\texttrademark\ i7 1.20GHz x 4, 16 GB DDR4 RAM, MacOS 12.3.1. Finally, we set a time limit of two minutes for each model.
@@ -443,7 +444,7 @@ Moreover, we believe that the result on the arellano\_rootstem model is caused b
 
 We used a set of real-world Boolean models lying in various scales collected from numerous bibliographic sources.
 These models are quite big (in size), complex (i.e., having high average in-degree, which is related to the number of prime-implicants) and most of them have never been fully analyzed.
-We then applied the proposed method and PyBoolNet to computing minimal trap spaces of these real-world models.
+\revise{We then applied PyBoolNet, mpbn, and Trappist} to computing minimal trap spaces of these real-world models.
 It is notable that unlike existing analysis shown in the literature, we did not fix specific values for source nodes (i.e., some node \(v\) such that \(f_v = v\)) in these models.
 Table~\ref{tab:result_real} shows the experimental results on those models. Hereafter, we analyze in detail the results with respect to minimal trap space computation.
 
