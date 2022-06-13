@@ -26,6 +26,8 @@
 \newcommand{\vangiang}[1]{\textcolor{magenta}{#1}}
 \newcommand{\sylvain}[1]{\textcolor{teal}{#1}}
 
+\newcommand{\revise}[1]{\textcolor{blue}{#1}}
+
 \begin{document}
 
 \title{Minimal trap spaces of Logical models are maximal siphons of their Petri net encoding}
@@ -77,7 +79,7 @@ Besides simulation, the analysis of such models is mostly based on attractor com
 However, with the continuing increase in model-size, the state-of-the-art computation of minimal trap spaces based on \emph{prime-implicants} shows its limits as there can be a huge number of implicants.
 
 Petri nets were introduced in the 60s as simple formalism for describing and analyzing information-processing systems that are characterized as being concurrent, asynchronous, non-deterministic and possibly distributed~\cite{peterson1981petri,Murata1989}.
-The use of Petri nets for representing biochemical reaction systems, by mapping molecular species to places and reactions to transitions, hinted at already in~\cite{peterson1981petri,Murata1989} was used more thoroughly quite late in~\cite{reddy1993petri}, together with some Petri net concepts and tools for the analysis of metabolic networks.
+\revise{The use of Petri nets for representing biochemical reaction systems, by mapping molecular species to places and reactions to transitions, hinted at already in~\cite{peterson1981petri,Murata1989} was used more thoroughly quite late in~\cite{reddy1993petri}, together with some Petri net concepts and tools for the analysis of metabolic networks.}
 Siphons are such a concept, but they have not been used a lot for the study of biochemical systems~\cite{zevedei2003topological,blatke2015biomodel} even if the practical cost of computing their minimal/maximal elements appear much more manageable than the theoretical complexity would indicate~\cite{oanea2010new,nabli2016enumerating}.
 
 In this article we present an alternative method to compute minimal trap spaces, and hence complex attractors, of a Boolean model. It replaces the need for prime-implicants by a completely different technique, namely the enumeration of maximal siphons in the Petri net encoding of the original model.
@@ -126,7 +128,7 @@ The model has all two trap spaces, \(m_1 = 11\) and \(m_2 = \star\star\).
 Since \(m_1 < m_2\), \(m_1\) is a minimal trap space of the Boolean model.
 
 \begin{example}
-We give a Boolean model \(\mathcal{M} = (V, F)\), where \(V = (x_1, x_2)\) and \(F = (f_1, f_2)\) with \(f_1 = (x_1 \land x_2) \lor (\neg x_1 \land \neg x_2), f_2 = (x_1 \land x_2) \lor (\neg x_1 \land \neg x_2)\). Herein, \(\land\), \(\lor\), and \(\neg\) denote the conjunction, disjunction, and negation logical operators, respectively.\label{example:BN}
+We give a Boolean model \(\mathcal{M} = (V, F)\), where \(V = (x_1, x_2)\) and \(F = (f_1, f_2)\) with \(f_1 = (x_1 \land x_2) \lor (\neg x_1 \land \neg x_2), f_2 = (x_1 \land x_2) \lor (\neg x_1 \land \neg x_2)\). Herein, \(\land\), \(\lor\), and \(\neg\) denote the \revise{conjunction, disjunction, and negation} logical operators, respectively.\label{example:BN}
 \end{example}
 
 \begin{figure}[!ht]
@@ -245,7 +247,7 @@ Siphons are a static and classical property of Petri nets~\cite{peterson1981petr
 Note however that the use of siphons for the analysis of biological models, though it is not new, has been mostly relevant to the ODE-based continuous semantics of Chemical Reaction Networks~\cite{angeli2007petri,angeli2011persistence,degrand2020graphical}.
 
 We recall here the basic definition establishing that to produce something in a siphon you must consume something from the siphon.
-This corresponds to the idea that a siphon is a set of places that once unmarked remains unmarked.
+\revise{This corresponds to the idea that a siphon is a set of places that once unmarked remains unmarked.}
 
 \begin{definition}
 
@@ -265,8 +267,8 @@ First, we add a definition related to any set of places of a Petri net encoding 
 
 \end{definition}
 
-Intuitively, a siphon is a set of places that once unmarked remains so.
-If it is conflict-free then its dual corresponds to a partial-state of the model such that whatever update, the fixed values remain so (since the unmarked places remain unmarked).
+\revise{Intuitively, a siphon is a set of places that once unmarked remains so.
+If it is conflict-free then its dual corresponds to a partial-state of the model such that whatever update, the fixed values remain so (since the unmarked places remain unmarked).}
 This is precisely the definition of a trap space and maximality of the siphon is equivalent to as many fixed values as possible, hence minimality of the trap space.
 For example, the Boolean model given in Example~\ref{example:BN} has two trap spaces, \(m_1 = 11\) and \(m_2 = \star\star\).
 The Petri net encoding of this Boolean model has five generic siphons, \(S_1 = \emptyset\), \(S_2 = \{p_{x_1}, \overline{p_{x_1}}\}\), \(S_3 = \{p_{x_2}, \overline{p_{x_2}}\}\), \(S_4 = \{\overline{p_{x_1}}, \overline{p_{x_2}}\}\), and \(S_5 = \{p_{x_1}, \overline{p_{x_1}}, p_{x_2}, \overline{p_{x_2}}\}\).
@@ -314,8 +316,9 @@ Hereafter, we formally prove that a maximal conflict-free siphon is equivalent t
 \end{proof}
 
 By Theorem~\ref{theo:min_ts_2_max_sp}, we can reduce the problem of computing all minimal trap spaces of a Boolean model to the problem of computing all maximal conflict-free siphons of its Petri net encoding.
-Note that in the case of stable states, this can be put in regard to the classical relationship between siphons and deadlocks in Petri nets.
+\revise{Note that in the case of stable states, this can be put in regard to the classical relationship between siphons and deadlocks in Petri nets.
 It might actually be possible to generalize our result to any 1-safe place-complementary Petri net to define a notion of trap space that might be useful for the analysis of Petri nets, but this is out of the scope of this article.
+}
 
 It is noted that there are no existing methods specifically designed for computing maximal conflict-free siphons (even maximal siphons) of a Petri net. The reason might be that researchers mainly focus on minimal siphons~\cite{DBLP:journals/isci/LiuB16}. Hence, we here propose a new method based on Answer Set Programming (ASP)~\cite{DBLP:journals/aicom/GebserKKOSS11} for computing maximal conflict-free siphons of a Petri net. The details of the proposed method shall be given in the next section.
 
@@ -325,7 +328,7 @@ First, we show the characterization of all conflict-free siphons of the encoded 
 \label{eq:siphon}
 p \in S \Rightarrow \bigvee_{p' \in pred(t)}p' \in S.
 \end{equation}
-The system of all the rules of the above form with respect to all pairs \((p, t)\) where \(p \in P, t \in T, t \in pred(p)\) fully characterizes all generic siphons of a Petri net and has been used with SAT solvers in~\cite{oanea2010new,nabli2016enumerating}.
+\revise{The system of all the rules of the above form with respect to all pairs \((p, t)\) where \(p \in P, t \in T, t \in pred(p)\) fully characterizes all generic siphons of a Petri net and has been used with SAT solvers in~\cite{oanea2010new,nabli2016enumerating}.}
 To make \(S\) to be a conflict-free siphon, we need to add to the system the rule
 \begin{equation}
 \label{eq:conflict}
@@ -376,7 +379,7 @@ Unfortunately since this was not available at the time, the analysis of the mode
 \section{Evaluation}%
 \label{sec:eval}
 
-To assess the efficiency of the proposed method, implemented as a Python package named Trappist, we compare it with the state-of-the-art method implemented in the tool PyBoolNet~\cite{klarner2015computing,klarner2017pyboolnet} on both its own repository of models and large models from the literature.
+\revise{To assess the efficiency of the proposed method, implemented as a Python package named Trappist, we compare it with the state-of-the-art method implemented in the tool PyBoolNet~\cite{klarner2015computing,klarner2017pyboolnet} on both its own repository of models and large models from the literature.}
 
 To solve the ASP problems, we used the same ASP solver CLINGO~\cite{DBLP:journals/aicom/GebserKKOSS11} and the same configuration as that used in PyBoolNet~\cite{klarner2015computing,klarner2017pyboolnet}.
 Specifically, we used the configuration \texttt{-heuristic=Domain -enum-mod=domRec -dom-mod=3} (subset maximality, equivalent to the deprecated \texttt{--dom-pref=32 --heuristic=domain --dom-mod=7} used by PyBoolNet). We ran all the benchmarks on an apple laptop whose environment is CPU:\@ Intel\textregistered\ Core\texttrademark\ i7 1.20GHz x 4, 16 GB DDR4 RAM, MacOS 12.3.1. Finally, we set a time limit of two minutes for each model.
@@ -387,9 +390,9 @@ All the models and a CoLoMoTo notebook realizing the benchmarks can be found at 
 
 \setlength{\tabcolsep}{4pt}
 \begin{table}[!htb]
-  \caption{Timing comparisons between PyBoolNet, mpbn and Trappist on the PyBoolNet repository.
+  \caption{\revise{Timing comparisons between PyBoolNet, mpbn and Trappist on the PyBoolNet repository.
     Column \(n\) denotes the number of nodes of each model. Column \(|M|\) denotes the number of minimal trap spaces and for each method is given the computation time in seconds, asking only for the first 1000 trap spaces.
-    A number in bold indicates a ratio greater than three compared to the best result. ``NM'' indicates a non-locally-monotonic model.}
+    A number in bold indicates a ratio greater than three compared to the best result. ``NM'' indicates a non-locally-monotonic model.}}
   \centering%
   \label{tab:pyboolnet_repo}
   \begin{tabular}{rlrrrrrrr}
@@ -430,10 +433,10 @@ All the models and a CoLoMoTo notebook realizing the benchmarks can be found at 
 \setcounter{rownumber}{0}
 
 As shown in Table~\ref{tab:pyboolnet_repo}, for most of the models of the official PyBoolNet repository\footnote{\url{https://github.com/hklarner/pyboolnet/tree/master/pyboolnet/repository}}, the results are comparable with all minimal trap spaces found very fast.
-For 5 of the 29 models, mpbn does not give any answer since these models are not locally-monotonic.
-Note that on some very small models, Trappist is sometimes slower than PyBoolNet and/or mpbn, but still significantly under one second.
+\revise{For 5 of the 29 models, mpbn does not give any answer since these models are not locally-monotonic.
+Note that on some very small models, Trappist is sometimes slower than PyBoolNet and/or mpbn, but still significantly under one second.}
 Moreover, we believe that the result on the arellano\_rootstem model is caused by the cold start of the JVM for BioLQM.\@
-On the contrary, on every model that was a bit challenging for PyBoolNet or mpbn, the new method is far more efficient with speedups between one and two orders of magnitude.
+\revise{On the contrary, on every model that was a bit challenging for PyBoolNet or mpbn, the new method is far more efficient with speedups between one and two orders of magnitude.}
 
 \subsection{Selected models}
 
@@ -444,9 +447,9 @@ It is notable that unlike existing analysis shown in the literature, we did not 
 Table~\ref{tab:result_real} shows the experimental results on those models. Hereafter, we analyze in detail the results with respect to minimal trap space computation.
 
 \begin{table}[!htb]
-  \caption{Timing comparisons between PyBoolNet (PBN), mpbn and Trappist on selected models from the literature.
+  \caption{\revise{Timing comparisons between PyBoolNet (PBN), mpbn and Trappist on selected models from the literature.
     Column \(n\) (resp.\ \(s\)) denotes the number of nodes (resp.\ source nodes) of each model. Column \(|M|\) denotes the number of minimal trap spaces and for each method is given the computation time in seconds.
-    ``DNF'' means that the method did not finish the computation (stopping at the first 1000 minimal trap spaces, or all for the last column) within the timeout of two minutes. ``NM'' indicates a non-locally-monotonic model.}
+    ``DNF'' means that the method did not finish the computation (stopping at the first 1000 minimal trap spaces, or all for the last column) within the timeout of two minutes. ``NM'' indicates a non-locally-monotonic model.}}
   \centering%
   \label{tab:result_real}
   \begin{tabular}{rlrrrrrrr}
@@ -502,7 +505,7 @@ For modellers having a critical look at a model and in a \emph{model, invalidate
 
 Note that even with a very restricted time-limit of two minutes, it was possible with the proposed technique to find \emph{all} minimal trap spaces of small models (roughly under 130 nodes, i.e., considered as quite big up to now).
 Though it might seem impractical to handle tens of thousands of such possible complex attractors in a manual way, i.e., to compare them to specific experimental conditions and corresponding data, we hope that an automatic analysis of such attractors might become possible with systematic verification methods, not unlike that described in~\cite{hernandez2020computational}.
-Since the ASP code generated is also quite declarative by nature, it is also possible to add to it supplementary constraints coming from the modeller in case one is looking for specific attractors.
+\revise{Since the ASP code generated is also quite declarative by nature, it is also possible to add to it supplementary constraints coming from the modeller in case one is looking for specific attractors.}
 
 %%% It is not clear to show the advantage in ASP encoding %%%
 The second observation is that for all the models where PyBoolNet finished before the timeout, once PyBoolNet went through the prime-implicant phase, its ASP solving phase quickly returned the first 1000 minimal trap spaces, all under one second.
@@ -516,7 +519,7 @@ This points to the fact that our current choice of using a BDD-based translation
 In such a case, a more \emph{naive} encoding might provide a much larger ASP program, with many redundant rules, but easier/faster to obtain.
 The evaluation of the feasibility of such strategy, and of its impact on smaller instances, remains to be done and is out of the scope of this first article.
 
-Note that though enumerating the extremal siphons of a Petri net is exponential(see~\cite{nabli2016enumerating} for instance) this is apparently not the bottleneck of the proposed method, showing once again that networks obtained from biochemical models do have a specific structure.
+\revise{Note that though enumerating the extremal siphons of a Petri net is exponential(see~\cite{nabli2016enumerating} for instance) this is apparently not the bottleneck of the proposed method, showing once again that networks obtained from biochemical models do have a specific structure.}
 
 \section{Conclusion}
 
@@ -535,7 +538,7 @@ Such experiments should include a time-course of the number of ASP solutions fou
 
 In addition, there are possibly other methods for computing maximal conflict-free siphons in Petri nets, like SAT/MaxSAT approaches~\cite{nabli2016enumerating}. Although these approaches do not directly support the maximal conflict-free siphon computation now, we plan to investigate them in the future. They could replace our ASP program if they outperform it.
 
-However, the current method appears to already perform very well even on the biggest models we have considered.
+\revise{However, the current method appears to already perform very well even on the biggest models we have considered.}
 We thus plan to propose its inclusion in the CoLoMoTo effort to make it readily available to modellers.
 
 % \subsubsection{Acknowledgments}
