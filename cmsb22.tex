@@ -368,6 +368,7 @@ In particular, it provides a feature-rich alternative to random simulations for 
 Being able to detect that there are inconsistencies with published experimental data in some of the first 1000 attractors, for instance, can lead to a much quicker Systems Biology loop: model, invalidate, refine.
 
 However, using a state-of-the-art tool like PyBoolNet~\cite{klarner2015computing} on that model actually fails at the phase of prime-implicant generation.
+\revise{Note that mpbn does not give any answer because that model is not locally-monotonic.}
 And hence, it is not possible to extract any (complex) attractor at all.
 This is also true for the Alzheimer model also mentioned in that same article and originally from~\cite{ogishima2016alzpathway} (\verb|F4| file in the original supplementary material, and ``Alzheimer'' in Table~\ref{tab:result_real}), but actually not for the MAPK model for which the first trap spaces can be obtained in reasonable time.
 The current practice usually revolves then around fixing some inputs to plausible values and reducing the model accordingly.
