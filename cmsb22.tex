@@ -506,7 +506,7 @@ For modellers having a critical look at a model and in a \emph{model, invalidate
 Note that even with a very restricted time-limit of two minutes, it was possible with the proposed technique to find \emph{all} minimal trap spaces of small models (roughly under 130 nodes, i.e., considered as quite big up to now).
 Though it might seem impractical to handle tens of thousands of such possible complex attractors in a manual way, i.e., to compare them to specific experimental conditions and corresponding data, we hope that an automatic analysis of such attractors might become possible with systematic verification methods, not unlike that described in~\cite{hernandez2020computational}.
 \revise{Since the ASP code generated is also quite declarative by nature, it is also possible to add to it supplementary constraints coming from the modeller in case one is looking for specific attractors.
-Finally, sampling from the ASP-generated solutions as is done in~\cite{chevalier2020synthesis} would allow for a different type of exploration}
+Finally, sampling from the ASP-generated solutions as is done in~\cite{chevalier2020synthesis} would allow for a different type of exploration.}
 
 %%% It is not clear to show the advantage in ASP encoding %%%
 The second observation is that for all the models where PyBoolNet finished before the timeout, once PyBoolNet went through the prime-implicant phase, its ASP solving phase quickly returned the first 1000 minimal trap spaces, all under one second.
@@ -520,7 +520,7 @@ This points to the fact that our current choice of using a BDD-based translation
 In such a case, a more \emph{naive} encoding might provide a much larger ASP program, with many redundant rules, but easier/faster to obtain.
 The evaluation of the feasibility of such strategy, and of its impact on smaller instances, remains to be done and is out of the scope of this first article.
 
-\revise{Note that though enumerating the extremal siphons of a Petri net is exponential(see~\cite{nabli2016enumerating} for instance) this is apparently not the bottleneck of the proposed method, showing once again that networks obtained from biochemical models do have a specific structure.}
+\revise{Note that though enumerating the extremal siphons of a Petri net is exponential (see~\cite{nabli2016enumerating} for instance) this is apparently not the bottleneck of the proposed method, showing once again that networks obtained from biochemical models do have a specific structure.}
 
 \section{Conclusion}
 
