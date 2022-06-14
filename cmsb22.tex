@@ -75,8 +75,16 @@ Those Gene Regulation Networks (GRN) use thresholds or equivalently logical func
 
 Boolean modelling has proven over the years that it can bring powerful analyses and corresponding insight to the many cases where precise biological data is not sufficiently available to build a detailed quantitative model~\cite{wang2012boolean}, even for modelling post-transcriptional mechanisms.
 This is even more true for very large models where such data is frequently missing and led to a constant increase in size of logical models \emph{à la} Thomas~\cite{aghamiri2020automated}.
-Besides simulation, the analysis of such models is mostly based on attractor computation, since those correspond roughly to observable biological \emph{phenotypes}. The recent use of trap spaces~\cite{klarner2015computing} made a real breakthrough in that field allowing to consider medium-sized models that used to be out of reach.
+Besides simulation, the analysis of such models is mostly based on attractor computation, since those correspond roughly to observable biological \emph{phenotypes}.
+The recent use of trap spaces~\cite{klarner2015computing} made a real breakthrough in that field allowing to consider medium-sized models that used to be out of reach.
 However, with the continuing increase in model-size, the state-of-the-art computation of minimal trap spaces based on \emph{prime-implicants} shows its limits as there can be a huge number of implicants.
+
+\revise{It is worth noting that there has been a recent method~\cite{DBLP:conf/ictai/ChevalierFPZ19} for computing minimal trap spaces, which avoids the prime-implicants computation.
+This method has been implemented in the tool mpbn\footnote{\url{https://github.com/bnediction/mpbn}} demonstrated in~\cite{Paulev2020} for handling medium-sized models from the literature and very large synthetic models (up to 100,000 nodes).
+However, this method is only applicable for \emph{locally-monotonic} Boolean models, whereas the prime-implicants based method~\cite{klarner2015computing} is applicable for general Boolean models (i.e.. including both locally-monotonic and non-locally-monotonic Boolean models).
+The study~\cite{DBLP:journals/tcs/NoualRS13} highlights the need of non-locally-monotonic Boolean models in both biological and theoretical aspects.
+Hence, it is still necessary to develop efficient methods for computing minimal trap spaces of large-scale general Boolean models.
+}
 
 Petri nets were introduced in the 60s as simple formalism for describing and analyzing information-processing systems that are characterized as being concurrent, asynchronous, non-deterministic and possibly distributed~\cite{peterson1981petri,Murata1989}.
 \revise{The use of Petri nets for representing biochemical reaction systems, by mapping molecular species to places and reactions to transitions, hinted at already in~\cite{peterson1981petri,Murata1989} was used more thoroughly quite late in~\cite{reddy1993petri}, together with some Petri net concepts and tools for the analysis of metabolic networks.}
@@ -499,9 +507,9 @@ Table~\ref{tab:result_real} shows the experimental results on those models. Here
 % s obtained by: grep -c '^\([a-zA-Z0-9_-]*\),\s*\1\s*\(#.*\)\?$' models/*.bnet
 
 %%% The proposed method and mpbn %%%
-\revise{The first observation is that for 27 of the 33 models (more than 78\%), mpbn did not give any answer because it recognized that these models are not locally-monotonic.
+\revise{The first observation is that for 26 of the 33 models (more than 78\%), mpbn did not give any answer because it recognized that these models are not locally-monotonic.
 For 6 of the 33 models where mpbn returned the answers, mpbn and Trappist are comparable in computation time.
-Along with the fact that mbpn can handle only locally-monotonic models and Trappist can handle general models, it is less insightful to further compare between them.
+Along with the fact that mbpn can handle only locally-monotonic models and Trappist can handle general models, it is less meaningful to further compare between them.
 Hence, we focus on only comparisons between PyBoolNet and Trappist in the following observations.}
 
 %%% The proposed method outperforms PyBoolNet %%%
