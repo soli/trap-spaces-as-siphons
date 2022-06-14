@@ -81,8 +81,8 @@ However, with the continuing increase in model-size, the state-of-the-art comput
 
 \revise{It is worth noting that there has been a recent method~\cite{DBLP:conf/ictai/ChevalierFPZ19} for computing minimal trap spaces, which avoids the prime-implicants computation.
 This method has been implemented in the tool mpbn\footnote{\url{https://github.com/bnediction/mpbn}} demonstrated in~\cite{Paulev2020} for handling medium-sized models from the literature and very large synthetic models (up to 100,000 nodes).
-However, this method is only applicable for \emph{locally-monotonic} Boolean models, whereas the prime-implicants based method~\cite{klarner2015computing} is applicable for general Boolean models (i.e.. including both locally-monotonic and non-locally-monotonic Boolean models).
-The study~\cite{DBLP:journals/tcs/NoualRS13} highlights the need of non-locally-monotonic Boolean models in both biological and theoretical aspects.
+However, this method is only applicable for \emph{locally-monotonic} Boolean models, whereas the prime-implicants based method~\cite{klarner2015computing} is applicable for \emph{general} Boolean models (i.e., including both locally-monotonic and non-locally-monotonic Boolean models).
+The study~\cite{DBLP:journals/tcs/NoualRS13} highlights the need for non-locally-monotonic Boolean models in both biological and theoretical aspects.
 Hence, it is still necessary to develop efficient methods for computing minimal trap spaces of large-scale general Boolean models.
 }
 
@@ -90,7 +90,7 @@ Petri nets were introduced in the 60s as simple formalism for describing and ana
 \revise{The use of Petri nets for representing biochemical reaction systems, by mapping molecular species to places and reactions to transitions, hinted at already in~\cite{peterson1981petri,Murata1989} was used more thoroughly quite late in~\cite{reddy1993petri}, together with some Petri net concepts and tools for the analysis of metabolic networks.}
 Siphons are such a concept, but they have not been used a lot for the study of biochemical systems~\cite{zevedei2003topological,blatke2015biomodel} even if the practical cost of computing their minimal/maximal elements appear much more manageable than the theoretical complexity would indicate~\cite{oanea2010new,nabli2016enumerating}.
 
-In this article we present an alternative method to compute minimal trap spaces, and hence complex attractors, of a Boolean model. It replaces the need for prime-implicants by a completely different technique, namely the enumeration of maximal siphons in the Petri net encoding of the original model.
+In this article we present an alternative method to compute minimal trap spaces, and hence complex attractors, of a general Boolean model. It replaces the need for prime-implicants by a completely different technique, namely the enumeration of maximal siphons in the Petri net encoding of the original model.
 After some technical preliminaries, we expose the concrete need for such a method and detail its implementation using Answer Set Programming.
 We then demonstrate its efficiency and compare it to implicant-based methods on several large Boolean models from the literature.
 
@@ -359,6 +359,10 @@ To guarantee that a Herbrand model is also a stable model (an answer set), we ne
 \]
 for each \(v \in V\).
 Note that the number of atoms of \(\mathcal{L}\) is only \(2n\), whereas the ASP encoding shown in~\cite{klarner2015computing} has as many atoms as the number of prime-implicants of the Boolean model and that number might be exponential in \(n\).
+\revise{In~\cite{DBLP:conf/ictai/ChevalierFPZ19}, there is an ASP characterization of trap spaces that does not rely on minimal DNFs and thus seems very similar to the our ASP encoding.
+However, this encoding is only applicable for locally-monotonic Boolean models.
+Hence it might be theoretically insightful to compare in terms of complexity between it and our ASP encoding only for locally-monotonic BNs, but this is out of the scope of this article.
+}
 
 Now, a solution (simply an answer set) \(A \subseteq \mathcal{A}\) of \(\mathcal{L}\) is equivalent to a conflict-free siphon \(S\) of \(\mathcal{P}\), thus a trap space \(m\) of \(\mathcal{M}\). The conversion from \(A\) to \(m\) is straightforward. If \(\verb|p-v| \in A\) then \(v \in D_m\) and \(m(v) = 0\). Conversely, if \(\verb|n-v| \in A\) then \(v \in D_m\) and \(m(v) = 1\). Otherwise, \(v \not \in D_m\). Computing multiple answer sets is built into ASP solvers and the solving collection POTASSCO~\cite{DBLP:journals/aicom/GebserKKOSS11} also features the option to find set-inclusion maximal answer sets with respect to the set of atoms. Naturally, a set-inclusion maximal answer set of \(\mathcal{L}\) is equivalent to a maximal conflict-free siphon of \(\mathcal{P}\), thus a minimal trap space of \(\mathcal{M}\). By using this built-in option, we can compute all the set-inclusion maximal answer sets of \(\mathcal{L}\) (resp.\ all the minimal trap spaces of \(\mathcal{M}\)) in one execution.
 
@@ -376,7 +380,7 @@ In particular, it provides a feature-rich alternative to random simulations for 
 Being able to detect that there are inconsistencies with published experimental data in some of the first 1000 attractors, for instance, can lead to a much quicker Systems Biology loop: model, invalidate, refine.
 
 However, using a state-of-the-art tool like PyBoolNet~\cite{klarner2015computing} on that model actually fails at the phase of prime-implicant generation.
-\revise{Note that mpbn does not give any answer because that model is not locally-monotonic.}
+\revise{Note that mpbn~\cite{Paulev2020} does not give any answer because it recognized that model non-locally-monotonic.}
 And hence, it is not possible to extract any (complex) attractor at all.
 This is also true for the Alzheimer model also mentioned in that same article and originally from~\cite{ogishima2016alzpathway} (\verb|F4| file in the original supplementary material, and ``Alzheimer'' in Table~\ref{tab:result_real}), but actually not for the MAPK model for which the first trap spaces can be obtained in reasonable time.
 The current practice usually revolves then around fixing some inputs to plausible values and reducing the model accordingly.
