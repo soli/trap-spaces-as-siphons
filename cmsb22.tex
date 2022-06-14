@@ -79,7 +79,7 @@ Besides simulation, the analysis of such models is mostly based on attractor com
 The recent use of trap spaces~\cite{klarner2015computing} made a real breakthrough in that field allowing to consider medium-sized models that used to be out of reach.
 However, with the continuing increase in model-size, the state-of-the-art computation of minimal trap spaces based on \emph{prime-implicants} shows its limits as there can be a huge number of implicants.
 
-\revise{It is worth noting that there has been a recent method~\cite{DBLP:conf/ictai/ChevalierFPZ19} for computing minimal trap spaces, which avoids the prime-implicants computation.
+\revise{It is worth noting that the recent method presented in~\cite{DBLP:conf/ictai/ChevalierFPZ19} for computing minimal trap spaces avoids the prime-implicants computation by relying on the \emph{most-permissive} semantics of Boolean models.
 This method has been implemented in the tool mpbn\footnote{\url{https://github.com/bnediction/mpbn}} demonstrated in~\cite{Paulev2020} for handling medium-sized models from the literature and very large synthetic models (up to 100,000 nodes).
 However, this method is only applicable for \emph{locally-monotonic} Boolean models, whereas the prime-implicants based method~\cite{klarner2015computing} is applicable for \emph{general} Boolean models (i.e., including both locally-monotonic and non-locally-monotonic Boolean models).
 The study~\cite{DBLP:journals/tcs/NoualRS13} highlights the need for non-locally-monotonic Boolean models in both biological and theoretical aspects.
@@ -359,9 +359,10 @@ To guarantee that a Herbrand model is also a stable model (an answer set), we ne
 \]
 for each \(v \in V\).
 Note that the number of atoms of \(\mathcal{L}\) is only \(2n\), whereas the ASP encoding shown in~\cite{klarner2015computing} has as many atoms as the number of prime-implicants of the Boolean model and that number might be exponential in \(n\).
-\revise{In~\cite{DBLP:conf/ictai/ChevalierFPZ19}, there is an ASP characterization of trap spaces that does not rely on minimal DNFs and thus seems very similar to the our ASP encoding.
-However, this encoding is only applicable for locally-monotonic Boolean models.
-Hence it might be theoretically insightful to compare in terms of complexity between it and our ASP encoding only for locally-monotonic BNs, but this is out of the scope of this article.
+\revise{In~\cite{DBLP:conf/ictai/ChevalierFPZ19}, there is an ASP characterization of trap spaces that does not rely on minimal DNFs either and thus seems very similar to our ASP encoding.
+Remarkably it only requires the DNF for the \emph{activation} part, using the information that it will only be used for locally-monotonic Boolean models.
+We would therefore expect that, when available, it will have comparable performance on the ASP part (the ASP program would be twice smaller, but redundancy is not always bad in that field), but can also avoid combinatorial explosion of the Petri net encoding for some formula where the activation DNF is simple but the inhibition is not.
+Since mpbn is included in our benchmark this will be evaluated in our experiments.
 }
 
 Now, a solution (simply an answer set) \(A \subseteq \mathcal{A}\) of \(\mathcal{L}\) is equivalent to a conflict-free siphon \(S\) of \(\mathcal{P}\), thus a trap space \(m\) of \(\mathcal{M}\). The conversion from \(A\) to \(m\) is straightforward. If \(\verb|p-v| \in A\) then \(v \in D_m\) and \(m(v) = 0\). Conversely, if \(\verb|n-v| \in A\) then \(v \in D_m\) and \(m(v) = 1\). Otherwise, \(v \not \in D_m\). Computing multiple answer sets is built into ASP solvers and the solving collection POTASSCO~\cite{DBLP:journals/aicom/GebserKKOSS11} also features the option to find set-inclusion maximal answer sets with respect to the set of atoms. Naturally, a set-inclusion maximal answer set of \(\mathcal{L}\) is equivalent to a maximal conflict-free siphon of \(\mathcal{P}\), thus a minimal trap space of \(\mathcal{M}\). By using this built-in option, we can compute all the set-inclusion maximal answer sets of \(\mathcal{L}\) (resp.\ all the minimal trap spaces of \(\mathcal{M}\)) in one execution.
@@ -380,7 +381,7 @@ In particular, it provides a feature-rich alternative to random simulations for 
 Being able to detect that there are inconsistencies with published experimental data in some of the first 1000 attractors, for instance, can lead to a much quicker Systems Biology loop: model, invalidate, refine.
 
 However, using a state-of-the-art tool like PyBoolNet~\cite{klarner2015computing} on that model actually fails at the phase of prime-implicant generation.
-\revise{Note that mpbn~\cite{Paulev2020} does not give any answer because it recognized that model non-locally-monotonic.}
+\revise{mpbn~\cite{Paulev2020} does not give any answer either because it recognizes that model as non-locally-monotonic.}
 And hence, it is not possible to extract any (complex) attractor at all.
 This is also true for the Alzheimer model also mentioned in that same article and originally from~\cite{ogishima2016alzpathway} (\verb|F4| file in the original supplementary material, and ``Alzheimer'' in Table~\ref{tab:result_real}), but actually not for the MAPK model for which the first trap spaces can be obtained in reasonable time.
 The current practice usually revolves then around fixing some inputs to plausible values and reducing the model accordingly.
@@ -393,11 +394,13 @@ Unfortunately since this was not available at the time, the analysis of the mode
 \label{sec:eval}
 
 \revise{To assess the efficiency of the proposed method, implemented as a Python package named Trappist, we compare it with the state-of-the-art method implemented in the tool PyBoolNet~\cite{klarner2015computing,klarner2017pyboolnet} on both its own repository of models and large models from the literature.
-In addition, we also include the tool mpbn~\cite{Paulev2020}\footnote{We use the latest version of mpbn available at submission time through CoLoMoTo.} to the benchmarks although it only handle locally-monotonic models, whereas both Trappist and PyBoolNet can handle general models.}
+In addition, we also include the tool mpbn~\cite{Paulev2020} to the benchmarks although it only handle locally-monotonic models, whereas both Trappist and PyBoolNet can handle general models.
+}
 
 To solve the ASP problems, we used the same ASP solver CLINGO~\cite{DBLP:journals/aicom/GebserKKOSS11} and the same configuration as that used in PyBoolNet~\cite{klarner2015computing,klarner2017pyboolnet}.
 Specifically, we used the configuration \texttt{-heuristic=Domain -enum-mod=domRec -dom-mod=3} (subset maximality, equivalent to the deprecated \texttt{--dom-pref=32 --heuristic=domain --dom-mod=7} used by PyBoolNet). We ran all the benchmarks on an apple laptop whose environment is CPU:\@ Intel\textregistered\ Core\texttrademark\ i7 1.20GHz x 4, 16 GB DDR4 RAM, MacOS 12.3.1. Finally, we set a time limit of two minutes for each model.
 
+\revise{For all the above tools, namely PyBoolNet, mpbn and CLINGO, we used the version available in the latest CoLoMoTo docker image tagged \texttt{2022-05-01}.}
 All the models and a CoLoMoTo notebook realizing the benchmarks can be found at \url{https://github.com/soli/trap-spaces-as-siphons}. These can be run on a Docker image in the cloud by clicking the ``Binder'' button.
 
 \subsection{PyBoolNet repository}
@@ -447,7 +450,7 @@ All the models and a CoLoMoTo notebook realizing the benchmarks can be found at 
 \setcounter{rownumber}{0}
 
 As shown in Table~\ref{tab:pyboolnet_repo}, for most of the models of the official PyBoolNet repository\footnote{\url{https://github.com/hklarner/pyboolnet/tree/master/pyboolnet/repository}}, the results are comparable with all minimal trap spaces found very fast.
-\revise{For 5 of the 29 models, mpbn did not give any answer because it recognized that these models are not locally-monotonic.
+\revise{For 5 of the 29 models, mpbn did not give any answer because it recognized these models as not locally-monotonic.
 Note that on some very small models, Trappist is sometimes slower than PyBoolNet and/or mpbn, but still significantly under one second.}
 Moreover, we believe that the result on the arellano\_rootstem model is caused by the cold start of the JVM for BioLQM.\@
 \revise{On the contrary, on every model that was a bit challenging for PyBoolNet or mpbn, the new method is far more efficient with speedups between one and two orders of magnitude.}
@@ -511,9 +514,10 @@ Table~\ref{tab:result_real} shows the experimental results on those models. Here
 % s obtained by: grep -c '^\([a-zA-Z0-9_-]*\),\s*\1\s*\(#.*\)\?$' models/*.bnet
 
 %%% The proposed method and mpbn %%%
-\revise{The first observation is that for 26 of the 33 models (more than 78\%), mpbn did not give any answer because it recognized that these models are not locally-monotonic.
-For 6 of the 33 models where mpbn returned the answers, mpbn and Trappist are comparable in computation time.
-Along with the fact that mbpn can handle only locally-monotonic models and Trappist can handle general models, it is less meaningful to further compare between them.
+\revise{The first observation is that for 26 of the 33 models (more than 78\%), mpbn did not give any answer because it recognized that these models as not locally-monotonic.
+For 6 of the 33 models where mpbn returned the answers, mpbn and Trappist are comparable in computation time, though surprisingly a bit slower on average.
+Note however that mpbn was the only tool to provide a solution for the SN-5 model, thus confirming that if the activation function is in the right form, not having to compute the inactivation function's disjunctive normal form can render a difficult problem tractable.
+However, since mbpn can handle only locally-monotonic models and Trappist can handle general models, it is difficult to further compare between them.
 Hence, we focus on only comparisons between PyBoolNet and Trappist in the following observations.}
 
 %%% The proposed method outperforms PyBoolNet %%%
@@ -569,3 +573,5 @@ We thus plan to propose its inclusion in the CoLoMoTo effort to make it readily 
 
 
 \end{document}
+
+We believe that an improved test for local-monotonicity will soon be available through CoLoMoTo and intend to redo our comparison then.
