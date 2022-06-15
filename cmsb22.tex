@@ -81,7 +81,7 @@ However, with the continuing increase in model-size, the state-of-the-art comput
 
 \revise{It is worth noting that the recent method presented in~\cite{DBLP:conf/ictai/ChevalierFPZ19} for computing minimal trap spaces avoids the prime-implicants computation by relying on the \emph{most-permissive} semantics of Boolean models.
 This method has been implemented in the tool mpbn\footnote{\url{https://github.com/bnediction/mpbn}} demonstrated in~\cite{Paulev2020} for handling medium-sized models from the literature and very large synthetic models (up to 100,000 nodes).
-However, this method is only applicable for \emph{locally-monotonic} Boolean models, whereas the prime-implicants based method~\cite{klarner2015computing} is applicable for \emph{general} Boolean models (i.e., including both locally-monotonic and non-locally-monotonic Boolean models).
+However, this method is only applicable for \emph{locally-monotonic} Boolean models, whereas the prime-implicants based method~\cite{klarner2015computing} is applicable for \emph{general} Boolean models (i.e., including both locally-monotonic and non-locally-monotonic ones).
 The study~\cite{DBLP:journals/tcs/NoualRS13} highlights the need for non-locally-monotonic Boolean models in both biological and theoretical aspects.
 Hence, it is still necessary to develop efficient methods for computing minimal trap spaces of large-scale general Boolean models.
 }
@@ -110,7 +110,7 @@ Minimal trap spaces prove to be a very good approximation of the attractors of a
 %%% Boolean model %%%
 Given a Boolean model \(\mathcal{M} = (V, F)\) with nodes \(V=(v_{1},\dots,v_{n})\) and Boolean functions \(F=(f_{1},\dots,f_{n})\), its state-space is \(\mathcal{S}_{\mathcal{M}} =\mathbb{B}^{n}\) with \(\mathbb{B} = \{0, 1\}\). A state \(s \in \mathbb{B}^{n}\) is a mapping \(s \colon V \mapsto \mathbb{B}\) that assigns either 0 (inactive) or 1 (active) to each node. At each time step \(t\), node \(v_i\) can update its state by
 \revise{\[v_i(t + 1) \in \{v_{i}(t), f_i(v(t))\}\]
-where \(v(t)\) is the state of \(\mathcal{M}\) at time \(t\), \(v_i(t + 1)\) the state of node \(v_i\) at time \(t + 1\) and an update scheme specifies which value is chosen~\cite{thomas1991regulatory}.
+where \(v(t)\) is the state of \(\mathcal{M}\) at time \(t\), \(v_i(t + 1)\) is the state of node \(v_i\) at time \(t + 1\) and an update scheme specifies which value is chosen~\cite{thomas1991regulatory}.
 There are two main types of update schemes: synchronous, where for all \(i, v_{i}(t+1) = f_{i}(v(t))\), and asynchronous, where an \(i\) is chosen among the possible updates (\(f_{i}(v(t))\neq v_{i}(t)\)), and all the other nodes \(j\) remain fixed at \(v_{j}(t)\).}
 
 %%% Trap set %%%
@@ -249,7 +249,7 @@ The conversion is executed as follows:
 
 Note that transforming a Boolean model defined by its functions into its Petri net encoding roughly relies on obtaining conditions for the activation and inactivation of the states. In~\cite{chaouiya2004qualitative} this took the form of the whole truth table of the Boolean functions, but as shown in Appendix 1 of~\cite{chatain2014characterization} computing Disjunctive Normal Forms (DNF) of each Boolean function is enough.
 Though this might appear quite computationally intensive it is important to remark first that contrary to the prime-implicants case, there is no need to find \emph{minimal} DNFs.
-\revise{One way to look at this is to consider that this amounts to a similar approach as that used in~\cite{DBLP:conf/ictai/ChevalierFPZ19} but with the encoding of both activation and inhibition functions as DNFs in order to take into account a possible non-local-monotonicity.
+\revise{One way to look at this is to consider that this amounts to a similar approach as that used in~\cite{DBLP:conf/ictai/ChevalierFPZ19} but with the encoding of both activation and inhibition functions as DNFs in order to take into account possible non-local-monotonicity.
 This does not change the worst-case-complexity (obtaining a single DNF being exponential) but might matter a lot in practice.
 As such, we will explore how this transformation, here using BDDs in BioLQM, and the one based on the most-permissive semantics compare in the Section~\ref{sec:eval} on evaluation.}
 
