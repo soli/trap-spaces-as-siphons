@@ -247,7 +247,9 @@ The conversion is executed as follows:
 
 Note that transforming a Boolean model defined by its functions into its Petri net encoding roughly relies on obtaining conditions for the activation and inactivation of the states. In~\cite{chaouiya2004qualitative} this took the form of the whole truth table of the Boolean functions, but as shown in Appendix 1 of~\cite{chatain2014characterization} computing Disjunctive Normal Forms (DNF) of each Boolean function is enough.
 Though this might appear quite computationally intensive it is important to remark first that contrary to the prime-implicants case, there is no need to find \emph{minimal} DNFs.
-In practice this transformation, here using BDDs in BioLQM, seems to behave quite well on even quite big models as will be shown in the Section~\ref{sec:eval} on evaluation.
+\revise{One way to look at this is to consider that this amounts to a similar approach as that used in~\cite{DBLP:conf/ictai/ChevalierFPZ19} but with the encoding of both activation and inhibition functions as DNFs in order to take into account a possible non-local-monotonicity.
+This does not change the worst-case-complexity (obtaining a single DNF being exponential) but might matter a lot in practice.
+As such, we will explore how this transformation, here using BDDs in BioLQM, and the one based on the most-permissive semantics compare in the Section~\ref{sec:eval} on evaluation.}
 
 \subsection{Siphons}
 
