@@ -108,8 +108,10 @@ We recall here some definitions from~\cite{klarner2015computing} for the introdu
 Minimal trap spaces prove to be a very good approximation of the attractors of a Boolean model under asynchronous update schemes and have become the \emph{de facto} standard way to analyze models of a few tens of \emph{genes}~\cite{klarner2017pyboolnet,cifuentes2020control}.
 
 %%% Boolean model %%%
-Given a Boolean model \(\mathcal{M} = (V, F)\) with nodes \(V=(v_{1},\dots,v_{n})\) and Boolean functions \(F=(f_{1},\dots,f_{n})\), its state-space is \(\mathcal{S}_{\mathcal{M}} =\mathbb{B}^{n}\) with \(\mathbb{B} = \{0, 1\}\). A state \(s \in \mathbb{B}^{n}\) is a mapping \(s : V \mapsto \mathbb{B}\) that assigns either 0 (inactive) or 1 (active) to each node. At each time step \(t\), node \(v_i\) can update its state by
-\[v_i(t + 1) = f_i(v(t)),\] where \(v(t)\) is the state of \(\mathcal{M}\) at time \(t\) and \(v_i(t + 1)\) the state of node \(v_i\) at time \(t + 1\). An update scheme of a Boolean model specifies the way that the nodes of the model update their states through time evolution~\cite{thomas1991regulatory}. There are two main types of update schemes: synchronous and asynchronous.
+Given a Boolean model \(\mathcal{M} = (V, F)\) with nodes \(V=(v_{1},\dots,v_{n})\) and Boolean functions \(F=(f_{1},\dots,f_{n})\), its state-space is \(\mathcal{S}_{\mathcal{M}} =\mathbb{B}^{n}\) with \(\mathbb{B} = \{0, 1\}\). A state \(s \in \mathbb{B}^{n}\) is a mapping \(s \colon V \mapsto \mathbb{B}\) that assigns either 0 (inactive) or 1 (active) to each node. At each time step \(t\), node \(v_i\) can update its state by
+\revise{\[v_i(t + 1) \in \{v_{i}(t), f_i(v(t))\}\]
+where \(v(t)\) is the state of \(\mathcal{M}\) at time \(t\), \(v_i(t + 1)\) the state of node \(v_i\) at time \(t + 1\) and an update scheme specifies which value is chosen~\cite{thomas1991regulatory}.
+There are two main types of update schemes: synchronous, where for all \(i, v_{i}(t+1) = f_{i}(v(t))\), and asynchronous, where an \(i\) is chosen among the possible updates (\(f_{i}(v(t))\neq v_{i}(t)\)), and all the other nodes \(j\) remain fixed at \(v_{j}(t)\).}
 
 %%% Trap set %%%
 A non-empty set \(T \subseteq S_{\mathcal{M}}\) is a \emph{trap set} of \(\mathcal{M}\) if and only if for every \(x \in T\) and \(y \in S_{\mathcal{M}}\) with \(y\) is reachable from \(x\) it holds that \(y \in T\).
