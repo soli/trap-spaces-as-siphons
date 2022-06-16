@@ -365,7 +365,7 @@ for each \(v \in V\).
 Note that the number of atoms of \(\mathcal{L}\) is only \(2n\), whereas the ASP encoding shown in~\cite{klarner2015computing} has as many atoms as the number of prime-implicants of the Boolean model and that number might be exponential in \(n\).
 \revise{In~\cite{DBLP:conf/ictai/ChevalierFPZ19}, there is an ASP characterization of trap spaces that does not rely on minimal DNFs either and thus seems very similar to our ASP encoding.
 Remarkably it only requires the DNF for the \emph{activation} part, using the information that it will only be used for locally-monotonic Boolean models.
-We would therefore expect that, when available, it will have comparable performance on the ASP part (the ASP program would be twice smaller, but redundancy is not always bad in that field), but can also avoid combinatorial explosion of the Petri net encoding for some formula where the activation DNF is simple but the inhibition is not.
+We would therefore expect that, when available, it will have comparable performance on the ASP part (the ASP program would be approximately twice smaller, though redundancy is not always bad in that field), but can also avoid combinatorial explosion of the Petri net encoding for some formula where the activation DNF is simple but the inhibition is not.
 Since mpbn is included in our benchmark this will be evaluated in our experiments.
 }
 
@@ -398,7 +398,7 @@ Unfortunately since this was not available at the time, the analysis of the mode
 \label{sec:eval}
 
 \revise{To assess the efficiency of the proposed method, implemented as a Python package named Trappist, we compare it with the state-of-the-art method implemented in the tool PyBoolNet~\cite{klarner2015computing,klarner2017pyboolnet} on both its own repository of models and large models from the literature.
-In addition, we also include the tool mpbn~\cite{Paulev2020} to the benchmarks although it only handle locally-monotonic models, whereas both Trappist and PyBoolNet can handle general models.
+In addition, we also include the tool mpbn~\cite{Paulev2020} to the benchmarks although it only handles locally-monotonic models, whereas both Trappist and PyBoolNet can handle general models.
 }
 
 To solve the ASP problems, we used the same ASP solver CLINGO~\cite{DBLP:journals/aicom/GebserKKOSS11} and the same configuration as that used in PyBoolNet~\cite{klarner2015computing,klarner2017pyboolnet}.
@@ -519,7 +519,7 @@ Table~\ref{tab:result_real} shows the experimental results on those models. Here
 
 %%% The proposed method and mpbn %%%
 \revise{The first observation is that for 26 of the 33 models (more than 78\%), mpbn did not give any answer because it recognized that these models as not locally-monotonic.
-For 6 of the 33 models where mpbn returned the answers, mpbn and Trappist are comparable in computation time, though surprisingly a bit slower on average.
+For 6 of the 33 models where mpbn returned the answers, mpbn and Trappist are comparable in computation time, though surprisingly mpbn appears a bit slower on average.
 Note however that mpbn was the only tool to provide a solution for the SN-5 model, thus confirming that if the activation function is in the right form, not having to compute the inactivation function's disjunctive normal form can render a difficult problem tractable.
 However, since mbpn can handle only locally-monotonic models and Trappist can handle general models, it is difficult to further compare between them.
 Hence, we focus on only comparisons between PyBoolNet and Trappist in the following observations.}
@@ -547,6 +547,7 @@ The fact that our new ASP encoding is guaranteed to be linear in the number of n
 This points to the fact that our current choice of using a BDD-based translation to obtain that Petri net encoding, though it provides a small/efficient ASP might be too costly to handle the largest models.
 In such a case, a more \emph{naive} encoding might provide a much larger ASP program, with many redundant rules, but easier/faster to obtain.
 The evaluation of the feasibility of such strategy, and of its impact on smaller instances, remains to be done and is out of the scope of this first article.
+\revise{Recognizing that a model is locally-monotonic and applying in that specific case dedicated strategies as those of mpbn might also be a partial solution as shown in the SN-5 case, but not for the turei-2016 model.}
 
 \revise{Note that though enumerating the extremal siphons of a Petri net is exponential (see~\cite{nabli2016enumerating} for instance) this is apparently not the bottleneck of the proposed method, showing once again that networks obtained from biochemical models do have a specific structure.}
 
