@@ -1,4 +1,4 @@
-FROM colomoto/colomoto-docker:2022-05-01
+FROM colomoto/colomoto-docker:next
 
 ADD Benchmark.ipynb /notebook/
 ADD trappist /notebook/trappist
