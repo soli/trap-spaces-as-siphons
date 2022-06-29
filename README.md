@@ -16,7 +16,7 @@ Note that Trappist does install the [PySAT](https://pysathq.github.io/docs/html/
 
 # Run trappist in a Binder image
 
-Submitted version: [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/soli/trap-spaces-as-siphons/updated)
+Submitted version: [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/soli/trap-spaces-as-siphons/camera-ready)
 
 Latest version: [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/soli/trap-spaces-as-siphons/main)
 
