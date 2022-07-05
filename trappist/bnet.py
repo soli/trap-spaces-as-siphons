@@ -54,6 +54,7 @@ def read_bnet(fileobj: IO) -> nx.DiGraph:
     for line in fileobj.readlines():
         if line.startswith("#") or line.startswith("targets, factors"):
             continue
+        line = line.split("#")[0]
         try:
             x, fx = line.replace(" ", "").replace("!", "~").split(",", maxsplit=1)
         except ValueError:  # not enough values to unpack
