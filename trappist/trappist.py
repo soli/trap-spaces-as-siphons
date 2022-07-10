@@ -27,8 +27,9 @@ from typing import Generator, IO, List
 
 import networkx as nx  # TODO maybe replace with lists/dicts
 
-from . import version
+from . import pnml_to_asp, version
 from .bnet import read_bnet
+from .naive import write_naive_asp
 from .max_sat import get_sat_solutions
 
 
@@ -51,14 +52,6 @@ def read_pnml(fileobj: IO) -> nx.DiGraph:
         net.add_edge(arc.get("source"), arc.get("target"))
 
     return net
-
-
-def pnml_to_asp(name: str) -> str:
-    """Convert a PNML id to an ASP variable."""
-    # TODO handle non-accetable chars
-    if name.startswith("-"):
-        return "n" + name[1:]
-    return "p" + name
 
 
 def write_asp(petri_net: nx.DiGraph, asp_file: IO):
@@ -86,7 +79,7 @@ def solve_asp(asp_filename: str, max_output: int, time_limit: int) -> str:
             str(max_output),
             "--heuristic=Domain",  # maximal w.r.t. inclusion
             "--enum-mod=domRec",
-            "--dom-mod=3",
+            "--dom-mod=3,16",
             "--outf=2",  # json output
             f"--time-limit={time_limit}",
             asp_filename,
@@ -133,14 +126,20 @@ def get_solutions(
 
 
 def get_asp_output(
-    petri_net: nx.DiGraph, max_output: int, time_limit: int
+    petri_net: nx.DiGraph, max_output: int, time_limit: int, method: str
 ) -> str:
     """Generate and solve ASP file."""
     (_, tmpname) = tempfile.mkstemp(suffix=".lp", text=True)
     with open(tmpname, "wt") as asp_file:
-        write_asp(petri_net, asp_file)
+        if method == "asp":
+            write_asp(petri_net, asp_file)
+        elif method == "naive":
+            write_naive_asp(petri_net, asp_file)
     solutions = solve_asp(tmpname, max_output, time_limit)
-    os.unlink(tmpname)
+    if method == "naive":
+       print(tmpname)
+    else:
+        os.unlink(tmpname)
     return solutions
 
 
@@ -157,13 +156,13 @@ def compute_trap_spaces(
         infile = open(infile, "r", encoding="utf-8")
         toclose = True
 
-    if infile.name.endswith(".pnml"):
+    if infile.name.endswith(".pnml") and method in ("asp", "sat"):
         petri_net = read_pnml(infile)
     elif infile.name.endswith(".bnet"):
-        petri_net = read_bnet(infile)
+        petri_net = read_bnet(infile, method)
     else:
         infile.close()
-        raise ValueError("Currently limited to parsing PNML files")
+        raise ValueError("Failed parsing input")
 
     if toclose:
         infile.close()
@@ -175,10 +174,10 @@ def compute_trap_spaces(
     if display:
         print(" ".join(places))
 
-    if method == "asp":
-        solutions_output = get_asp_output(petri_net, max_output, time_limit)
+    if method in ("asp", "naive"):
+        solutions_output = get_asp_output(petri_net, max_output, time_limit, method)
         solutions = get_solutions(solutions_output, places)
-    if method == "sat":
+    elif method == "sat":
         solutions = get_sat_solutions(petri_net, max_output, time_limit, places)
 
     if display:
@@ -217,7 +216,7 @@ def main():
     parser.add_argument(
         "-s",
         "--solver",
-        choices=["asp", "sat"],
+        choices=["asp", "sat", "naive"],
         default="asp",
         type=str,
         help="Solver to compute the Maximal conflict-free sihpons.",

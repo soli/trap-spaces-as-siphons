@@ -20,12 +20,11 @@ from typing import IO
 
 import networkx as nx  # TODO maybe replace with lists/dicts
 
-from pyeda.boolalg import boolfunc
 from pyeda.boolalg.bdd import bddvar, expr2bdd
 from pyeda.boolalg.expr import expr
 
 
-def add_edges(net: nx.DiGraph, tname: str, things: boolfunc, source: str):
+def add_edges(net: nx.DiGraph, tname: str, things: expr, source: str):
     """Add all edges from things to tname and back in net except for source."""
     if source.startswith("-"):
         nsource = source[1:]
@@ -47,7 +46,7 @@ def add_edges(net: nx.DiGraph, tname: str, things: boolfunc, source: str):
                 net.add_edge(name, pname)
 
 
-def read_bnet(fileobj: IO) -> nx.DiGraph:
+def read_bnet(fileobj: IO, method: str) -> nx.DiGraph:
     """Parse a BoolNet .bnet file and build the corresponding Petri net."""
     net = nx.DiGraph()
 
@@ -63,14 +62,24 @@ def read_bnet(fileobj: IO) -> nx.DiGraph:
         net.add_node(
             "-" + x, kind="place"
         )  # convention in PNML files obtained from bnet
-        vx = bddvar(x)
-        fx = expr2bdd(expr(fx))
-        # print(x, fx)
-        activate = fx & ~vx
-        inactivate = ~fx & vx
-        # print(activate, inactivate, sep="\n")
+        if method in ("asp", "sat"):
+            vx = bddvar(x)
+            fx = expr2bdd(expr(fx))
+            # print(x, fx)
+            activate = fx & ~vx
+            inactivate = ~fx & vx
+            # print(activate, inactivate, sep="\n")
 
-        add_edges(net, f"tp_{x}", activate, "-" + x)
-        add_edges(net, f"tn_{x}", inactivate, x)
+            add_edges(net, f"tp_{x}", activate, "-" + x)
+            add_edges(net, f"tn_{x}", inactivate, x)
+        else:
+            vx = expr(x)
+            fx = expr(fx).to_nnf()
+            nfx = (~fx).to_nnf()
+
+            net.nodes[x]["function"] = fx
+            net.nodes[x]["var"] = vx
+            net.nodes["-" + x]["function"] = nfx
+            net.nodes["-" + x]["var"] = ~vx
 
     return net

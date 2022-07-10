@@ -21,4 +21,13 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 version = "0.5.0"  # pylint: disable=invalid-name
 
 
+def pnml_to_asp(name: str) -> str:
+    """Convert a PNML id to an ASP variable."""
+    # TODO handle non-accetable chars
+    name = name.replace("~", "-")
+    if name.startswith("-"):
+        return "n" + name[1:]
+    return "p" + name
+
+
 from .trappist import compute_trap_spaces   # noqa
