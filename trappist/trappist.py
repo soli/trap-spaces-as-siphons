@@ -136,10 +136,7 @@ def get_asp_output(
         elif method == "naive":
             write_naive_asp(petri_net, asp_file)
     solutions = solve_asp(tmpname, max_output, time_limit)
-    if method == "naive":
-       print(tmpname)
-    else:
-        os.unlink(tmpname)
+    os.unlink(tmpname)
     return solutions
 
 
