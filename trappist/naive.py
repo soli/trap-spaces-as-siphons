@@ -51,14 +51,15 @@ def add_tree(source: expr, target: expr, asp_file, counter=0):
     elif isinstance(source, Constant):
         if source.is_zero():
             print(f":- {starget}.", file=asp_file)
-        else:
+        elif source.is_one():
             print(f"{starget}.", file=asp_file)
+        else:
+            print(f"Houston we have a problem with {source}…")
     elif isinstance(source, OrOp):
         source_str = ""
         for s in source.xs:
             if isinstance(s, Literal):
-                vs = s
-                svs = pnml_to_asp(str(~vs).replace("~", "-"))
+                svs = pnml_to_asp(str(~s))
             else:
                 vs = expr(f"aux_{counter}")
                 counter = add_tree(s, vs, asp_file, counter + 1)
@@ -71,9 +72,11 @@ def add_tree(source: expr, target: expr, asp_file, counter=0):
     elif isinstance(source, AndOp):
         for s in source.xs:
             if isinstance(s, Literal):
-                counter = add_tree(s, target, asp_file, counter)
+                print(f"{pnml_to_asp(str(~s))} :- {starget}.", file=asp_file)
             else:
                 vs = expr(f"aux_{counter}")
                 counter = add_tree(s, vs, asp_file, counter + 1)
                 print(f"{str(vs)} :- {starget}.", file=asp_file)
+    else:
+        print(f"Houston we have a problem with {source}…")
     return counter
