@@ -74,9 +74,7 @@ def add_tree(source: expr, target: expr, asp_file, counter=0):
             if isinstance(s, Literal):
                 print(f"{pnml_to_asp(str(~s))} :- {starget}.", file=asp_file)
             else:
-                vs = expr(f"aux_{counter}")
-                counter = add_tree(s, vs, asp_file, counter + 1)
-                print(f"{str(vs)} :- {starget}.", file=asp_file)
+                counter = add_tree(s, target, asp_file, counter)
     else:
         print(f"Houston we have a problem with {source}…")
     return counter
