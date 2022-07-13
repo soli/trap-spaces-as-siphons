@@ -119,7 +119,6 @@ def get_solutions(
 ) -> Generator[List[str], None, None]:
     """Display the ASP output back as trap-spaces."""
     solutions = json.loads(asp_output)
-    print('JSON read')
     yield from (
         solution_to_bool(places, set(sol["Value"]))
         for sol in solutions["Call"][0]["Witnesses"]
@@ -180,7 +179,6 @@ def compute_trap_spaces(
 
     if display:
         print("\n".join(" ".join(sol) for sol in solutions))
-        # print("Total time:", solutions["Time"]["Total"], "s")
         return
     else:
         yield from solutions
