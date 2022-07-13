@@ -23,14 +23,14 @@ import subprocess
 import sys
 import tempfile
 import xml.etree.ElementTree as etree
-from typing import Generator, IO, List
+from typing import Generator, IO, List, Set
 
 import networkx as nx  # TODO maybe replace with lists/dicts
 
 from . import pnml_to_asp, version
 from .bnet import read_bnet
-from .naive import write_naive_asp
 from .max_sat import get_sat_solutions
+from .naive import write_naive_asp
 
 
 def read_pnml(fileobj: IO) -> nx.DiGraph:
@@ -97,12 +97,12 @@ def solve_asp(asp_filename: str, max_output: int, time_limit: int) -> str:
     return result.stdout
 
 
-def solution_to_bool(places: List[str], sol: List[str]) -> List[str]:
+def solution_to_bool(places: List[str], sol: Set[str]) -> List[str]:
     """Convert a list of present places in sol, to a tri-valued vector."""
     return [place_in_sol(sol, p) for p in places]
 
 
-def place_in_sol(sol: List[str], place: str) -> str:
+def place_in_sol(sol: Set[str], place: str) -> str:
     """Return 0/1/- if place is absent, present or does not appear in sol.
 
     Remember that being in the siphon means staying empty, so the opposite value is the one fixed.
@@ -119,8 +119,9 @@ def get_solutions(
 ) -> Generator[List[str], None, None]:
     """Display the ASP output back as trap-spaces."""
     solutions = json.loads(asp_output)
+    print('JSON read')
     yield from (
-        solution_to_bool(places, sol["Value"])
+        solution_to_bool(places, set(sol["Value"]))
         for sol in solutions["Call"][0]["Witnesses"]
     )
 
