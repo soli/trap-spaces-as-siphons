@@ -16,11 +16,12 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from typing import IO
+from typing import IO, Set
 
 import networkx as nx  # TODO maybe replace with lists/dicts
 
 from pyeda.boolalg.expr import AndOp, Constant, Literal, OrOp, Variable, expr
+from pyeda.boolalg.minimization import espresso_exprs
 
 from . import pnml_to_asp
 
@@ -56,6 +57,10 @@ def add_tree(source: expr, target: expr, asp_file, counter=0):
         else:
             print(f"Houston we have a problem with {source}…")
     elif isinstance(source, OrOp):
+        if unsafe(source):
+            # espresso will not compute minimal implicants
+            # but guarantees to remove redundancy
+            source = espresso_exprs(source.to_dnf())
         source_str = ""
         for s in source.xs:
             if isinstance(s, Literal):
@@ -78,3 +83,20 @@ def add_tree(source: expr, target: expr, asp_file, counter=0):
     else:
         print(f"Houston we have a problem with {source}…")
     return counter
+
+
+def leaves(expression: expr) -> Set[Literal]:
+    """Return all the Litterals in expression."""
+    s = set()
+    for ex in expression.iter_dfs():
+        if isinstance(ex, Literal):
+            s.add(ex)
+    return s
+
+
+def unsafe(expression: expr) -> bool:
+    """Return true if leaves contain a variable and its negation."""
+    for v in leaves(expression):
+        if isinstance(v, Variable) and ~v in leaves(expression):
+            return True
+    return False
