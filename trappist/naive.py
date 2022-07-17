@@ -60,7 +60,7 @@ def add_tree(source: expr, target: expr, asp_file, counter=0):
         if unsafe(source):
             # espresso will not compute minimal implicants
             # but guarantees to remove redundancy
-            source = espresso_exprs(source.to_dnf())
+            source, = espresso_exprs(source.to_dnf())
         source_str = ""
         for s in source.xs:
             if isinstance(s, Literal):
