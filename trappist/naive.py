@@ -61,22 +61,22 @@ def add_tree(source: expr, target: expr, asp_file, counter=0):
             # espresso will not compute minimal implicants
             # but guarantees to remove redundancy
             source, = espresso_exprs(source.to_dnf())
-            # we call back add_tree since source might not be an OrOp any longer
-            add_tree(source, target, asp_file, counter)
-        else:
-            source_str = ""
-            for s in source.xs:
-                if isinstance(s, Literal):
-                    svs = pnml_to_asp(str(~s))
-                else:
-                    vs = expr(f"aux_{counter}")
-                    counter = add_tree(s, vs, asp_file, counter + 1)
-                    svs = str(vs)
-                if source_str:
-                    source_str += "; " + svs
-                else:
-                    source_str = svs
-            print(f"{source_str} :- {starget}.", file=asp_file)
+            # we call back add_tree when source is not an OrOp any longer
+            if not isinstance(source, OrOp):
+                return add_tree(source, target, asp_file, counter)
+        source_str = ""
+        for s in source.xs:
+            if isinstance(s, Literal):
+                svs = pnml_to_asp(str(~s))
+            else:
+                vs = expr(f"aux_{counter}")
+                counter = add_tree(s, vs, asp_file, counter + 1)
+                svs = str(vs)
+            if source_str:
+                source_str += "; " + svs
+            else:
+                source_str = svs
+        print(f"{source_str} :- {starget}.", file=asp_file)
     elif isinstance(source, AndOp):
         for s in source.xs:
             if isinstance(s, Literal):
