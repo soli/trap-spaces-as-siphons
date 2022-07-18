@@ -60,7 +60,7 @@ def add_tree(source: expr, target: expr, asp_file, counter=0):
         if unsafe(source):
             # espresso will not compute minimal implicants
             # but guarantees to remove redundancy
-            source, = espresso_exprs(source.to_dnf())
+            (source,) = espresso_exprs(source.to_dnf())
             # we call back add_tree when source is not an OrOp any longer
             if not isinstance(source, OrOp):
                 return add_tree(source, target, asp_file, counter)
@@ -99,7 +99,13 @@ def leaves(expression: expr) -> Set[Literal]:
 
 def unsafe(expression: expr) -> bool:
     """Return true if leaves contain a variable and its negation."""
-    for v in leaves(expression):
-        if isinstance(v, Variable) and ~v in leaves(expression):
-            return True
+    if not isinstance(expression, OrOp):
+        return False
+    leaves_set = [leaves(child) for child in expression.xs]
+    for child1, child2 in [
+        (a, b) for index, a in enumerate(leaves_set) for b in leaves_set[index + 1:]
+    ]:
+        for v in child1:
+            if ~v in child2:
+                return True
     return False
