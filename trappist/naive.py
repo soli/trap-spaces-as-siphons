@@ -53,7 +53,8 @@ def add_tree(source: expr, target: expr, asp_file, counter=0):
         if source.is_zero():
             print(f":- {starget}.", file=asp_file)
         elif source.is_one():
-            print(f"{starget}.", file=asp_file)
+            # nothing to do
+            pass
         else:
             print(f"Houston we have a problem with {source}…")
     elif isinstance(source, OrOp):
@@ -90,6 +91,7 @@ def add_tree(source: expr, target: expr, asp_file, counter=0):
 
 def leaves(expression: expr) -> Set[Literal]:
     """Return all the Litterals in expression."""
+    # TODO cache?
     s = set()
     for ex in expression.iter_dfs():
         if isinstance(ex, Literal):
@@ -98,7 +100,7 @@ def leaves(expression: expr) -> Set[Literal]:
 
 
 def unsafe(expression: expr) -> bool:
-    """Return true if leaves contain a variable and its negation."""
+    """Return True if leaves of two branches of an OrOp contain a variable and its negation."""
     if not isinstance(expression, OrOp):
         return False
     leaves_set = [leaves(child) for child in expression.xs]

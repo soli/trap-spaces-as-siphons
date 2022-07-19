@@ -16,6 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
+from sys import setrecursionlimit
 from typing import IO
 
 import networkx as nx  # TODO maybe replace with lists/dicts
@@ -50,6 +51,8 @@ def read_bnet(fileobj: IO, method: str) -> nx.DiGraph:
     """Parse a BoolNet .bnet file and build the corresponding Petri net."""
     net = nx.DiGraph()
 
+    # big bnets…
+    setrecursionlimit(2048)
     for line in fileobj.readlines():
         if line.startswith("#") or line.startswith("targets, factors"):
             continue
