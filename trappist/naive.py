@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from math import ceil
 from multiprocessing import Pool, cpu_count, current_process
 from os import unlink
+from signal import signal, SIGTERM
 from sys import setrecursionlimit
 from typing import IO, Set
 
@@ -33,7 +34,7 @@ from . import pnml_to_asp
 def write_naive_asp(petri_net: nx.DiGraph, asp_file: IO):
     "Write the ASP program for naive encoding of trap spaces."
     nproc = cpu_count()
-    with Pool(nproc, setup_workers, (asp_file.name,)) as p:
+    with Pool(nproc, setup_worker, (asp_file.name,)) as p:
         # pids = set(p.imap_unordered(add_variable, petri_net.nodes(data=True), petri_net.number_of_nodes() // nproc))
         pids = set(p.map(add_variable, petri_net.nodes(data=True), ceil(petri_net.number_of_nodes() // nproc)))
     for p in pids:
@@ -43,13 +44,21 @@ def write_naive_asp(petri_net: nx.DiGraph, asp_file: IO):
         unlink(f"{asp_file.name}_{p}")
 
 
-def setup_workers(filename):
+def setup_worker(filename):
+    """Setup global variables for subprocess."""
     # big bnets…
     setrecursionlimit(2048)
     global counter
     counter = 0
     global asp_file
     asp_file = open(f"{filename}_{pid}", "wt")
+    signal.signal(SIGTERM, teardown_worker)
+
+
+def teardown_worker(_signum, _frame):
+    """Clean things up."""
+    asp_file.flush()
+    asp_file.close()
 
 
 def add_variable(node_and_data):
@@ -66,7 +75,6 @@ def add_variable(node_and_data):
             f":- {name}, {pnml_to_asp('-' + node)}.", file=asp_file
         )  # conflict-freeness
     add_tree(expr(data["function"]).to_nnf(), expr(data["var"]), asp_file)
-    asp_file.flush()
     return pid
 
 
