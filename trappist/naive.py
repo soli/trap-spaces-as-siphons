@@ -48,14 +48,15 @@ def setup_workers(filename):
     setrecursionlimit(2048)
     global counter
     counter = 0
-    global pid
-    pid = current_process().pid
     global asp_file
     asp_file = open(f"{filename}_{pid}", "wt")
 
 
 def add_variable(node_and_data):
     """Do what you need."""
+    global pid
+    if pid is None:
+        pid = current_process().pid
     node, data = node_and_data
     name = pnml_to_asp(node)
     print("{", name, "}.", sep="", file=asp_file)
