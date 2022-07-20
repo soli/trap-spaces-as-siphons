@@ -76,13 +76,10 @@ def read_bnet(fileobj: IO, method: str) -> nx.DiGraph:
             add_edges(net, f"tp_{x}", activate, "-" + x)
             add_edges(net, f"tn_{x}", inactivate, x)
         else:
-            vx = expr(x)
-            fx = expr(fx).to_nnf()
-            nfx = (~fx).to_nnf()
-
+            # delay expr parsing to parallel jobs (for pickling)
             net.nodes[x]["function"] = fx
-            net.nodes[x]["var"] = vx
-            net.nodes["-" + x]["function"] = nfx
-            net.nodes["-" + x]["var"] = ~vx
+            net.nodes[x]["var"] = x
+            net.nodes["-" + x]["function"] = "~(" + fx + ")"
+            net.nodes["-" + x]["var"] = "~(" + x + ")"
 
     return net

@@ -16,6 +16,10 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
+from math import ceil
+from multiprocessing import Pool, cpu_count, current_process
+from os import unlink
+from sys import setrecursionlimit
 from typing import IO, Set
 
 import networkx as nx  # TODO maybe replace with lists/dicts
@@ -28,20 +32,46 @@ from . import pnml_to_asp
 
 def write_naive_asp(petri_net: nx.DiGraph, asp_file: IO):
     "Write the ASP program for naive encoding of trap spaces."
+    nproc = cpu_count()
+    with Pool(nproc, setup_workers, (asp_file.name,)) as p:
+        # pids = set(p.imap_unordered(add_variable, petri_net.nodes(data=True), petri_net.number_of_nodes() // nproc))
+        pids = set(p.map(add_variable, petri_net.nodes(data=True), ceil(petri_net.number_of_nodes() // nproc)))
+    for p in pids:
+        with open(f"{asp_file.name}_{p}", "r") as f:
+            for line in f:
+                asp_file.write(line)
+        unlink(f"{asp_file.name}_{p}")
+
+
+def setup_workers(filename):
+    # big bnets…
+    setrecursionlimit(2048)
+    global counter
     counter = 0
-    for node, data in petri_net.nodes(data=True):
-        name = pnml_to_asp(node)
-        print("{", name, "}.", sep="", file=asp_file)
-        print(f"#show {name}/0.", file=asp_file)
-        if not node.startswith("-"):
-            print(
-                f":- {name}, {pnml_to_asp('-' + node)}.", file=asp_file
-            )  # conflict-freeness
-        counter = add_tree(data["function"], data["var"], asp_file, counter)
+    global pid
+    pid = current_process().pid
+    global asp_file
+    asp_file = open(f"{filename}_{pid}", "wt")
 
 
-def add_tree(source: expr, target: expr, asp_file, counter=0):
+def add_variable(node_and_data):
+    """Do what you need."""
+    node, data = node_and_data
+    name = pnml_to_asp(node)
+    print("{", name, "}.", sep="", file=asp_file)
+    print(f"#show {name}/0.", file=asp_file)
+    if not node.startswith("-"):
+        print(
+            f":- {name}, {pnml_to_asp('-' + node)}.", file=asp_file
+        )  # conflict-freeness
+    add_tree(expr(data["function"]).to_nnf(), expr(data["var"]), asp_file)
+    asp_file.flush()
+    return pid
+
+
+def add_tree(source: expr, target: expr, asp_file):
     """Add the AST of things->target to the ASP program."""
+    global counter
     if isinstance(target, Variable) and target.name.startswith("aux"):
         starget = target.name
     else:
@@ -64,14 +94,15 @@ def add_tree(source: expr, target: expr, asp_file, counter=0):
             (source,) = espresso_exprs(source.to_dnf())
             # we call back add_tree when source is not an OrOp any longer
             if not isinstance(source, OrOp):
-                return add_tree(source, target, asp_file, counter)
+                return add_tree(source, target, asp_file)
         source_str = ""
         for s in source.xs:
             if isinstance(s, Literal):
                 svs = pnml_to_asp(str(~s))
             else:
-                vs = expr(f"aux_{counter}")
-                counter = add_tree(s, vs, asp_file, counter + 1)
+                vs = expr(f"aux_{pid}_{counter}")
+                counter += 1
+                add_tree(s, vs, asp_file)
                 svs = str(vs)
             if source_str:
                 source_str += "; " + svs
@@ -83,10 +114,9 @@ def add_tree(source: expr, target: expr, asp_file, counter=0):
             if isinstance(s, Literal):
                 print(f"{pnml_to_asp(str(~s))} :- {starget}.", file=asp_file)
             else:
-                counter = add_tree(s, target, asp_file, counter)
+                add_tree(s, target, asp_file)
     else:
         print(f"Houston we have a problem with {source}…")
-    return counter
 
 
 def leaves(expression: expr) -> Set[Literal]:

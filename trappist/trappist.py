@@ -79,6 +79,7 @@ def solve_asp(asp_filename: str, max_output: int, time_limit: int) -> str:
         [
             "clingo",
             str(max_output),
+            # TODO try clasp parrallel-mode f"--parallel-mode={os.cpu_count()}",
             "--heuristic=Domain",  # maximal w.r.t. inclusion
             "--enum-mod=domRec",
             "--dom-mod=3,16",
