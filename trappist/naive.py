@@ -19,7 +19,6 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 from math import ceil
 from multiprocessing import Pool, cpu_count, current_process
 from os import unlink
-from signal import signal, SIGTERM
 from sys import setrecursionlimit
 from typing import IO, Set
 
@@ -50,22 +49,16 @@ def setup_worker(filename):
     setrecursionlimit(2048)
     global counter
     counter = 0
+    global pid
+    pid = current_process().pid
+    while pid is None:
+        pid = current_process().pid
     global asp_file
     asp_file = open(f"{filename}_{pid}", "wt")
-    signal.signal(SIGTERM, teardown_worker)
-
-
-def teardown_worker(_signum, _frame):
-    """Clean things up."""
-    asp_file.flush()
-    asp_file.close()
 
 
 def add_variable(node_and_data):
     """Do what you need."""
-    global pid
-    if pid is None:
-        pid = current_process().pid
     node, data = node_and_data
     name = pnml_to_asp(node)
     print("{", name, "}.", sep="", file=asp_file)
@@ -75,6 +68,7 @@ def add_variable(node_and_data):
             f":- {name}, {pnml_to_asp('-' + node)}.", file=asp_file
         )  # conflict-freeness
     add_tree(expr(data["function"]).to_nnf(), expr(data["var"]), asp_file)
+    asp_file.flush()
     return pid
 
 
