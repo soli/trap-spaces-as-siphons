@@ -63,7 +63,9 @@ def write_asp(petri_net: nx.DiGraph, asp_file: IO):
                 print(
                     f":- {pnml_to_asp(node)}, {pnml_to_asp('-' + node)}.", file=asp_file
                 )  # conflict-freeness
-        else:  # it's a transition, apply siphon (if one succ is true, one pred must be true)
+        # it's a transition, apply siphon
+        # (if one succ is true, one pred must be true)
+        else:
             preds = list(petri_net.predecessors(node))
             or_preds = "; ".join(map(pnml_to_asp, preds))
             for succ in petri_net.successors(node):
@@ -105,7 +107,8 @@ def solution_to_bool(places: List[str], sol: Set[str]) -> List[str]:
 def place_in_sol(sol: Set[str], place: str) -> str:
     """Return 0/1/- if place is absent, present or does not appear in sol.
 
-    Remember that being in the siphon means staying empty, so the opposite value is the one fixed.
+    Remember that being in the siphon means staying empty,
+    so the opposite value is the one fixed.
     """
     if "p" + place in sol:
         return "0"
@@ -126,7 +129,7 @@ def get_solutions(
 
 
 def get_asp_output(
-    petri_net: nx.DiGraph, max_output: int, time_limit: int, method: str
+    petri_net: nx.DiGraph, max_output: int, time_limit: int, method: str, debug: bool
 ) -> str:
     """Generate and solve ASP file."""
     (_, tmpname) = tempfile.mkstemp(suffix=".lp", text=True)
@@ -135,8 +138,11 @@ def get_asp_output(
             write_asp(petri_net, asp_file)
         elif method == "naive":
             write_naive_asp(petri_net, asp_file)
+    if debug:
+        print(f"ASP file {tmpname} written.")
     solutions = solve_asp(tmpname, max_output, time_limit)
-    os.unlink(tmpname)
+    if not debug:
+        os.unlink(tmpname)
     return solutions
 
 
@@ -146,6 +152,7 @@ def compute_trap_spaces(
     max_output: int = 0,
     time_limit: int = 0,
     method: str = "asp",
+    debug: bool = False,
 ) -> Generator[List[str], None, None]:
     """Do the minimal trap-space computation on input file infile."""
     toclose = False
@@ -164,6 +171,9 @@ def compute_trap_spaces(
     if toclose:
         infile.close()
 
+    if debug:
+        print("Input file parsed.")
+
     places = []
     for node, kind in petri_net.nodes(data="kind"):
         if kind == "place" and not node.startswith("-"):
@@ -171,11 +181,15 @@ def compute_trap_spaces(
     if display:
         print(" ".join(places))
 
-    if method in ("asp", "naive"):
-        solutions_output = get_asp_output(petri_net, max_output, time_limit, method)
-        solutions = get_solutions(solutions_output, places)
-    elif method == "sat":
+    if method == "sat":
         solutions = get_sat_solutions(petri_net, max_output, time_limit, places)
+    else:
+        solutions_output = get_asp_output(
+            petri_net, max_output, time_limit, method, debug
+        )
+        if debug:
+            print("ASP solutions obtained.")
+        solutions = get_solutions(solutions_output, places)
 
     if display:
         print("\n".join(" ".join(sol) for sol in solutions))
@@ -188,6 +202,12 @@ def main():
     """Read the Petri-net send the output to ASP and print solution."""
     parser = argparse.ArgumentParser(
         description=" ".join(__doc__.splitlines()[:3]) + " GPLv3"
+    )
+    parser.add_argument(
+        "-d",
+        "--debug",
+        action=argparse.store_true,
+        help="Print debugging information.",
     )
     parser.add_argument(
         "-v",
@@ -227,13 +247,16 @@ def main():
     args = parser.parse_args()
 
     try:
-        next(compute_trap_spaces(
-            args.infile,
-            display=True,
-            max_output=args.max,
-            time_limit=args.time,
-            method=args.solver,
-        ))
+        next(
+            compute_trap_spaces(
+                args.infile,
+                display=True,
+                max_output=args.max,
+                time_limit=args.time,
+                method=args.solver,
+                debug=args.debug,
+            )
+        )
     except StopIteration:
         pass
 
