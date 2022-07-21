@@ -42,7 +42,7 @@ def write_naive_asp(petri_net: nx.DiGraph, asp_file: IO):
             p.imap_unordered(
                 add_variable,
                 petri_net.nodes(data=True),
-                ceil(nnodes / (4 * nproc)),
+                ceil(nnodes / (8 * nproc)),
             )
         )
     for p in pids:
