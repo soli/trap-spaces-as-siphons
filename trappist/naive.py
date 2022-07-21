@@ -35,7 +35,7 @@ def write_naive_asp(petri_net: nx.DiGraph, asp_file: IO):
     nproc = cpu_count()
     with Pool(nproc, setup_worker, (asp_file.name,)) as p:
         pids = set(
-            p.map(  # TODO use imap_unordered ?
+            p.imap_unordered(
                 add_variable,
                 petri_net.nodes(data=True),
                 ceil(petri_net.number_of_nodes() / nproc),
