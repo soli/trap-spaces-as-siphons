@@ -30,28 +30,33 @@ from pyeda.boolalg.minimization import espresso_exprs
 from . import pnml_to_asp
 
 
-def write_naive_asp(petri_net: nx.DiGraph, asp_file: IO):
+def write_naive_asp(petri_net: nx.DiGraph, asp_file: IO, nprocs: int):
     "Write the ASP program for naive encoding of trap spaces."
     nnodes = petri_net.number_of_nodes()
-    if nnodes > 256:
+    if nprocs == 0:
         nproc = cpu_count()
-        chunksize = ceil(nnodes / (8 * nproc))  # seems decent
     else:
-        nproc = 1
-        chunksize = nnodes
-    with Pool(nproc, setup_worker, (asp_file.name,)) as p:
-        pids = set(
-            p.imap_unordered(
-                add_variable,
-                petri_net.nodes(data=True),
-                chunksize,
+        nproc = min(nprocs, cpu_count())
+    if nnodes > 256 and nproc > 1:
+        chunksize = ceil(nnodes / (8 * nproc))  # seems decent
+        with Pool(nproc, setup_worker, (asp_file.name,)) as p:
+            pids = set(
+                p.imap_unordered(
+                    add_variable,
+                    petri_net.nodes(data=True),
+                    chunksize,
+                )
             )
-        )
-    for p in pids:
-        with open(f"{asp_file.name}_{p}", "r") as f:
-            for line in f:
-                asp_file.write(line)
-        unlink(f"{asp_file.name}_{p}")
+        for p in pids:
+            with open(f"{asp_file.name}_{p}", "r") as f:
+                for line in f:
+                    asp_file.write(line)
+            unlink(f"{asp_file.name}_{p}")
+    else:
+        globals()['pid'] = 0
+        globals()['asp_file'] = asp_file
+        for node_and_data in petri_net.nodes(data=True):
+            add_variable(node_and_data)
 
 
 def setup_worker(filename):

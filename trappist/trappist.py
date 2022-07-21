@@ -130,7 +130,7 @@ def get_solutions(
 
 
 def get_asp_output(
-    petri_net: nx.DiGraph, max_output: int, time_limit: int, method: str, debug: bool
+    petri_net: nx.DiGraph, max_output: int, time_limit: int, method: str, debug: bool, nprocs: int,
 ) -> str:
     """Generate and solve ASP file."""
     (_, tmpname) = tempfile.mkstemp(suffix=".lp", text=True)
@@ -138,7 +138,7 @@ def get_asp_output(
         if method == "asp":
             write_asp(petri_net, asp_file)
         elif method == "naive":
-            write_naive_asp(petri_net, asp_file)
+            write_naive_asp(petri_net, asp_file, nprocs)
     if debug:
         print(f"ASP file {tmpname} written.")
     solutions = solve_asp(tmpname, max_output, time_limit)
@@ -154,6 +154,7 @@ def compute_trap_spaces(
     time_limit: int = 0,
     method: str = "asp",
     debug: bool = False,
+    nprocs: int = 0,
 ) -> Generator[List[str], None, None]:
     """Do the minimal trap-space computation on input file infile."""
     toclose = False
@@ -186,7 +187,7 @@ def compute_trap_spaces(
         solutions = get_sat_solutions(petri_net, max_output, time_limit, places)
     else:
         solutions_output = get_asp_output(
-            petri_net, max_output, time_limit, method, debug
+            petri_net, max_output, time_limit, method, debug, nprocs
         )
         if debug:
             print("ASP solutions obtained.")
@@ -224,6 +225,13 @@ def main():
         help="Maximum number of solutions (0 for all).",
     )
     parser.add_argument(
+        "-p",
+        "--parallel",
+        type=int,
+        default=0,
+        help="Maximum number of cores to use [only for naive method] (0 for no-limit).",
+    )
+    parser.add_argument(
         "-t",
         "--time",
         type=int,
@@ -256,6 +264,7 @@ def main():
                 time_limit=args.time,
                 method=args.solver,
                 debug=args.debug,
+                nprocs=args.parallel,
             )
         )
     except StopIteration:
