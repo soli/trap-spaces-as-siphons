@@ -34,8 +34,13 @@ def write_naive_asp(petri_net: nx.DiGraph, asp_file: IO):
     "Write the ASP program for naive encoding of trap spaces."
     nproc = cpu_count()
     with Pool(nproc, setup_worker, (asp_file.name,)) as p:
-        # pids = set(p.imap_unordered(add_variable, petri_net.nodes(data=True), petri_net.number_of_nodes() // nproc))
-        pids = set(p.map(add_variable, petri_net.nodes(data=True), ceil(petri_net.number_of_nodes() // nproc)))
+        pids = set(
+            p.map(  # TODO use imap_unordered ?
+                add_variable,
+                petri_net.nodes(data=True),
+                ceil(petri_net.number_of_nodes() / nproc),
+            )
+        )
     for p in pids:
         with open(f"{asp_file.name}_{p}", "r") as f:
             for line in f:
@@ -138,7 +143,7 @@ def unsafe(expression: expr) -> bool:
         return False
     leaves_set = [leaves(child) for child in expression.xs]
     for child1, child2 in [
-        (a, b) for index, a in enumerate(leaves_set) for b in leaves_set[index + 1:]
+        (a, b) for index, a in enumerate(leaves_set) for b in leaves_set[index + 1 :]
     ]:
         for v in child1:
             if ~v in child2:
