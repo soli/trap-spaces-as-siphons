@@ -31,13 +31,13 @@ from . import pnml_to_asp
 
 
 def write_naive_asp(petri_net: nx.DiGraph, asp_file: IO, nprocs: int):
-    "Write the ASP program for naive encoding of trap spaces."
+    """Write the ASP program for naive encoding of trap spaces."""
     nnodes = petri_net.number_of_nodes()
     if nprocs == 0:
         nproc = cpu_count()
     else:
         nproc = min(nprocs, cpu_count())
-    if nnodes > 256 and nproc > 1:
+    if nproc > 1:
         chunksize = ceil(nnodes / (8 * nproc))  # seems decent
         with Pool(nproc, setup_worker, (asp_file.name,)) as p:
             pids = set(
@@ -54,15 +54,15 @@ def write_naive_asp(petri_net: nx.DiGraph, asp_file: IO, nprocs: int):
             unlink(f"{asp_file.name}_{p}")
     else:
         setrecursionlimit(2048)
-        globals()['counter'] = 0
-        globals()['pid'] = 0
-        globals()['asp_file'] = asp_file
+        globals()["counter"] = 0
+        globals()["pid"] = 0
+        globals()["asp_file"] = asp_file
         for node_and_data in petri_net.nodes(data=True):
             add_variable(node_and_data)
 
 
 def setup_worker(filename):
-    """Setup global variables for subprocess."""
+    """Set global variables for subprocess."""
     # big bnets…
     setrecursionlimit(2048)
     global counter
@@ -76,7 +76,7 @@ def setup_worker(filename):
 
 
 def add_variable(node_and_data):
-    """Do what you need."""
+    """Add all the rules for one variable."""
     node, data = node_and_data
     name = pnml_to_asp(node)
     print("{", name, "}.", sep="", file=asp_file)
