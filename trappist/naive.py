@@ -53,6 +53,8 @@ def write_naive_asp(petri_net: nx.DiGraph, asp_file: IO, nprocs: int):
                     asp_file.write(line)
             unlink(f"{asp_file.name}_{p}")
     else:
+        setrecursionlimit(2048)
+        globals()['counter'] = 0
         globals()['pid'] = 0
         globals()['asp_file'] = asp_file
         for node_and_data in petri_net.nodes(data=True):
