@@ -32,13 +32,17 @@ from . import pnml_to_asp
 
 def write_naive_asp(petri_net: nx.DiGraph, asp_file: IO):
     "Write the ASP program for naive encoding of trap spaces."
-    nproc = cpu_count()
+    nnodes = petri_net.number_of_nodes()
+    if nnodes > 256:
+        nproc = cpu_count()
+    else:
+        nproc = 1
     with Pool(nproc, setup_worker, (asp_file.name,)) as p:
         pids = set(
             p.imap_unordered(
                 add_variable,
                 petri_net.nodes(data=True),
-                ceil(petri_net.number_of_nodes() / nproc),
+                ceil(nnodes / (4 * nproc)),
             )
         )
     for p in pids:
