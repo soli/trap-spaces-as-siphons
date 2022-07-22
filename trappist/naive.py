@@ -24,7 +24,8 @@ from typing import IO, Set
 
 import networkx as nx  # TODO maybe replace with lists/dicts
 
-from pyeda.boolalg.expr import AndOp, Constant, Literal, OrOp, Variable, expr
+from pyeda.boolalg.bdd import bdd2expr, expr2bdd
+from pyeda.boolalg.expr import And, AndOp, Constant, Literal, Or, OrOp, Variable, expr
 from pyeda.boolalg.minimization import espresso_exprs
 
 from . import pnml_to_asp
@@ -113,6 +114,8 @@ def add_tree(source: expr, target: expr, asp_file):
             # espresso will not compute minimal implicants
             # but guarantees to remove redundancy
             (source,) = espresso_exprs(source.to_dnf())
+            if unsafe(source):
+                source = cnf_from_bdd(source)
             # we call back add_tree when source is not an OrOp any longer
             if not isinstance(source, OrOp):
                 return add_tree(source, target, asp_file)
@@ -162,3 +165,18 @@ def unsafe(expression: expr) -> bool:
             if ~v in child2:
                 return True
     return False
+
+
+def cnf_from_bdd(source):
+    """Get a CNF via a BDD."""
+    conjunct = []
+    for success in expr2bdd(~source).satisfy_all():
+        disjunct = []
+        for p, v in success.items():
+            if v == 0:
+                disjunct.append(bdd2expr(p))
+            else:
+                disjunct.append(~bdd2expr(p))
+        conjunct.append(Or(*disjunct))
+    result = And(*conjunct)
+    return result
