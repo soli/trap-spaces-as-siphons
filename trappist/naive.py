@@ -26,7 +26,7 @@ import networkx as nx  # TODO maybe replace with lists/dicts
 
 from pyeda.boolalg.bdd import bdd2expr, expr2bdd
 from pyeda.boolalg.expr import And, AndOp, Constant, Literal, Or, OrOp, Variable, expr
-from pyeda.boolalg.minimization import espresso_exprs
+# from pyeda.boolalg.minimization import espresso_exprs
 
 from . import pnml_to_asp
 
@@ -113,12 +113,12 @@ def add_tree(source: expr, target: expr, asp_file):
         if unsafe(source):
             # espresso will not compute minimal implicants
             # but guarantees to remove redundancy
-            (source,) = espresso_exprs(source.to_dnf())
-            if unsafe(source):
-                source = cnf_from_bdd(source)
+            # (source,) = espresso_exprs(source.to_dnf())
+            # if unsafe(source):
+            source = cnf_from_bdd(source)
             # we call back add_tree when source is not an OrOp any longer
-            if not isinstance(source, OrOp):
-                return add_tree(source, target, asp_file)
+            # if not isinstance(source, OrOp):
+            return add_tree(source, target, asp_file)
         source_str = ""
         for s in source.xs:
             if isinstance(s, Literal):
