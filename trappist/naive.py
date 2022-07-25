@@ -20,7 +20,7 @@ from math import ceil
 from multiprocessing import Pool, cpu_count, current_process
 from os import unlink
 from sys import setrecursionlimit
-from typing import IO, Set
+from typing import IO, List, Set, Tuple
 
 import networkx as nx  # TODO maybe replace with lists/dicts
 
@@ -108,17 +108,13 @@ def add_tree(source: expr, target: expr, asp_file):
             # nothing to do
             pass
         else:
-            print(f"Houston we have a problem with {source}…")
+            raise ValueError(f"Houston we have a problem with {source}…")
     elif isinstance(source, OrOp):
-        if unsafe(source):
-            # espresso will not compute minimal implicants
-            # but guarantees to remove redundancy
-            # (source,) = espresso_exprs(source.to_dnf())
-            # if unsafe(source):
-            source = cnf_from_bdd(source)
-            # we call back add_tree when source is not an OrOp any longer
-            # if not isinstance(source, OrOp):
-            return add_tree(source, target, asp_file)
+        safe, unsafe = split_safe_unsafe(source)
+        if unsafe:
+            source = Or(cnf_from_bdd(Or(*unsafe)), *safe)
+            if not isinstance(source, OrOp):
+                return add_tree(source, target, asp_file)
         source_str = ""
         for s in source.xs:
             if isinstance(s, Literal):
@@ -153,18 +149,26 @@ def leaves(expression: expr) -> Set[Literal]:
     return s
 
 
-def unsafe(expression: expr) -> bool:
-    """Return True if leaves of two branches of an OrOp contain a variable and its negation."""
-    if not isinstance(expression, OrOp):
-        return False
-    leaves_set = [leaves(child) for child in expression.xs]
+def split_safe_unsafe(expression: expr) -> Tuple[List[expr], List[expr]]:
+    """Split an Or into safe and unsafe (contains a literal and its negation) parts."""
+    assert isinstance(expression, OrOp)
+    leaves_list = [leaves(child) for child in expression.xs]
+    conflicts = set()
     for child1, child2 in [
-        (a, b) for index, a in enumerate(leaves_set) for b in leaves_set[index + 1 :]
+        (a, b) for index, a in enumerate(leaves_list) for b in leaves_list[index + 1 :]
     ]:
         for v in child1:
             if ~v in child2:
-                return True
-    return False
+                conflicts.add(v)
+                conflicts.add(~v)
+    safe = []
+    unsafe = []
+    for child, child_leaves in zip(expression.xs, leaves_list):
+        if child_leaves & conflicts:
+            unsafe.append(child)
+        else:
+            safe.append(child)
+    return (safe, unsafe)
 
 
 def cnf_from_bdd(source):
