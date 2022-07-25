@@ -154,7 +154,7 @@ def compute_trap_spaces(
     time_limit: int = 0,
     method: str = "asp",
     debug: bool = False,
-    nprocs: int = 0,
+    nprocs: int = 1,
 ) -> Generator[List[str], None, None]:
     """Do the minimal trap-space computation on input file infile."""
     toclose = False
@@ -228,7 +228,7 @@ def main():
         "-p",
         "--parallel",
         type=int,
-        default=0,
+        default=1,
         help="Maximum number of cores to use [only for naive method] (0 for no-limit).",
     )
     parser.add_argument(
