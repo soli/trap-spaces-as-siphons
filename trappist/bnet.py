@@ -41,7 +41,9 @@ def add_edges(net: nx.DiGraph, tname: str, things: expr, source: str):
             else:
                 pname = str(p)
             net.add_edge(pname, name)
-            if pname == source:  # don't add an edge back to "source" but add to Not(source)
+            if (
+                pname == source
+            ):  # don't add an edge back to "source" but add to Not(source)
                 net.add_edge(name, nsource)
             else:
                 net.add_edge(name, pname)

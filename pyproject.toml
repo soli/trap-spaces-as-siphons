@@ -1,3 +1,84 @@
 [build-system]
-requires = ["setuptools>=42"]
-build-backend = "setuptools.build_meta"
+requires = [
+    "hatchling>=1.5.0",
+]
+build-backend = "hatchling.build"
+
+[project]
+name = "trappist"
+description = "Minimal Trap Spaces computation using Maximal Siphons"
+authors = [
+   { name = "Sylvain Soliman", email = "Sylvain.Soliman@inria.fr" },
+]
+license = "GPL-3.0"
+classifiers = [
+   "Development Status :: 4 - Beta",
+   "Programming Language :: Python :: 3",
+   "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+   "Operating System :: OS Independent",
+]
+dynamic = [
+   "version"
+]
+requires-python = ">=3.6"
+dependencies = [
+    "loguru>=0.2.5",
+    "python-sat",
+    "networkx>=2.2",
+]
+readme = "README.md"
+license-files = { paths = ["LICENSE"] }
+
+[project.urls]
+Code = "https://github.com/soli/trap-spaces-as-siphons"
+
+[project.optional-dependencies]
+dev = [
+    "black",
+    "flake8-mypy",
+]
+
+[project.scripts]
+trappist = "trappist.trappist:main"
+
+[tool.hatch.version]
+path = "trappist/__init__.py"
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/trappist",
+    "/conda",
+]
+exclude = [
+    "/trappist/.mypy_cache/**",
+]
+
+[tool.hatch.envs.default]
+python = "39"
+
+[tool.hatch.envs.lint]
+detached = true
+dependencies = [
+    "pydocstyle",
+    "flake8",
+    "flake8-blind-except",
+    "flake8-bugbear",
+    "flake8-builtins",
+    "flake8-comprehensions",
+    "flake8-docstrings",
+    "flake8-import-order",
+    "flake8-mypy",
+    "flake8-polyfill",
+    "black",
+]
+python = "39"
+
+[tool.hatch.envs.lint.scripts]
+check = [
+    "flake8 --select=C,E,F,W,D,A,I,B --ignore=B950,E501,W503,E203 trappist",
+    "black --check --diff trappist",
+]
+fmt = [
+    "black trappist",
+    "check",
+]

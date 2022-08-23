@@ -30,4 +30,4 @@ def pnml_to_asp(name: str) -> str:
     return "p" + name
 
 
-from .trappist import compute_trap_spaces   # noqa
+from .trappist import compute_trap_spaces  # noqa

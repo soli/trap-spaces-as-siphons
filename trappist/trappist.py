@@ -130,7 +130,12 @@ def get_solutions(
 
 
 def get_asp_output(
-    petri_net: nx.DiGraph, max_output: int, time_limit: int, method: str, debug: bool, nprocs: int,
+    petri_net: nx.DiGraph,
+    max_output: int,
+    time_limit: int,
+    method: str,
+    debug: bool,
+    nprocs: int,
 ) -> str:
     """Generate and solve ASP file."""
     (_, tmpname) = tempfile.mkstemp(suffix=".lp", text=True)

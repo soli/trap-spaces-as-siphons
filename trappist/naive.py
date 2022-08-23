@@ -26,6 +26,7 @@ import networkx as nx  # TODO maybe replace with lists/dicts
 
 from pyeda.boolalg.bdd import bdd2expr, expr2bdd
 from pyeda.boolalg.expr import And, AndOp, Constant, Literal, Or, OrOp, Variable, expr
+
 # from pyeda.boolalg.minimization import espresso_exprs
 
 from . import pnml_to_asp
