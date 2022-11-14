@@ -43,6 +43,7 @@
 \newtheorem{theorem}{Theorem}[section]
 \newtheorem{example}{Example}[section]
 \newtheorem{definition}{Definition}[section]
+\newtheorem{proposition}{Proposition}[section]
 
 %% The lineno packages adds line numbers. Start line numbering with
 %% \begin{linenumbers}, end it with \end{linenumbers}. Or switch it on
@@ -70,6 +71,9 @@
 \newcounter{rownumber}
 \newcommand\rownb{\stepcounter{rownumber}\arabic{rownumber}}
 
+\newcommand{\vangiang}[1]{\textcolor{magenta}{#1}}
+\newcommand{\belaid}[1]{\textcolor{blue}{#1}}
+\newcommand{\sylvain}[1]{\textcolor{teal}{#1}}
 
 \journal{Theoretical Computer Science}
 
@@ -461,6 +465,9 @@ It is noted that there are no existing methods specifically designed for computi
 \section{Computation methods}
 \label{sec:Computation}
 
+\subsection{Characterization}
+\label{subsec:siphon_characterization}
+
 First, we show the characterization of all conflict-free siphons of the encoded Petri net \(\mathcal{P} = (P, T, W)\). Suppose that \(S\) is a generic siphon of \(\mathcal{P}\). If a place \(p\) should belong to \(S\), then by definition all the transitions in \(pred(p)\) must belong to \(succ(S)\). Note that \(succ(S) = \bigcup_{p \in S}succ(p)\). A transition \(t\) belongs to \(succ(S)\) if and only if there is at least one place \(p'\) in \(S\) such that \(p' \in pred(t)\). Hence, for each transition \(t \in pred(p)\), we can state that
 \begin{equation}
 \label{eq:siphon}
@@ -474,14 +481,80 @@ p_v \in S \Rightarrow \overline{p_v} \not \in S \wedge \overline{p_v} \in S \Rig
 \end{equation}for each node \(v \in V\).
 By definition, the final system fully characterizes all conflict-free siphons of the encoded Petri net.
 
-Then, we translate the above characterization into the ASP \(\mathcal{L}\) as follows.
-We introduce atom \verb|p-v| (resp. \verb|n-v|) to denote place \(p_v\) (resp. \(\overline{p_v}\)), \(\forall v \in V\). The set of all atoms in \(\mathcal{L}\) is given as \(\mathcal{A} = \bigcup_{v \in V}\{\verb|p-v|, \verb|n-v|\}\). For each pair \((p, t)\) where \(p \in P, t \in T, t \in pred(p)\), we translate the rule (\ref{eq:siphon}) into the ASP rule
+\subsection{Constraint Satisfaction Problem}
+\label{subsec:computation_csp}
+
+The following Boolean CSP directly derives from the above characterization:
+\begin{definition}
+
+  Given a Petri net \(\mathcal{P} = (P, T, W)\) encoding a Boolean model \(\mathcal{M} = (V, F)\).
+  The CSP \(\mathcal{C}(\mathcal{P})\) is the triple \((R, D, C)\) where
+  \begin{itemize}%
+    \item \(R = P\), i.e., a variable is introduced for each place of \(\mathcal{P}\),
+    \item \(D(p) = \mathbb{B}\) for all \(p \in R\), i.e., the variables are Boolean,
+    \item \(C = \{\neg p_v \vee \neg \overline{p_v} = 1 \mid \forall v \in V\} \bigwedge
+\{(p = 1 \rightarrow \bigvee_{p' \in pred(t)}p' = 1) \mid p \in P, t \in pred(p)\}\).
+  \end{itemize}
+
+\end{definition}
+
+\begin{proposition}
+\label{prop:csp_conflict_free_siphon}
+  \(\mathcal{C}(\mathcal{P})\) is satisfied by a valuation \(r\) if and only if
+  \[
+    \{p \in P \;|\; r(p) = 1\}\
+  \]
+  is a conflict-free siphon of \(\mathcal{P}\).
+
+\end{proposition}
+
+\begin{proof}
+
+  By the former part \(\neg p_v \vee \neg \overline{p_v}\) = 1 of \(C\), the conflict-freeness is imposed because for any satisfable valuation \(r\), \(r(p_v) = r(\overline{p_v}) = 1\) is impossible for all \(v \in V\).
+  As shown in~\cite{nabli2016enumerating}, the latter part of \(C\) can characterize the set of all generic siphons of \(\mathcal{P}\).
+  Hence, we can conclude the proof.
+  
+\end{proof}
+
+In~\cite{nabli2016enumerating}, the set of all siphons of a given Petri net is characterized by a similar Boolean Constraint Satisfcation Problem (CSP) except the conflict-freeness constraint.
+From the encoded CSP, the set of all \emph{minimal} siphons of the Petri net can be enumerated in the set inclusion order.
+For enumerating siphons in the set inclusion order, the proposed method by~\cite{nabli2016enumerating} uses the technique that labels directly the Boolean variables with increasing value selection (i.e., to test first the absence, then the presence of a place in the candidate solution).
+The method has two implementations, one uses an iterated SAT procedure and the other uses Constraint Logic Programming with backtracking.
+
+One natural question is that how to use the CSP-based method for enumerating all the maximal conflict-free siphons of a Petri net encoding a Boolean model?
+Of course, the set of all conflict-free siphons of the Petri net can easily characterized by the CSP model presented in~\cite{nabli2016enumerating} along with the additional constraint \(\neg p_v \vee \neg \overline{p_v} = 1\), for each \(v \in V\), which represents the conflict-freeness.
+However, the main concern is to enumerate all the \emph{maximal} ones, which is not trivial to adapt from the CSP-based method.
+By Proposition~\ref{prop:csp_conflict_free_siphon}, the set of all maximal conflict-free siphons of \(\mathcal{P}\) can be enumerated in the (maximality) set inclusion order, by restarting the search each time a conflict-free siphon \(S\) is found, with the following additional constraint for disallowing any subset of that conflict-free siphon: \(\bigvee_{p \not \in S} p = 1\).
+For enumerating conflict-free siphons in the set inclusion order, we can use the same technique as used in~\cite{nabli2016enumerating} but with the opposite setting, i.e., labeling directly the Boolean variables with decreasing value selection.
+The correctness of this technique comes from the fact that once \(S\) is found, it is the conflict-free siphon of maximum cardinality among all the remaining feasible conflict-free siphons.
+Similar to~\cite{nabli2016enumerating}, the newly CSP-based method can also be implemented with SAT and CLP solvers.
+
+However a more direct method is to use a MaxSAT solver.
+We construct a MaxSAT problem with the following hard clauses:
+\[
+  (\neg p_v \vee \neg \overline{p_v}), \forall v \in V
+\]
+and
+\[
+  (\neg p \vee \bigvee_{p' \in pred(t)}p'), \forall p \in P, \forall t \in pred(p).
+\]
+We set a soft clause for each variable of the CSP and then use a ``minimal correction subset'' blocking strategy, which will ensure set-inclusion maximality of the solutions.
+This is what is implemented in \texttt{trappist} using the RC2 MaxSAT solver~\cite{DBLP:journals/jsat/IgnatievMM19} available through the \texttt{python-sat} package\footnote{\url{https://pysathq.github.io/docs/html/api/examples/rc2.html}}.
+
+\subsection{Answer set programming-based method}
+\label{subsec:computation_asp}
+
+Another possible method is to translate the characterization shown in Subsection~\ref{subsec:siphon_characterization} into the ASP \(\mathcal{L}\) as follows.
+We introduce atom \verb|p-v| (resp. \verb|n-v|) to denote place \(p_v\) (resp. \(\overline{p_v}\)), \(\forall v \in V\). 
+The set of all atoms in \(\mathcal{L}\) is given as \(\mathcal{A} = \bigcup_{v \in V}\{\verb|p-v|, \verb|n-v|\}\).
+For each pair \((p, t)\) where \(p \in P, t \in T, t \in pred(p)\), we translate the rule (\ref{eq:siphon}) into the ASP rule
 \[
 \verb|a_1; ... ; a_k :- a.|
 \]
 where \(\verb|a| \in \mathcal{A}\) is the atom representing place \(p\) and \(\{\verb|a_1|, \dots,\verb|a_k|\} \subseteq \mathcal{A}\) is the set of atoms representing places in \(pred(t)\). The rule (\ref{eq:conflict}) is translated into the ASP rule
 \[\verb|:- p-v, n-v.|\]
-for each \(v \in V\). This ASP rule guarantees that two places representing the same node in \(\mathcal{M}\) never belong to the same siphon of \(\mathcal{P}\), representing the conflict-freeness.
+for each \(v \in V\). 
+This ASP rule guarantees that two places representing the same node in \(\mathcal{M}\) never belong to the same siphon of \(\mathcal{P}\), representing the conflict-freeness.
 Naturally, a Herbrand model (see, e.g,~\cite{DBLP:journals/aicom/GebserKKOSS11}) of \(\mathcal{L}\) is equivalent to a conflict-free siphon of \(\mathcal{P}\).
 To guarantee that a Herbrand model is also a stable model (an answer set), we need to add to \(\mathcal{L}\) the two choice rules
 \[
@@ -495,6 +568,56 @@ We would therefore expect that, when available, it will have comparable performa
 Since mpbn is included in our benchmark this will be evaluated in our experiments.
 
 Now, a solution (simply an answer set) \(A \subseteq \mathcal{A}\) of \(\mathcal{L}\) is equivalent to a conflict-free siphon \(S\) of \(\mathcal{P}\), thus a trap space \(m\) of \(\mathcal{M}\). The conversion from \(A\) to \(m\) is straightforward. If \(\verb|p-v| \in A\) then \(v \in D_m\) and \(m(v) = 0\). Conversely, if \(\verb|n-v| \in A\) then \(v \in D_m\) and \(m(v) = 1\). Otherwise, \(v \not \in D_m\). Computing multiple answer sets is built into ASP solvers and the solving collection POTASSCO~\cite{DBLP:journals/aicom/GebserKKOSS11} also features the option to find set-inclusion maximal answer sets with respect to the set of atoms. Naturally, a set-inclusion maximal answer set of \(\mathcal{L}\) is equivalent to a maximal conflict-free siphon of \(\mathcal{P}\), thus a minimal trap space of \(\mathcal{M}\). By using this built-in option, we can compute all the set-inclusion maximal answer sets of \(\mathcal{L}\) (resp.\ all the minimal trap spaces of \(\mathcal{M}\)) in one execution.
+
+\subsection{Integer linear programming-based method}
+\label{subsec:computation_ilp}
+
+We first show how an Integer Linear Programming (ILP) \(\mathcal{I}\) can define a set of all conflict-free siphons of the encoded Petri net \(\mathcal{P}\).
+We introduce \emph{binary} variable \verb|p-v| (resp. \verb|n-v|) to denote place \(p_v\) (resp. \(\overline{p_v}\)), \(\forall v \in V\).
+The set of all binary variables in \(\mathcal{I}\) is \(\bigcup_{v \in V}\{\verb|p-v|, \verb|n-v|\}\).
+For each pair \((p, t)\) where \(p \in P, t \in T, t \in pred(p)\), we translate the rule (\ref{eq:siphon}) into the ILP inequality
+\[
+\verb|a <= a_1 + ... + a_k|
+\]
+where \verb|a| is the binary variable representing place \(p\) and \{\verb|a_1|, \dots,\verb|a_k|\} is the set of binary variable representing places in \(pred(t)\).
+The rule (\ref{eq:conflict}) is translated into the ILP inequality
+\[\verb|p-v + n-v <= 1|\]
+for each \(v \in V\).
+This inequality forbids both \verb|p-v| and \verb|n-p| receive the value 1, thus representing the conflict-freeness.
+Since we only consider feasible solutions, the objective function is set to \verb|max p-v| for some \(v \in V\).
+Naturally, a solution \(I\) of \(\mathcal{I}\) is equivalent to a conflict-free siphon \(S\) of \(\mathcal{P}\).
+The conversion is that
+\[
+  S = \{p \in P \;|\; I(\verb|a-p|) = 1\}
+\]
+where \verb|a-p| is the binary variable presenting place \(p\).
+
+We can see the similarity between \(\mathcal{I}\) and the encoded ASP shown in the previous subsection.
+However, due to the nature of solutions of an ILP, it is hard to compute all the set-inclusion maximal solutions of \(\mathcal{I}\) in one execution of an ILP solver.
+Hence, we propose an iterative approach as follows.
+
+The conflict-free siphon of maximum cardinality is of course maximal.
+Therefore, we impose the following objective function:
+\[
+  \verb|max| \sum_{v \in V}(\verb|p-v| + \verb|n-v|).
+\]
+Now, \(\mathcal{I}\) can be solved using a general purpose ILP solver.
+If it admits any solution \(I^{*}\), the corresponding conflict-free siphon (say \(S^{*}\)) is maximal.
+Hence, it makes sense that it does not need to find any other conflict-free siphon of the net that is strictly contained in \(S^{*}\).
+To do this, we add to \(\mathcal{I}\) a new inequality
+\[
+  \verb|1 <=| \sum_{p \in P \setminus S^{*}} \verb|a-p|
+\]
+where \verb|a-p| is the binary variable presenting place \(p\).
+Now, we solve \(\mathcal{I}\) again to find a new solution.
+If a new solution \(I'\) exists, then let \(S'\) be its corresponding conflict-free siphon.
+Indeed, abide by the newly added inequality, we have \(S' \cap (P \setminus S^{*}) \neq \emptyset\) because there is some \verb|a-p| with \(p \in P \setminus S^{*}\) such that \(I'(\verb|a-p|) = 1\).
+This implies that it is impossible that \(S' = S^{*}\) or \(S' \subset S^{*}\).
+By the objective function, it means that \(S'\) is the conflict-free siphon of maximum cardinality among the conflict-free siphons that are not contained in \(S^{*}\).
+Hence, \(S'\) is also a maximal conflict-free siphon.
+Again, we add to \(\mathcal{I}\) a new inequality with respect to the newly found siphon.
+The above process is iterated until \(\mathcal{I}\) becomes unfeasible, this means that there is no further maximal conflict-free siphon.
+Thus, all the maximal conflict-free siphons of the Petri net have been found.
 
 \section{Motivating example}
 
@@ -556,7 +679,7 @@ All the models and a CoLoMoTo notebook realizing the benchmarks can be found at 
     \rownb & faure\_cellcycle & 10 & 2 & 0.04 & 0.01 & 0.02\\
     \rownb & grieco\_mapk & 53 & 18 & 0.04 & 0.02 & 0.02\\
     \rownb & irons\_yeast & 18 & 1 & 0.05 & 0.01 & 0.02\\
-    \rownb & jaoude\_thdiff & 103 & >1000 & \textbf{1.44} & \textbf{0.90} & 0.09\\
+    \rownb & jaoude\_thdiff & 103 & $>1000$ & \textbf{1.44} & \textbf{0.90} & 0.09\\
     \rownb & klamt\_tcr & 40 & 8 & 0.04 & 0.01 & 0.03\\
     \rownb & krumsiek\_myeloid & 11 & 6 & 0.03 & 0.01 & 0.01\\
     \rownb & multivalued & 13 & 4 & 0.03 & 0.01 & 0.01\\
@@ -571,7 +694,7 @@ All the models and a CoLoMoTo notebook realizing the benchmarks can be found at 
     \rownb & randomnet\_n7k3 & 7 & 10 & 0.03 & \textbf{NM} & 0.01\\
     \rownb & remy\_tumorigenesis & 34 & 25 & \textbf{2.14} & 0.02 & 0.02\\
     \rownb & saadatpour\_guardcell & 13 & 1 & 0.03 & 0.01 & 0.01\\
-    \rownb & selvaggio\_emt & 56 & >1000 & \textbf{1.02} & \textbf{0.52} & 0.09\\
+    \rownb & selvaggio\_emt & 56 & $>1000$ & \textbf{1.02} & \textbf{0.52} & 0.09\\
     \rownb & tournier\_apoptosis & 12 & 3 & 0.04 & 0.01 & 0.01\\
     \rownb & xiao\_wnt5a & 7 & 4 & 0.03 & 0.01 & 0.01\\
     \rownb & zhang\_tlgl & 60 & 156 & 0.22 & \textbf{NM} & 0.05\\
@@ -611,34 +734,34 @@ Table~\ref{tab:result_real} shows the experimental results on those models. Here
     \rownb & T-LGL-survival~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 61 & 7 & 318 & 0.84 & NM & 0.01 & 0.01\\
     \rownb & butanol-production~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 66 & 13 & 8192 & 0.71 & NM & 0.01 & 0.02\\
     \rownb & colon-cancer~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 70 & 1 & 10 & 0.20 & NM & 0.02 & 0.01\\
-    \rownb & mast-cell-activation~\cite{aghamiri2020automated} & 73 & 19 & >1000 & 0.76 & NM & 0.01 & DNF\\
+    \rownb & mast-cell-activation~\cite{aghamiri2020automated} & 73 & 19 & $>1000$ & 0.76 & NM & 0.01 & DNF\\
     \rownb & IL-6-signalling~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 86 & 15 & 32768 & 1.29 & NM & 0.01 & 0.01\\
-    \rownb & Corral-ThIL-17-diff~\cite{corral2021interplay} & 92 & 16 & >1000 & DNF & NM & 0.03 & DNF\\
+    \rownb & Corral-ThIL-17-diff~\cite{corral2021interplay} & 92 & 16 & $>1000$ & DNF & NM & 0.03 & DNF\\
     \rownb & Korkut-2015~\cite{lee2019signal} & 99 & 12 & 18556 & DNF & 1.04 & 0.06 & 0.08\\ \midrule
     \rownb & adhesion-cip-migration~\cite{guberman2020boolean} & 121 & 4 & 78 & 36.80 & 0.35 & 0.27 & 0.09\\
-    \rownb & interferon-1~\cite{ostaszewski2021covid19} & 121 & 55 & >1000 & 10.11 & NM & 0.02 & DNF\\
+    \rownb & interferon-1~\cite{ostaszewski2021covid19} & 121 & 55 & $>1000$ & 10.11 & NM & 0.02 & DNF\\
     \rownb & TCR-TLR5-signaling~\cite{rodriguez2019cooperation} & 130 & 5 & 48 & 2.06 & NM & 0.03 & 0.02\\
     \rownb & influenza-replication~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 131 & 11 & 10128 & 46.67 & NM & 0.02 & 0.02\\
     \rownb & prostate-cancer~\cite{Montagud2021} & 133 & 11 & 2760 & DNF & NM & 0.16 & 0.04\\
     \rownb & HIV-1~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 138 & 14 & 39424 & DNF & NM & 0.06 & 0.06\\
-    \rownb & fibroblasts~\cite{helikar2008emergent} & 139 & 9 & >1000 & DNF & NM & 0.08 & DNF\\
-    \rownb & HMOX-1-pathway~\cite{ostaszewski2021covid19} & 145 & 56 & >1000 & 6.52 & NM & 0.02 & DNF\\
-    \rownb & kynurenine-pathway~\cite{ostaszewski2021covid19} & 150 & 72 & >1000 & DNF & NM & 0.19 & DNF\\
-    \rownb & virus-replication-cycle~\cite{ostaszewski2021covid19} & 154 & 25 & >1000 & DNF & NM & 0.03 & DNF\\
-    \rownb & immune-system~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 164 & 13 & >1000 & DNF & NM & 0.08 & DNF\\
-    \rownb & RA-apoptosis~\cite{aghamiri2020automated} & 180 & 59 & >1000 & DNF & NM & 0.02 & DNF\\
-    \rownb & MAPK~\cite{aghamiri2020automated} & 181 & 37 & >1000 & 87.13 & NM & 0.03 & DNF\\
-    \rownb & er-stress~\cite{ostaszewski2021covid19} & 182 & 75 & >1000 & 17.88 & NM & 0.03 & DNF\\
+    \rownb & fibroblasts~\cite{helikar2008emergent} & 139 & 9 & $>1000$ & DNF & NM & 0.08 & DNF\\
+    \rownb & HMOX-1-pathway~\cite{ostaszewski2021covid19} & 145 & 56 & $>1000$ & 6.52 & NM & 0.02 & DNF\\
+    \rownb & kynurenine-pathway~\cite{ostaszewski2021covid19} & 150 & 72 & $>1000$ & DNF & NM & 0.19 & DNF\\
+    \rownb & virus-replication-cycle~\cite{ostaszewski2021covid19} & 154 & 25 & $>1000$ & DNF & NM & 0.03 & DNF\\
+    \rownb & immune-system~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 164 & 13 & $>1000$ & DNF & NM & 0.08 & DNF\\
+    \rownb & RA-apoptosis~\cite{aghamiri2020automated} & 180 & 59 & $>1000$ & DNF & NM & 0.02 & DNF\\
+    \rownb & MAPK~\cite{aghamiri2020automated} & 181 & 37 & $>1000$ & 87.13 & NM & 0.03 & DNF\\
+    \rownb & er-stress~\cite{ostaszewski2021covid19} & 182 & 75 & $>1000$ & 17.88 & NM & 0.03 & DNF\\
     \rownb & cascade-3~\cite{Tsirvouli2020} & 183 & 0 & 1 & 101.18 & NM & 0.40 & 0.07\\
     \rownb & CHO-2016~\cite{lee2019signal} & 200 & 13 & 13312 & DNF & 2.45 & 0.07 & 0.08\\
-    \rownb & T-cell-check-point~\cite{hernandez2020computational} & 218 & 14 & >1000 & 69.94 & NM & 0.05 & DNF\\
-    \rownb & ErbB-receptor-signaling~\cite{helikar2013comprehensive} & 247 & 22 & >1000 & DNF & NM & 0.24 & DNF\\
-    \rownb & macrophage-activation~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 321 & 19 & >1000 & 16.43 & NM & 0.05 & DNF\\
-    \rownb & cholocystokinin~\cite{aghamiri2020automated} & 383 & 74 & >1000 & 1.42 & NM & 0.08 & DNF\\
-    \rownb & Alzheimer~\cite{aghamiri2020automated} & 762 & 237 & >1000 & DNF & NM & 0.29 & DNF\\ \midrule
-    \rownb & KEGG-network~\cite{DBLP:journals/bmcsb/Kwon16} & 1659 & 521 & >1000 & DNF & 20.76 & 3.40 & DNF\\
-    \rownb & human-network~\cite{kim2011reduction} & 1953 & 669 & >1000 & DNF & 23.62 & 5.93 & DNF\\
-    \rownb & SN-5~\cite{kim2013rmod} & 2746 & 829 & >1000 & DNF & 28.94 & DNF & DNF\\
+    \rownb & T-cell-check-point~\cite{hernandez2020computational} & 218 & 14 & $>1000$ & 69.94 & NM & 0.05 & DNF\\
+    \rownb & ErbB-receptor-signaling~\cite{helikar2013comprehensive} & 247 & 22 & $>1000$ & DNF & NM & 0.24 & DNF\\
+    \rownb & macrophage-activation~\cite{DBLP:journals/bmcsb/HelikarKMBRMWSLR12} & 321 & 19 & $>1000$ & 16.43 & NM & 0.05 & DNF\\
+    \rownb & cholocystokinin~\cite{aghamiri2020automated} & 383 & 74 & $>1000$ & 1.42 & NM & 0.08 & DNF\\
+    \rownb & Alzheimer~\cite{aghamiri2020automated} & 762 & 237 & $>1000$ & DNF & NM & 0.29 & DNF\\ \midrule
+    \rownb & KEGG-network~\cite{DBLP:journals/bmcsb/Kwon16} & 1659 & 521 & $>1000$ & DNF & 20.76 & 3.40 & DNF\\
+    \rownb & human-network~\cite{kim2011reduction} & 1953 & 669 & $>1000$ & DNF & 23.62 & 5.93 & DNF\\
+    \rownb & SN-5~\cite{kim2013rmod} & 2746 & 829 & $>1000$ & DNF & 28.94 & DNF & DNF\\
     \rownb & turei-2016~\cite{lee2019signal} & 4691 & 1257 & ??? & DNF & DNF & DNF & DNF\\
     \bottomrule
   \end{tabular}
