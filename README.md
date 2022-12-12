@@ -18,7 +18,7 @@ Note that Trappist does install the [PySAT](https://pysathq.github.io/docs/html/
 
 Submitted version: [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/soli/trap-spaces-as-siphons/camera-ready)
 
-Latest version, with _next_ colomoto-docker image: [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/soli/trap-spaces-as-siphons/main)
+Latest version, with _2022-12-01_ colomoto-docker image: [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/soli/trap-spaces-as-siphons/main)
 
 # Read about trappist
 
