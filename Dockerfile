@@ -1,4 +1,4 @@
-FROM colomoto/colomoto-docker:next
+FROM colomoto/colomoto-docker:2022-12-01
 LABEL maintainer="Sylvain Soliman <Sylvain.Soliman@inria.fr>"
 
 HEALTHCHECK --interval=1m CMD curl -f http://localhost:8888 || exit 1
