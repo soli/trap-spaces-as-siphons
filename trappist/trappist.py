@@ -29,6 +29,7 @@ import networkx as nx  # TODO maybe replace with lists/dicts
 
 from . import pnml_to_asp, version
 from .bnet import read_bnet
+from .cp import get_cp_solutions
 from .max_sat import get_sat_solutions
 from .naive import write_naive_asp
 
@@ -167,7 +168,7 @@ def compute_trap_spaces(
         infile = open(infile, "r", encoding="utf-8")
         toclose = True
 
-    if infile.name.endswith(".pnml") and method in ("asp", "sat"):
+    if infile.name.endswith(".pnml") and method in ("asp", "sat", "cp"):
         petri_net = read_pnml(infile)
     elif infile.name.endswith(".bnet"):
         petri_net = read_bnet(infile, method)
@@ -190,6 +191,8 @@ def compute_trap_spaces(
 
     if method == "sat":
         solutions = get_sat_solutions(petri_net, max_output, time_limit, places)
+    elif method == "cp":
+        solutions = get_cp_solutions(petri_net, max_output, time_limit, places)
     else:
         solutions_output = get_asp_output(
             petri_net, max_output, time_limit, method, debug, nprocs
@@ -246,10 +249,11 @@ def main():
     parser.add_argument(
         "-s",
         "--solver",
-        choices=["asp", "sat", "naive"],
+        choices=["asp", "cp", "sat", "naive"],
         default="asp",
         type=str,
-        help="Solver to compute the Maximal conflict-free sihpons.",
+        help="Solver to compute the Maximal conflict-free siphons.\n"
+             "'asp' requires clingo, 'cp' requires minizinc.",
     )
     parser.add_argument(
         "infile",

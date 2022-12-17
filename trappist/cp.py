@@ -16,47 +16,56 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from itertools import islice
 from typing import Generator, List
 
 import networkx as nx  # TODO maybe replace with lists/dicts
 
-from pysat.examples.rc2 import RC2
-from pysat.formula import WCNF
+from minizinc import Instance, Model, Solver
 
 
-def create_maxsat(petri_net: nx.DiGraph) -> WCNF:
-    """Create the MaxSAT program for the maximal conflict-free siphons of petri_net."""
-    variables = {}
-    wcnf = WCNF()
-    for i, node in enumerate(
-        (n for n, k in petri_net.nodes(data="kind") if k == "place"), start=1
+def create_cp(petri_net: nx.DiGraph) -> Model:
+    """Create the CP program for the max conflict-free siphons of petri_net."""
+    model = Model()
+    for node in (
+            n for n, k in petri_net.nodes(data="kind") if k == "place"
     ):
-        variables[node] = i
-        wcnf.append([i], weight=1)
+        model.add_string(f"var bool: {node};\n")
+        model.add_string(f"var bool: -{node};\n")
     for node, kind in petri_net.nodes(data="kind"):
         if kind == "place":
             if not node.startswith("-"):
-                wcnf.append(
-                    [-variables[node], -variables["-" + node]]
-                )  # conflict-freeness
-        else:  # it's a transition, apply siphon (if one succ is true, one pred must be true)
-            or_preds = [variables[p] for p in petri_net.predecessors(node)]
+                # conflict-freeness
+                model.add_string(f"constraint not {node} \\/ not -{node};\n")
+        else:
+            # it's a transition, apply siphon
+            # (if one succ is true, one pred must be true)
+            or_preds = petri_net.predecessors(node)
             for succ in petri_net.successors(node):
-                vsucc = variables[succ]
-                if vsucc not in or_preds:  # optimize obvious tautologies
-                    wcnf.append(or_preds + [-vsucc])
-    return wcnf
+                if succ not in or_preds:  # optimize obvious tautologies
+                    or_string = (or_preds + ["-" + succ]).join("\\/")
+                    model.add_string(f"constraint {or_string};\n")
+    model.add_string("solve satisfy;\n")
+    return model
 
 
-def solve_maxsat(
-    cnf: WCNF, max_output: int, time_limit: int
+def solve_cp(
+        model: Model, max_output: int, time_limit: int
 ) -> Generator[List[int], None, None]:
-    """Run an MaxSAT solver on given WCNF and get the solutions."""
-    # print(cnf.hard)
-    rc2 = RC2(cnf)
-    sol = rc2.enumerate(block=-1)  # minimal correction subsets
-    yield from islice(sol, None if max_output == 0 else 1000)
+    """Run an CP solver on given WCNF and get the solutions."""
+    solver = Solver.lookup("gecode")
+    inst = Instance(solver, model)
+    nsol = 0
+    # TODO handle time limit?
+    while max_output == 0 or nsol < max_output:
+        result = inst.solve()
+        if result.solution is not None:
+            nsol += 1
+            print(result.solution)
+            yield result.solution
+            # lexicographic constraint and non-superset
+            # inst.add_string("")
+        else:
+            break
 
 
 def sat_to_bool(
@@ -74,12 +83,12 @@ def sat_to_bool(
     return result
 
 
-def get_sat_solutions(
+def get_cp_solutions(
     petri_net: nx.DiGraph, max_output: int, time_limit: int, places: List[str]
 ) -> Generator[List[str], None, None]:
     """Print the solutions."""
     all_places = [
         node for node, kind in petri_net.nodes(data="kind") if kind == "place"
     ]
-    for model in solve_maxsat(create_maxsat(petri_net), max_output, time_limit):
+    for model in solve_cp(create_cp(petri_net), max_output, time_limit):
         yield sat_to_bool(places, all_places, model)
