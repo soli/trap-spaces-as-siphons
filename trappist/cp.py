@@ -18,20 +18,24 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 from typing import Generator, List
 
-import networkx as nx  # TODO maybe replace with lists/dicts
+from minizinc import Instance, Model, Result, Solver, Status
 
-from minizinc import Instance, Model, Solver
+import networkx as nx  # TODO maybe replace with lists/dicts
 
 
 def create_cp(petri_net: nx.DiGraph) -> Model:
     """Create the CP program for the max conflict-free siphons of petri_net."""
     model = Model()
+    vars = []
     for node in (
             n for n, k in petri_net.nodes(data="kind") if k == "place"
     ):
-        model.add_string(f"var bool: {zincify(node)};\n")
-        print(f"var bool: {zincify(node)};\n")
+        v = zincify(node)
+        vars.append(v)
+        model.add_string(f"var bool: {v};\n")
+        print(f"var bool: {v};\n")
     for node, kind in petri_net.nodes(data="kind"):
+        print(f"node, kind: {node}, {kind}")
         if kind == "place":
             if not node.startswith("-"):
                 # conflict-freeness
@@ -47,8 +51,8 @@ def create_cp(petri_net: nx.DiGraph) -> Model:
                     or_string = " \\/ ".join(or_preds)
                     model.add_string(f"constraint {zsucc} -> {or_string};\n")
                     print(f"constraint {zsucc} -> {or_string};\n")
-    model.add_string("solve satisfy;\n")
-    print("solve satisfy;\n")
+    model.add_string(f"solve :: bool_search([{', '.join(vars)}], input_order, indomain_max) satisfy;\n")
+    print(f"solve :: bool_search([{', '.join(vars)}], input_order, indomain_max) satisfy;\n")
     return model
 
 
@@ -69,25 +73,25 @@ def solve_cp(
     # TODO handle time limit?
     while max_output == 0 or nsol < max_output:
         result = inst.solve()
-        if result.solution is not None:
+        if result.status == Status.SATISFIED:
             nsol += 1
             print(result.solution)
-            yield result.solution
+            yield result
             # lexicographic constraint and non-superset
             # inst.add_string("")
         else:
             break
 
 
-def sat_to_bool(
-    places: List[str], all_places: List[str], model: List[int]
+def cp_to_bool(
+    places: List[str], res: Result
 ) -> List[str]:
-    """Transform a model to a list of 0/1/- strings."""
+    """Transform a Result to a list of 0/1/- strings."""
     result = []
     for place in places:
-        if all_places.index(place) + 1 in model:
+        if res[place]:
             result.append("0")
-        elif all_places.index("-" + place) + 1 in model:
+        elif res["not_" + place]:
             result.append("1")
         else:
             result.append("-")
@@ -98,8 +102,5 @@ def get_cp_solutions(
     petri_net: nx.DiGraph, max_output: int, time_limit: int, places: List[str]
 ) -> Generator[List[str], None, None]:
     """Print the solutions."""
-    all_places = [
-        node for node, kind in petri_net.nodes(data="kind") if kind == "place"
-    ]
-    for model in solve_cp(create_cp(petri_net), max_output, time_limit):
-        yield sat_to_bool(places, all_places, model)
+    for result in solve_cp(create_cp(petri_net), max_output, time_limit):
+        yield cp_to_bool(places, result)
