@@ -29,23 +29,34 @@ def create_cp(petri_net: nx.DiGraph) -> Model:
     for node in (
             n for n, k in petri_net.nodes(data="kind") if k == "place"
     ):
-        model.add_string(f"var bool: {node};\n")
-        model.add_string(f"var bool: -{node};\n")
+        model.add_string(f"var bool: {zincify(node)};\n")
+        print(f"var bool: {zincify(node)};\n")
     for node, kind in petri_net.nodes(data="kind"):
         if kind == "place":
             if not node.startswith("-"):
                 # conflict-freeness
-                model.add_string(f"constraint not {node} \\/ not -{node};\n")
+                model.add_string(f"constraint not {node} \\/ not not_{node};\n")
+                print(f"constraint not {node} \\/ not not_{node};\n")
         else:
             # it's a transition, apply siphon
             # (if one succ is true, one pred must be true)
-            or_preds = petri_net.predecessors(node)
+            or_preds = [zincify(p) for p in petri_net.predecessors(node)]
             for succ in petri_net.successors(node):
-                if succ not in or_preds:  # optimize obvious tautologies
-                    or_string = (or_preds + ["-" + succ]).join("\\/")
-                    model.add_string(f"constraint {or_string};\n")
+                zsucc = zincify(succ)
+                if zsucc not in or_preds:  # optimize obvious tautologies
+                    or_string = " \\/ ".join(or_preds)
+                    model.add_string(f"constraint {zsucc} -> {or_string};\n")
+                    print(f"constraint {zsucc} -> {or_string};\n")
     model.add_string("solve satisfy;\n")
+    print("solve satisfy;\n")
     return model
+
+
+def zincify(variable: str) -> str:
+    """Return the name of the corresponding CP variable."""
+    if variable.startswith("-"):
+        return f"not_{variable[1:]}"
+    return variable
 
 
 def solve_cp(
