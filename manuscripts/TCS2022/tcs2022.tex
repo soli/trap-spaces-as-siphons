@@ -152,7 +152,7 @@
 \begin{abstract}
 %% Text of abstract
 
-Boolean networkling of gene regulation but also of post-trans\-criptomic systems has proven over the years that it can bring powerful analyses and corresponding insight to the many cases where precise biological data is not sufficiently available to build a detailed quantitative model.
+Boolean modeling of gene regulation but also of post-trans\-criptomic systems has proven over the years that it can bring powerful analyses and corresponding insight to the many cases where precise biological data is not sufficiently available to build a detailed quantitative model.
 This is even more true for very large models where such data is frequently missing and led to a constant increase in size of logical models \emph{à la} Thomas.
 Besides simulation, the analysis of such models is mostly based on attractor computation, since those correspond roughly to observable biological \emph{phenotypes}. The recent use of trap spaces made a real breakthrough in that field allowing to consider medium-sized models that used to be out of reach.
 However, with the continuing increase in model-size, the state-of-the-art computation of minimal trap spaces based on \emph{prime-implicants} shows its limits as there can be a huge number of implicants.
@@ -195,7 +195,7 @@ Logical model \sep Boolean network \sep Trap space \sep Attractor computation \s
 From the observation that the transcriptional regulation behaved in a sigmoid step-like way, came the original idea to represent models of gene regulation as discrete event systems.
 Those Gene Regulation Networks (GRN) use thresholds or equivalently logical functions to represent the different regulations~\cite{glass1973logical,thomas1973boolean,thomas1990biological,thomas1991regulatory}.
 
-Boolean networkling has proven over the years that it can bring powerful analyses and corresponding insight to the many cases where precise biological data is not sufficiently available to build a detailed quantitative model~\cite{wang2012boolean}, even for modelling post-transcriptional mechanisms.
+Boolean modelling has proven over the years that it can bring powerful analyses and corresponding insight to the many cases where precise biological data is not sufficiently available to build a detailed quantitative model~\cite{wang2012boolean}, even for modelling post-transcriptional mechanisms.
 This is even more true for very large models where such data is frequently missing and led to a constant increase in size of logical models \emph{à la} Thomas~\cite{aghamiri2020automated}.
 Besides simulation, the analysis of such models is mostly based on attractor computation, since those correspond roughly to observable biological \emph{phenotypes}.
 The recent use of trap spaces~\cite{klarner2015computing} made a real breakthrough in that field allowing to consider medium-sized models that used to be out of reach.
@@ -207,56 +207,87 @@ However, this method is only applicable for \emph{locally-monotonic} Boolean net
 The study~\cite{DBLP:journals/tcs/NoualRS13} highlights the need for non-locally-monotonic Boolean networks in both biological and theoretical aspects.
 Hence, it is still necessary to develop efficient methods for computing minimal trap spaces of large-scale general Boolean networks.
 
-
 Petri nets were introduced in the 60s as simple formalism for describing and analyzing information-processing systems that are characterized as being concurrent, asynchronous, non-deterministic and possibly distributed~\cite{peterson1981petri,Murata1989}.
 The use of Petri nets for representing biochemical reaction systems, by mapping molecular species to places and reactions to transitions, hinted at already in~\cite{peterson1981petri,Murata1989} was used more thoroughly quite late in~\cite{reddy1993petri}, together with some Petri net concepts and tools for the analysis of metabolic networks.
 Siphons are such a concept, but they have not been used a lot for the study of biochemical systems~\cite{zevedei2003topological,blatke2015biomodel} even if the practical cost of computing their minimal/maximal elements appear much more manageable than the theoretical complexity would indicate~\cite{oanea2010new,nabli2016enumerating}.
 
 In this article we present an alternative method to compute minimal trap spaces, and hence complex attractors, of a general Boolean network. It replaces the need for prime-implicants by a completely different technique, namely the enumeration of maximal siphons in the Petri net encoding of the original model (Section~\ref{sec:Main_finding}).
-After some technical preliminaries (Section~\ref{sec:Preliminaries}), we expose the concrete need for such a method and detail its implementation using Answer Set Programming~\ref{sec:Computation}.
+After some technical preliminaries (Section~\ref{sec:Preliminaries}), we expose the concrete need for such a method and detail its implementation using Answer Set Programming (Section~\ref{sec:Computation}).
 We then demonstrate its efficiency and compare it to implicant-based methods on several large Boolean networks from the literature (Section~\ref{sec:eval}).
 
 All models used for evaluation and the implementation of the presented method are available at \url{https://github.com/soli/trap-spaces-as-siphons} and executable as a CoLoMoTo docker image.
 
 % Mention the extensions for the journal version
 Herein we extend our previous work in~\cite{DBLP:conf/cmsb/TrinhBHS22} as follows.
-First, beyond the proposed ASP method, we propose several other possible methods using MaxSAT, CLP, and ILP.
-Second, we conduct a more comprehensive benchmark to evaluate all the proposed methods.
-Third, regarding the implementation, we have developed a converter that directly reads a .bnet file and builds the Petri net encoding, instead of using the PNML conversion of BioLQM.
+First, we showcase one theoretical application of the connection between trap spaces in Boolean networks and conflict-free siphons in Petri nets.
+Second, beyond the proposed ASP method, we propose several other possible methods using MaxSAT, CLP, and ILP.
+Third, we conduct a more comprehensive benchmark on both real-world and randomly generated models to evaluate all the proposed methods.
+Forth, regarding the implementation, we have developed a converter that directly reads a .bnet file and builds the Petri net encoding, instead of using the PNML conversion of BioLQM.
 Finally, we explore several complexity analysis on maximal (conflict-free) siphon problems.
 
 \section{Preliminaries}
 \label{sec:Preliminaries}
 
-We will briefly recall here some preliminaries on Boolean networks related to trap spaces and Petri nets.
-In the case of multi-level Logical models, an encoding into a Boolean network is always possible~\cite{Didier2011}.
+We shall briefly recall here some preliminaries on Boolean networks related to trap spaces and Petri nets.
+In the case of multi-level logical models, an encoding into a Boolean network is always possible~\cite{Didier2011}.
+
+\subsection{Boolean networks}
+
+\begin{definition}
+
+  A Boolean Network (BN) is a pair \(\mathcal{N} = (V, F)\) where:
+  \begin{itemize}
+    \item \(V = \{v_1, \dots, v_n\}\) is the set of nodes.
+    We use \(v_i\) to denote both the node \(v_i\) and its associated Boolean variable.
+    
+    \item \(F = \{f_1, \dots, f_n\}\) is the set of update functions.
+    Each function \(f_i\) is associated with node \(v_i\) and satisfies \(f_i \colon \mathbb{B}^{\vert IN(v_i)\vert} \mapsto \mathbb{B}\) where \(\mathbb{B} = \{0, 1\}\) and \(IN(v_i)\) denotes the set of input nodes of \(v_i\).
+  \end{itemize}
+
+\label{def:BN}
+\end{definition}
+
+A Boolean function is \emph{locally-monotonic} if it can be represented by a formula in disjunctive normal form in which all occurrences of any given literal are either negated or non-negated~\cite{Paulev2020}.
+A Boolean network is said to be locally-monotonic if all its Boolean functions are locally-monotonic. 
+Otherwise, this model is said to be non-locally-monotonic.
+
+A state \(v \in \mathbb{B}^{n}\) is as a mapping \(v \colon V \mapsto \mathbb{B}\) that assigns either 0 (inactive) or 1 (active) to each node.
+We denote the set of all possible states of a Boolean network \(\mathcal{N}\) by \(\mathcal{S}_{\mathcal{N}} = \mathbb{B}^n\).
+At each time step \(t\), node \(v_i\) can update its state by
+\[v_i(t + 1) = f_i(v(t))\]
+where \(v(t)\) is the state of \(\mathcal{N}\) at time \(t\) and \(v_i(t + 1)\) is the state of node \(v_i\) at time \(t + 1\).
+Note that for simplicity, we write \(f_i(v(t))\) even \(IN(v_i) \subset V\).
+An update scheme of a Boolean network specifies the way that the nodes update their states through time evolution~\cite{thomas1991regulatory}. 
+Following the update scheme, the Boolean network transits from a state to another state (possibly identical).
+This transition is called the \emph{state transition} and denoted by \(\rightarrow \subseteq \mathcal{S}_{\mathcal{N}} \times \mathcal{S}_{\mathcal{N}}\).
+Then the dynamics of \(\mathcal{N}\) is captured by the directed graph \((\mathcal{S}_{\mathcal{N}}, \rightarrow)\) called the State Transition Graph (STG).
+There are two main types of update schemes~\cite{thomas1991regulatory}: synchronous, where all the nodes are update simultaneously, and fully asynchronous, where only one node is nondeterministically selected to be updated.
 
 \subsection{Traps spaces}
-
-% TODO give formal definitions
 
 We recall here some definitions from~\cite{klarner2015computing} for the introduction of \emph{trap spaces}.
 Minimal trap spaces prove to be a very good approximation of the attractors of a Boolean network under asynchronous update schemes and have become the \emph{de facto} standard way to analyze models of a few tens of \emph{genes}~\cite{klarner2017pyboolnet,cifuentes2020control}.
 
-Given a Boolean network \(\mathcal{M} = (V, F)\) with nodes \(V=(v_{1},\dots,v_{n})\) and Boolean functions \(F=(f_{1},\dots,f_{n})\), its state-space is \(\mathcal{S}_{\mathcal{M}} =\mathbb{B}^{n}\) with \(\mathbb{B} = \{0, 1\}\). A state \(s \in \mathbb{B}^{n}\) is a mapping \(s \colon V \mapsto \mathbb{B}\) that assigns either 0 (inactive) or 1 (active) to each node. At each time step \(t\), node \(v_i\) can update its state by
-\[v_i(t + 1) \in \{v_{i}(t), f_i(v(t))\}\]
-where \(v(t)\) is the state of \(\mathcal{M}\) at time \(t\), \(v_i(t + 1)\) is the state of node \(v_i\) at time \(t + 1\) and an update scheme specifies which value is chosen~\cite{thomas1991regulatory}.
-There are two main types of update schemes: synchronous, where for all \(i, v_{i}(t+1) = f_{i}(v(t))\), and asynchronous, where an \(i\) is chosen among the possible updates (\(f_{i}(v(t))\neq v_{i}(t)\)), and all the other nodes \(j\) remain fixed at \(v_{j}(t)\).
+An non-empty set \(T \subseteq \mathcal{S}_{\mathcal{N}}\) is a trap set with respect to \(\rightarrow\) if for every \(x \in T\) and \(y \in S\) with \(x \rightarrow y\) it holds that \(y \in T\)~\cite{klarner2015computing}.
+An attractor of \(\mathcal{N}\) with respect to \(\rightarrow\) can be defined as an inclusion-wise minimal trap set of \((\mathcal{S}_{\mathcal{N}}, \rightarrow)\).
+An attractor can be also seen as a terminal strongly connected component of \((\mathcal{S}_{\mathcal{N}}, \rightarrow)\)~\cite{chatain2014characterization}.
+An attractor of size 1 is called a fixed point, otherwise a cyclic attractor~\cite{klarner2015computing}.
 
-A non-empty set \(T \subseteq S_{\mathcal{M}}\) is a \emph{trap set} of \(\mathcal{M}\) if and only if for every \(x \in T\) and \(y \in S_{\mathcal{M}}\) with \(y\) is reachable from \(x\) it holds that \(y \in T\).
-
-A \emph{subspace} \(m\) of \(\mathcal{S}_{\mathcal{M}}\) is characterized by its fixed nodes (denoted by \(D_m\)) and free nodes.
-This subspace can be specified by an assignment \(m : D_m \mapsto \mathbb{B}\) where \(D_m \subseteq V\) and \(m(u)\) is the value of node \(u \in D_m\).
-The remaining nodes of \(\mathcal{M}\), \(V \setminus D_m\), are said to be \emph{free}, i.e., they can receive any Boolean value.
-We write subspaces like states but use in addition the symbol \(\star\) to indicate that a node is free.
-A subspace \(m\) thus corresponds to the set of states \(\mathcal{S}_{\mathcal{M}}[m] := \{s \in \mathcal{S}_{\mathcal{M}}\;|\;\forall v \in D_m : s(v) = m(v)\}\).
-For example, \(m = \star\star1\) means that \(D_m = \{v_3\}\), \(m(v_3) = 1\), and corresponds to the set of states \(\{001, 011, 101, 111\}\).
-Let \(\mathcal{S}_{\mathcal{M}}^{\star}\) denote the set of all possible subspaces of \(\mathcal{M}\). Note that \(\left|\mathcal{S}_{\mathcal{M}}^{\star}\right| = 3^n\) and \(S_{\mathcal{M}} \subset \mathcal{S}_{\mathcal{M}}^{\star}\)~\cite{klarner2015computing}.
+A subspace \(m\) of a Boolean network \(\mathcal{N} = (V, F)\) is a mapping \(m \colon V \mapsto \mathbb{B} \cup \{\star\}\).
+\(m(v_i) \in \mathbb{B}\) means that the value of \(v_i\) is fixed in \(m\) and \(v_i\) is called a fixed variable.
+\(m(v_i) \in \star\) means that the value of \(v_i\) is free in \(m\) and \(v_i\) is called a free variable.
+We denote \(D_m\) the set of all fixed variables of \(m\).
+A subspace \(m\) is equivalent to a set of states:
+\[
+\mathcal{S}_{\mathcal{N}}[m] := \{s \in \mathcal{S}_{\mathcal{N}} \mid \forall v \in D_m \colon s(v) = m(v)\}.
+\] For example, \(m = \star\star1\) (for simplicity, we write subspaces likes states) means that \(D_m = \{v_3\}, m(v_3) = 1\), and it is equivalent to the set of states \(\{001, 011, 101, 111\}\).
+We denote \(\mathcal{S}_{\mathcal{N}}^{\star} = (\mathbb{B} \cup \{\star\})^n\) the set of all possible subspaces of \(\mathcal{N}\).
+Note that \(\left\vert\mathcal{S}_{\mathcal{M}}^{\star}\right\vert = 3^n\) and \(S_{\mathcal{N}} \subset \mathcal{S}_{\mathcal{N}}^{\star}\)~\cite{klarner2015computing}.
 
 A \emph{trap space} is defined as a subspace that is also a trap set.
 It is noted that trap spaces of a Boolean network are independent of the update scheme of this model~\cite{klarner2015computing}.
-Then, we define a partial order \(<\) on \(\mathcal{S}_{\mathcal{M}}^{\star}\) as: \(m < m'\) if and only if \(\mathcal{S}_{\mathcal{M}}[m] \subseteq \mathcal{S}_{\mathcal{M}}[m']\) and \(\mathcal{S}_{\mathcal{M}}[m] \neq \mathcal{S}_{\mathcal{M}}[m']\).
-Consequently, a trap space \(m\) is minimal if and only if there is no trap space \(m' \in \mathcal{S}_{\mathcal{M}}^{\star}\) such that \(m' < m\).
+Then, we define a partial order \(<\) on \(\mathcal{S}_{\mathcal{N}}^{\star}\) as: \(m < m'\) if and only if \(\mathcal{S}_{\mathcal{N}}[m] \subseteq \mathcal{S}_{\mathcal{N}}[m']\) and \(\mathcal{S}_{\mathcal{N}}[m] \neq \mathcal{S}_{\mathcal{N}}[m']\).
+Consequently, a trap space \(m\) is minimal if and only if there is no trap space \(m' \in \mathcal{S}_{\mathcal{N}}^{\star}\) such that \(m' < m\).
 
 For example, let us consider the Boolean network shown in Example~\ref{example:BN}.
 Figure~\ref{fig:stg} shows the dynamics of this model under the fully asynchronous update (i.e., only one node is nondeterministically selected in order to be updated at each time step).
