@@ -444,7 +444,7 @@ First, we add a definition related to any set of places of a Petri net encoding 
 
 \begin{definition}
 
-  A set of places of Petri net \(\mathcal{P}\) encoding Boolean network \(\mathcal{M}\) is \emph{conflict-free} if it does not contain any two places corresponding to the active and inactive states of the same \emph{node} of \(\mathcal{M}\).
+  A set of places of Petri net \(\mathcal{P}\) encoding Boolean network \(\mathcal{M}\) is \emph{conflict-free} if it does not contain any two places corresponding to the active and inactive states of the same \emph{node} of \(\mathcal{N}\).
   Then, a conflict-free siphon \(S\) is said to be \emph{maximal} if and only if there is no other conflict-free siphon \(S'\) such that \(S \subset S'\).
 
 \end{definition}
@@ -460,7 +460,8 @@ Hereafter, we formally prove that a maximal conflict-free siphon is equivalent t
 
 \begin{definition}
 
-  Let \(m\) be a subspace of Boolean network \(\mathcal{M} = (V, F)\). A \emph{mirror} of $m$ is a set of places $S$ in the Petri net encoding \(\mathcal{P}\) of \(\mathcal{M}\) such that:
+  Let \(m\) be a subspace of Boolean network \(\mathcal{N} = (V, F)\). 
+  A \emph{mirror} of \(m\) is a set of places \(S\) in the Petri net encoding \(\mathcal{P}\) of \(\mathcal{N}\) such that:
   \[\forall v \in D_m, m(v) = 0 \Leftrightarrow p_v \in S, m(v) = 1 \Leftrightarrow \overline{p}_v \in S\] and \[\forall v \in V \setminus D_m, p_v \not \in S, \overline{p}_v \not \in S.\]
 
 \end{definition}
@@ -478,7 +479,7 @@ Hereafter, we formally prove that a maximal conflict-free siphon is equivalent t
 
   Second, we show that if \(S\) is a conflict-free siphon of \(\mathcal{P}\), then \(m\) is a trap space of \(\mathcal{M}\) (**). By the definition of a mirror, \(m\) is a subspace of \(\mathcal{M}\). Let \(s\) be an arbitrary state in \(\mathcal{S}_{\mathcal{M}}[m]\) and \(m_s\) be its corresponding marking in \(\mathcal{P}\). By the characterization of the encoding~\cite{chaouiya2004qualitative}, \(m_s(p) = 0, \forall p \in S\). In any marking \(m'_s\) reachable from \(m_s\) regardless of the firing scheme of \(\mathcal{P}\), we have \(m'_s(p) = 0, \forall p \in S\) by the dynamical property on markings of a siphon~\cite{DBLP:journals/isci/LiuB16}. Equivalently, in any state \(s'\) reachable from \(s\) regardless of the update scheme of \(\mathcal{M}\), we have \(s'(v) = s(v) = m(v), \forall v \in D_m\). Then, \(s' \in \mathcal{S}_{\mathcal{M}}[m]\). By the definition of a trap space and the arbitrariness of \(s\), \(m\) is a trap space of \(\mathcal{M}\).
 
-  From (*) and (**), we can conclude the proof.\qed%
+  From (*) and (**), we can conclude the proof.
 \end{proof}
 
 \begin{theorem}%
@@ -494,12 +495,52 @@ Hereafter, we formally prove that a maximal conflict-free siphon is equivalent t
 
   Second, we show that if \(S\) is a maximal conflict-free siphon of \(\mathcal{P}\), then \(m\) is a minimal trap space of \(\mathcal{M}\) (**). Since \(S\) is a conflict-free siphon of \(\mathcal{P}\), \(m\) is a trap space of \(\mathcal{M}\) by Theorem~\ref{theo:ts_2_sp}. Assume that \(m\) is not minimal. Then, there is another trap space \(m'\) such that \(m' < m\). In other words, \(\mathcal{S}_{\mathcal{M}}[m'] \subset \mathcal{S}_{\mathcal{M}}[m]\). Let \(S'\) be the mirror of \(m'\). \(S'\) is a conflict-free siphon by Theorem~\ref{theo:ts_2_sp}. Following the definition of a mirror, \(S \subset S'\), which is a contradiction because \(S\) is a maximal conflict-free siphon. Hence, \(m\) is a minimal trap space of \(\mathcal{M}\).
 
-  From (*) and (**), we can conclude the proof.\qed%
+  From (*) and (**), we can conclude the proof.
 \end{proof}
 
-By Theorem~\ref{theo:min_ts_2_max_sp}, we can reduce the problem of computing all minimal trap spaces of a Boolean network to the problem of computing all maximal conflict-free siphons of its Petri net encoding.
+We here showcase a theoretical application of the connection between trap spaces in Boolean networks and conflict-free siphons in Petri nets.
+We use it to prove a property of minimal trap spaces, which has surprisingly not been formally proved.
+Specifically, all minimal trap spaces of a Boolean network are mutually disjoint.
+This property is important because we can use it to approximate the set of attractors of the Boolean network~\cite{klarner2015computing}.
+
+\begin{theorem}%
+\label{theo:separation_min_ts}
+
+  Let \(\mathcal{N} = (V, F)\) be a Boolean network.
+  For any two distinct minimal trap spaces \(m_1\) and \(m_2\) of \(\mathcal{N}\), we have that \(\mathcal{S}_{\mathcal{N}}[m_1] \cap \mathcal{S}_{\mathcal{N}}[m_2] = \emptyset\).
+
+\end{theorem}
+
+\begin{proof}
+
+  Let \(\mathcal{P}\) be the Petri net encoding of \(\mathcal{N}\).
+  If \(\mathcal{N}\) has only one minimal trap space, then the theorem trivially holds.
+  Note that by Theorem~\ref{theo:min_ts_2_max_sp}, \(\mathcal{N}\) always has at least one minimal trap space because \(\mathcal{P}\) has at least one maximal conflict-free siphon.
+  Hence, we consider the case that \(\mathcal{N}\) has at least two minimal trap spaces.
+
+  Consider two any distinct minimal trap spaces \(m_1\) and \(m_2\).
+  Assume that \(\mathcal{S}_{\mathcal{N}}[m_1] \cap \mathcal{S}_{\mathcal{N}}[m_2] \neq \emptyset\).
+  Let \(S_1\) and \(S_2\) be the mirrors of \(m_1\) and \(m_2\), respectively.
+  By Theorem~\ref{theo:min_ts_2_max_sp}, \(S_1\) and \(S_2\) are maximal conflict-free siphons of \(\mathcal{P}\).
+  We have that \(S = S_1 \cup S_2\) is also a siphon because of the property of siphons in Petri nets~\cite{DBLP:journals/isci/LiuB16}.
+  For every node \(v \in V\), assume that \(p_v \in S\) and \(\overline{p}_v \in S\) hold.
+  Since \(S_1\) and \(S_2\) are conflict-free, there are all two cases.
+  Case 1: \(p_v \in S_1\) and \(\overline{p}_v \in S_2\).
+  Case 2: \(p_v \in S_2\) and \(\overline{p}_v \in S_1\).
+  These two cases lead to \(m_1(v) \neq m_2(v), m_1(v) \neq \star, m_2(v) \neq \star\), then  \(\mathcal{S}_{\mathcal{N}}[m_1] \cap \mathcal{S}_{\mathcal{N}}[m_2] = \emptyset\).
+  This is a contradiction.
+  Hence, for every node \(v \in V\), \(p_v \in S\) and \(\overline{p}_v \in S\) cannot hold together.
+  Therefore, \(S\) is conflict-free.
+  Now, we have that \(S\) is a conflict-free siphon but \(S_1 \subset S\) or \(S_2 \subset S\) holds because \(S_1 \neq S_2\).
+  This contradicts to the maximality of \(S_1\) and \(S_2\).
+  Hence, \(\mathcal{S}_{\mathcal{N}}[m_1] \cap \mathcal{S}_{\mathcal{N}}[m_2] = \emptyset\) holds.
+  
+\end{proof}
+
+
+As a computational application, by Theorem~\ref{theo:min_ts_2_max_sp}, we can reduce the problem of computing all minimal trap spaces of a Boolean network to the problem of computing all maximal conflict-free siphons of its Petri net encoding.
 Note that in the case of stable states, this can be put in regard to the classical relationship between siphons and deadlocks in Petri nets.
-It might actually be possible to generalize our result to any 1-safe place-complementary Petri net to define a notion of trap space that might be useful for the analysis of Petri nets, but this is out of the scope of this article.
+It might actually be possible to generalize our result to any 1-safe place-complementary Petri net to define a notion of trap spaces that might be useful for the analysis of Petri nets, but this is out of the scope of this article.
 
 It is noted that there are no existing methods specifically designed for computing maximal conflict-free siphons (even maximal siphons) of a Petri net. The reason might be that researchers mainly focus on minimal siphons~\cite{DBLP:journals/isci/LiuB16}. Hence, we here propose a new method based on Answer Set Programming (ASP)~\cite{DBLP:journals/aicom/GebserKKOSS11} for computing maximal conflict-free siphons of a Petri net. The details of the proposed method shall be given in the next section.
 
