@@ -56,7 +56,7 @@ def solve_maxsat(
     # print(cnf.hard)
     rc2 = RC2(cnf)
     sol = rc2.enumerate(block=-1)  # minimal correction subsets
-    yield from islice(sol, None if max_output == 0 else 1000)
+    yield from islice(sol, None if max_output == 0 else max_output)
 
 
 def sat_to_bool(
