@@ -192,7 +192,7 @@ def compute_trap_spaces(
     if method == "sat":
         solutions = get_sat_solutions(petri_net, max_output, time_limit, places)
     elif method == "cp":
-        solutions = get_cp_solutions(petri_net, max_output, time_limit, places)
+        solutions = get_cp_solutions(petri_net, max_output, time_limit, places, nprocs)
     else:
         solutions_output = get_asp_output(
             petri_net, max_output, time_limit, method, debug, nprocs
