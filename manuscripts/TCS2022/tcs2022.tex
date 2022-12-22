@@ -751,48 +751,51 @@ All the models and a CoLoMoTo notebook realizing the benchmarks can be found at 
 
 \setlength{\tabcolsep}{4pt}
 \begin{table}[!htb]
-  \caption{Timing comparisons between PyBoolNet, mpbn and Trappist on the PyBoolNet repository.
-    Column \(n\) denotes the number of nodes of each model. Column \(|M|\) denotes the number of minimal trap spaces and for each method is given the computation time in seconds, asking only for the first 1000 trap spaces.
-    A number in bold indicates a ratio greater than three compared to the best result. ``NM'' indicates a non-locally-monotonic model.}
+  \caption{Timing comparisons between bioLQM (LQM), PyBoolNet (PBN), mpbn and the four variants of Trappist on the PyBoolNet repository.}
   \centering%
   \label{tab:pyboolnet_repo}
-  \begin{tabular}{rlrrrrrr}
+  \begin{tabular}{rlrrrrrrrrr}
     \toprule
-    & model & $n$ & $|M|$ & LQM & PBN & mpbn & Trappist \\ \midrule
-    \rownb & arellano\_rootstem & 9 & 4 & 0.13 & 0.05 & 0.01 & \textbf{0.20}\\
-    \rownb & calzone\_cellfate & 28 & 27 & 0.12 & 0.03 & \textbf{NM} & 0.03\\
-    \rownb & dahlhaus\_neuroplastoma & 23 & 32 & 0.11 & 0.05 & 0.02 & 0.03\\
-    \rownb & davidich\_yeast & 10 & 12 & 0.11 & 0.04 & 0.01 & 0.02\\
-    \rownb & dinwoodie\_life & 15 & 7 & 0.11 & 0.03 & 0.01 & 0.01\\
-    \rownb & dinwoodie\_stomatal & 13 & 1 & 0.10 & 0.03 & 0.01 & 0.01\\
-    \rownb & faure\_cellcycle & 10 & 2 & 0.11 & 0.04 & 0.01 & 0.02\\
-    \rownb & grieco\_mapk & 53 & 18 & 0.19 & 0.04 & 0.02 & 0.02\\
-    \rownb & irons\_yeast & 18 & 1 & 0.12 & 0.05 & 0.01 & 0.02\\
-    \rownb & jaoude\_thdiff & 103 & $>1000$ & N/A & \textbf{1.44} & \textbf{0.90} & 0.09\\
-    \rownb & klamt\_tcr & 40 & 8 & 0.11 & 0.04 & 0.01 & 0.03\\
-    \rownb & krumsiek\_myeloid & 11 & 6 & 0.10 & 0.03 & 0.01 & 0.01\\
-    \rownb & multivalued & 13 & 4 & 0.10 & 0.03 & 0.01 & 0.01\\
-    \rownb & n12c5 & 11 & 5 & 0.11 & \textbf{35.16} & 0.01 & 0.02\\
-    \rownb & n3s1c1a & 2 & 2 & 0.10 & 0.02 & 0.01 & 0.01\\
-    \rownb & n3s1c1b & 2 & 2 & 0.09 & 0.02 & 0.01 & 0.01\\
-    \rownb & n5s3 & 4 & 3 & 0.10 & 0.03 & \textbf{NM} & 0.01\\
-    \rownb & n6s1c2 & 5 & 3 & 0.10 & 0.03 & 0.01 & 0.01\\
-    \rownb & n7s3 & 6 & 3 & 0.11 & 0.02 & 0.01 & 0.01\\
-    \rownb & raf & 3 & 2 & 0.10 & 0.02 & 0.01 & 0.01\\
-    \rownb & randomnet\_n15k3 & 15 & 3 & 0.10 & 0.03 & \textbf{NM} & 0.01\\
-    \rownb & randomnet\_n7k3 & 7 & 10 & 0.10 & 0.03 & \textbf{NM} & 0.01\\
-    \rownb & remy\_tumorigenesis & 34 & 25 & 0.15 & \textbf{2.14} & 0.02 & 0.02\\
-    \rownb & saadatpour\_guardcell & 13 & 1 & 0.10 & 0.03 & 0.01 & 0.01\\
-    \rownb & selvaggio\_emt & 56 & $>1000$ & N/A & \textbf{1.02} & \textbf{0.52} & 0.09\\
-    \rownb & tournier\_apoptosis & 12 & 3 & 0.10 & 0.04 & 0.01 & 0.01\\
-    \rownb & xiao\_wnt5a & 7 & 4 & 0.10 & 0.03 & 0.01 & 0.01\\
-    \rownb & zhang\_tlgl & 60 & 156 & 0.60 & 0.22 & \textbf{NM} & 0.05\\
-    \rownb & zhang\_tlgl\_v2 & 60 & 258 & 0.64 & 0.09 & 0.15 & 0.02\\
+    & & & & & & & \multicolumn{4}{c}{Trappist}\\
+    \cmidrule(rr){8-11}
+    & model & \(n\) & \(|M|\) & LQM & PBN & mpbn & SAT & CLP & ILP & ASP \\
+    \rownb & arellano\_rootstem & 9 & 4 & \textbf{0.13} & 0.05 & 0.01 & - & - & - & 0.02\\
+    \rownb & calzone\_cellfate & 28 & 27 & \textbf{0.12} & 0.03 & \textbf{NM} & - & - & - & 0.03\\
+    \rownb & dahlhaus\_neuroplastoma & 23 & 32 & \textbf{0.11} & 0.05 & 0.02 & - & - & - & 0.03\\
+    \rownb & davidich\_yeast & 10 & 12 & \textbf{0.11} & 0.04 & 0.01 & - & - & - & 0.03\\
+    \rownb & dinwoodie\_life & 15 & 7 & \textbf{0.11} & 0.03 & 0.01 & - & - & - & 0.03\\
+    \rownb & dinwoodie\_stomatal & 13 & 1 & \textbf{0.10} & 0.03 & 0.01 & - & - & - & 0.02\\
+    \rownb & faure\_cellcycle & 10 & 2 & \textbf{0.11} & 0.04 & 0.01 & - & - & - & 0.03\\
+    \rownb & grieco\_mapk & 53 & 18 & \textbf{0.19} & 0.04 & 0.02 & - & - & - & 0.05\\
+    \rownb & irons\_yeast & 18 & 1 & \textbf{0.12} & 0.05 & 0.01 & - & - & - & 0.03\\
+    \rownb & jaoude\_thdiff & 103 & $>1000$ & N/A & \textbf{1.44} & \textbf{0.90} & - & - & - & 0.20\\
+    \rownb & klamt\_tcr & 40 & 8 & 0.11 & 0.04 & 0.01 & - & - & - & 0.04\\
+    \rownb & krumsiek\_myeloid & 11 & 6 & \textbf{0.10} & 0.03 & 0.01 & - & - & - & 0.02\\
+    \rownb & multivalued & 13 & 4 & \textbf{0.10} & 0.03 & 0.01 & - & - & - & 0.02\\
+    \rownb & n12c5 & 11 & 5 & 0.11 & \textbf{35.16} & 0.01 & - & - & - & 0.04\\
+    \rownb & n3s1c1a & 2 & 2 & \textbf{0.10} & 0.02 & 0.01 & - & - & - & 0.02\\
+    \rownb & n3s1c1b & 2 & 2 & \textbf{0.09} & 0.02 & 0.01 & - & - & - & 0.01\\
+    \rownb & n5s3 & 4 & 3 & \textbf{0.10} & 0.03 & \textbf{NM} & - & - & - & 0.02\\
+    \rownb & n6s1c2 & 5 & 3 & \textbf{0.10} & 0.03 & 0.01 & - & - & - & 0.02\\
+    \rownb & n7s3 & 6 & 3 & \textbf{0.11} & 0.02 & 0.01 & - & - & - & 0.02\\
+    \rownb & raf & 3 & 2 & \textbf{0.10} & 0.02 & 0.01 & - & - & - & 0.02\\
+    \rownb & randomnet\_n15k3 & 15 & 3 & 0.10 & 0.03 & \textbf{NM} & - & - & - & 0.04\\
+    \rownb & randomnet\_n7k3 & 7 & 10 & \textbf{0.10} & 0.03 & \textbf{NM} & - & - & - & 0.02\\
+    \rownb & remy\_tumorigenesis & 34 & 25 & \textbf{0.15} & \textbf{2.14} & 0.02 & - & - & - & 0.06\\
+    \rownb & saadatpour\_guardcell & 13 & 1 & \textbf{0.10} & 0.03 & 0.01 & - & - & - & 0.02\\
+    \rownb & selvaggio\_emt & 56 & $>1000$ & N/A & \textbf{1.02} & \textbf{0.52} & - & - & - & 0.18\\
+    \rownb & tournier\_apoptosis & 12 & 3 & \textbf{0.10} & 0.04 & 0.01 & - & - & - & 0.02\\
+    \rownb & xiao\_wnt5a & 7 & 4 & \textbf{0.10} & 0.03 & 0.01 & - & - & - & 0.02\\
+    \rownb & zhang\_tlgl & 60 & 156 & \textbf{0.60} & 0.22 & \textbf{NM} & - & - & - & 0.09\\
+    \rownb & zhang\_tlgl\_v2 & 60 & 258 & \textbf{0.64} & 0.09 & 0.15 & - & - & - & 0.08\\
     \bottomrule
   \end{tabular}
 \end{table}
 \setcounter{rownumber}{0}
 
+Column \(n\) denotes the number of nodes of each model. Column \(|M|\) denotes the number of minimal trap spaces and for each method is given the computation time in seconds, asking only for the first 1000 trap spaces.
+A number in bold indicates a ratio greater than three compared to the best result. ``NM'' indicates a non-locally-monotonic model.
+    
 As shown in Table~\ref{tab:pyboolnet_repo}, for most of the models of the official PyBoolNet repository\footnote{\url{https://github.com/hklarner/pyboolnet/tree/master/pyboolnet/repository}}, the results are comparable with all minimal trap spaces found very fast.
 For 5 of the 29 models, mpbn did not give any answer because it recognized these models as not locally-monotonic.
 Note that on some very small models, Trappist is sometimes slower than PyBoolNet and/or mpbn, but still significantly under one second.
@@ -809,12 +812,13 @@ On the contrary, on every model that was a bit challenging for PyBoolNet or mpbn
   \begin{tabular}{l||r|r|r||r}
     \toprule
     Method & 1 min & 2 min & 3 min & Time average (s) \\ \midrule
-    PyBoolNet & - & - & - & 0.05 \\
-    mpbn & - & - & - & 0.05 \\
-    Trappist-maxSAT & - & - & - & 0.05 \\
-    Trappist-CLP & - & - & - & 0.05 \\
-    Trappist-ILP & - & - & - & 0.05 \\
-    Trappist-ASP & - & - & - & 0.05 \\
+    bioLQM & - & - & - & - \\
+    PyBoolNet & - & - & - & - \\
+    mpbn & - & - & - & - \\
+    Trappist-maxSAT & - & - & - & - \\
+    Trappist-CLP & - & - & - & - \\
+    Trappist-ILP & - & - & - & - \\
+    Trappist-ASP & - & - & - & - \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -841,43 +845,43 @@ Column \(n\) (resp.\ \(s\)) denotes the number of nodes (resp.\ source nodes) of
     \cmidrule(rr){8-11}
     & model & \(n\) & \(|M|\) & LQM & PBN & mpbn & SAT & CLP & ILP & ASP \\
     \midrule % n < 100
-    \rownb & Arabidopsis\_thaliana & 15 & 8 & 0.15 & - & - & - & - & - & - \\
-    \rownb & Bcell & 73 & 72 & 0.21 & - & - & - & - & - & - \\
-    \rownb & Cacace\_TdevModel & 61 & 28 & 1.21 & - & NM & - & - & - & - \\
-    \rownb & Corral\_ThIL17diff & 92 & - & N/A & - & - & - & - & - & - \\
-    \rownb & DNA\_damage & 26 & - & 0.23 & - & NM & - & - & - & - \\
-    \rownb & Drosophila & 52 & - & 0.33 & - & - & - & - & - & - \\
-    \rownb & EMT & 69 & - & - & - & - & - & - & - & - \\
-    \rownb & mast\_cell & 73 & - & N/A & - & - & - & - & - & - \\
-    \rownb & FT-GRN & 23 & - & DNF & - & NM & - & - & - & - \\
-    \rownb & hedgehog & 65 & - & N/A & - & - & - & - & - & - \\
-    \rownb & metastatic & 10 & - & 0.11 & - & NM & - & - & - & - \\
-    \rownb & Pancreatic\_Cancer & 43 & - & N/A & - & - & - & - & - & - \\
-    \rownb & Pluripotent & 36 & - & 0.37 & - & NM & - & - & - & - \\
-    \rownb & Rho-GTPases & 33 & 1 & 0.21 & - & - & - & - & - & - \\
-    \rownb & Pluripotency & 36 & - & DNF & - & NM & - & - & - & - \\
-    \rownb & p53\_high\_dna & 16 & 1 & 0.40 & - & NM & - & - & - & - \\
-    \rownb & p53\_low\_dna & 16 & 1 & 0.38 & - & NM & - & - & - & - \\
+    \rownb & Arabidopsis\_thaliana~\cite{DesignPrinciplesGeneNetworks} & 15 & 8 & 0.15 & - & - & - & - & - & - \\
+    \rownb & Bcell~\cite{Dutta2019} & 73 & 72 & 0.21 & - & - & - & - & - & - \\
+    \rownb & Cacace\_TdevModel~\cite{Cacace2020} & 61 & 28 & 1.21 & - & NM & - & - & - & - \\
+    \rownb & Corral\_ThIL17diff~\cite{corral2021interplay} & 92 & - & N/A & - & - & - & - & - & - \\
+    \rownb & DNA\_damage~\cite{DesignPrinciplesGeneNetworks} & 26 & - & 0.23 & - & NM & - & - & - & - \\
+    \rownb & Drosophila~\cite{RodrguezVega2014} & 52 & - & 0.33 & - & - & - & - & - & - \\
+    \rownb & EMT~\cite{Rozum2021} & 69 & - & - & - & - & - & - & - & - \\
+    \rownb & mast\_cell~\cite{aghamiri2020automated} & 73 & - & N/A & - & - & - & - & - & - \\
+    \rownb & FT-GRN~\cite{ChvezHernndez2022} & 23 & - & DNF & - & NM & - & - & - & - \\
+    \rownb & hedgehog~\cite{DesignPrinciplesGeneNetworks} & 65 & - & N/A & - & - & - & - & - & - \\
+    \rownb & metastatic~\cite{DesignPrinciplesGeneNetworks} & 10 & - & 0.11 & - & NM & - & - & - & - \\
+    \rownb & Pancreatic\_Cancer~\cite{DesignPrinciplesGeneNetworks} & 43 & - & N/A & - & - & - & - & - & - \\
+    \rownb & Pluripotent~\cite{DesignPrinciplesGeneNetworks} & 36 & - & 0.37 & - & NM & - & - & - & - \\
+    \rownb & Rho-GTPases~\cite{DesignPrinciplesGeneNetworks} & 33 & 1 & 0.21 & - & - & - & - & - & - \\
+    \rownb & Pluripotency~\cite{YachieKinoshita2018} & 36 & - & DNF & - & NM & - & - & - & - \\
+    \rownb & p53\_high\_dna~\cite{DesignPrinciplesGeneNetworks} & 16 & 1 & 0.40 & - & NM & - & - & - & - \\
+    \rownb & p53\_low\_dna~\cite{DesignPrinciplesGeneNetworks} & 16 & 1 & 0.38 & - & NM & - & - & - & - \\
     
     \midrule % 100 <= n < 200
-    \rownb & angiofull & 142 & - & N/A & - & - & - & - & - & - \\
-    \rownb & COVID\_19 & 111 & - & N/A & - & - & - & - & - & - \\
-    \rownb & EMT\_Mech & 136 & - & DNF & - & - & - & - & - & - \\
-    \rownb & EMT\_Mech\_TGFbeta & 150 & - & DNF & - & - & - & - & - & - \\
-    \rownb & MAPK & 181 & - & N/A & - & - & - & - & - & - \\
-    \rownb & macrophage & 136 & - & N/A & - & - & - & - & - & - \\
-    \rownb & RA\_apoptosis & 180 & - & N/A & - & - & - & - & - & - \\
-    \rownb & Adhesion\_CIP & 121 & - & 57.33 & - & - & - & - & - & - \\
-    \rownb & angiogenesis & 141 & - & N/A & - & - & - & - & - & - \\
+    \rownb & angiofull~\cite{Weinstein2017} & 142 & - & N/A & - & - & - & - & - & - \\
+    %\rownb & COVID\_19 & 111 & - & N/A & - & - & - & - & - & - \\
+    \rownb & EMT\_Mech~\cite{Sullivan2022} & 136 & - & DNF & - & - & - & - & - & - \\
+    \rownb & EMT\_Mech\_TGFbeta~\cite{Sullivan2022} & 150 & - & DNF & - & - & - & - & - & - \\
+    \rownb & MAPK~\cite{aghamiri2020automated} & 181 & - & N/A & - & - & - & - & - & - \\
+    \rownb & macrophage~\cite{DesignPrinciplesGeneNetworks} & 136 & - & N/A & - & - & - & - & - & - \\
+    \rownb & RA\_apoptosis~\cite{aghamiri2020automated} & 180 & - & N/A & - & - & - & - & - & - \\
+    \rownb & Adhesion\_CIP~\cite{guberman2020boolean} & 121 & - & 57.33 & - & - & - & - & - & - \\
+    \rownb & angiogenesis~\cite{DesignPrinciplesGeneNetworks} & 141 & - & N/A & - & - & - & - & - & - \\
     
     \midrule % 200 <= n
-    \rownb & T-cell-co-receptor & 206 & - & N/A & - & - & - & - & - & - \\
-    \rownb & Snf1-pathway & 202 & - & N/A & - & - & - & - & - & - \\
-    \rownb & Mycobacterium & 317 & - & N/A & - & - & - & - & - & - \\
-    \rownb & Leishmania & 342 & - & N/A & - & - & - & - & - & - \\
-    \rownb & TcellCheckPoint & 218 & - & N/A & - & NM & - & - & - & - \\
-    \rownb & Cholocystokinin & 383 & - & N/A & - & - & - & - & - & - \\
-    \rownb & Alzheimer & 762 & - & N/A & - & NM & - & - & - & - \\
+    \rownb & T-cell-co-receptor~\cite{DesignPrinciplesGeneNetworks} & 206 & - & N/A & - & - & - & - & - & - \\
+    \rownb & Snf1-pathway~\cite{Lubitz2015} & 202 & - & N/A & - & - & - & - & - & - \\
+    \rownb & Mycobacterium~\cite{DesignPrinciplesGeneNetworks} & 317 & - & N/A & - & - & - & - & - & - \\
+    \rownb & Leishmania~\cite{DesignPrinciplesGeneNetworks} & 342 & - & N/A & - & - & - & - & - & - \\
+    \rownb & TcellCheckPoint~\cite{hernandez2020computational} & 218 & - & N/A & - & NM & - & - & - & - \\
+    \rownb & Cholocystokinin~\cite{aghamiri2020automated} & 383 & - & N/A & - & - & - & - & - & - \\
+    \rownb & Alzheimer~\cite{aghamiri2020automated} & 762 & - & N/A & - & NM & - & - & - & - \\
     
     \bottomrule
   \end{tabular}
