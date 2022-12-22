@@ -537,12 +537,15 @@ This property is important because we can use it to approximate the set of attra
   
 \end{proof}
 
-
 As a computational application, by Theorem~\ref{theo:min_ts_2_max_sp}, we can reduce the problem of computing all minimal trap spaces of a Boolean network to the problem of computing all maximal conflict-free siphons of its Petri net encoding.
-Note that in the case of stable states, this can be put in regard to the classical relationship between siphons and deadlocks in Petri nets.
+Note that in the case of special types of trap spaces (e.g., fixed points), this can be put in regard to special types of siphons in Petri nets.
+See Subsection~\ref{subsec:computation_special_ts} for more discussions about many special types of trap spaces.
 It might actually be possible to generalize our result to any 1-safe place-complementary Petri net to define a notion of trap spaces that might be useful for the analysis of Petri nets, but this is out of the scope of this article.
 
-It is noted that there are no existing methods specifically designed for computing maximal conflict-free siphons (even maximal siphons) of a Petri net. The reason might be that researchers mainly focus on minimal siphons~\cite{DBLP:journals/isci/LiuB16}. Hence, we here propose a new method based on Answer Set Programming (ASP)~\cite{DBLP:journals/aicom/GebserKKOSS11} for computing maximal conflict-free siphons of a Petri net. The details of the proposed method shall be given in the next section.
+It is noted that there are no existing methods specifically designed for computing maximal conflict-free siphons (even maximal siphons) of a Petri net.
+The reason might be that researchers mainly focus on minimal generic siphons~\cite{DBLP:journals/isci/LiuB16} in the field of Petri nets. 
+Hence, we here propose several methods for computing maximal conflict-free siphons of a Petri net. 
+The details of the proposed methods shall be given in the next section.
 
 \section{Computation methods}
 \label{sec:Computation}
@@ -563,13 +566,13 @@ p_v \in S \Rightarrow \overline{p_v} \not \in S \wedge \overline{p_v} \in S \Rig
 \end{equation}for each node \(v \in V\).
 By definition, the final system fully characterizes all conflict-free siphons of the encoded Petri net.
 
-\subsection{Constraint Satisfaction Problem}
+\subsection{Constraint satisfaction problem}
 \label{subsec:computation_csp}
 
-The following Boolean CSP directly derives from the above characterization:
+The following Boolean Constraint Satisfaction Problem (CSP) directly derives from the above characterization:
 \begin{definition}
 
-  Given a Petri net \(\mathcal{P} = (P, T, W)\) encoding a Boolean model \(\mathcal{M} = (V, F)\).
+  Given a Petri net \(\mathcal{P} = (P, T, W)\) encoding a Boolean network \(\mathcal{N} = (V, F)\).
   The CSP \(\mathcal{C}(\mathcal{P})\) is the triple \((R, D, C)\) where
   \begin{itemize}%
     \item \(R = P\), i.e., a variable is introduced for each place of \(\mathcal{P}\),
@@ -637,7 +640,7 @@ where \(\verb|a| \in \mathcal{A}\) is the atom representing place \(p\) and \(\{
 \[\verb|:- p-v, n-v.|\]
 for each \(v \in V\). 
 This ASP rule guarantees that two places representing the same node in \(\mathcal{M}\) never belong to the same siphon of \(\mathcal{P}\), representing the conflict-freeness.
-Naturally, a Herbrand model (see, e.g,~\cite{DBLP:journals/aicom/GebserKKOSS11}) of \(\mathcal{L}\) is equivalent to a conflict-free siphon of \(\mathcal{P}\).
+Naturally, a Herbrand model (see, e.g.,~\cite{DBLP:journals/aicom/GebserKKOSS11}) of \(\mathcal{L}\) is equivalent to a conflict-free siphon of \(\mathcal{P}\).
 To guarantee that a Herbrand model is also a stable model (an answer set), we need to add to \(\mathcal{L}\) the two choice rules
 \[
 \verb|{p-v}. {n-v}.|
@@ -701,6 +704,9 @@ Again, we add to \(\mathcal{I}\) a new inequality with respect to the newly foun
 The above process is iterated until \(\mathcal{I}\) becomes unfeasible, this means that there is no further maximal conflict-free siphon.
 Thus, all the maximal conflict-free siphons of the Petri net have been found.
 
+\subsection{Computation of special types of trap spaces}
+\label{subsec:computation_special_ts}
+
 \section{Motivating example}
 
 % TODO Choose another motivating example because this Boolean model can be easily handled by mpbn 1.7
@@ -729,8 +735,9 @@ Unfortunately since this was not available at the time, the analysis of the mode
 \section{Evaluation}%
 \label{sec:eval}
 
-To assess the efficiency of the proposed method, implemented as a Python package named Trappist, we compare it with the state-of-the-art method implemented in the tool PyBoolNet~\cite{klarner2015computing,klarner2017pyboolnet} on both its own repository of models and large models from the literature.
-In addition, we also include the tool mpbn~\cite{Paulev2020} to the benchmarks although it only handles locally-monotonic models, whereas both Trappist and PyBoolNet can handle general models.
+To assess the efficiency of the proposed method, implemented as a Python package named Trappist, we compared it with the state-of-the-art method implemented in the tool PyBoolNet~\cite{klarner2015computing,klarner2017pyboolnet} on both its own repository of models and large models from the literature.
+In addition, we also included the tool mpbn~\cite{Paulev2020} to the benchmarks although it only handles locally-monotonic models, whereas both Trappist and PyBoolNet can handle general models.
+To obtain a more comprehensive comparison, we also used random models generated by a third-party software (i.e., BoolNet R package~\cite{mussel2010boolnet}).
 
 To solve the ASP problems, we used the same ASP solver CLINGO~\cite{DBLP:journals/aicom/GebserKKOSS11} and the same configuration as that used in PyBoolNet~\cite{klarner2015computing,klarner2017pyboolnet}.
 Specifically, we used the configuration \texttt{-heuristic=Domain -enum-mod=domRec -dom-mod=3} (subset maximality, equivalent to the deprecated \texttt{--dom-pref=32 --heuristic=domain --dom-mod=7} used by PyBoolNet). We ran all the benchmarks on an apple laptop whose environment is CPU:\@ Intel\textregistered\ Core\texttrademark\ i7 1.20GHz x 4, 16 GB DDR4 RAM, MacOS 12.3.1. Finally, we set a time limit of two minutes for each model.
@@ -749,38 +756,38 @@ All the models and a CoLoMoTo notebook realizing the benchmarks can be found at 
     A number in bold indicates a ratio greater than three compared to the best result. ``NM'' indicates a non-locally-monotonic model.}
   \centering%
   \label{tab:pyboolnet_repo}
-  \begin{tabular}{rlrrrrrrr}
+  \begin{tabular}{rlrrrrrr}
     \toprule
-    & model & $n$ & $|M|$ & PyBoolNet & mpbn & Trappist \\ \midrule
-    \rownb & arellano\_rootstem & 9 & 4 & 0.05 & 0.01 & \textbf{0.20}\\
-    \rownb & calzone\_cellfate & 28 & 27 & 0.03 & \textbf{NM} & 0.03\\
-    \rownb & dahlhaus\_neuroplastoma & 23 & 32 & 0.05 & 0.02 & 0.03\\
-    \rownb & davidich\_yeast & 10 & 12 & 0.04 & 0.01 & 0.02\\
-    \rownb & dinwoodie\_life & 15 & 7 & 0.03 & 0.01 & 0.01\\
-    \rownb & dinwoodie\_stomatal & 13 & 1 & 0.03 & 0.01 & 0.01\\
-    \rownb & faure\_cellcycle & 10 & 2 & 0.04 & 0.01 & 0.02\\
-    \rownb & grieco\_mapk & 53 & 18 & 0.04 & 0.02 & 0.02\\
-    \rownb & irons\_yeast & 18 & 1 & 0.05 & 0.01 & 0.02\\
-    \rownb & jaoude\_thdiff & 103 & $>1000$ & \textbf{1.44} & \textbf{0.90} & 0.09\\
-    \rownb & klamt\_tcr & 40 & 8 & 0.04 & 0.01 & 0.03\\
-    \rownb & krumsiek\_myeloid & 11 & 6 & 0.03 & 0.01 & 0.01\\
-    \rownb & multivalued & 13 & 4 & 0.03 & 0.01 & 0.01\\
-    \rownb & n12c5 & 11 & 5 & \textbf{35.16} & 0.01 & 0.02\\
-    \rownb & n3s1c1a & 2 & 2 & 0.02 & 0.01 & 0.01\\
-    \rownb & n3s1c1b & 2 & 2 & 0.02 & 0.01 & 0.01\\
-    \rownb & n5s3 & 4 & 3 & 0.03 & \textbf{NM} & 0.01\\
-    \rownb & n6s1c2 & 5 & 3 & 0.03 & 0.01 & 0.01\\
-    \rownb & n7s3 & 6 & 3 & 0.02 & 0.01 & 0.01\\
-    \rownb & raf & 3 & 2 & 0.02 & 0.01 & 0.01\\
-    \rownb & randomnet\_n15k3 & 15 & 3 & 0.03 & \textbf{NM} & 0.01\\
-    \rownb & randomnet\_n7k3 & 7 & 10 & 0.03 & \textbf{NM} & 0.01\\
-    \rownb & remy\_tumorigenesis & 34 & 25 & \textbf{2.14} & 0.02 & 0.02\\
-    \rownb & saadatpour\_guardcell & 13 & 1 & 0.03 & 0.01 & 0.01\\
-    \rownb & selvaggio\_emt & 56 & $>1000$ & \textbf{1.02} & \textbf{0.52} & 0.09\\
-    \rownb & tournier\_apoptosis & 12 & 3 & 0.04 & 0.01 & 0.01\\
-    \rownb & xiao\_wnt5a & 7 & 4 & 0.03 & 0.01 & 0.01\\
-    \rownb & zhang\_tlgl & 60 & 156 & 0.22 & \textbf{NM} & 0.05\\
-    \rownb & zhang\_tlgl\_v2 & 60 & 258 & 0.09 & 0.15 & 0.02\\
+    & model & $n$ & $|M|$ & LQM & PBN & mpbn & Trappist \\ \midrule
+    \rownb & arellano\_rootstem & 9 & 4 & - & 0.05 & 0.01 & \textbf{0.20}\\
+    \rownb & calzone\_cellfate & 28 & 27 & - & 0.03 & \textbf{NM} & 0.03\\
+    \rownb & dahlhaus\_neuroplastoma & 23 & 32 & - & 0.05 & 0.02 & 0.03\\
+    \rownb & davidich\_yeast & 10 & 12 & - & 0.04 & 0.01 & 0.02\\
+    \rownb & dinwoodie\_life & 15 & 7 & - & 0.03 & 0.01 & 0.01\\
+    \rownb & dinwoodie\_stomatal & 13 & 1 & - & 0.03 & 0.01 & 0.01\\
+    \rownb & faure\_cellcycle & 10 & 2 & - & 0.04 & 0.01 & 0.02\\
+    \rownb & grieco\_mapk & 53 & 18 & - & 0.04 & 0.02 & 0.02\\
+    \rownb & irons\_yeast & 18 & 1 & - & 0.05 & 0.01 & 0.02\\
+    \rownb & jaoude\_thdiff & 103 & $>1000$ & - & \textbf{1.44} & \textbf{0.90} & 0.09\\
+    \rownb & klamt\_tcr & 40 & 8 & - & 0.04 & 0.01 & 0.03\\
+    \rownb & krumsiek\_myeloid & 11 & 6 & - & 0.03 & 0.01 & 0.01\\
+    \rownb & multivalued & 13 & 4 & - & 0.03 & 0.01 & 0.01\\
+    \rownb & n12c5 & 11 & 5 & - & \textbf{35.16} & 0.01 & 0.02\\
+    \rownb & n3s1c1a & 2 & 2 & - & 0.02 & 0.01 & 0.01\\
+    \rownb & n3s1c1b & 2 & 2 & - & 0.02 & 0.01 & 0.01\\
+    \rownb & n5s3 & 4 & 3 & - & 0.03 & \textbf{NM} & 0.01\\
+    \rownb & n6s1c2 & 5 & 3 & - & 0.03 & 0.01 & 0.01\\
+    \rownb & n7s3 & 6 & 3 & - & 0.02 & 0.01 & 0.01\\
+    \rownb & raf & 3 & 2 & - & 0.02 & 0.01 & 0.01\\
+    \rownb & randomnet\_n15k3 & 15 & 3 & - & 0.03 & \textbf{NM} & 0.01\\
+    \rownb & randomnet\_n7k3 & 7 & 10 & - & 0.03 & \textbf{NM} & 0.01\\
+    \rownb & remy\_tumorigenesis & 34 & 25 & - & \textbf{2.14} & 0.02 & 0.02\\
+    \rownb & saadatpour\_guardcell & 13 & 1 & - & 0.03 & 0.01 & 0.01\\
+    \rownb & selvaggio\_emt & 56 & $>1000$ & - & \textbf{1.02} & \textbf{0.52} & 0.09\\
+    \rownb & tournier\_apoptosis & 12 & 3 & - & 0.04 & 0.01 & 0.01\\
+    \rownb & xiao\_wnt5a & 7 & 4 & - & 0.03 & 0.01 & 0.01\\
+    \rownb & zhang\_tlgl & 60 & 156 & - & 0.22 & \textbf{NM} & 0.05\\
+    \rownb & zhang\_tlgl\_v2 & 60 & 258 & - & 0.09 & 0.15 & 0.02\\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -791,6 +798,24 @@ For 5 of the 29 models, mpbn did not give any answer because it recognized these
 Note that on some very small models, Trappist is sometimes slower than PyBoolNet and/or mpbn, but still significantly under one second.
 Moreover, we believe that the result on the arellano\_rootstem model is caused by the cold start of the JVM for BioLQM.\@
 On the contrary, on every model that was a bit challenging for PyBoolNet or mpbn, the new method is far more efficient with speedups between one and two orders of magnitude.
+
+\subsection{BBM repository}
+
+\setlength{\tabcolsep}{4pt}
+\begin{table}[!h]
+  \caption{Results on the real-world models from the BBM repository.}
+  \centering%
+  \label{tab:bbm_repo}
+  \begin{tabular}{l||r|r|r||r}
+    \toprule
+    Method & 1 min & 2 min & 3 min & Time average (s) \\ \midrule
+    PyBoolNet & - & - & - & 0.05 \\
+    mpbn & - & - & - & 0.05 \\
+    Trappist & - & - & - & 0.05 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+\setcounter{rownumber}{0}
 
 \subsection{Selected models}
 
@@ -880,6 +905,48 @@ Recognizing that a model is locally-monotonic and applying in that specific case
 Note that though enumerating the extremal siphons of a Petri net is exponential (see~\cite{nabli2016enumerating} for instance) this is apparently not the bottleneck of the proposed method, showing once again that networks obtained from biochemical models do have a specific structure.
 
 \subsection{Randomly generated models}
+
+\begin{table}[!htb]
+  \caption{Results on N-K models.}
+  \centering%
+  \label{tab:result_N_K}
+  \begin{tabular}{rrrrrrr}
+    \toprule
+    & \multicolumn{2}{c}{1 min} & \multicolumn{2}{c}{2 min} & \multicolumn{2}{c}{3 min} \\
+    \cmidrule(lr){2-7}
+    \(n\) & PBN & Trappist & PBN & Trappist & PBN & Trappist \\
+    \midrule
+    100 & - & - & - & - & - & - \\
+    150 & - & - & - & - & - & - \\
+    200 & - & - & - & - & - & - \\
+    250 & - & - & - & - & - & - \\
+    300 & - & - & - & - & - & - \\
+    350 & - & - & - & - & - & - \\
+    400 & - & - & - & - & - & - \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\begin{table}[!htb]
+  \caption{Results on scale-free models.}
+  \centering%
+  \label{tab:result_N_K}
+  \begin{tabular}{rrrrrrr}
+    \toprule
+    & \multicolumn{2}{c}{1 min} & \multicolumn{2}{c}{2 min} & \multicolumn{2}{c}{3 min} \\
+    \cmidrule(lr){2-7}
+    \(n\) & PBN & Trappist & PBN & Trappist & PBN & Trappist \\
+    \midrule
+    500 & - & - & - & - & - & - \\
+    750 & - & - & - & - & - & - \\
+    1000 & - & - & - & - & - & - \\
+    1250 & - & - & - & - & - & - \\
+    1500 & - & - & - & - & - & - \\
+    1750 & - & - & - & - & - & - \\
+    2000 & - & - & - & - & - & - \\
+    \bottomrule
+  \end{tabular}
+\end{table}
 
 \section{Conclusion}
 
