@@ -380,6 +380,7 @@ We shall write \(pred(x)\) (resp.\ \(succ(x)\)) to represent the set of vertices
 In this work, we consider a class of Petri nets called 1-safe Petri nets where every place has at most 1 token and all arcs are of weight 1.
 In this case, weights are implicitly omitted in the arcs of a Petri net.
 Then, a transition \(t \in T\) is \emph{enabled} at a marking \(m\) if and only if \(pred(t) \subseteq m\). 
+A marking \(m\) is called a deadlock if there are no enabled transitions at \(m\).
 The firing of \(t\) leads to a new marking \(m'\) specified by \(m' = (m \backslash pred(t)) \cup succ(t)\).
 Note that when multiple transitions are enabled, we need to embed one firing scheme (similar to the update scheme of a Boolean network) to the Petri net.
 The classical firing scheme is that only one of the enabled transition is non-deterministically chosen to fire~\cite{Murata1989}.
@@ -736,7 +737,23 @@ We illustrate the adjustments via the ASP-based method (see Subsection~\ref{subs
 
 First, maximal trap spaces // TODO:
 
-Second, fixed points // TODO:
+Second, we consider fixed points in Boolean networks.
+Let \(s\) be a fixed point of a Boolean network \(\mathcal{N}\).
+We have a subspace \(m\) corresponding to \(s\) as follows: \(\forall v \in V, m(v) = s(v)\), i.e., all nodes are fixed in \(m\).
+Clearly, \(s\) is a trap set of \(\mathcal{N}\) regardless of the update scheme.
+Hence, \(m\) is a trap space of \(\mathcal{N}\).
+In addition, since \(\left\vert S_{\mathcal{N}}[m]\right\vert = 1\), \(m\) is also a minimal trap space.
+To compute all fixed points of \(\mathcal{N}\), we can add more constraints to the encoded ASP characterizing all conflict-free siphons (equivalently trap spaces).
+For every \(v \in V\), we add to the encoded ASP the rule
+\[
+  \verb|p-v| ; \verb|n-v|.
+\]
+that ensures that for every conflict-free siphon \(S\), it contains either \(\verb|p-v|\) or \(\verb|n-v|\) for every \(v \in V\).
+Equivalently, the trap space corresponding to \(S\) is always a fixed point.
+Now, the set of answer sets of the encoded ASP is equivalent to the set of fixed points of \(\mathcal{N}\).
+In particular, when solving the encoded ASP using an ASP solver, we do not need to use the built-in option for computing set-inclusion maximal answer sets.
+Note that we can also build another ASP characterizing all fixed points of \(\mathcal{N}\) based on the equivalence between a fixed point of \(\mathcal{N}\) and a deadlock of its Petri net encoding~\cite{chatain2014characterization}.
+This approach may give a more compact ASP.
 
 Third, trap spaces inside a subspace // TODO:
 
@@ -888,7 +905,7 @@ Column \(n\) (resp.\ \(s\)) denotes the number of nodes (resp.\ source nodes) of
     \rownb & Corral\_ThIL17diff~\cite{corral2021interplay} & 92 & $>1000$ & N/A & - & - & - & - & - & - \\
     \rownb & DNA\_damage~\cite{DesignPrinciplesGeneNetworks} & 26 & 16 & 0.23 & - & NM & - & - & - & - \\
     \rownb & Drosophila~\cite{RodrguezVega2014} & 52 & 128 & 0.33 & - & - & - & - & - & - \\
-    \rownb & EMT~\cite{Rozum2021} & 69 & 268 & - & - & - & - & - & - & - \\
+    \rownb & EMT~\cite{Rozum2021} & 69 & 268 & 39.22 & - & - & - & - & - & - \\
     \rownb & mast\_cell~\cite{aghamiri2020automated} & 73 & $>1000$ & N/A & - & - & - & - & - & - \\
     \rownb & FT-GRN~\cite{ChvezHernndez2022} & 23 & 32 & DNF & - & NM & - & - & - & - \\
     \rownb & hedgehog~\cite{DesignPrinciplesGeneNetworks} & 65 & $>1000$ & N/A & - & - & - & - & - & - \\
