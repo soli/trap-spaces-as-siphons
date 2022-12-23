@@ -220,10 +220,11 @@ All models used for evaluation and the implementation of the presented method ar
 % Mention the extensions for the journal version
 Herein we extend our previous work in~\cite{DBLP:conf/cmsb/TrinhBHS22} as follows.
 First, we showcase one theoretical application of the connection between trap spaces in Boolean networks and conflict-free siphons in Petri nets.
-Second, beyond the proposed ASP method, we propose several other possible methods using MaxSAT, CLP, and ILP.
-Third, we conduct a more comprehensive benchmark on both real-world and randomly generated models to evaluate all the proposed methods.
+Second, beyond the proposed ASP method, we propose several other possible methods for computing minimal trap spaces using MaxSAT, CLP, and ILP.
+Third, we discuss in detail how to compute several special types of trap space in a Boolean network.
 Forth, regarding the implementation, we have developed a converter that directly reads a .bnet file and builds the Petri net encoding, instead of using the PNML conversion of BioLQM.
-Finally, we explore several complexity analysis on maximal (conflict-free) siphon problems.
+%Finally, we explore several complexity analysis on maximal (conflict-free) siphon problems.
+Finally, we conduct a more comprehensive benchmark on both real-world and randomly generated models to evaluate all the proposed methods.
 
 \section{Preliminaries}
 \label{sec:Preliminaries}
@@ -432,10 +433,20 @@ This corresponds to the idea that a siphon is a set of places that once unmarked
 
   A \emph{siphon} of a Petri net \((P, T, W)\) is a set of places \(S\) such that:
   \[\forall t\in T, S\cap succ(t)\not =\emptyset\Rightarrow S\cap pred(t)\not =\emptyset.\]
+  Note that \(\emptyset\) is trivially a siphon.
 
 \end{definition}
 
-Note that \(\emptyset\) is trivially a siphon.
+Let \(pred(S) := \bigcup_{s \in S}pred(s)\) and \(succ(S) := \bigcup_{s \in S}succ(s)\).
+We have an important property~\cite{DBLP:journals/isci/LiuB16} as follows.
+
+\begin{proposition}
+\label{prop:siphon_set}
+  Let \(S\) be a siphon of a Petri net \((P, T, W)\).
+  Then \(pred(S) \subseteq succ(S)\).
+
+\end{proposition}
+
 
 \section{Minimal trap spaces as maximal conflict-free siphons}
 \label{sec:Main_finding}
@@ -537,7 +548,15 @@ This property is important because we can use it to approximate the set of attra
   
 \end{proof}
 
-As a computational application, by Theorem~\ref{theo:min_ts_2_max_sp}, we can reduce the problem of computing all minimal trap spaces of a Boolean network to the problem of computing all maximal conflict-free siphons of its Petri net encoding.
+One naturally computational application of Theorem~\ref{theo:ts_2_sp} is that we can efficiently decide whether a subspace \(m\) is a trap space.
+In PyBoolNet~\cite{klarner2017pyboolnet}, this is checked by using the percolation on the prime-implicants of the Boolean functions.
+As we have mentioned at the beginning of this article, there may be a huge number of prime-implicants.
+Hence, the checking method in~\cite{klarner2017pyboolnet} shows its limitations.
+Instead, we can first compute the mirror \(S_m\) of \(m\) in the Petri net encoding.
+Then, by Proposition~\ref{prop:siphon_set} and Theorem~\ref{theo:ts_2_sp}, we check if \(pred(S_m) \subseteq succ(S_m)\).
+Note that the above computation (also the Petri net construction) is linear in the number of transitions of the Petri net, which can be much smaller than the number of prime-implicants~\cite{chatain2014characterization}.
+
+Furthermore, by Theorem~\ref{theo:min_ts_2_max_sp}, we can reduce the problem of computing all minimal trap spaces of a Boolean network to the problem of computing all maximal conflict-free siphons of its Petri net encoding.
 Note that in the case of special types of trap spaces (e.g., fixed points), this can be put in regard to special types of siphons in Petri nets.
 See Subsection~\ref{subsec:computation_special_ts} for more discussions about many special types of trap spaces.
 It might actually be possible to generalize our result to any 1-safe place-complementary Petri net to define a notion of trap spaces that might be useful for the analysis of Petri nets, but this is out of the scope of this article.
@@ -553,7 +572,11 @@ The details of the proposed methods shall be given in the next section.
 \subsection{Characterization}
 \label{subsec:siphon_characterization}
 
-First, we show the characterization of all conflict-free siphons of the encoded Petri net \(\mathcal{P} = (P, T, W)\). Suppose that \(S\) is a generic siphon of \(\mathcal{P}\). If a place \(p\) should belong to \(S\), then by definition all the transitions in \(pred(p)\) must belong to \(succ(S)\). Note that \(succ(S) = \bigcup_{p \in S}succ(p)\). A transition \(t\) belongs to \(succ(S)\) if and only if there is at least one place \(p'\) in \(S\) such that \(p' \in pred(t)\). Hence, for each transition \(t \in pred(p)\), we can state that
+First, we show the characterization of all conflict-free siphons of the encoded Petri net \(\mathcal{P} = (P, T, W)\).
+Suppose that \(S\) is a generic siphon of \(\mathcal{P}\). If a place \(p\) should belong to \(S\), then by Proposition~\ref{prop:siphon_set} all the transitions in \(pred(p)\) must belong to \(succ(S)\).
+Note that \(succ(S) = \bigcup_{p \in S}succ(p)\).
+A transition \(t\) belongs to \(succ(S)\) if and only if there is at least one place \(p'\) in \(S\) such that \(p' \in pred(t)\).
+Hence, for each transition \(t \in pred(p)\), we can state that
 \begin{equation}
 \label{eq:siphon}
 p \in S \Rightarrow \bigvee_{p' \in pred(t)}p' \in S.
@@ -707,6 +730,20 @@ Thus, all the maximal conflict-free siphons of the Petri net have been found.
 \subsection{Computation of special types of trap spaces}
 \label{subsec:computation_special_ts}
 
+In the field of systems biology, biologists may want to compute more special types of trap spaces beyond minimal trap spaces~\cite{klarner2017pyboolnet}.
+We shall show that our proposed methods can be easily adjusted to compute popular types of trap spaces.
+We illustrate the adjustments via the ASP-based method (see Subsection~\ref{subsec:computation_asp}), but these adjustments are completely applicable for other approaches such as MaxSAT, CSP, and ILP.
+
+First, maximal trap spaces // TODO:
+
+Second, fixed points // TODO:
+
+Third, trap spaces inside a subspace // TODO:
+
+Finally, trap spaces that intersect a subspace // TODO:
+
+
+
 \section{Motivating example}
 
 % TODO Choose another motivating example because this Boolean model can be easily handled by mpbn 1.7
@@ -759,35 +796,35 @@ All the models and a CoLoMoTo notebook realizing the benchmarks can be found at 
     & & & & & & & \multicolumn{4}{c}{Trappist}\\
     \cmidrule(rr){8-11}
     & model & \(n\) & \(|M|\) & LQM & PBN & mpbn & SAT & CLP & ILP & ASP \\
-    \rownb & arellano\_rootstem & 9 & 4 & \textbf{0.13} & 0.05 & 0.01 & - & - & - & 0.02\\
-    \rownb & calzone\_cellfate & 28 & 27 & \textbf{0.12} & 0.03 & \textbf{NM} & - & - & - & 0.03\\
-    \rownb & dahlhaus\_neuroplastoma & 23 & 32 & \textbf{0.11} & 0.05 & 0.02 & - & - & - & 0.03\\
-    \rownb & davidich\_yeast & 10 & 12 & \textbf{0.11} & 0.04 & 0.01 & - & - & - & 0.03\\
-    \rownb & dinwoodie\_life & 15 & 7 & \textbf{0.11} & 0.03 & 0.01 & - & - & - & 0.03\\
-    \rownb & dinwoodie\_stomatal & 13 & 1 & \textbf{0.10} & 0.03 & 0.01 & - & - & - & 0.02\\
-    \rownb & faure\_cellcycle & 10 & 2 & \textbf{0.11} & 0.04 & 0.01 & - & - & - & 0.03\\
-    \rownb & grieco\_mapk & 53 & 18 & \textbf{0.19} & 0.04 & 0.02 & - & - & - & 0.05\\
-    \rownb & irons\_yeast & 18 & 1 & \textbf{0.12} & 0.05 & 0.01 & - & - & - & 0.03\\
-    \rownb & jaoude\_thdiff & 103 & $>1000$ & N/A & \textbf{1.44} & \textbf{0.90} & - & - & - & 0.20\\
-    \rownb & klamt\_tcr & 40 & 8 & 0.11 & 0.04 & 0.01 & - & - & - & 0.04\\
-    \rownb & krumsiek\_myeloid & 11 & 6 & \textbf{0.10} & 0.03 & 0.01 & - & - & - & 0.02\\
-    \rownb & multivalued & 13 & 4 & \textbf{0.10} & 0.03 & 0.01 & - & - & - & 0.02\\
-    \rownb & n12c5 & 11 & 5 & 0.11 & \textbf{35.16} & 0.01 & - & - & - & 0.04\\
-    \rownb & n3s1c1a & 2 & 2 & \textbf{0.10} & 0.02 & 0.01 & - & - & - & 0.02\\
-    \rownb & n3s1c1b & 2 & 2 & \textbf{0.09} & 0.02 & 0.01 & - & - & - & 0.01\\
+    \rownb & arellano\_rootstem & 9 & 4 & \textbf{0.13} & 0.05 & - & - & - & - & 0.02\\
+    \rownb & calzone\_cellfate & 28 & 27 & \textbf{0.12} & 0.03 & - & - & - & - & 0.03\\
+    \rownb & dahlhaus\_neuroplastoma & 23 & 32 & \textbf{0.11} & 0.06 & - & - & - & - & 0.03\\
+    \rownb & davidich\_yeast & 10 & 12 & \textbf{0.11} & 0.04 & - & - & - & - & 0.04\\
+    \rownb & dinwoodie\_life & 15 & 7 & \textbf{0.11} & 0.03 & - & - & - & - & 0.03\\
+    \rownb & dinwoodie\_stomatal & 13 & 1 & \textbf{0.10} & 0.03 & - & - & - & - & 0.02\\
+    \rownb & faure\_cellcycle & 10 & 2 & \textbf{0.11} & 0.04 & - & - & - & - & 0.05\\
+    \rownb & grieco\_mapk & 53 & 18 & \textbf{0.19} & 0.04 & - & - & - & - & 0.06\\
+    \rownb & irons\_yeast & 18 & 1 & \textbf{0.12} & 0.05 & - & - & - & - & 0.06\\
+    \rownb & jaoude\_thdiff & 103 & $>1000$ & N/A & \textbf{1.92} & - & - & - & - & 0.20\\
+    \rownb & klamt\_tcr & 40 & 8 & 0.11 & 0.04 & - & - & - & - & 0.04\\
+    \rownb & krumsiek\_myeloid & 11 & 6 & \textbf{0.10} & 0.03 & - & - & - & - & 0.02\\
+    \rownb & multivalued & 13 & 4 & \textbf{0.10} & 0.03 & - & - & - & - & 0.02\\
+    \rownb & n12c5 & 11 & 5 & 0.11 & \textbf{38.80} & - & - & - & - & 0.04\\
+    \rownb & n3s1c1a & 2 & 2 & \textbf{0.10} & 0.02 & - & - & - & - & 0.02\\
+    \rownb & n3s1c1b & 2 & 2 & \textbf{0.09} & 0.02 & - & - & - & - & 0.01\\
     \rownb & n5s3 & 4 & 3 & \textbf{0.10} & 0.03 & \textbf{NM} & - & - & - & 0.02\\
-    \rownb & n6s1c2 & 5 & 3 & \textbf{0.10} & 0.03 & 0.01 & - & - & - & 0.02\\
-    \rownb & n7s3 & 6 & 3 & \textbf{0.11} & 0.02 & 0.01 & - & - & - & 0.02\\
-    \rownb & raf & 3 & 2 & \textbf{0.10} & 0.02 & 0.01 & - & - & - & 0.02\\
-    \rownb & randomnet\_n15k3 & 15 & 3 & 0.10 & 0.03 & \textbf{NM} & - & - & - & 0.04\\
+    \rownb & n6s1c2 & 5 & 3 & \textbf{0.10} & 0.04 & - & - & - & - & 0.02\\
+    \rownb & n7s3 & 6 & 3 & \textbf{0.11} & 0.02 & - & - & - & - & 0.02\\
+    \rownb & raf & 3 & 2 & \textbf{0.10} & 0.02 & - & - & - & - & 0.02\\
+    \rownb & randomnet\_n15k3 & 15 & 3 & 0.10 & 0.04 & \textbf{NM} & - & - & - & 0.04\\
     \rownb & randomnet\_n7k3 & 7 & 10 & \textbf{0.10} & 0.03 & \textbf{NM} & - & - & - & 0.02\\
-    \rownb & remy\_tumorigenesis & 34 & 25 & \textbf{0.15} & \textbf{2.14} & 0.02 & - & - & - & 0.06\\
-    \rownb & saadatpour\_guardcell & 13 & 1 & \textbf{0.10} & 0.03 & 0.01 & - & - & - & 0.02\\
-    \rownb & selvaggio\_emt & 56 & $>1000$ & N/A & \textbf{1.02} & \textbf{0.52} & - & - & - & 0.18\\
-    \rownb & tournier\_apoptosis & 12 & 3 & \textbf{0.10} & 0.04 & 0.01 & - & - & - & 0.02\\
-    \rownb & xiao\_wnt5a & 7 & 4 & \textbf{0.10} & 0.03 & 0.01 & - & - & - & 0.02\\
-    \rownb & zhang\_tlgl & 60 & 156 & \textbf{0.60} & 0.22 & \textbf{NM} & - & - & - & 0.09\\
-    \rownb & zhang\_tlgl\_v2 & 60 & 258 & \textbf{0.64} & 0.09 & 0.15 & - & - & - & 0.08\\
+    \rownb & remy\_tumorigenesis & 34 & 25 & \textbf{0.15} & \textbf{2.05} & - & - & - & - & 0.06\\
+    \rownb & saadatpour\_guardcell & 13 & 1 & \textbf{0.10} & 0.02 & - & - & - & - & 0.02\\
+    \rownb & selvaggio\_emt & 56 & $>1000$ & N/A & \textbf{1.09} & - & - & - & - & 0.18\\
+    \rownb & tournier\_apoptosis & 12 & 3 & \textbf{0.10} & 0.03 & - & - & - & - & 0.02\\
+    \rownb & xiao\_wnt5a & 7 & 4 & \textbf{0.10} & 0.02 & - & - & - & - & 0.02\\
+    \rownb & zhang\_tlgl & 60 & 156 & \textbf{0.60} & 0.22 & - & - & - & - & 0.09\\
+    \rownb & zhang\_tlgl\_v2 & 60 & 258 & \textbf{0.64} & 0.11 & - & - & - & - & 0.08\\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -845,43 +882,43 @@ Column \(n\) (resp.\ \(s\)) denotes the number of nodes (resp.\ source nodes) of
     \cmidrule(rr){8-11}
     & model & \(n\) & \(|M|\) & LQM & PBN & mpbn & SAT & CLP & ILP & ASP \\
     \midrule % n < 100
-    \rownb & Arabidopsis\_thaliana~\cite{DesignPrinciplesGeneNetworks} & 15 & 8 & 0.15 & - & - & - & - & - & - \\
+    \rownb & Arabidopsis\_thaliana~\cite{DesignPrinciplesGeneNetworks} & 15 & 8 & 0.15 & - & NM & - & - & - & - \\
     \rownb & Bcell~\cite{Dutta2019} & 73 & 72 & 0.21 & - & - & - & - & - & - \\
     \rownb & Cacace\_TdevModel~\cite{Cacace2020} & 61 & 28 & 1.21 & - & NM & - & - & - & - \\
-    \rownb & Corral\_ThIL17diff~\cite{corral2021interplay} & 92 & - & N/A & - & - & - & - & - & - \\
-    \rownb & DNA\_damage~\cite{DesignPrinciplesGeneNetworks} & 26 & - & 0.23 & - & NM & - & - & - & - \\
-    \rownb & Drosophila~\cite{RodrguezVega2014} & 52 & - & 0.33 & - & - & - & - & - & - \\
-    \rownb & EMT~\cite{Rozum2021} & 69 & - & - & - & - & - & - & - & - \\
-    \rownb & mast\_cell~\cite{aghamiri2020automated} & 73 & - & N/A & - & - & - & - & - & - \\
-    \rownb & FT-GRN~\cite{ChvezHernndez2022} & 23 & - & DNF & - & NM & - & - & - & - \\
-    \rownb & hedgehog~\cite{DesignPrinciplesGeneNetworks} & 65 & - & N/A & - & - & - & - & - & - \\
-    \rownb & metastatic~\cite{DesignPrinciplesGeneNetworks} & 10 & - & 0.11 & - & NM & - & - & - & - \\
-    \rownb & Pancreatic\_Cancer~\cite{DesignPrinciplesGeneNetworks} & 43 & - & N/A & - & - & - & - & - & - \\
-    \rownb & Pluripotent~\cite{DesignPrinciplesGeneNetworks} & 36 & - & 0.37 & - & NM & - & - & - & - \\
-    \rownb & Rho-GTPases~\cite{DesignPrinciplesGeneNetworks} & 33 & 1 & 0.21 & - & - & - & - & - & - \\
-    \rownb & Pluripotency~\cite{YachieKinoshita2018} & 36 & - & DNF & - & NM & - & - & - & - \\
+    \rownb & Corral\_ThIL17diff~\cite{corral2021interplay} & 92 & $>1000$ & N/A & - & - & - & - & - & - \\
+    \rownb & DNA\_damage~\cite{DesignPrinciplesGeneNetworks} & 26 & 16 & 0.23 & - & NM & - & - & - & - \\
+    \rownb & Drosophila~\cite{RodrguezVega2014} & 52 & 128 & 0.33 & - & - & - & - & - & - \\
+    \rownb & EMT~\cite{Rozum2021} & 69 & 268 & - & - & - & - & - & - & - \\
+    \rownb & mast\_cell~\cite{aghamiri2020automated} & 73 & $>1000$ & N/A & - & - & - & - & - & - \\
+    \rownb & FT-GRN~\cite{ChvezHernndez2022} & 23 & 32 & DNF & - & NM & - & - & - & - \\
+    \rownb & hedgehog~\cite{DesignPrinciplesGeneNetworks} & 65 & $>1000$ & N/A & - & - & - & - & - & - \\
+    \rownb & metastatic~\cite{DesignPrinciplesGeneNetworks} & 10 & 4 & 0.11 & - & NM & - & - & - & - \\
+    \rownb & Pancreatic\_Cancer~\cite{DesignPrinciplesGeneNetworks} & 43 & $>1000$ & N/A & - & - & - & - & - & - \\
+    \rownb & Pluripotent~\cite{DesignPrinciplesGeneNetworks} & 36 & 276 & 0.37 & - & NM & - & - & - & - \\
+    \rownb & Rho-GTPases~\cite{DesignPrinciplesGeneNetworks} & 33 & 2 & 0.21 & - & - & - & - & - & - \\
+    \rownb & Pluripotency~\cite{YachieKinoshita2018} & 36 & 440 & DNF & - & NM & - & - & - & - \\
     \rownb & p53\_high\_dna~\cite{DesignPrinciplesGeneNetworks} & 16 & 1 & 0.40 & - & NM & - & - & - & - \\
     \rownb & p53\_low\_dna~\cite{DesignPrinciplesGeneNetworks} & 16 & 1 & 0.38 & - & NM & - & - & - & - \\
     
     \midrule % 100 <= n < 200
-    \rownb & angiofull~\cite{Weinstein2017} & 142 & - & N/A & - & - & - & - & - & - \\
+    \rownb & angiofull~\cite{Weinstein2017} & 142 & $>1000$ & N/A & - & - & - & - & - & - \\
     %\rownb & COVID\_19 & 111 & - & N/A & - & - & - & - & - & - \\
-    \rownb & EMT\_Mech~\cite{Sullivan2022} & 136 & - & DNF & - & - & - & - & - & - \\
-    \rownb & EMT\_Mech\_TGFbeta~\cite{Sullivan2022} & 150 & - & DNF & - & - & - & - & - & - \\
-    \rownb & MAPK~\cite{aghamiri2020automated} & 181 & - & N/A & - & - & - & - & - & - \\
-    \rownb & macrophage~\cite{DesignPrinciplesGeneNetworks} & 136 & - & N/A & - & - & - & - & - & - \\
-    \rownb & RA\_apoptosis~\cite{aghamiri2020automated} & 180 & - & N/A & - & - & - & - & - & - \\
-    \rownb & Adhesion\_CIP~\cite{guberman2020boolean} & 121 & - & 57.33 & - & - & - & - & - & - \\
-    \rownb & angiogenesis~\cite{DesignPrinciplesGeneNetworks} & 141 & - & N/A & - & - & - & - & - & - \\
+    \rownb & EMT\_Mech~\cite{Sullivan2022} & 136 & 82 & DNF & - & - & - & - & - & - \\
+    \rownb & EMT\_Mech\_TGFbeta~\cite{Sullivan2022} & 150 & 492 & DNF & - & - & - & - & - & - \\
+    \rownb & MAPK~\cite{aghamiri2020automated} & 181 & $>1000$ & N/A & - & - & - & - & - & - \\
+    \rownb & macrophage~\cite{DesignPrinciplesGeneNetworks} & 136 & $>1000$ & N/A & - & - & - & - & - & - \\
+    \rownb & RA\_apoptosis~\cite{aghamiri2020automated} & 180 & $>1000$ & N/A & - & - & - & - & - & - \\
+    \rownb & Adhesion\_CIP~\cite{guberman2020boolean} & 121 & 78 & 57.33 & - & - & - & - & - & - \\
+    \rownb & angiogenesis~\cite{DesignPrinciplesGeneNetworks} & 141 & $>1000$ & N/A & - & - & - & - & - & - \\
     
     \midrule % 200 <= n
-    \rownb & T-cell-co-receptor~\cite{DesignPrinciplesGeneNetworks} & 206 & - & N/A & - & - & - & - & - & - \\
-    \rownb & Snf1-pathway~\cite{Lubitz2015} & 202 & - & N/A & - & - & - & - & - & - \\
-    \rownb & Mycobacterium~\cite{DesignPrinciplesGeneNetworks} & 317 & - & N/A & - & - & - & - & - & - \\
-    \rownb & Leishmania~\cite{DesignPrinciplesGeneNetworks} & 342 & - & N/A & - & - & - & - & - & - \\
-    \rownb & TcellCheckPoint~\cite{hernandez2020computational} & 218 & - & N/A & - & NM & - & - & - & - \\
-    \rownb & Cholocystokinin~\cite{aghamiri2020automated} & 383 & - & N/A & - & - & - & - & - & - \\
-    \rownb & Alzheimer~\cite{aghamiri2020automated} & 762 & - & N/A & - & NM & - & - & - & - \\
+    \rownb & T-cell-co-receptor~\cite{DesignPrinciplesGeneNetworks} & 206 & $>1000$ & N/A & - & - & - & - & - & - \\
+    \rownb & Snf1-pathway~\cite{Lubitz2015} & 202 & $>1000$ & N/A & - & - & - & - & - & - \\
+    \rownb & Mycobacterium~\cite{DesignPrinciplesGeneNetworks} & 317 & $>1000$ & N/A & - & - & - & - & - & - \\
+    \rownb & Leishmania~\cite{DesignPrinciplesGeneNetworks} & 342 & $>1000$ & N/A & - & - & - & - & - & - \\
+    \rownb & TcellCheckPoint~\cite{hernandez2020computational} & 218 & $>1000$ & N/A & - & NM & - & - & - & - \\
+    \rownb & Cholocystokinin~\cite{aghamiri2020automated} & 383 & $>1000$ & N/A & - & - & - & - & - & - \\
+    \rownb & Alzheimer~\cite{aghamiri2020automated} & 762 & $>1000$ & N/A & - & NM & - & - & - & - \\
     
     \bottomrule
   \end{tabular}
@@ -929,13 +966,13 @@ Note that though enumerating the extremal siphons of a Petri net is exponential 
     \cmidrule(rr){5-8}
     \(n\) & LQM & mpbn & PBN & maxSAT & CLP & ILP & ASP \\
     \midrule
-    100 & - & - & - & - & - & - & - \\
-    150 & - & - & - & - & - & - & - \\
-    200 & - & - & - & - & - & - & - \\
-    250 & - & - & - & - & - & - & - \\
-    300 & - & - & - & - & - & - & - \\
-    350 & - & - & - & - & - & - & - \\
-    400 & - & - & - & - & - & - & - \\
+    100 & 50-50-50 & 50-50-50 & - & - & - & - & - \\
+    150 & 50-50-50 & 50-50-50 & - & - & - & - & - \\
+    200 & 50-50-50 & 50-50-50 & - & - & - & - & - \\
+    250 & 50-50-50 & 50-50-50 & - & - & - & - & - \\
+    300 & 50-50-50 & 50-50-50 & - & - & - & - & - \\
+    350 & 50-50-50 & 50-50-50 & - & - & - & - & - \\
+    400 & 50-50-50 & 50-50-50 & - & - & - & - & - \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -950,13 +987,13 @@ Note that though enumerating the extremal siphons of a Petri net is exponential 
     \cmidrule(rr){5-8}
     \(n\) & LQM & mpbn & PBN & maxSAT & CLP & ILP & ASP \\
     \midrule
-    500 & - & - & - & - & - & - & - \\
-    750 & - & - & - & - & - & - & - \\
-    1000 & - & - & - & - & - & - & - \\
-    1250 & - & - & - & - & - & - & - \\
-    1500 & - & - & - & - & - & - & - \\
-    1750 & - & - & - & - & - & - & - \\
-    2000 & - & - & - & - & - & - & - \\
+    500 & 50-50-50 & 50-50-50 & - & - & - & - & - \\
+    750 & 50-50-50 & 50-50-50 & - & - & - & - & - \\
+    1000 & 50-50-50 & 50-50-50 & - & - & - & - & - \\
+    1250 & 50-50-50 & 50-50-50 & - & - & - & - & - \\
+    1500 & 50-50-50 & 50-50-50 & - & - & - & - & - \\
+    1750 & 50-50-50 & 50-50-50 & - & - & - & - & - \\
+    2000 & 50-50-50 & 50-50-50 & - & - & - & - & - \\
     \bottomrule
   \end{tabular}
 \end{table}
