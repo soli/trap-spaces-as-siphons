@@ -1,169 +1,169 @@
 targets, factors
-v_1__5_Phospho_D_ribosyl__5_amino_4_imidazolecarboxylate_simple_molecule, ((v_Aminoimidazole_ribotide_simple_molecule & v_CO2_simple_molecule) & v_PAICS)
-v_1__5__Phosphoribosyl__5_amino_4__N_succinocarboxamide__imidazole_simple_molecule, (((v_1__5_Phospho_D_ribosyl__5_amino_4_imidazolecarboxylate_simple_molecule & v_L_Aspartate_simple_molecule) & v_ATP_simple_molecule) & v_PAICS)
-v_1__5__Phosphoribosyl__5_amino_4_imidazolecarboxamide_simple_molecule, (v_1__5__Phosphoribosyl__5_amino_4__N_succinocarboxamide__imidazole_simple_molecule & v_ADSL)
-v_1__5__Phosphoribosyl__5_formamido_4_imidazolecarboxamide_simple_molecule, ((v_1__5__Phosphoribosyl__5_amino_4_imidazolecarboxamide_simple_molecule & v_10_Formyltetrahydrofolate_simple_molecule) & v_ATIC)
-v_2__Formamido__N1__5__phosphoribosyl_acetamidine_simple_molecule, ((((v_5_phosphoribosyl_N_formylglycinamide_simple_molecule & v_L_Glutamine_simple_molecule) & v_ATP_simple_molecule) & v_H2O_simple_molecule_cell) & v_PFAS)
-v_2_deoxy__alpha__D_ribose_1_phosphate_simple_molecule, ((v_Deoxyguanosine_simple_molecule & v_Pi_simple_molecule) & v_PNP)
-v_5_phospho__alpha__D_ribose_1_diphosphate_simple_molecule, ((((v_PRPS1 | v_PRPS2) | v_PRPS1L1) & v_D_Ribose_5P_simple_molecule) & v_ATP_simple_molecule)
-v_5_phospho_beta_D_ribosylamine_simple_molecule, (((v_5_phospho__alpha__D_ribose_1_diphosphate_simple_molecule & v_H2O_simple_molecule_cell) & v_L_Glutamine_simple_molecule) & v_PPAT)
-v_5_phospho_beta_D_ribosylglycinamide_simple_molecule, (((v_5_phospho_beta_D_ribosylamine_simple_molecule & v_Glycine_simple_molecule) & v_ATP_simple_molecule) & v_GART)
-v_5_phosphoribosyl_N_formylglycinamide_simple_molecule, ((v_5_phospho_beta_D_ribosylglycinamide_simple_molecule & v_10_Formyltetrahydrofolate_simple_molecule) & v_GART)
-v_ADP_D_ribose_simple_molecule, ((v_NAD_simple_molecule & v_H2O_simple_molecule_cell) & v_CD38)
-v_ADP_simple_molecule, (((((((((((((((((((((v__alpha__D_Galactose_simple_molecule & v_ATP_simple_molecule) & v_GALK1) | ((v_NAD_simple_molecule & v_ATP_simple_molecule) & v_NADK)) | ((((v_Deamino_NAD_simple_molecule & v_L_Glutamine_simple_molecule) & v_ATP_simple_molecule) & v_H2O_simple_molecule_cell) & v_NADSYN1)) | ((v_N_Ribosyl_nicotinamide_simple_molecule & v_ATP_simple_molecule) & v_NRK1)) | ((((v_Nicotinate_simple_molecule & v_5_phospho__alpha__D_ribose_1_diphosphate_simple_molecule) & v_H2O_simple_molecule_cell) & v_ATP_simple_molecule) & v_NAPRT1)) | (((v_5_phospho_beta_D_ribosylamine_simple_molecule & v_Glycine_simple_molecule) & v_ATP_simple_molecule) & v_GART)) | ((((v_5_phosphoribosyl_N_formylglycinamide_simple_molecule & v_L_Glutamine_simple_molecule) & v_ATP_simple_molecule) & v_H2O_simple_molecule_cell) & v_PFAS)) | ((v_2__Formamido__N1__5__phosphoribosyl_acetamidine_simple_molecule & v_ATP_simple_molecule) & v_GART)) | (((v_1__5_Phospho_D_ribosyl__5_amino_4_imidazolecarboxylate_simple_molecule & v_L_Aspartate_simple_molecule) & v_ATP_simple_molecule) & v_PAICS)) | ((v_GMP_simple_molecule & v_ATP_simple_molecule) & v_GUK1)) | ((((((v_NME3 | v_csa2_Nucleoside_diphosphate_kinase_complex_cell) | v_NME5) | v_NME6) | v_NME7) & v_GDP_simple_molecule) & v_ATP_simple_molecule)) | ((((((v_NME3 | v_csa2_Nucleoside_diphosphate_kinase_complex_cell) | v_NME7) | v_NME6) | v_NME5) & v_dGDP_simple_molecule) & v_ATP_simple_molecule)) | ((v_dGMP_simple_molecule & v_ATP_simple_molecule) & v_GUK1)) | ((v_Deoxyguanosine_simple_molecule & v_ATP_simple_molecule) & v_DCK)) | ((v_Adenosine_simple_molecule & v_ATP_simple_molecule) & v_ADK)) | (((((v_AK7 | v_AK1) | v_AK8) | v_AK5) & v_AMP_simple_molecule) & v_ATP_simple_molecule)) | ((v_Deoxyadenosine_simple_molecule & v_ATP_simple_molecule) & v_DCK)) | ((v_dAMP_simple_molecule & v_ATP_simple_molecule) & v_AK5)) | ((((((v_csa5_Nucleoside_diphosphate_kinase_complex_cell | v_NME5) | v_NME3) | v_NME6) | v_NME7) & v_dADP_simple_molecule) & v_ATP_simple_molecule)) | (((((v_AK7 | v_AK1) | v_AK8) | v_AK5) & v_AMP_simple_molecule) & v_ATP_simple_molecule))
-v_AMP_simple_molecule, (((((((v_ENPP1 | v_ENPP3) & v_NAD_simple_molecule) & v_H2O_simple_molecule_cell) | ((((v_PRPS1 | v_PRPS2) | v_PRPS1L1) & v_D_Ribose_5P_simple_molecule) & v_ATP_simple_molecule)) | ((((v_XMP_simple_molecule & v_H2O_simple_molecule_cell) & v_ATP_simple_molecule) & v_L_Glutamine_simple_molecule) & v_GMPS)) | ((v_Adenosine_simple_molecule & v_ATP_simple_molecule) & v_ADK)) | ((v_Adenine_simple_molecule & v_5_phospho__alpha__D_ribose_1_diphosphate_simple_molecule) & v_APRT))
-v_Adenine_simple_molecule, ((v_Adenosine_simple_molecule & v_Pi_simple_molecule) & v_PNP)
-v_Adenosine_simple_molecule, ((v_AMP_simple_molecule & v_H2O_simple_molecule_cell) & v_NT5E)
-v_Aminoimidazole_ribotide_simple_molecule, ((v_2__Formamido__N1__5__phosphoribosyl_acetamidine_simple_molecule & v_ATP_simple_molecule) & v_GART)
-v_Ammonium_simple_molecule, ((((((((v_AMDP2 | v_AMPD1) | v_AMPD3) & v_AMP_simple_molecule) & v_H_simple_molecule) & v_H2O_simple_molecule_cell) | (((v_Guanine_simple_molecule & v_H2O_simple_molecule_cell) & v_H_simple_molecule) & v_GDA)) | (((v_Adenosine_simple_molecule & v_H2O_simple_molecule_cell) & v_H_simple_molecule) & v_ADA)) | (((v_Deoxyadenosine_simple_molecule & v_H2O_simple_molecule_cell) & v_H_simple_molecule) & v_ADA))
-v_CO2_simple_molecule, ((((v_Quinolinate_simple_molecule & v_5_phospho__alpha__D_ribose_1_diphosphate_simple_molecule) & v_H_simple_molecule) & v_H_simple_molecule) & v_QPRT)
-v_D_Galactose_simple_molecule, (((((((v_GLB1 | v_LCT) & v_Lactose_simple_molecule) & v_H2O_simple_molecule_cell) | ((v_Galacitol_simple_molecule & v_NADP_simple_molecule) & v_AKR1B1)) | ((((v_GLA | v_GLA_Nsp14_complex) & v_Melibiose_simple_molecule) & v_H2O_simple_molecule_cell) & !v_Migalastat_drug)) | ((((v_GLA | v_GLA_Nsp14_complex) & v_Raffinose_simple_molecule) & v_H2O_simple_molecule_cell) & !v_Migalastat_drug)) | ((((v_GLA | v_GLA_Nsp14_complex) & v_Stachyose_simple_molecule) & v_H2O_simple_molecule_cell) & !v_Migalastat_drug))
-v_D_Ribose_5P_simple_molecule, (v__alpha_D_Ribose_1P_simple_molecule & v_PGM2)
-v_Deamino_NAD_simple_molecule, (((((v_NMNAT1 | v_NMNAT2) | v_NMNAT3) & v_Nicotinate_D_ribonucleotide_simple_molecule) & v_H_simple_molecule) & v_ATP_simple_molecule)
-v_Deoxyinosine_simple_molecule, (((v_Hypoxanthine_simple_molecule & v_2_deoxy__alpha__D_ribose_1_phosphate_simple_molecule) & v_PNP) | (((v_Deoxyadenosine_simple_molecule & v_H2O_simple_molecule_cell) & v_H_simple_molecule) & v_ADA))
-v_Fumarate_simple_molecule, (v_1__5__Phosphoribosyl__5_amino_4__N_succinocarboxamide__imidazole_simple_molecule & v_ADSL)
-v_GDP_simple_molecule, (((v_GMP_simple_molecule & v_ATP_simple_molecule) & v_GUK1) | (((v_ENTPD2 | v_NTPCR) & v_GTP_simple_molecule) & v_H2O_simple_molecule_cell))
-v_GLA_Nsp14_complex, (v_GLA & v_Nsp14_cell)
-v_GMP_simple_molecule, ((((((((v_XMP_simple_molecule & v_H2O_simple_molecule_cell) & v_ATP_simple_molecule) & v_L_Glutamine_simple_molecule) & v_GMPS) | ((v_Guanine_simple_molecule & v_5_phospho__alpha__D_ribose_1_diphosphate_simple_molecule) & v_HPRT1)) | ((v_GTP_simple_molecule & v_H2O_simple_molecule_cell) & v_ENTPD2)) | ((((((v_ENTPD2 | v_ENTPD4) | v_ENTPD5) | v_ENTPD6) | v_CANT1) & v_GDP_simple_molecule) & v_H2O_simple_molecule_cell)) | ((((v_GMPR | v_GMPR2) & v_IMP_simple_molecule) & v_Ammonium_simple_molecule) & v_NADP_simple_molecule))
-v_GTP_simple_molecule, ((((((v_NME3 | v_csa2_Nucleoside_diphosphate_kinase_complex_cell) | v_NME5) | v_NME6) | v_NME7) & v_GDP_simple_molecule) & v_ATP_simple_molecule)
-v_Guanine_nucleotide_synthesis_phenotype, v_IMPDH2
-v_Guanine_simple_molecule, (((v_Deoxyguanosine_simple_molecule & v_Pi_simple_molecule) & v_PNP) | ((v_Guanosine_simple_molecule & v_Pi_simple_molecule) & v_PNP))
-v_Guanosine_simple_molecule, ((v_GMP_simple_molecule & v_H2O_simple_molecule_cell) & v_NT5E)
-v_H2O_simple_molecule_cell, (((v_1__5__Phosphoribosyl__5_formamido_4_imidazolecarboxamide_simple_molecule & v_ATIC) | ((v_GDP_simple_molecule & v_Thioredoxin_simple_molecule) & v_csa3_ribonucleoside_reductase_complex_cell)) | ((v_ADP_simple_molecule & v_Thioredoxin_simple_molecule) & v_csa4_ribonucleoside_reductase_complex_cell))
-v_H_simple_molecule, (((((((((((((((((((((((((((v_Galacitol_simple_molecule & v_NADP_simple_molecule) & v_AKR1B1) | ((v_NAD_simple_molecule & v_ATP_simple_molecule) & v_NADK)) | ((((v_Deamino_NAD_simple_molecule & v_L_Glutamine_simple_molecule) & v_ATP_simple_molecule) & v_H2O_simple_molecule_cell) & v_NADSYN1)) | ((v_N_Ribosyl_nicotinamide_simple_molecule & v_ATP_simple_molecule) & v_NRK1)) | ((v_NAD_simple_molecule & v_H2O_simple_molecule_cell) & v_CD38)) | (((v_5_phospho_beta_D_ribosylamine_simple_molecule & v_Glycine_simple_molecule) & v_ATP_simple_molecule) & v_GART)) | ((v_5_phospho_beta_D_ribosylglycinamide_simple_molecule & v_10_Formyltetrahydrofolate_simple_molecule) & v_GART)) | ((((v_5_phosphoribosyl_N_formylglycinamide_simple_molecule & v_L_Glutamine_simple_molecule) & v_ATP_simple_molecule) & v_H2O_simple_molecule_cell) & v_PFAS)) | ((v_2__Formamido__N1__5__phosphoribosyl_acetamidine_simple_molecule & v_ATP_simple_molecule) & v_GART)) | ((v_Aminoimidazole_ribotide_simple_molecule & v_CO2_simple_molecule) & v_PAICS)) | ((v_Aminoimidazole_ribotide_simple_molecule & v_CO2_simple_molecule) & v_PAICS)) | (((v_1__5_Phospho_D_ribosyl__5_amino_4_imidazolecarboxylate_simple_molecule & v_L_Aspartate_simple_molecule) & v_ATP_simple_molecule) & v_PAICS)) | ((((((((v_IMPDH1 | v_IMPDH2) | v_IMPDH2_Nsp14_complex) & v_IMP_simple_molecule) & v_NAD_simple_molecule) & v_H2O_simple_molecule_cell) & !v_Mycophenolic_acid_drug) & !v_Merimepodib_drug) & !v_Ribavirin_drug)) | ((((v_XMP_simple_molecule & v_H2O_simple_molecule_cell) & v_ATP_simple_molecule) & v_L_Glutamine_simple_molecule) & v_GMPS)) | ((((v_XMP_simple_molecule & v_H2O_simple_molecule_cell) & v_ATP_simple_molecule) & v_L_Glutamine_simple_molecule) & v_GMPS)) | ((v_Deoxyguanosine_simple_molecule & v_ATP_simple_molecule) & v_DCK)) | ((((v_ITPA | v_ENPP1) | v_ENPP3) & v_dGTP_simple_molecule) & v_H2O_simple_molecule_cell)) | ((v_GTP_simple_molecule & v_H2O_simple_molecule_cell) & v_ENTPD2)) | ((v_GTP_simple_molecule & v_H2O_simple_molecule_cell) & v_ENTPD2)) | (((v_ENTPD2 | v_NTPCR) & v_GTP_simple_molecule) & v_H2O_simple_molecule_cell)) | ((((((v_ENTPD2 | v_ENTPD4) | v_ENTPD5) | v_ENTPD6) | v_CANT1) & v_GDP_simple_molecule) & v_H2O_simple_molecule_cell)) | ((((v_GMPR | v_GMPR2) & v_IMP_simple_molecule) & v_Ammonium_simple_molecule) & v_NADP_simple_molecule)) | ((((v_GMPR | v_GMPR2) & v_IMP_simple_molecule) & v_Ammonium_simple_molecule) & v_NADP_simple_molecule)) | (((v_Hypoxanthine_simple_molecule & v_NAD_simple_molecule) & v_H2O_simple_molecule_cell) & v_XDH)) | ((v_Adenosine_simple_molecule & v_ATP_simple_molecule) & v_ADK)) | ((v_Deoxyadenosine_simple_molecule & v_ATP_simple_molecule) & v_DCK))
-v_Histone_L_lysine_simple_molecule, ((((v_SIRT5 | v_SIRT5_Nsp14_complex) & v_NAD_simple_molecule) & v_Histone_N6_acetyl_L_lysine_simple_molecule) & v_H2O_simple_molecule_mitochondrion)
-v_Hypoxanthine_simple_molecule, ((v_Inosine_simple_molecule & v_Pi_simple_molecule) & v_PNP)
-v_IMPDH2_Nsp14_complex, (v_IMPDH2 & v_Nsp14_cell)
-v_IMP_simple_molecule, (((v_1__5__Phosphoribosyl__5_formamido_4_imidazolecarboxamide_simple_molecule & v_ATIC) | (((((v_AMDP2 | v_AMPD1) | v_AMPD3) & v_AMP_simple_molecule) & v_H_simple_molecule) & v_H2O_simple_molecule_cell)) | ((v_Hypoxanthine_simple_molecule & v_5_phospho__alpha__D_ribose_1_diphosphate_simple_molecule) & v_HPRT1))
-v_Inosine_simple_molecule, (((v_IMP_simple_molecule & v_H2O_simple_molecule_cell) & v_NT5E) | (((v_Adenosine_simple_molecule & v_H2O_simple_molecule_cell) & v_H_simple_molecule) & v_ADA))
-v_L_Glutamate_simple_molecule, (((((((v_Deamino_NAD_simple_molecule & v_L_Glutamine_simple_molecule) & v_ATP_simple_molecule) & v_H2O_simple_molecule_cell) & v_NADSYN1) | (((v_5_phospho__alpha__D_ribose_1_diphosphate_simple_molecule & v_H2O_simple_molecule_cell) & v_L_Glutamine_simple_molecule) & v_PPAT)) | ((((v_5_phosphoribosyl_N_formylglycinamide_simple_molecule & v_L_Glutamine_simple_molecule) & v_ATP_simple_molecule) & v_H2O_simple_molecule_cell) & v_PFAS)) | ((((v_XMP_simple_molecule & v_H2O_simple_molecule_cell) & v_ATP_simple_molecule) & v_L_Glutamine_simple_molecule) & v_GMPS))
-v_Lactose_simple_molecule, ((v_UDP__alpha__D_Galactose_simple_molecule & v__alpha__D_Glucose_simple_molecule) & v_lactose_synthetase_complex)
-v_NADH_simple_molecule, ((((v_NAD_simple_molecule & v_NADPH_simple_molecule) & v_NNT) | ((((((((v_IMPDH1 | v_IMPDH2) | v_IMPDH2_Nsp14_complex) & v_IMP_simple_molecule) & v_NAD_simple_molecule) & v_H2O_simple_molecule_cell) & !v_Mycophenolic_acid_drug) & !v_Merimepodib_drug) & !v_Ribavirin_drug)) | (((v_Hypoxanthine_simple_molecule & v_NAD_simple_molecule) & v_H2O_simple_molecule_cell) & v_XDH))
-v_NADPH_simple_molecule, (((v_Galacitol_simple_molecule & v_NADP_simple_molecule) & v_AKR1B1) | ((((v_GMPR | v_GMPR2) & v_IMP_simple_molecule) & v_Ammonium_simple_molecule) & v_NADP_simple_molecule))
-v_NADP_simple_molecule, (((v_NAD_simple_molecule & v_ATP_simple_molecule) & v_NADK) | ((v_NAD_simple_molecule & v_NADPH_simple_molecule) & v_NNT))
-v_NAD_simple_molecule, (((((v_Deamino_NAD_simple_molecule & v_L_Glutamine_simple_molecule) & v_ATP_simple_molecule) & v_H2O_simple_molecule_cell) & v_NADSYN1) | (((((v_NMNAT2 | v_NMNAT1) | v_NMNAT3) & v_Nicotinamide_D_ribonucleotide_simple_molecule) & v_ATP_simple_molecule) & v_H_simple_molecule))
-v_N_Ribosyl_nicotinamide_simple_molecule, ((v_Nicotinamide_D_ribonucleotide_simple_molecule & v_H2O_simple_molecule_cell) & v_NT5E)
-v_Nicotinamide_D_ribonucleotide_simple_molecule, (((((v_ENPP1 | v_ENPP3) & v_NAD_simple_molecule) & v_H2O_simple_molecule_cell) | ((v_N_Ribosyl_nicotinamide_simple_molecule & v_ATP_simple_molecule) & v_NRK1)) | ((v_Nicotinamide_simple_molecule & v_5_phospho__alpha__D_ribose_1_diphosphate_simple_molecule) & v_NAMPT))
-v_Nicotinamide_simple_molecule, ((((((v_Nicotinate_simple_molecule & v_NADP_simple_molecule) & v_CD38) | ((v_N_Ribosyl_nicotinamide_simple_molecule & v_Pi_simple_molecule) & v_PNP)) | ((((v_SIRT5 | v_SIRT5_Nsp14_complex) & v_NAD_simple_molecule) & v_Histone_N6_acetyl_L_lysine_simple_molecule) & v_H2O_simple_molecule_mitochondrion)) | ((v_NAD_simple_molecule & v_H2O_simple_molecule_cell) & v_CD38)) | v_Nicotinate_simple_molecule)
-v_Nicotinate_D_ribonucleotide_simple_molecule, (((((v_Quinolinate_simple_molecule & v_5_phospho__alpha__D_ribose_1_diphosphate_simple_molecule) & v_H_simple_molecule) & v_H_simple_molecule) & v_QPRT) | ((((v_Nicotinate_simple_molecule & v_5_phospho__alpha__D_ribose_1_diphosphate_simple_molecule) & v_H2O_simple_molecule_cell) & v_ATP_simple_molecule) & v_NAPRT1))
-v_O_Acetyl_ADP_ribose_simple_molecule, ((((v_SIRT5 | v_SIRT5_Nsp14_complex) & v_NAD_simple_molecule) & v_Histone_N6_acetyl_L_lysine_simple_molecule) & v_H2O_simple_molecule_mitochondrion)
-v_PPi_simple_molecule, (((((((((((((((v_NMNAT2 | v_NMNAT1) | v_NMNAT3) & v_Nicotinamide_D_ribonucleotide_simple_molecule) & v_ATP_simple_molecule) & v_H_simple_molecule) | ((v_Nicotinamide_simple_molecule & v_5_phospho__alpha__D_ribose_1_diphosphate_simple_molecule) & v_NAMPT)) | (((((v_NMNAT1 | v_NMNAT2) | v_NMNAT3) & v_Nicotinate_D_ribonucleotide_simple_molecule) & v_H_simple_molecule) & v_ATP_simple_molecule)) | ((((v_Quinolinate_simple_molecule & v_5_phospho__alpha__D_ribose_1_diphosphate_simple_molecule) & v_H_simple_molecule) & v_H_simple_molecule) & v_QPRT)) | ((((v_Nicotinate_simple_molecule & v_5_phospho__alpha__D_ribose_1_diphosphate_simple_molecule) & v_H2O_simple_molecule_cell) & v_ATP_simple_molecule) & v_NAPRT1)) | (((v_5_phospho__alpha__D_ribose_1_diphosphate_simple_molecule & v_H2O_simple_molecule_cell) & v_L_Glutamine_simple_molecule) & v_PPAT)) | ((((v_XMP_simple_molecule & v_H2O_simple_molecule_cell) & v_ATP_simple_molecule) & v_L_Glutamine_simple_molecule) & v_GMPS)) | ((((v_ITPA | v_ENPP1) | v_ENPP3) & v_dGTP_simple_molecule) & v_H2O_simple_molecule_cell)) | ((v_Guanine_simple_molecule & v_5_phospho__alpha__D_ribose_1_diphosphate_simple_molecule) & v_HPRT1)) | ((v_Hypoxanthine_simple_molecule & v_5_phospho__alpha__D_ribose_1_diphosphate_simple_molecule) & v_HPRT1)) | ((v_Adenine_simple_molecule & v_5_phospho__alpha__D_ribose_1_diphosphate_simple_molecule) & v_APRT))
-v_Pi_simple_molecule, ((((((((((((((((v_Nicotinamide_D_ribonucleotide_simple_molecule & v_H2O_simple_molecule_cell) & v_NT5E) | ((((v_Nicotinate_simple_molecule & v_5_phospho__alpha__D_ribose_1_diphosphate_simple_molecule) & v_H2O_simple_molecule_cell) & v_ATP_simple_molecule) & v_NAPRT1)) | (((v_5_phospho_beta_D_ribosylamine_simple_molecule & v_Glycine_simple_molecule) & v_ATP_simple_molecule) & v_GART)) | ((((v_5_phosphoribosyl_N_formylglycinamide_simple_molecule & v_L_Glutamine_simple_molecule) & v_ATP_simple_molecule) & v_H2O_simple_molecule_cell) & v_PFAS)) | ((v_2__Formamido__N1__5__phosphoribosyl_acetamidine_simple_molecule & v_ATP_simple_molecule) & v_GART)) | (((v_1__5_Phospho_D_ribosyl__5_amino_4_imidazolecarboxylate_simple_molecule & v_L_Aspartate_simple_molecule) & v_ATP_simple_molecule) & v_PAICS)) | ((v_GMP_simple_molecule & v_H2O_simple_molecule_cell) & v_NT5E)) | ((v_GTP_simple_molecule & v_H2O_simple_molecule_cell) & v_ENTPD2)) | ((v_GTP_simple_molecule & v_H2O_simple_molecule_cell) & v_ENTPD2)) | (((v_ENTPD2 | v_NTPCR) & v_GTP_simple_molecule) & v_H2O_simple_molecule_cell)) | ((((((v_ENTPD2 | v_ENTPD4) | v_ENTPD5) | v_ENTPD6) | v_CANT1) & v_GDP_simple_molecule) & v_H2O_simple_molecule_cell)) | ((v_XMP_simple_molecule & v_H2O_simple_molecule_cell) & v_NT5E)) | ((v_IMP_simple_molecule & v_H2O_simple_molecule_cell) & v_NT5E)) | ((v_AMP_simple_molecule & v_H2O_simple_molecule_cell) & v_NT5E)) | ((v_Hypoxanthine_simple_molecule & v_2_deoxy__alpha__D_ribose_1_phosphate_simple_molecule) & v_PNP))
-v_Raffinose_simple_molecule, ((((v_GLA | v_GLA_Nsp14_complex) & v_Stachyose_simple_molecule) & v_H2O_simple_molecule_cell) & !v_Migalastat_drug)
-v_SIRT5_Nsp14_complex, (v_SIRT5 & v_Nsp14_mitochondrion)
-v_Sucrose_simple_molecule, ((((v_GLA | v_GLA_Nsp14_complex) & v_Raffinose_simple_molecule) & v_H2O_simple_molecule_cell) & !v_Migalastat_drug)
-v_Tetrahydrofolate_simple_molecule, (((v_5_phospho_beta_D_ribosylglycinamide_simple_molecule & v_10_Formyltetrahydrofolate_simple_molecule) & v_GART) | ((v_1__5__Phosphoribosyl__5_amino_4_imidazolecarboxamide_simple_molecule & v_10_Formyltetrahydrofolate_simple_molecule) & v_ATIC))
-v_Thioredoxin_disulfide_simple_molecule, (((v_GDP_simple_molecule & v_Thioredoxin_simple_molecule) & v_csa3_ribonucleoside_reductase_complex_cell) | ((v_ADP_simple_molecule & v_Thioredoxin_simple_molecule) & v_csa4_ribonucleoside_reductase_complex_cell))
-v_UDP__alpha__D_Galactose_simple_molecule, (((v__alpha__D_Galactose_1P_simple_molecule & v_UDP__alpha__D_Glucose_simple_molecule) & v_GALT) | (v_UDP__alpha__D_Glucose_simple_molecule & v_GALE))
-v_UDP_simple_molecule, ((v_UDP__alpha__D_Galactose_simple_molecule & v__alpha__D_Glucose_simple_molecule) & v_lactose_synthetase_complex)
-v_UTP_simple_molecule, ((v_UDP__alpha__D_Glucose_simple_molecule & v_PPi_simple_molecule) & v_UGP2)
-v_Urea_cycle_phenotype, v_SIRT5
-v_XMP_simple_molecule, ((((((((v_IMPDH1 | v_IMPDH2) | v_IMPDH2_Nsp14_complex) & v_IMP_simple_molecule) & v_NAD_simple_molecule) & v_H2O_simple_molecule_cell) & !v_Mycophenolic_acid_drug) & !v_Merimepodib_drug) & !v_Ribavirin_drug)
-v_Xanthine_simple_molecule, ((((v_Xanthosine_simple_molecule & v_Pi_simple_molecule) & v_PNP) | (((v_Hypoxanthine_simple_molecule & v_NAD_simple_molecule) & v_H2O_simple_molecule_cell) & v_XDH)) | (((v_Guanine_simple_molecule & v_H2O_simple_molecule_cell) & v_H_simple_molecule) & v_GDA))
-v_Xanthosine_simple_molecule, ((v_XMP_simple_molecule & v_H2O_simple_molecule_cell) & v_NT5E)
-v__alpha__D_Galactose_1P_simple_molecule, ((v__alpha__D_Galactose_simple_molecule & v_ATP_simple_molecule) & v_GALK1)
-v__alpha__D_Galactose_simple_molecule, (v_D_Galactose_simple_molecule & v_GALM)
-v__alpha__D_Glucose_1_P_simple_molecule, (((v__alpha__D_Galactose_1P_simple_molecule & v_UDP__alpha__D_Glucose_simple_molecule) & v_GALT) | ((v_UDP__alpha__D_Glucose_simple_molecule & v_PPi_simple_molecule) & v_UGP2))
-v__alpha__D_Glucose_simple_molecule, ((((v_GLB1 | v_LCT) & v_Lactose_simple_molecule) & v_H2O_simple_molecule_cell) | ((((v_GLA | v_GLA_Nsp14_complex) & v_Melibiose_simple_molecule) & v_H2O_simple_molecule_cell) & !v_Migalastat_drug))
-v__alpha__D_Ribose_1_phosphate_simple_molecule, ((((((v_N_Ribosyl_nicotinamide_simple_molecule & v_Pi_simple_molecule) & v_PNP) | ((v_Guanosine_simple_molecule & v_Pi_simple_molecule) & v_PNP)) | ((v_Xanthosine_simple_molecule & v_Pi_simple_molecule) & v_PNP)) | ((v_Inosine_simple_molecule & v_Pi_simple_molecule) & v_PNP)) | ((v_Adenosine_simple_molecule & v_Pi_simple_molecule) & v_PNP))
-v_dADP_simple_molecule, (((v_dAMP_simple_molecule & v_ATP_simple_molecule) & v_AK5) | ((v_ADP_simple_molecule & v_Thioredoxin_simple_molecule) & v_csa4_ribonucleoside_reductase_complex_cell))
-v_dAMP_simple_molecule, ((v_Deoxyadenosine_simple_molecule & v_ATP_simple_molecule) & v_DCK)
-v_dATP_simple_molecule, ((((((v_csa5_Nucleoside_diphosphate_kinase_complex_cell | v_NME5) | v_NME3) | v_NME6) | v_NME7) & v_dADP_simple_molecule) & v_ATP_simple_molecule)
-v_dGDP_simple_molecule, (((v_GDP_simple_molecule & v_Thioredoxin_simple_molecule) & v_csa3_ribonucleoside_reductase_complex_cell) | ((v_dGMP_simple_molecule & v_ATP_simple_molecule) & v_GUK1))
-v_dGMP_simple_molecule, (((v_Deoxyguanosine_simple_molecule & v_ATP_simple_molecule) & v_DCK) | ((((v_ITPA | v_ENPP1) | v_ENPP3) & v_dGTP_simple_molecule) & v_H2O_simple_molecule_cell))
-v_dGTP_simple_molecule, ((((((v_NME3 | v_csa2_Nucleoside_diphosphate_kinase_complex_cell) | v_NME7) | v_NME6) | v_NME5) & v_dGDP_simple_molecule) & v_ATP_simple_molecule)
-v_nicotinate_adenine_dinucleotide_phosphate_simple_molecule, ((v_Nicotinate_simple_molecule & v_NADP_simple_molecule) & v_CD38)
-v_PAICS, v_PAICS
-v_ATP_simple_molecule, v_ATP_simple_molecule
-v_L_Aspartate_simple_molecule, v_L_Aspartate_simple_molecule
-v_ADSL, v_ADSL
-v_ATIC, v_ATIC
-v_10_Formyltetrahydrofolate_simple_molecule, v_10_Formyltetrahydrofolate_simple_molecule
-v_PFAS, v_PFAS
-v_L_Glutamine_simple_molecule, v_L_Glutamine_simple_molecule
-v_PNP, v_PNP
-v_Deoxyguanosine_simple_molecule, v_Deoxyguanosine_simple_molecule
-v_PRPS2, v_PRPS2
-v_PRPS1, v_PRPS1
-v_PRPS1L1, v_PRPS1L1
-v_PPAT, v_PPAT
-v_Glycine_simple_molecule, v_Glycine_simple_molecule
-v_GART, v_GART
-v_CD38, v_CD38
-v_NRK1, v_NRK1
-v_csa5_Nucleoside_diphosphate_kinase_complex_cell, v_csa5_Nucleoside_diphosphate_kinase_complex_cell
-v_Nicotinate_simple_molecule, v_Nicotinate_simple_molecule
-v_DCK, v_DCK
-v_NAPRT1, v_NAPRT1
-v_ADK, v_ADK
-v_GUK1, v_GUK1
-v_AK7, v_AK7
-v_NME3, v_NME3
-v_AK1, v_AK1
-v_GALK1, v_GALK1
-v_csa2_Nucleoside_diphosphate_kinase_complex_cell, v_csa2_Nucleoside_diphosphate_kinase_complex_cell
-v_AK8, v_AK8
-v_NADK, v_NADK
-v_NME5, v_NME5
-v_AK5, v_AK5
-v_NME6, v_NME6
-v_Deoxyadenosine_simple_molecule, v_Deoxyadenosine_simple_molecule
-v_NADSYN1, v_NADSYN1
-v_NME7, v_NME7
-v_APRT, v_APRT
-v_ENPP1, v_ENPP1
-v_ENPP3, v_ENPP3
-v_GMPS, v_GMPS
-v_NT5E, v_NT5E
-v_ADA, v_ADA
-v_AMPD1, v_AMPD1
-v_GDA, v_GDA
-v_AMPD3, v_AMPD3
-v_AMDP2, v_AMDP2
-v_QPRT, v_QPRT
-v_Quinolinate_simple_molecule, v_Quinolinate_simple_molecule
-v_GLB1, v_GLB1
-v_AKR1B1, v_AKR1B1
-v_Galacitol_simple_molecule, v_Galacitol_simple_molecule
-v_Melibiose_simple_molecule, v_Melibiose_simple_molecule
-v_LCT, v_LCT
-v_Stachyose_simple_molecule, v_Stachyose_simple_molecule
-v_GLA, v_GLA
-v_Migalastat_drug, v_Migalastat_drug
-v_PGM2, v_PGM2
-v__alpha_D_Ribose_1P_simple_molecule, v__alpha_D_Ribose_1P_simple_molecule
-v_NMNAT3, v_NMNAT3
-v_NMNAT2, v_NMNAT2
-v_NMNAT1, v_NMNAT1
-v_ENTPD2, v_ENTPD2
-v_NTPCR, v_NTPCR
-v_Nsp14_cell, v_Nsp14_cell
-v_ENTPD5, v_ENTPD5
-v_HPRT1, v_HPRT1
-v_ENTPD6, v_ENTPD6
-v_GMPR, v_GMPR
-v_CANT1, v_CANT1
-v_GMPR2, v_GMPR2
-v_ENTPD4, v_ENTPD4
-v_IMPDH2, v_IMPDH2
-v_csa4_ribonucleoside_reductase_complex_cell, v_csa4_ribonucleoside_reductase_complex_cell
-v_csa3_ribonucleoside_reductase_complex_cell, v_csa3_ribonucleoside_reductase_complex_cell
-v_Thioredoxin_simple_molecule, v_Thioredoxin_simple_molecule
-v_Merimepodib_drug, v_Merimepodib_drug
-v_Ribavirin_drug, v_Ribavirin_drug
-v_ITPA, v_ITPA
-v_XDH, v_XDH
-v_IMPDH1, v_IMPDH1
-v_Mycophenolic_acid_drug, v_Mycophenolic_acid_drug
-v_Histone_N6_acetyl_L_lysine_simple_molecule, v_Histone_N6_acetyl_L_lysine_simple_molecule
-v_H2O_simple_molecule_mitochondrion, v_H2O_simple_molecule_mitochondrion
-v_SIRT5, v_SIRT5
-v_lactose_synthetase_complex, v_lactose_synthetase_complex
-v_NNT, v_NNT
-v_NAMPT, v_NAMPT
-v_Nsp14_mitochondrion, v_Nsp14_mitochondrion
-v_GALT, v_GALT
-v_UDP__alpha__D_Glucose_simple_molecule, v_UDP__alpha__D_Glucose_simple_molecule
-v_GALE, v_GALE
-v_UGP2, v_UGP2
-v_GALM, v_GALM
+n10_Formyltetrahydrofolate_simple_molecule, n10_Formyltetrahydrofolate_simple_molecule
+n1__5_Phospho_D_ribosyl__5_amino_4_imidazolecarboxylate_simple_molecule, ((Aminoimidazole_ribotide_simple_molecule & CO2_simple_molecule) & PAICS)
+n1__5__Phosphoribosyl__5_amino_4__N_succinocarboxamide__imidazole_simple_molecule, (((n1__5_Phospho_D_ribosyl__5_amino_4_imidazolecarboxylate_simple_molecule & L_Aspartate_simple_molecule) & ATP_simple_molecule) & PAICS)
+n1__5__Phosphoribosyl__5_amino_4_imidazolecarboxamide_simple_molecule, (n1__5__Phosphoribosyl__5_amino_4__N_succinocarboxamide__imidazole_simple_molecule & ADSL)
+n1__5__Phosphoribosyl__5_formamido_4_imidazolecarboxamide_simple_molecule, ((n1__5__Phosphoribosyl__5_amino_4_imidazolecarboxamide_simple_molecule & n10_Formyltetrahydrofolate_simple_molecule) & ATIC)
+n2__Formamido__N1__5__phosphoribosyl_acetamidine_simple_molecule, ((((n5_phosphoribosyl_N_formylglycinamide_simple_molecule & L_Glutamine_simple_molecule) & ATP_simple_molecule) & H2O_simple_molecule_cell) & PFAS)
+n2_deoxy__alpha__D_ribose_1_phosphate_simple_molecule, ((Deoxyguanosine_simple_molecule & Pi_simple_molecule) & PNP)
+n5_phospho__alpha__D_ribose_1_diphosphate_simple_molecule, ((((PRPS1 | PRPS2) | PRPS1L1) & D_Ribose_5P_simple_molecule) & ATP_simple_molecule)
+n5_phospho_beta_D_ribosylamine_simple_molecule, (((n5_phospho__alpha__D_ribose_1_diphosphate_simple_molecule & H2O_simple_molecule_cell) & L_Glutamine_simple_molecule) & PPAT)
+n5_phospho_beta_D_ribosylglycinamide_simple_molecule, (((n5_phospho_beta_D_ribosylamine_simple_molecule & Glycine_simple_molecule) & ATP_simple_molecule) & GART)
+n5_phosphoribosyl_N_formylglycinamide_simple_molecule, ((n5_phospho_beta_D_ribosylglycinamide_simple_molecule & n10_Formyltetrahydrofolate_simple_molecule) & GART)
+ADA, ADA
+ADK, ADK
+ADP_D_ribose_simple_molecule, ((NAD_simple_molecule & H2O_simple_molecule_cell) & CD38)
+ADP_simple_molecule, (((((((((((((((((((((_alpha__D_Galactose_simple_molecule & ATP_simple_molecule) & GALK1) | ((NAD_simple_molecule & ATP_simple_molecule) & NADK)) | ((((Deamino_NAD_simple_molecule & L_Glutamine_simple_molecule) & ATP_simple_molecule) & H2O_simple_molecule_cell) & NADSYN1)) | ((N_Ribosyl_nicotinamide_simple_molecule & ATP_simple_molecule) & NRK1)) | ((((Nicotinate_simple_molecule & n5_phospho__alpha__D_ribose_1_diphosphate_simple_molecule) & H2O_simple_molecule_cell) & ATP_simple_molecule) & NAPRT1)) | (((n5_phospho_beta_D_ribosylamine_simple_molecule & Glycine_simple_molecule) & ATP_simple_molecule) & GART)) | ((((n5_phosphoribosyl_N_formylglycinamide_simple_molecule & L_Glutamine_simple_molecule) & ATP_simple_molecule) & H2O_simple_molecule_cell) & PFAS)) | ((n2__Formamido__N1__5__phosphoribosyl_acetamidine_simple_molecule & ATP_simple_molecule) & GART)) | (((n1__5_Phospho_D_ribosyl__5_amino_4_imidazolecarboxylate_simple_molecule & L_Aspartate_simple_molecule) & ATP_simple_molecule) & PAICS)) | ((GMP_simple_molecule & ATP_simple_molecule) & GUK1)) | ((((((NME3 | csa2_Nucleoside_diphosphate_kinase_complex_cell) | NME5) | NME6) | NME7) & GDP_simple_molecule) & ATP_simple_molecule)) | ((((((NME3 | csa2_Nucleoside_diphosphate_kinase_complex_cell) | NME7) | NME6) | NME5) & dGDP_simple_molecule) & ATP_simple_molecule)) | ((dGMP_simple_molecule & ATP_simple_molecule) & GUK1)) | ((Deoxyguanosine_simple_molecule & ATP_simple_molecule) & DCK)) | ((Adenosine_simple_molecule & ATP_simple_molecule) & ADK)) | (((((AK7 | AK1) | AK8) | AK5) & AMP_simple_molecule) & ATP_simple_molecule)) | ((Deoxyadenosine_simple_molecule & ATP_simple_molecule) & DCK)) | ((dAMP_simple_molecule & ATP_simple_molecule) & AK5)) | ((((((csa5_Nucleoside_diphosphate_kinase_complex_cell | NME5) | NME3) | NME6) | NME7) & dADP_simple_molecule) & ATP_simple_molecule)) | (((((AK7 | AK1) | AK8) | AK5) & AMP_simple_molecule) & ATP_simple_molecule))
+ADSL, ADSL
+AK1, AK1
+AK5, AK5
+AK7, AK7
+AK8, AK8
+AKR1B1, AKR1B1
+AMDP2, AMDP2
+AMPD1, AMPD1
+AMPD3, AMPD3
+AMP_simple_molecule, (((((((ENPP1 | ENPP3) & NAD_simple_molecule) & H2O_simple_molecule_cell) | ((((PRPS1 | PRPS2) | PRPS1L1) & D_Ribose_5P_simple_molecule) & ATP_simple_molecule)) | ((((XMP_simple_molecule & H2O_simple_molecule_cell) & ATP_simple_molecule) & L_Glutamine_simple_molecule) & GMPS)) | ((Adenosine_simple_molecule & ATP_simple_molecule) & ADK)) | ((Adenine_simple_molecule & n5_phospho__alpha__D_ribose_1_diphosphate_simple_molecule) & APRT))
+APRT, APRT
+ATIC, ATIC
+ATP_simple_molecule, ATP_simple_molecule
+Adenine_simple_molecule, ((Adenosine_simple_molecule & Pi_simple_molecule) & PNP)
+Adenosine_simple_molecule, ((AMP_simple_molecule & H2O_simple_molecule_cell) & NT5E)
+Aminoimidazole_ribotide_simple_molecule, ((n2__Formamido__N1__5__phosphoribosyl_acetamidine_simple_molecule & ATP_simple_molecule) & GART)
+Ammonium_simple_molecule, ((((((((AMDP2 | AMPD1) | AMPD3) & AMP_simple_molecule) & H_simple_molecule) & H2O_simple_molecule_cell) | (((Guanine_simple_molecule & H2O_simple_molecule_cell) & H_simple_molecule) & GDA)) | (((Adenosine_simple_molecule & H2O_simple_molecule_cell) & H_simple_molecule) & ADA)) | (((Deoxyadenosine_simple_molecule & H2O_simple_molecule_cell) & H_simple_molecule) & ADA))
+CANT1, CANT1
+CD38, CD38
+CO2_simple_molecule, ((((Quinolinate_simple_molecule & n5_phospho__alpha__D_ribose_1_diphosphate_simple_molecule) & H_simple_molecule) & H_simple_molecule) & QPRT)
+DCK, DCK
+D_Galactose_simple_molecule, (((((((GLB1 | LCT) & Lactose_simple_molecule) & H2O_simple_molecule_cell) | ((Galacitol_simple_molecule & NADP_simple_molecule) & AKR1B1)) | ((((GLA | GLA_Nsp14_complex) & Melibiose_simple_molecule) & H2O_simple_molecule_cell) & !Migalastat_drug)) | ((((GLA | GLA_Nsp14_complex) & Raffinose_simple_molecule) & H2O_simple_molecule_cell) & !Migalastat_drug)) | ((((GLA | GLA_Nsp14_complex) & Stachyose_simple_molecule) & H2O_simple_molecule_cell) & !Migalastat_drug))
+D_Ribose_5P_simple_molecule, (_alpha_D_Ribose_1P_simple_molecule & PGM2)
+Deamino_NAD_simple_molecule, (((((NMNAT1 | NMNAT2) | NMNAT3) & Nicotinate_D_ribonucleotide_simple_molecule) & H_simple_molecule) & ATP_simple_molecule)
+Deoxyadenosine_simple_molecule, Deoxyadenosine_simple_molecule
+Deoxyguanosine_simple_molecule, Deoxyguanosine_simple_molecule
+Deoxyinosine_simple_molecule, (((Hypoxanthine_simple_molecule & n2_deoxy__alpha__D_ribose_1_phosphate_simple_molecule) & PNP) | (((Deoxyadenosine_simple_molecule & H2O_simple_molecule_cell) & H_simple_molecule) & ADA))
+ENPP1, ENPP1
+ENPP3, ENPP3
+ENTPD2, ENTPD2
+ENTPD4, ENTPD4
+ENTPD5, ENTPD5
+ENTPD6, ENTPD6
+Fumarate_simple_molecule, (n1__5__Phosphoribosyl__5_amino_4__N_succinocarboxamide__imidazole_simple_molecule & ADSL)
+GALE, GALE
+GALK1, GALK1
+GALM, GALM
+GALT, GALT
+GART, GART
+GDA, GDA
+GDP_simple_molecule, (((GMP_simple_molecule & ATP_simple_molecule) & GUK1) | (((ENTPD2 | NTPCR) & GTP_simple_molecule) & H2O_simple_molecule_cell))
+GLA, GLA
+GLA_Nsp14_complex, (GLA & Nsp14_cell)
+GLB1, GLB1
+GMPR, GMPR
+GMPR2, GMPR2
+GMPS, GMPS
+GMP_simple_molecule, ((((((((XMP_simple_molecule & H2O_simple_molecule_cell) & ATP_simple_molecule) & L_Glutamine_simple_molecule) & GMPS) | ((Guanine_simple_molecule & n5_phospho__alpha__D_ribose_1_diphosphate_simple_molecule) & HPRT1)) | ((GTP_simple_molecule & H2O_simple_molecule_cell) & ENTPD2)) | ((((((ENTPD2 | ENTPD4) | ENTPD5) | ENTPD6) | CANT1) & GDP_simple_molecule) & H2O_simple_molecule_cell)) | ((((GMPR | GMPR2) & IMP_simple_molecule) & Ammonium_simple_molecule) & NADP_simple_molecule))
+GTP_simple_molecule, ((((((NME3 | csa2_Nucleoside_diphosphate_kinase_complex_cell) | NME5) | NME6) | NME7) & GDP_simple_molecule) & ATP_simple_molecule)
+GUK1, GUK1
+Galacitol_simple_molecule, Galacitol_simple_molecule
+Glycine_simple_molecule, Glycine_simple_molecule
+Guanine_nucleotide_synthesis_phenotype, IMPDH2
+Guanine_simple_molecule, (((Deoxyguanosine_simple_molecule & Pi_simple_molecule) & PNP) | ((Guanosine_simple_molecule & Pi_simple_molecule) & PNP))
+Guanosine_simple_molecule, ((GMP_simple_molecule & H2O_simple_molecule_cell) & NT5E)
+H2O_simple_molecule_cell, (((n1__5__Phosphoribosyl__5_formamido_4_imidazolecarboxamide_simple_molecule & ATIC) | ((GDP_simple_molecule & Thioredoxin_simple_molecule) & csa3_ribonucleoside_reductase_complex_cell)) | ((ADP_simple_molecule & Thioredoxin_simple_molecule) & csa4_ribonucleoside_reductase_complex_cell))
+H2O_simple_molecule_mitochondrion, H2O_simple_molecule_mitochondrion
+HPRT1, HPRT1
+H_simple_molecule, (((((((((((((((((((((((((((Galacitol_simple_molecule & NADP_simple_molecule) & AKR1B1) | ((NAD_simple_molecule & ATP_simple_molecule) & NADK)) | ((((Deamino_NAD_simple_molecule & L_Glutamine_simple_molecule) & ATP_simple_molecule) & H2O_simple_molecule_cell) & NADSYN1)) | ((N_Ribosyl_nicotinamide_simple_molecule & ATP_simple_molecule) & NRK1)) | ((NAD_simple_molecule & H2O_simple_molecule_cell) & CD38)) | (((n5_phospho_beta_D_ribosylamine_simple_molecule & Glycine_simple_molecule) & ATP_simple_molecule) & GART)) | ((n5_phospho_beta_D_ribosylglycinamide_simple_molecule & n10_Formyltetrahydrofolate_simple_molecule) & GART)) | ((((n5_phosphoribosyl_N_formylglycinamide_simple_molecule & L_Glutamine_simple_molecule) & ATP_simple_molecule) & H2O_simple_molecule_cell) & PFAS)) | ((n2__Formamido__N1__5__phosphoribosyl_acetamidine_simple_molecule & ATP_simple_molecule) & GART)) | ((Aminoimidazole_ribotide_simple_molecule & CO2_simple_molecule) & PAICS)) | ((Aminoimidazole_ribotide_simple_molecule & CO2_simple_molecule) & PAICS)) | (((n1__5_Phospho_D_ribosyl__5_amino_4_imidazolecarboxylate_simple_molecule & L_Aspartate_simple_molecule) & ATP_simple_molecule) & PAICS)) | ((((((((IMPDH1 | IMPDH2) | IMPDH2_Nsp14_complex) & IMP_simple_molecule) & NAD_simple_molecule) & H2O_simple_molecule_cell) & !Mycophenolic_acid_drug) & !Merimepodib_drug) & !Ribavirin_drug)) | ((((XMP_simple_molecule & H2O_simple_molecule_cell) & ATP_simple_molecule) & L_Glutamine_simple_molecule) & GMPS)) | ((((XMP_simple_molecule & H2O_simple_molecule_cell) & ATP_simple_molecule) & L_Glutamine_simple_molecule) & GMPS)) | ((Deoxyguanosine_simple_molecule & ATP_simple_molecule) & DCK)) | ((((ITPA | ENPP1) | ENPP3) & dGTP_simple_molecule) & H2O_simple_molecule_cell)) | ((GTP_simple_molecule & H2O_simple_molecule_cell) & ENTPD2)) | ((GTP_simple_molecule & H2O_simple_molecule_cell) & ENTPD2)) | (((ENTPD2 | NTPCR) & GTP_simple_molecule) & H2O_simple_molecule_cell)) | ((((((ENTPD2 | ENTPD4) | ENTPD5) | ENTPD6) | CANT1) & GDP_simple_molecule) & H2O_simple_molecule_cell)) | ((((GMPR | GMPR2) & IMP_simple_molecule) & Ammonium_simple_molecule) & NADP_simple_molecule)) | ((((GMPR | GMPR2) & IMP_simple_molecule) & Ammonium_simple_molecule) & NADP_simple_molecule)) | (((Hypoxanthine_simple_molecule & NAD_simple_molecule) & H2O_simple_molecule_cell) & XDH)) | ((Adenosine_simple_molecule & ATP_simple_molecule) & ADK)) | ((Deoxyadenosine_simple_molecule & ATP_simple_molecule) & DCK))
+Histone_L_lysine_simple_molecule, ((((SIRT5 | SIRT5_Nsp14_complex) & NAD_simple_molecule) & Histone_N6_acetyl_L_lysine_simple_molecule) & H2O_simple_molecule_mitochondrion)
+Histone_N6_acetyl_L_lysine_simple_molecule, Histone_N6_acetyl_L_lysine_simple_molecule
+Hypoxanthine_simple_molecule, ((Inosine_simple_molecule & Pi_simple_molecule) & PNP)
+IMPDH1, IMPDH1
+IMPDH2, IMPDH2
+IMPDH2_Nsp14_complex, (IMPDH2 & Nsp14_cell)
+IMP_simple_molecule, (((n1__5__Phosphoribosyl__5_formamido_4_imidazolecarboxamide_simple_molecule & ATIC) | (((((AMDP2 | AMPD1) | AMPD3) & AMP_simple_molecule) & H_simple_molecule) & H2O_simple_molecule_cell)) | ((Hypoxanthine_simple_molecule & n5_phospho__alpha__D_ribose_1_diphosphate_simple_molecule) & HPRT1))
+ITPA, ITPA
+Inosine_simple_molecule, (((IMP_simple_molecule & H2O_simple_molecule_cell) & NT5E) | (((Adenosine_simple_molecule & H2O_simple_molecule_cell) & H_simple_molecule) & ADA))
+LCT, LCT
+L_Aspartate_simple_molecule, L_Aspartate_simple_molecule
+L_Glutamate_simple_molecule, (((((((Deamino_NAD_simple_molecule & L_Glutamine_simple_molecule) & ATP_simple_molecule) & H2O_simple_molecule_cell) & NADSYN1) | (((n5_phospho__alpha__D_ribose_1_diphosphate_simple_molecule & H2O_simple_molecule_cell) & L_Glutamine_simple_molecule) & PPAT)) | ((((n5_phosphoribosyl_N_formylglycinamide_simple_molecule & L_Glutamine_simple_molecule) & ATP_simple_molecule) & H2O_simple_molecule_cell) & PFAS)) | ((((XMP_simple_molecule & H2O_simple_molecule_cell) & ATP_simple_molecule) & L_Glutamine_simple_molecule) & GMPS))
+L_Glutamine_simple_molecule, L_Glutamine_simple_molecule
+Lactose_simple_molecule, ((UDP__alpha__D_Galactose_simple_molecule & _alpha__D_Glucose_simple_molecule) & lactose_synthetase_complex)
+Melibiose_simple_molecule, Melibiose_simple_molecule
+Merimepodib_drug, Merimepodib_drug
+Migalastat_drug, Migalastat_drug
+Mycophenolic_acid_drug, Mycophenolic_acid_drug
+NADH_simple_molecule, ((((NAD_simple_molecule & NADPH_simple_molecule) & NNT) | ((((((((IMPDH1 | IMPDH2) | IMPDH2_Nsp14_complex) & IMP_simple_molecule) & NAD_simple_molecule) & H2O_simple_molecule_cell) & !Mycophenolic_acid_drug) & !Merimepodib_drug) & !Ribavirin_drug)) | (((Hypoxanthine_simple_molecule & NAD_simple_molecule) & H2O_simple_molecule_cell) & XDH))
+NADK, NADK
+NADPH_simple_molecule, (((Galacitol_simple_molecule & NADP_simple_molecule) & AKR1B1) | ((((GMPR | GMPR2) & IMP_simple_molecule) & Ammonium_simple_molecule) & NADP_simple_molecule))
+NADP_simple_molecule, (((NAD_simple_molecule & ATP_simple_molecule) & NADK) | ((NAD_simple_molecule & NADPH_simple_molecule) & NNT))
+NADSYN1, NADSYN1
+NAD_simple_molecule, (((((Deamino_NAD_simple_molecule & L_Glutamine_simple_molecule) & ATP_simple_molecule) & H2O_simple_molecule_cell) & NADSYN1) | (((((NMNAT2 | NMNAT1) | NMNAT3) & Nicotinamide_D_ribonucleotide_simple_molecule) & ATP_simple_molecule) & H_simple_molecule))
+NAMPT, NAMPT
+NAPRT1, NAPRT1
+NME3, NME3
+NME5, NME5
+NME6, NME6
+NME7, NME7
+NMNAT1, NMNAT1
+NMNAT2, NMNAT2
+NMNAT3, NMNAT3
+NNT, NNT
+NRK1, NRK1
+NT5E, NT5E
+NTPCR, NTPCR
+N_Ribosyl_nicotinamide_simple_molecule, ((Nicotinamide_D_ribonucleotide_simple_molecule & H2O_simple_molecule_cell) & NT5E)
+Nicotinamide_D_ribonucleotide_simple_molecule, (((((ENPP1 | ENPP3) & NAD_simple_molecule) & H2O_simple_molecule_cell) | ((N_Ribosyl_nicotinamide_simple_molecule & ATP_simple_molecule) & NRK1)) | ((Nicotinamide_simple_molecule & n5_phospho__alpha__D_ribose_1_diphosphate_simple_molecule) & NAMPT))
+Nicotinamide_simple_molecule, ((((((Nicotinate_simple_molecule & NADP_simple_molecule) & CD38) | ((N_Ribosyl_nicotinamide_simple_molecule & Pi_simple_molecule) & PNP)) | ((((SIRT5 | SIRT5_Nsp14_complex) & NAD_simple_molecule) & Histone_N6_acetyl_L_lysine_simple_molecule) & H2O_simple_molecule_mitochondrion)) | ((NAD_simple_molecule & H2O_simple_molecule_cell) & CD38)) | Nicotinate_simple_molecule)
+Nicotinate_D_ribonucleotide_simple_molecule, (((((Quinolinate_simple_molecule & n5_phospho__alpha__D_ribose_1_diphosphate_simple_molecule) & H_simple_molecule) & H_simple_molecule) & QPRT) | ((((Nicotinate_simple_molecule & n5_phospho__alpha__D_ribose_1_diphosphate_simple_molecule) & H2O_simple_molecule_cell) & ATP_simple_molecule) & NAPRT1))
+Nicotinate_simple_molecule, Nicotinate_simple_molecule
+Nsp14_cell, Nsp14_cell
+Nsp14_mitochondrion, Nsp14_mitochondrion
+O_Acetyl_ADP_ribose_simple_molecule, ((((SIRT5 | SIRT5_Nsp14_complex) & NAD_simple_molecule) & Histone_N6_acetyl_L_lysine_simple_molecule) & H2O_simple_molecule_mitochondrion)
+PAICS, PAICS
+PFAS, PFAS
+PGM2, PGM2
+PNP, PNP
+PPAT, PPAT
+PPi_simple_molecule, (((((((((((((((NMNAT2 | NMNAT1) | NMNAT3) & Nicotinamide_D_ribonucleotide_simple_molecule) & ATP_simple_molecule) & H_simple_molecule) | ((Nicotinamide_simple_molecule & n5_phospho__alpha__D_ribose_1_diphosphate_simple_molecule) & NAMPT)) | (((((NMNAT1 | NMNAT2) | NMNAT3) & Nicotinate_D_ribonucleotide_simple_molecule) & H_simple_molecule) & ATP_simple_molecule)) | ((((Quinolinate_simple_molecule & n5_phospho__alpha__D_ribose_1_diphosphate_simple_molecule) & H_simple_molecule) & H_simple_molecule) & QPRT)) | ((((Nicotinate_simple_molecule & n5_phospho__alpha__D_ribose_1_diphosphate_simple_molecule) & H2O_simple_molecule_cell) & ATP_simple_molecule) & NAPRT1)) | (((n5_phospho__alpha__D_ribose_1_diphosphate_simple_molecule & H2O_simple_molecule_cell) & L_Glutamine_simple_molecule) & PPAT)) | ((((XMP_simple_molecule & H2O_simple_molecule_cell) & ATP_simple_molecule) & L_Glutamine_simple_molecule) & GMPS)) | ((((ITPA | ENPP1) | ENPP3) & dGTP_simple_molecule) & H2O_simple_molecule_cell)) | ((Guanine_simple_molecule & n5_phospho__alpha__D_ribose_1_diphosphate_simple_molecule) & HPRT1)) | ((Hypoxanthine_simple_molecule & n5_phospho__alpha__D_ribose_1_diphosphate_simple_molecule) & HPRT1)) | ((Adenine_simple_molecule & n5_phospho__alpha__D_ribose_1_diphosphate_simple_molecule) & APRT))
+PRPS1, PRPS1
+PRPS1L1, PRPS1L1
+PRPS2, PRPS2
+Pi_simple_molecule, ((((((((((((((((Nicotinamide_D_ribonucleotide_simple_molecule & H2O_simple_molecule_cell) & NT5E) | ((((Nicotinate_simple_molecule & n5_phospho__alpha__D_ribose_1_diphosphate_simple_molecule) & H2O_simple_molecule_cell) & ATP_simple_molecule) & NAPRT1)) | (((n5_phospho_beta_D_ribosylamine_simple_molecule & Glycine_simple_molecule) & ATP_simple_molecule) & GART)) | ((((n5_phosphoribosyl_N_formylglycinamide_simple_molecule & L_Glutamine_simple_molecule) & ATP_simple_molecule) & H2O_simple_molecule_cell) & PFAS)) | ((n2__Formamido__N1__5__phosphoribosyl_acetamidine_simple_molecule & ATP_simple_molecule) & GART)) | (((n1__5_Phospho_D_ribosyl__5_amino_4_imidazolecarboxylate_simple_molecule & L_Aspartate_simple_molecule) & ATP_simple_molecule) & PAICS)) | ((GMP_simple_molecule & H2O_simple_molecule_cell) & NT5E)) | ((GTP_simple_molecule & H2O_simple_molecule_cell) & ENTPD2)) | ((GTP_simple_molecule & H2O_simple_molecule_cell) & ENTPD2)) | (((ENTPD2 | NTPCR) & GTP_simple_molecule) & H2O_simple_molecule_cell)) | ((((((ENTPD2 | ENTPD4) | ENTPD5) | ENTPD6) | CANT1) & GDP_simple_molecule) & H2O_simple_molecule_cell)) | ((XMP_simple_molecule & H2O_simple_molecule_cell) & NT5E)) | ((IMP_simple_molecule & H2O_simple_molecule_cell) & NT5E)) | ((AMP_simple_molecule & H2O_simple_molecule_cell) & NT5E)) | ((Hypoxanthine_simple_molecule & n2_deoxy__alpha__D_ribose_1_phosphate_simple_molecule) & PNP))
+QPRT, QPRT
+Quinolinate_simple_molecule, Quinolinate_simple_molecule
+Raffinose_simple_molecule, ((((GLA | GLA_Nsp14_complex) & Stachyose_simple_molecule) & H2O_simple_molecule_cell) & !Migalastat_drug)
+Ribavirin_drug, Ribavirin_drug
+SIRT5, SIRT5
+SIRT5_Nsp14_complex, (SIRT5 & Nsp14_mitochondrion)
+Stachyose_simple_molecule, Stachyose_simple_molecule
+Sucrose_simple_molecule, ((((GLA | GLA_Nsp14_complex) & Raffinose_simple_molecule) & H2O_simple_molecule_cell) & !Migalastat_drug)
+Tetrahydrofolate_simple_molecule, (((n5_phospho_beta_D_ribosylglycinamide_simple_molecule & n10_Formyltetrahydrofolate_simple_molecule) & GART) | ((n1__5__Phosphoribosyl__5_amino_4_imidazolecarboxamide_simple_molecule & n10_Formyltetrahydrofolate_simple_molecule) & ATIC))
+Thioredoxin_disulfide_simple_molecule, (((GDP_simple_molecule & Thioredoxin_simple_molecule) & csa3_ribonucleoside_reductase_complex_cell) | ((ADP_simple_molecule & Thioredoxin_simple_molecule) & csa4_ribonucleoside_reductase_complex_cell))
+Thioredoxin_simple_molecule, Thioredoxin_simple_molecule
+UDP__alpha__D_Galactose_simple_molecule, (((_alpha__D_Galactose_1P_simple_molecule & UDP__alpha__D_Glucose_simple_molecule) & GALT) | (UDP__alpha__D_Glucose_simple_molecule & GALE))
+UDP__alpha__D_Glucose_simple_molecule, UDP__alpha__D_Glucose_simple_molecule
+UDP_simple_molecule, ((UDP__alpha__D_Galactose_simple_molecule & _alpha__D_Glucose_simple_molecule) & lactose_synthetase_complex)
+UGP2, UGP2
+UTP_simple_molecule, ((UDP__alpha__D_Glucose_simple_molecule & PPi_simple_molecule) & UGP2)
+Urea_cycle_phenotype, SIRT5
+XDH, XDH
+XMP_simple_molecule, ((((((((IMPDH1 | IMPDH2) | IMPDH2_Nsp14_complex) & IMP_simple_molecule) & NAD_simple_molecule) & H2O_simple_molecule_cell) & !Mycophenolic_acid_drug) & !Merimepodib_drug) & !Ribavirin_drug)
+Xanthine_simple_molecule, ((((Xanthosine_simple_molecule & Pi_simple_molecule) & PNP) | (((Hypoxanthine_simple_molecule & NAD_simple_molecule) & H2O_simple_molecule_cell) & XDH)) | (((Guanine_simple_molecule & H2O_simple_molecule_cell) & H_simple_molecule) & GDA))
+Xanthosine_simple_molecule, ((XMP_simple_molecule & H2O_simple_molecule_cell) & NT5E)
+_alpha_D_Ribose_1P_simple_molecule, _alpha_D_Ribose_1P_simple_molecule
+_alpha__D_Galactose_1P_simple_molecule, ((_alpha__D_Galactose_simple_molecule & ATP_simple_molecule) & GALK1)
+_alpha__D_Galactose_simple_molecule, (D_Galactose_simple_molecule & GALM)
+_alpha__D_Glucose_1_P_simple_molecule, (((_alpha__D_Galactose_1P_simple_molecule & UDP__alpha__D_Glucose_simple_molecule) & GALT) | ((UDP__alpha__D_Glucose_simple_molecule & PPi_simple_molecule) & UGP2))
+_alpha__D_Glucose_simple_molecule, ((((GLB1 | LCT) & Lactose_simple_molecule) & H2O_simple_molecule_cell) | ((((GLA | GLA_Nsp14_complex) & Melibiose_simple_molecule) & H2O_simple_molecule_cell) & !Migalastat_drug))
+_alpha__D_Ribose_1_phosphate_simple_molecule, ((((((N_Ribosyl_nicotinamide_simple_molecule & Pi_simple_molecule) & PNP) | ((Guanosine_simple_molecule & Pi_simple_molecule) & PNP)) | ((Xanthosine_simple_molecule & Pi_simple_molecule) & PNP)) | ((Inosine_simple_molecule & Pi_simple_molecule) & PNP)) | ((Adenosine_simple_molecule & Pi_simple_molecule) & PNP))
+csa2_Nucleoside_diphosphate_kinase_complex_cell, csa2_Nucleoside_diphosphate_kinase_complex_cell
+csa3_ribonucleoside_reductase_complex_cell, csa3_ribonucleoside_reductase_complex_cell
+csa4_ribonucleoside_reductase_complex_cell, csa4_ribonucleoside_reductase_complex_cell
+csa5_Nucleoside_diphosphate_kinase_complex_cell, csa5_Nucleoside_diphosphate_kinase_complex_cell
+dADP_simple_molecule, (((dAMP_simple_molecule & ATP_simple_molecule) & AK5) | ((ADP_simple_molecule & Thioredoxin_simple_molecule) & csa4_ribonucleoside_reductase_complex_cell))
+dAMP_simple_molecule, ((Deoxyadenosine_simple_molecule & ATP_simple_molecule) & DCK)
+dATP_simple_molecule, ((((((csa5_Nucleoside_diphosphate_kinase_complex_cell | NME5) | NME3) | NME6) | NME7) & dADP_simple_molecule) & ATP_simple_molecule)
+dGDP_simple_molecule, (((GDP_simple_molecule & Thioredoxin_simple_molecule) & csa3_ribonucleoside_reductase_complex_cell) | ((dGMP_simple_molecule & ATP_simple_molecule) & GUK1))
+dGMP_simple_molecule, (((Deoxyguanosine_simple_molecule & ATP_simple_molecule) & DCK) | ((((ITPA | ENPP1) | ENPP3) & dGTP_simple_molecule) & H2O_simple_molecule_cell))
+dGTP_simple_molecule, ((((((NME3 | csa2_Nucleoside_diphosphate_kinase_complex_cell) | NME7) | NME6) | NME5) & dGDP_simple_molecule) & ATP_simple_molecule)
+lactose_synthetase_complex, lactose_synthetase_complex
+nicotinate_adenine_dinucleotide_phosphate_simple_molecule, ((Nicotinate_simple_molecule & NADP_simple_molecule) & CD38)
