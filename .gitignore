@@ -277,3 +277,6 @@ TSWLatexianTemp*
 
 # jupyter
 .ipynb_checkpoints
+
+# python
+trappist/__pycache__/
