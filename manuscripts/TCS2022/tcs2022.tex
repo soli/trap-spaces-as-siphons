@@ -204,6 +204,11 @@ However, with the continuing increase in model-size, the state-of-the-art comput
 It is worth noting that the recent method presented in~\cite{DBLP:conf/ictai/ChevalierFPZ19} for computing minimal trap spaces avoids the prime-implicants computation by relying on the \emph{most-permissive} semantics of Boolean networks.
 This method has been implemented in the tool mpbn\footnote{\url{https://github.com/bnediction/mpbn}} demonstrated in~\cite{Paulev2020} for handling medium-sized models from the literature and very large synthetic models (up to 100,000 nodes).
 However, this method is only applicable for \emph{locally-monotonic} Boolean networks, whereas the prime-implicants based method~\cite{klarner2015computing} is applicable for \emph{general} Boolean networks (i.e., including both locally-monotonic and non-locally-monotonic ones).
+In addition, the BioLQM platform also provides another method using Binary Decision Diagrams (BDDs) in \url{http://colomoto.org/biolqm/doc/tools-trapspace.html}.
+This method avoids the prime-implicants computation as it characterizes the set of generic trap spaces of a Boolean network by a BDD, then filters this set to get the set of all minimal trap spaces.
+By this characteristic, it requires the computation of all solutions, while the ASP-based methods~\cite{klarner2015computing,Paulev2020} can start enumerating them as they are found.
+Moreover, the main issue with the BDD-based method is that the number of generic trap spaces of a Boolean network may be extremely larger than the number of minimal trap spaces of this Boolean network.
+This issue limits the efficiency of the BDD-based method.
 The study~\cite{DBLP:journals/tcs/NoualRS13} highlights the need for non-locally-monotonic Boolean networks in both biological and theoretical aspects.
 Hence, it is still necessary to develop efficient methods for computing minimal trap spaces of large-scale general Boolean networks.
 
