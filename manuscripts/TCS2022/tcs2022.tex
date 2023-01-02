@@ -213,18 +213,19 @@ Siphons are such a concept, but they have not been used a lot for the study of b
 
 In this article we present an alternative method to compute minimal trap spaces, and hence complex attractors, of a general Boolean network. It replaces the need for prime-implicants by a completely different technique, namely the enumeration of maximal siphons in the Petri net encoding of the original model (Section~\ref{sec:Main_finding}).
 After some technical preliminaries (Section~\ref{sec:Preliminaries}), we expose the concrete need for such a method and detail its implementation using Answer Set Programming (Section~\ref{sec:Computation}).
-We then demonstrate its efficiency and compare it to implicant-based methods on several large Boolean networks from the literature (Section~\ref{sec:eval}).
+We then demonstrate its efficiency and compare it to implicant-based methods on several large real-world models from the literature and randomly generated models (Section~\ref{sec:eval}).
 
 All models used for evaluation and the implementation of the presented method are available at \url{https://github.com/soli/trap-spaces-as-siphons} and executable as a CoLoMoTo docker image.
 
 % Mention the extensions for the journal version
-Herein we extend our previous work in~\cite{DBLP:conf/cmsb/TrinhBHS22} as follows.
-First, we showcase one theoretical application of the connection between trap spaces in Boolean networks and conflict-free siphons in Petri nets.
-Second, beyond the proposed ASP method, we propose several other possible methods for computing minimal trap spaces using MaxSAT, CLP, and ILP.
-Third, we discuss in detail how to compute several special types of trap space in a Boolean network.
-Forth, regarding the implementation, we have developed a converter that directly reads a .bnet file and builds the Petri net encoding, instead of using the PNML conversion of BioLQM.
+Herein we revise and extend our previous work in~\cite{DBLP:conf/cmsb/TrinhBHS22} as follows.
+First, more formal definitions are given and the existing proofs are compacted.
+Second, we showcase one theoretical application of the connection between trap spaces in Boolean networks and conflict-free siphons in Petri nets.
+Third, beyond the proposed ASP method, we propose several other possible methods for computing minimal trap spaces using MaxSAT, CLP, and ILP.
+Forth, we discuss in detail how to compute several special types of trap spaces in a Boolean network.
+Fifth, regarding the implementation, we have developed a converter that directly reads a .bnet file and builds the Petri net encoding, instead of using the PNML conversion of BioLQM~\cite{DBLP:conf/cmsb/TrinhBHS22}.
 %Finally, we explore several complexity analysis on maximal (conflict-free) siphon problems.
-Finally, we conduct a more comprehensive benchmark on both real-world and randomly generated models to evaluate all the proposed methods.
+Finally, we conduct a more comprehensive benchmark on both real-world models from various sources and randomly generated models to evaluate all the proposed methods.
 
 \section{Preliminaries}
 \label{sec:Preliminaries}
@@ -439,7 +440,8 @@ This corresponds to the idea that a siphon is a set of places that once unmarked
 \end{definition}
 
 Let \(pred(S) := \bigcup_{s \in S}pred(s)\) and \(succ(S) := \bigcup_{s \in S}succ(s)\).
-We have an important property~\cite{DBLP:journals/isci/LiuB16} as follows.
+If \(S = \emptyset\), then conventionally \(pred(S) = succ(S) = \emptyset\).
+We have an important property on siphons~\cite{DBLP:journals/isci/LiuB16} as follows.
 
 \begin{proposition}
 \label{prop:siphon_set}
@@ -575,7 +577,6 @@ The details of the proposed methods shall be given in the next section.
 
 First, we show the characterization of all conflict-free siphons of the encoded Petri net \(\mathcal{P} = (P, T, W)\).
 Suppose that \(S\) is a generic siphon of \(\mathcal{P}\). If a place \(p\) should belong to \(S\), then by Proposition~\ref{prop:siphon_set} all the transitions in \(pred(p)\) must belong to \(succ(S)\).
-Note that \(succ(S) = \bigcup_{p \in S}succ(p)\).
 A transition \(t\) belongs to \(succ(S)\) if and only if there is at least one place \(p'\) in \(S\) such that \(p' \in pred(t)\).
 Hence, for each transition \(t \in pred(p)\), we can state that
 \begin{equation}
