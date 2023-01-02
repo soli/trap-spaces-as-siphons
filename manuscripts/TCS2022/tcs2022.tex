@@ -696,7 +696,12 @@ Remarkably it only requires the DNF for the \emph{activation} part, using the in
 We would therefore expect that, when available, it will have comparable performance on the ASP part (the ASP program would be approximately twice smaller, though redundancy is not always bad in that field), but can also avoid combinatorial explosion of the Petri net encoding for some formula where the activation DNF is simple but the inhibition is not.
 Since mpbn is included in our benchmark this will be evaluated in our experiments.
 
-Now, a solution (simply an answer set) \(A \subseteq \mathcal{A}\) of \(\mathcal{L}\) is equivalent to a conflict-free siphon \(S\) of \(\mathcal{P}\), thus a trap space \(m\) of \(\mathcal{M}\). The conversion from \(A\) to \(m\) is straightforward. If \(\verb|p-v| \in A\) then \(v \in D_m\) and \(m(v) = 0\). Conversely, if \(\verb|n-v| \in A\) then \(v \in D_m\) and \(m(v) = 1\). Otherwise, \(v \not \in D_m\). Computing multiple answer sets is built into ASP solvers and the solving collection POTASSCO~\cite{DBLP:journals/aicom/GebserKKOSS11} also features the option to find set-inclusion maximal answer sets with respect to the set of atoms. Naturally, a set-inclusion maximal answer set of \(\mathcal{L}\) is equivalent to a maximal conflict-free siphon of \(\mathcal{P}\), thus a minimal trap space of \(\mathcal{M}\). By using this built-in option, we can compute all the set-inclusion maximal answer sets of \(\mathcal{L}\) (resp.\ all the minimal trap spaces of \(\mathcal{M}\)) in one execution.
+Now, a solution (simply an answer set) \(A \subseteq \mathcal{A}\) of \(\mathcal{L}\) is equivalent to a conflict-free siphon \(S\) of \(\mathcal{P}\), thus a trap space \(m\) of \(\mathcal{M}\). 
+The conversion from \(A\) to \(m\) is straightforward. If \(\verb|p-v| \in A\) then \(v \in D_m\) and \(m(v) = 0\). 
+Conversely, if \(\verb|n-v| \in A\) then \(v \in D_m\) and \(m(v) = 1\). 
+Otherwise, \(v \not \in D_m\). Computing multiple answer sets is built into ASP solvers and the solving collection POTASSCO~\cite{DBLP:journals/aicom/GebserKKOSS11} also features the option to find set-inclusion maximal answer sets with respect to the set of atoms. 
+Naturally, a set-inclusion maximal answer set of \(\mathcal{L}\) is equivalent to a maximal conflict-free siphon of \(\mathcal{P}\), thus a minimal trap space of \(\mathcal{M}\). 
+By using this built-in option, we can compute all the set-inclusion maximal answer sets of \(\mathcal{L}\) (resp.\ all the minimal trap spaces of \(\mathcal{M}\)) in one execution.
 
 \subsection{Integer linear programming-based method}
 \label{subsec:computation_ilp}
@@ -755,7 +760,27 @@ In the field of systems biology, biologists may want to compute more special typ
 We shall show that our proposed methods can be easily adjusted to compute popular types of trap spaces.
 We illustrate the adjustments via the ASP-based method (see Subsection~\ref{subsec:computation_asp}), but these adjustments are completely applicable for other approaches such as MaxSAT, CSP, and ILP.
 
-First, maximal trap spaces // TODO:
+First, the work by~\cite{Rozum2021} uses the concept of stable motifs to build the succession diagram of a Boolean network, a summary of the decisions in the network dynamics that lead to successively more restrictive nested stable motifs.
+The succession diagram is useful for control and decision making on this Boolean network.
+In particular, the proposed control methods are independent to the update scheme.
+It has been shown that a stable motif of a Boolean network is equivalent to a maximal trap space of this Boolean network~\cite{Rozum2021}.
+Hence, it is necessary to develop an efficient method for computing maximal trap spaces of a Boolean network.
+We shall show how to adjust the ASP-method presented in Subsection~\ref{subsec:computation_asp} to compute maximal trap spaces.
+
+We first provide the definition of maximal trap spaces.
+Let \(\varepsilon\) be the special trap space of \(\mathcal{N}\) where all the nodes are free.
+Of course, \(\varepsilon\) corresponds to the special conflict-free siphon \(\emptyset\).
+A trap space \(m\) is called maximal if \(m \neq \varepsilon\) and there is no other trap space \(m'\) such that \(m' \neq \varepsilon\) and \(m < m'\).
+Analogously, a conflict-free siphon \(S\) is called minimal if \(S \neq \emptyset\) and there is no other trap space \(S'\) such that \(S' \neq \emptyset\) and \(S' \subset S\).
+By using the reasoning similar to the proof of Theorem~\ref{theo:min_ts_2_max_sp}, we can easily conclude that a maximal trap space of \(\mathcal{N}\) is equivalent to a minimal conflict-free siphon of its Petri net \(\mathcal{P}\).
+Let \(\mathcal{L}\) be the ASP characterizing all siphons of \(\mathcal{P}\) (see Subsection~\ref{subsec:computation_asp}).
+Naturally, we need to exclude \(\emptyset\) from the solution space of \(\mathcal{L}\) (equivalently exclude \(\varepsilon\) from the set of trap spaces).
+To do this, we add to \(\mathcal{L}\) the ASP rule
+\[
+  \verb|p-v_1| ; \verb|n-v_1| ; \dots ; \verb|p-v_n| ; \verb|n-v_n|.
+\]
+that ensures that every answer set of \(\mathcal{L}\) cannot be empty.
+Then a set-inclusion minimal answer set of \(\mathcal{L}\) is equivalent to a minimal conflict-free siphon of \(\mathcal{P}\), thus a maximal trap space of \(\mathcal{N}\)
 
 Second, we consider fixed points in Boolean networks.
 Let \(s\) be a fixed point of a Boolean network \(\mathcal{N}\).
@@ -766,7 +791,7 @@ In addition, since \(\left\vert S_{\mathcal{N}}[m]\right\vert = 1\), \(m\) is al
 To compute all fixed points of \(\mathcal{N}\), we can add more constraints to the encoded ASP characterizing all conflict-free siphons (equivalently trap spaces).
 For every \(v \in V\), we add to the encoded ASP the rule
 \[
-  \verb|p-v| ; \verb|n-v|.
+  \verb|p-v ; n-v.|
 \]
 that ensures that for every conflict-free siphon \(S\), it contains either \(\verb|p-v|\) or \(\verb|n-v|\) for every \(v \in V\).
 Equivalently, the trap space corresponding to \(S\) is always a fixed point.
@@ -775,10 +800,42 @@ In particular, when solving the encoded ASP using an ASP solver, we do not need 
 Note that we can also build another ASP characterizing all fixed points of \(\mathcal{N}\) based on the equivalence between a fixed point of \(\mathcal{N}\) and a deadlock of its Petri net encoding~\cite{chatain2014characterization}.
 This approach may give a more compact ASP.
 
-Third, trap spaces inside a subspace // TODO:
+Third, we consider the trap spaces intersecting a given subspace \(m^{*}\) of a Boolean network.
+A trap space \(m\) intersects \(m^{*}\) if and only if \(S_{\mathcal{N}}[m] \cap S_{\mathcal{N}}[m^{*}] \neq \emptyset\).
+It follows that for every \(v\), if \(m^{*}(v) = 0\) then \(m(v) = 0\) or \(m(v) = \star\), if \(m^{*}(v) = 1\) then \(m(v) = 1\) or \(m(v) = \star\).
+For the former case, we add to \(\mathcal{L}\) the ASP rule
+\[
+  \verb|:- n-v.|
+\]
+that ensures that \(m(v)\) cannot be 1.
+For the latter case, we add to \(\mathcal{L}\) the ASP rule
+\[
+  \verb|:- p-v.|
+\]
+that ensures that \(m(v)\) cannot be 0.
+Now \(\mathcal{L}\) characterizes all trap spaces that intersect \(m^{*}\).
 
-Finally, trap spaces that intersect a subspace // TODO:
-
+Finally, we consider the trap spaces that are inside a given subspace \(m^{*}\) of a Boolean network.
+We first adjust \(\mathcal{L}\) to characterize all such trap spaces.
+A trap space \(m\) is inside \(m^{*}\) if and only if \(m(v) = m^{*}(v)\) for every \(v \in D_m\).
+If \(m^{*}(v) = 0\), we add to \(\mathcal{L}\) the ASP rule
+\[
+  \verb|p-v.|
+\]
+that ensures that \(m(v) = 0\).
+If \(m^{*}(v) = 1\), we add to \(\mathcal{L}\) the ASP rule
+\[
+  \verb|n-v.|
+\]
+that ensures that \(m(v) = 1\).
+It is noted that if we want to compute maximal trap spaces inside \(m^{*}\), we need to exclude the conflict-free siphon corresponding \(m^{*}\) from the solution space.
+Specifically, we need to add to \(\mathcal{L}\) the ASP rule
+\[
+  \verb|p-v_i1| ; \verb|n-v_i1| ; \dots ; \verb|p-v_ik| ; \verb|n-v_ik|.
+\]
+where \(\{v_{i_1}, \dots, v_{i_k}\}\) is the set of free nodes of \(m^{*}\).
+This rule ensures that \(m \neq m^{*}\).
+In the case that \(m^{*} = \varepsilon\), we have all maximal trap spaces of the original Boolean network.
 
 
 \section{Motivating example}
