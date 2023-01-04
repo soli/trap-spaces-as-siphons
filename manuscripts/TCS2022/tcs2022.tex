@@ -204,7 +204,7 @@ However, with the continuing increase in model-size, the state-of-the-art comput
 It is worth noting that the recent method presented in~\cite{DBLP:conf/ictai/ChevalierFPZ19} for computing minimal trap spaces avoids the prime-implicants computation by relying on the \emph{most-permissive} semantics of Boolean networks.
 This method has been implemented in the tool mpbn\footnote{\url{https://github.com/bnediction/mpbn}} demonstrated in~\cite{Paulev2020} for handling medium-sized models from the literature and very large synthetic models (up to 100,000 nodes).
 However, this method is only applicable for \emph{locally-monotonic} Boolean networks, whereas the prime-implicants based method~\cite{klarner2015computing} is applicable for \emph{general} Boolean networks (i.e., including both locally-monotonic and non-locally-monotonic ones).
-In addition, the BioLQM platform also provides another method using Binary Decision Diagrams (BDDs) in \url{http://colomoto.org/biolqm/doc/tools-trapspace.html}.
+In addition, the bioLQM platform also provides another method using Binary Decision Diagrams (BDDs) in \url{http://colomoto.org/biolqm/doc/tools-trapspace.html}.
 This method avoids the prime-implicants computation as it characterizes the set of generic trap spaces of a Boolean network by a BDD, then filters this set to get the set of all minimal trap spaces.
 By this characteristic, it requires the computation of all solutions, while the ASP-based methods~\cite{klarner2015computing,Paulev2020} can start enumerating them as they are found.
 Moreover, the main issue with the BDD-based method is that the number of generic trap spaces of a Boolean network may be extremely larger than the number of minimal trap spaces of this Boolean network.
@@ -224,11 +224,12 @@ All models used for evaluation and the implementation of the presented method ar
 
 % Mention the extensions for the journal version
 Herein we revise and extend our previous work in~\cite{DBLP:conf/cmsb/TrinhBHS22} as follows.
-First, more formal definitions are given and the existing proofs are compacted.
+First, more formal definitions are given and the existing proofs are made more detailed.
+In particular, the updated proof provides another way to prove the independence of trap spaces of a Boolean network on its update scheme, which was originally proved in~\cite{klarner2015computing}.
 Second, we showcase one theoretical application of the connection between trap spaces in Boolean networks and conflict-free siphons in Petri nets.
 Third, beyond the proposed ASP method, we propose several other possible methods for computing minimal trap spaces using MaxSAT, CLP, and ILP.
 Forth, we discuss in detail how to compute several special types of trap spaces in a Boolean network.
-Fifth, regarding the implementation, we have developed a converter that directly reads a .bnet file and builds the Petri net encoding, instead of using the PNML conversion of BioLQM~\cite{DBLP:conf/cmsb/TrinhBHS22}.
+Fifth, regarding the implementation, we have developed a converter that directly reads a .bnet file and builds the Petri net encoding, instead of using the PNML conversion of bioLQM~\cite{DBLP:conf/cmsb/TrinhBHS22}.
 %Finally, we explore several complexity analysis on maximal (conflict-free) siphon problems.
 Finally, we conduct a more comprehensive benchmark on both real-world models from various sources and randomly generated models to evaluate all the proposed methods.
 
@@ -289,7 +290,7 @@ A subspace \(m\) is equivalent to a set of states:
 \mathcal{S}_{\mathcal{N}}[m] := \{s \in \mathcal{S}_{\mathcal{N}} \mid \forall v \in D_m \colon s(v) = m(v)\}.
 \] For example, \(m = \star\star1\) (for simplicity, we write subspaces likes states) means that \(D_m = \{v_3\}, m(v_3) = 1\), and it is equivalent to the set of states \(\{001, 011, 101, 111\}\).
 We denote \(\mathcal{S}_{\mathcal{N}}^{\star} = (\mathbb{B} \cup \{\star\})^n\) the set of all possible subspaces of \(\mathcal{N}\).
-Note that \(\left\vert\mathcal{S}_{\mathcal{M}}^{\star}\right\vert = 3^n\) and \(S_{\mathcal{N}} \subset \mathcal{S}_{\mathcal{N}}^{\star}\)~\cite{klarner2015computing}.
+Note that \(\left\vert\mathcal{S}_{\mathcal{N}}^{\star}\right\vert = 3^n\) and \(S_{\mathcal{N}} \subset \mathcal{S}_{\mathcal{N}}^{\star}\)~\cite{klarner2015computing}.
 
 A \emph{trap space} is defined as a subspace that is also a trap set.
 It is noted that trap spaces of a Boolean network are independent of the update scheme of this model~\cite{klarner2015computing}.
@@ -302,7 +303,7 @@ The model has all two trap spaces, \(m_1 = 11\) and \(m_2 = \star\star\).
 Since \(m_1 < m_2\), \(m_1\) is a minimal trap space of the Boolean network.
 
 \begin{example}
-We give a Boolean network \(\mathcal{M} = (V, F)\), where \(V = (x_1, x_2)\) and \(F = (f_1, f_2)\) with \(f_1 = (x_1 \land x_2) \lor (\neg x_1 \land \neg x_2), f_2 = (x_1 \land x_2) \lor (\neg x_1 \land \neg x_2)\). Herein, \(\land\), \(\lor\), and \(\neg\) denote the conjunction, disjunction, and negation logical operators, respectively.\label{example:BN}
+We give a Boolean network \(\mathcal{N} = (V, F)\), where \(V = (x_1, x_2)\) and \(F = (f_1, f_2)\) with \(f_1 = (x_1 \land x_2) \lor (\neg x_1 \land \neg x_2), f_2 = (x_1 \land x_2) \lor (\neg x_1 \land \neg x_2)\). Herein, \(\land\), \(\lor\), and \(\neg\) denote the conjunction, disjunction, and negation logical operators, respectively.\label{example:BN}
 \end{example}
 
 \begin{figure}[!ht]
@@ -415,7 +416,7 @@ Of course, in any marking \(t^{1}_{x_1}\) and \(t^{2}_{x_1}\) cannot be both ena
 Then, the fully asynchronous update scheme in \(\mathcal{N}\) corresponds to the classical firing scheme in \(\mathcal{P}\) where only one of the enabled transitions for a given marking will be fired~\cite{Murata1989}.
 
 
-Note that given a Boolean network in the standard SBML-Qual format~\cite{chaouiya2013sbml}, i.e., the package of SBML v3~\cite{keating2020sbml} for such models, one can easily obtain its Petri net encoding in the Petri Net Markup Language  (PNML)\footnote{\url{https://www.pnml.org/}} standard using the BioLQM\footnote{\url{http://www.colomoto.org/biolqm/}} library.
+Note that given a Boolean network in the standard SBML-Qual format~\cite{chaouiya2013sbml}, i.e., the package of SBML v3~\cite{keating2020sbml} for such models, one can easily obtain its Petri net encoding in the Petri Net Markup Language  (PNML)\footnote{\url{https://www.pnml.org/}} standard using the bioLQM\footnote{\url{http://www.colomoto.org/biolqm/}} library.
 This piece of software extracted from GINsim~\cite{chaouiya2012logical} and part of the CoLoMoTo\footnote{\url{http://colomoto.org/}}~\cite{naldi2015cooperative} software suite allows for easy conversion between standard formats.
 It also accepts many other common formats for Boolean networks, notably the \verb|.bnet| files of the  BoolNet~\cite{mussel2010boolnet,klarner2017pyboolnet} tools.
 The conversion is executed as follows:
@@ -426,7 +427,7 @@ Note that transforming a Boolean network defined by its functions into its Petri
 Though this might appear quite computationally intensive it is important to remark first that contrary to the prime-implicants case, there is no need to find \emph{minimal} DNFs.
 One way to look at this is to consider that this amounts to a similar approach as that used in~\cite{DBLP:conf/ictai/ChevalierFPZ19} but with the encoding of both activation and inhibition functions as DNFs in order to take into account possible non-local-monotonicity.
 This does not change the worst-case-complexity (obtaining a single DNF being exponential) but might matter a lot in practice.
-As such, we will explore how this transformation, here using BDDs in BioLQM, and the one based on the most-permissive semantics compare in the Section~\ref{sec:eval} on evaluation.
+As such, we will explore how this transformation, here using BDDs in bioLQM, and the one based on the most-permissive semantics compare in the Section~\ref{sec:eval} on evaluation.
 
 \subsection{Siphons}
 
@@ -463,7 +464,7 @@ First, we add a definition related to any set of places of a Petri net encoding 
 
 \begin{definition}
 
-  A set of places of Petri net \(\mathcal{P}\) encoding Boolean network \(\mathcal{M}\) is \emph{conflict-free} if it does not contain any two places corresponding to the active and inactive states of the same \emph{node} of \(\mathcal{N}\).
+  A set of places of Petri net \(\mathcal{P}\) encoding Boolean network \(\mathcal{N}\) is \emph{conflict-free} if it does not contain any two places corresponding to the active and inactive states of the same \emph{node} of \(\mathcal{N}\).
   Then, a conflict-free siphon \(S\) is said to be \emph{maximal} if and only if there is no other conflict-free siphon \(S'\) such that \(S \subset S'\).
 
 \end{definition}
@@ -488,30 +489,77 @@ Hereafter, we formally prove that a maximal conflict-free siphon is equivalent t
 \begin{theorem}%
 \label{theo:ts_2_sp}
 
-  Let \(\mathcal{M} = (V, F)\) be a Boolean network and \(\mathcal{P}\) be its Petri net encoding. A subspace \(m\) is a trap space of \(\mathcal{M}\) if and only if its mirror \(S\) is a conflict-free siphon of \(\mathcal{P}\).
+  Let \(\mathcal{N} = (V, F)\) be a Boolean network and \(\mathcal{P}\) be its Petri net encoding. A subspace \(m\) is a trap space of \(\mathcal{N}\) if and only if its mirror \(S\) is a conflict-free siphon of \(\mathcal{P}\).
 
 \end{theorem}
 
 \begin{proof}
 
-  First, we show that if \(m\) is a trap space of \(\mathcal{M}\), then \(S\) is a conflict-free siphon of \(\mathcal{P}\) (*). If \(D_m = \emptyset\), then \(S = \emptyset\) is trivially a conflict-free siphon of \(\mathcal{P}\). Thus, we consider the case that \(D_m \neq \emptyset\) (resp. \(S \neq \emptyset\)). Assume that \(S\) is not a siphon of \(\mathcal{P}\). Then, there is a transition \(t \in T\) such that \(S\cap succ(t)\not =\emptyset\) but \(S\cap pred(t)=\emptyset\). In other words, there is a place \(p \in S\) such that \(p \in succ(t)\) but \(p \not \in pred(t)\). Let \(v\) be the corresponding node in \(\mathcal{M}\) of \(p\). By the characterization of the encoding~\cite{chaouiya2004qualitative}, there is a directional arc from \(t\) to \(p\) and a directional arc from the complementary place of \(p\) to \(t\). Without loss of generality, we assume that \(p = p_v\), then there is a directional arc from \(t\) to \(p_v\) and a directional arc from \(\overline{p}_v\) to \(t\). In addition, there is also no arc or a bidirectional arc between \(t\) and another place rather than \(p_v\) and \(\overline{p}_v\). Thus, there is no connecting arc between \(t\) and any place in \(S \setminus \{p_v\}\) because \(S\cap pred(t)\not =\emptyset\). In \(\mathcal{S}_{\mathcal{M}}[m]\), a node in \(V \setminus D_m\) can receive any Boolean value. Hence, there is a state \(s \in \mathcal{S}_{\mathcal{M}}[m]\) such that \(m_s(p') = 1, \forall p' \in pred(t) \setminus \{\overline{p_v}\}\) where \(m_s\) is the corresponding marking in \(\mathcal{P}\) of \(s\). We also have \(m_s(p_v) = 0\), leading to \(m_s(\overline{p_v}) = 1\) by the characterization of the encoding~\cite{chaouiya2004qualitative}. Now, \(t\) is enabled at marking \(m_s\). Its firing leads to a new marking \(m'_s\) such that \(m'_s(p_v) = 1\) and \(m'_s(\overline{p}_v) = 0\). Let \(s'\) be the corresponding state in \(\mathcal{M}\) of \(m'_s\). Since \(m\) is a trap space of \(\mathcal{M}\), \(s' \in \mathcal{S}_{\mathcal{M}}[m]\). Then, \(s'(v) = m(v)\), leading to \(m'_s(p_v) = 0\), which is a contradiction. Hence, \(S\) is a siphon of \(\mathcal{P}\). By the definition of a mirror, \(S\) is also a conflict-free one.
+  First, we show that if \(m\) is a trap space of \(\mathcal{N}\), then \(S\) is a conflict-free siphon of \(\mathcal{P}\) (*). 
+  If \(D_m = \emptyset\), then \(S = \emptyset\) is trivially a conflict-free siphon of \(\mathcal{P}\). 
+  Thus, we consider the case that \(D_m \neq \emptyset\) (resp. \(S \neq \emptyset\)).
+  Assume that \(S\) is not a siphon of \(\mathcal{P}\). 
+  Then, there is a transition \(t \in T\) such that \(S \cap succ(t) \neq \emptyset\) but \(S \cap pred(t) = \emptyset\).
+  This implies that there is a place \(p \in S\) such that \(p \in succ(t)\) but \(p \not \in pred(t)\).
+  Let \(v\) be the corresponding node in \(\mathcal{N}\) of \(p\). 
+  By the characteristics of the encoding~\cite{chaouiya2004qualitative}, there is a directional arc from \(t\) to \(p\) and a directional arc from the complementary place of \(p\) to \(t\).
+  Without loss of generality, we assume that \(p = p_v\), then there is a directional arc from \(t\) to \(p_v\) and a directional arc from \(\overline{p}_v\) to \(t\).
+  %In addition, there is also no arc or a bidirectional arc between \(t\) and another place rather than \(p_v\) and \(\overline{p}_v\).
+  We follow the following procedure to find a state \(s \in \mathcal{S}_{\mathcal{N}}[m]\) such that \(m_s(p') = 1, \forall p' \in pred(t)\) where \(m_s\) is the corresponding marking in \(\mathcal{P}\) of \(s\).
+  For every place \(p' \in pred(t)\), let \(p''\) be the complementary place of \(p'\) and \(v'\) be the corresponding node in \(\mathcal{N}\) of \(p'\) and \(p''\).
+  If \(p'' \not \in S\), then \(v' \not \in D_m\) and we can always set a Boolean value to \(s(v')\) such that \(s \in \mathcal{S}_{\mathcal{N}}[m]\) and \(m_s(p') = 1\).
+  If \(p'' \in S\), then \(v' \in D_m\) and we set \(s(v') = m(v')\).
+  In this case, if \(p' = p_{v'}\) then \(s(v') = m(v') = 1\) leading to \(m_s(p') = 1\), if \(p' = \overline{p}_{v'}\) then \(s(v') = m(v') = 0\) leading to \(m_s(p') = 1\).
+  For the remaining nodes of \(\mathcal{N}\), we can always set Boolean values to these nodes to preserve that \(s \in \mathcal{S}_{\mathcal{N}}[m]\).
+  We also have \(m_s(p_v) = 0\) by the characteristics of the encoding~\cite{chaouiya2004qualitative}.
+  Now, \(t\) is enabled at marking \(m_s\).
+  Its firing leads to a new marking \(m'_s\) such that \(m'_s(p_v) = 1\) and \(m'_s(\overline{p}_v) = 0\). 
+  Let \(s'\) be the corresponding state in \(\mathcal{N}\) of \(m'_s\).
+  We have \(s'(v) = 1\) because \(m'_s(p_v) = 1\) and \(m(v) = 0\) because \(p_v \in S\).
+  This implies that \(s' \not \in \mathcal{S}_{\mathcal{N}}[m]\).
+  For any firing scheme of \(\mathcal{P}\), the firing of \(t\) always happens.
+  Since a firing scheme of \(\mathcal{P}\) is equivalent to an update scheme of \(\mathcal{N}\), \(s\) can escape from the trap space \(m\) for any update scheme of \(\mathcal{N}\), which contradicts to the property of a trap space.
+  Hence, \(S\) is a siphon of \(\mathcal{P}\).
+  By the definition of a mirror, \(S\) is also a conflict-free one.
 
-  Second, we show that if \(S\) is a conflict-free siphon of \(\mathcal{P}\), then \(m\) is a trap space of \(\mathcal{M}\) (**). By the definition of a mirror, \(m\) is a subspace of \(\mathcal{M}\). Let \(s\) be an arbitrary state in \(\mathcal{S}_{\mathcal{M}}[m]\) and \(m_s\) be its corresponding marking in \(\mathcal{P}\). By the characterization of the encoding~\cite{chaouiya2004qualitative}, \(m_s(p) = 0, \forall p \in S\). In any marking \(m'_s\) reachable from \(m_s\) regardless of the firing scheme of \(\mathcal{P}\), we have \(m'_s(p) = 0, \forall p \in S\) by the dynamical property on markings of a siphon~\cite{DBLP:journals/isci/LiuB16}. Equivalently, in any state \(s'\) reachable from \(s\) regardless of the update scheme of \(\mathcal{M}\), we have \(s'(v) = s(v) = m(v), \forall v \in D_m\). Then, \(s' \in \mathcal{S}_{\mathcal{M}}[m]\). By the definition of a trap space and the arbitrariness of \(s\), \(m\) is a trap space of \(\mathcal{M}\).
+  Second, we show that if \(S\) is a conflict-free siphon of \(\mathcal{P}\), then \(m\) is a trap space of \(\mathcal{N}\) (**). 
+  By the definition of a mirror, \(m\) is a subspace of \(\mathcal{N}\). 
+  Let \(s\) be an arbitrary state in \(\mathcal{S}_{\mathcal{N}}[m]\) and \(m_s\) be its corresponding marking in \(\mathcal{P}\).
+  Assume that there is a place \(p \in S\) such that \(m_s(p) = 1\).
+  Let \(v\) be the corresponding node in \(\mathcal{N}\) of \(p\).
+  Since \(p \in S\), \(v \in D_m\) and \(m(v) = s(v)\).
+  If \(p = p_{v}\), then \(m_s(p_{v}) = 1\) leading to \(m(v) = s(v) = 1\) by the characteristics of the encoding~\cite{chaouiya2004qualitative}.
+  By the definition of a mirror, \(m(v) = 0\) because \(p_{v} \in S\), which is a contradiction.
+  It is symmetric for the case that \(p = \overline{p}_{v}\).
+  Hence, \(m_s(p) = 0, \forall p \in S\).
+  In any marking \(m'_s\) reachable from \(m_s\) regardless of the firing scheme of \(\mathcal{P}\), we have \(m'_s(p) = 0, \forall p \in S\) by the dynamical property on markings of a siphon~\cite{DBLP:journals/isci/LiuB16}.
+  Let \(s'\) be the corresponding state in \(\mathcal{N}\) of \(m'_s\).
+  For every node \(v \in D_m\), we have all two cases as follows.
+  Case 1: \(p_v \in S\), then \(m'_s(p_v) = 0\), thus \(s'(v) = 0 = m(v)\).
+  Case 2: \(\overline{p}_v \in S\), then \(m'_s(\overline{p}_v) = 0\), thus \(s'(v) = 1 = m(v)\).
+  Hence, \(s'(v) = m(v)\) for every \(v \in D_m\).
+  Then, \(s' \in \mathcal{S}_{\mathcal{N}}[m]\).
+  By the definition of a trap space and the arbitrariness of \(s\), \(m\) is a trap space of \(\mathcal{N}\).
 
   From (*) and (**), we can conclude the proof.
 \end{proof}
 
+From the proof of Theorem~\ref{theo:ts_2_sp}, we can see that this theorem still holds for any update scheme of the Boolean network.
+Since the Petri net encoding of a Boolean network is independent of its update scheme and siphons are a static property of a Petri net, we can imply that trap spaces of a Boolean network are independent of its update scheme.
+Note that the original proof for this property of trap spaces (see Theorem 1 of~\cite{klarner2015computing}) only considers the two popular update schemes (i.e., synchronous and fully asynchronous).
+This exhibits the very first theoretical application of the connection between trap spaces of Boolean networks and siphons of Petri nets.
+
 \begin{theorem}%
 \label{theo:min_ts_2_max_sp}
 
-  Let \(\mathcal{M}\) be a Boolean network and \(\mathcal{P}\) be its Petri net encoding. A subspace \(m\) is a minimal trap space of \(\mathcal{M}\) if and only if its mirror \(S\) is a maximal conflict-free siphon of \(\mathcal{P}\).
+  Let \(\mathcal{N}\) be a Boolean network and \(\mathcal{P}\) be its Petri net encoding. A subspace \(m\) is a minimal trap space of \(\mathcal{N}\) if and only if its mirror \(S\) is a maximal conflict-free siphon of \(\mathcal{P}\).
 
 \end{theorem}
 
 \begin{proof}
 
-  First, we show that if \(m\) is a minimal trap space of \(\mathcal{M}\), then \(S\) is a maximal conflict-free siphon of \(\mathcal{P}\) (*). 
-  Since \(m\) is a trap space of \(\mathcal{M}\), \(S\) is a conflict-free siphon of \(\mathcal{P}\) by Theorem~\ref{theo:ts_2_sp}. Assume that \(S\) is not maximal. 
+  First, we show that if \(m\) is a minimal trap space of \(\mathcal{N}\), then \(S\) is a maximal conflict-free siphon of \(\mathcal{P}\) (*). 
+  Since \(m\) is a trap space of \(\mathcal{N}\), \(S\) is a conflict-free siphon of \(\mathcal{P}\) by Theorem~\ref{theo:ts_2_sp}. Assume that \(S\) is not maximal. 
   Then, there is another conflict-free siphon \(S'\) such that \(S \subset S'\). 
   By Theorem~\ref{theo:ts_2_sp}, there is a trap space \(m'\) corresponding to \(S'\). 
   Following the definition of a mirror, \(D_m \subset D_{m'}\) and \(m(v) = m'(v), \forall v \in D_m\).
@@ -519,14 +567,14 @@ Hereafter, we formally prove that a maximal conflict-free siphon is equivalent t
   This contradicts to the minimality of \(m\). 
   Hence, \(S\) is a maximal conflict-free siphon of \(\mathcal{P}\).
 
-  Second, we show that if \(S\) is a maximal conflict-free siphon of \(\mathcal{P}\), then \(m\) is a minimal trap space of \(\mathcal{M}\) (**).
-  Since \(S\) is a conflict-free siphon of \(\mathcal{P}\), \(m\) is a trap space of \(\mathcal{M}\) by Theorem~\ref{theo:ts_2_sp}. 
+  Second, we show that if \(S\) is a maximal conflict-free siphon of \(\mathcal{P}\), then \(m\) is a minimal trap space of \(\mathcal{N}\) (**).
+  Since \(S\) is a conflict-free siphon of \(\mathcal{P}\), \(m\) is a trap space of \(\mathcal{N}\) by Theorem~\ref{theo:ts_2_sp}. 
   Assume that \(m\) is not minimal.
   Then, there is another trap space \(m'\) such that \(m' < m\).
   By the definition of the partial order \(<\) on subspaces, \(\mathcal{S}_{\mathcal{N}}[m'] \subset \mathcal{S}_{\mathcal{N}}[m]\). Let \(S'\) be the mirror of \(m'\).
   \(S'\) is a conflict-free siphon by Theorem~\ref{theo:ts_2_sp}. 
   Following the definition of a mirror, \(S \subset S'\), which contradicts to the maximality of \(S\).
-  Hence, \(m\) is a minimal trap space of \(\mathcal{M}\).
+  Hence, \(m\) is a minimal trap space of \(\mathcal{N}\).
 
   From (*) and (**), we can conclude the proof.
 \end{proof}
@@ -683,7 +731,7 @@ For each pair \((p, t)\) where \(p \in P, t \in T, t \in pred(p)\), we translate
 where \(\verb|a| \in \mathcal{A}\) is the atom representing place \(p\) and \(\{\verb|a_1|, \dots,\verb|a_k|\} \subseteq \mathcal{A}\) is the set of atoms representing places in \(pred(t)\). The rule (\ref{eq:conflict}) is translated into the ASP rule
 \[\verb|:- p-v, n-v.|\]
 for each \(v \in V\). 
-This ASP rule guarantees that two places representing the same node in \(\mathcal{M}\) never belong to the same siphon of \(\mathcal{P}\), representing the conflict-freeness.
+This ASP rule guarantees that two places representing the same node in \(\mathcal{N}\) never belong to the same siphon of \(\mathcal{P}\), representig the conflict-freeness.
 Naturally, a Herbrand model (see, e.g.,~\cite{DBLP:journals/aicom/GebserKKOSS11}) of \(\mathcal{L}\) is equivalent to a conflict-free siphon of \(\mathcal{P}\).
 To guarantee that a Herbrand model is also a stable model (an answer set), we need to add to \(\mathcal{L}\) the two choice rules
 \[
@@ -696,12 +744,12 @@ Remarkably it only requires the DNF for the \emph{activation} part, using the in
 We would therefore expect that, when available, it will have comparable performance on the ASP part (the ASP program would be approximately twice smaller, though redundancy is not always bad in that field), but can also avoid combinatorial explosion of the Petri net encoding for some formula where the activation DNF is simple but the inhibition is not.
 Since mpbn is included in our benchmark this will be evaluated in our experiments.
 
-Now, a solution (simply an answer set) \(A \subseteq \mathcal{A}\) of \(\mathcal{L}\) is equivalent to a conflict-free siphon \(S\) of \(\mathcal{P}\), thus a trap space \(m\) of \(\mathcal{M}\). 
+Now, a solution (simply an answer set) \(A \subseteq \mathcal{A}\) of \(\mathcal{L}\) is equivalent to a conflict-free siphon \(S\) of \(\mathcal{P}\), thus a trap space \(m\) of \(\mathcal{N}\). 
 The conversion from \(A\) to \(m\) is straightforward. If \(\verb|p-v| \in A\) then \(v \in D_m\) and \(m(v) = 0\). 
 Conversely, if \(\verb|n-v| \in A\) then \(v \in D_m\) and \(m(v) = 1\). 
 Otherwise, \(v \not \in D_m\). Computing multiple answer sets is built into ASP solvers and the solving collection POTASSCO~\cite{DBLP:journals/aicom/GebserKKOSS11} also features the option to find set-inclusion maximal answer sets with respect to the set of atoms. 
-Naturally, a set-inclusion maximal answer set of \(\mathcal{L}\) is equivalent to a maximal conflict-free siphon of \(\mathcal{P}\), thus a minimal trap space of \(\mathcal{M}\). 
-By using this built-in option, we can compute all the set-inclusion maximal answer sets of \(\mathcal{L}\) (resp.\ all the minimal trap spaces of \(\mathcal{M}\)) in one execution.
+Naturally, a set-inclusion maximal answer set of \(\mathcal{L}\) is equivalent to a maximal conflict-free siphon of \(\mathcal{P}\), thus a minimal trap space of \(\mathcal{N}\). 
+By using this built-in option, we can compute all the set-inclusion maximal answer sets of \(\mathcal{L}\) (resp.\ all the minimal trap spaces of \(\mathcal{N}\)) in one execution.
 
 \subsection{Integer linear programming-based method}
 \label{subsec:computation_ilp}
@@ -933,7 +981,7 @@ A number in bold indicates a ratio greater than three compared to the best resul
 As shown in Table~\ref{tab:pyboolnet_repo}, for most of the models of the official PyBoolNet repository\footnote{\url{https://github.com/hklarner/pyboolnet/tree/master/pyboolnet/repository}}, the results are comparable with all minimal trap spaces found very fast.
 For 5 of the 29 models, mpbn did not give any answer because it recognized these models as not locally-monotonic.
 Note that on some very small models, Trappist is sometimes slower than PyBoolNet and/or mpbn, but still significantly under one second.
-Moreover, we believe that the result on the arellano\_rootstem model is caused by the cold start of the JVM for BioLQM.\@
+Moreover, we believe that the result on the arellano\_rootstem model is caused by the cold start of the JVM for bioLQM.\@
 On the contrary, on every model that was a bit challenging for PyBoolNet or mpbn, the new method is far more efficient with speedups between one and two orders of magnitude.
 
 \subsection{BBM repository}
@@ -1056,15 +1104,15 @@ Note that though enumerating the extremal siphons of a Petri net is exponential 
 
 \subsection{Randomly generated models}
 
-We randomly generated a set of N-K models~\cite{glass1973logical} with network size \(n\) in the set \{100, 150, 200, 250, 300, 350, 400\} and \(K = 3\) (i.e., each node has exactly \(K = 3\) input nodes).
-We chose N-K models because they are an useful tool for studying the dynamics of Boolean networks~\cite{glass1973logical,klarner2015computing}).
+We randomly generated a set of N-K models~\cite{glass1973logical} with network size \(n\) in the set \{100, 150, 200, 250, 300, 350, 400\} and \(K = 3\) (i.e., each node has exactly three input nodes).
+We chose N-K models because they are a useful tool for studying the dynamics of Boolean networks~\cite{glass1973logical,klarner2015computing}).
 For each network size, 50 instances were generated using the \verb|generateRandomNKNetwork| function.
 In total, we have 350 random models. 
 We then applied the compared methods to these models and recorded the numbers of failures (i.e., failed to obtain the result within the time limit) of each method.
 We considered three time limits: 10 seconds, 60 seconds, and 180 seconds.
 It is worth noting that N-K models usually have small numbers of minimal trap spaces~\cite{klarner2015computing}.
 Hence, we searched for all solutions in each model, which makes the comparison to bioLQM more comprehensive.
-In addition, each node has only 3 input nodes, i.e., the number of prime-implicants of the associated Boolean function is small.
+In addition, each node has only three input nodes, i.e., the number of prime-implicants of the associated Boolean function is small.
 Hence, PyBoolNet always passed the phase of computing prime-implicants in every model even with the time limit of 10s, which enables us to compare the ASP encoding of PyBoolNet and that of Trappist.
 
 \begin{table}[!htb]
@@ -1116,8 +1164,8 @@ This method is evaluated on large models from the literature and shows that it c
 We believe that this opens up the way to a much better analysis of large Boolean networks, which is needed with the advent of automatic model-generation pipelines~\cite{ostaszewski2021covid19}.
 
 Though we benchmarked this new approach against state-of-the-art tools, there are many more evaluations that we plan to do in the future.
-First, the BioLQM platform that we are using is providing another implicant-based method using BDDs in \url{http://colomoto.org/biolqm/doc/tools-trapspace.html} and though we expect it to behave mostly like PyBoolNet, that remains to be checked.
-Note that this also raises the question of replacing altogether the BioLQM preprocessing step we use to obtain the Petri net encoding, since its use of BDDs might not be optimal for that step.
+First, the bioLQM platform that we are using is providing another implicant-based method using BDDs in \url{http://colomoto.org/biolqm/doc/tools-trapspace.html} and though we expect it to behave mostly like PyBoolNet, that remains to be checked.
+Note that this also raises the question of replacing altogether the bioLQM preprocessing step we use to obtain the Petri net encoding, since its use of BDDs might not be optimal for that step.
 The trade-off between a small Petri net, and hence small ASP, and the time it takes to compute it (in other words, the trade-off of allowing redundant constraints) has to be evaluated in depth.
 
 Second, the experimental results shown in this paper mostly expose the differences caused by the prime-implicant phase of PyBoolNet. There is much more information required to distinctly study the practical differences between our ASP encoding and that of PyBoolNet, and notably their size/efficiency ratio.
