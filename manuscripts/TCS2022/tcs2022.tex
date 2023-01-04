@@ -732,7 +732,7 @@ For each pair \((p, t)\) where \(p \in P, t \in T, t \in pred(p)\), we translate
 where \(\verb|a| \in \mathcal{A}\) is the atom representing place \(p\) and \(\{\verb|a_1|, \dots,\verb|a_k|\} \subseteq \mathcal{A}\) is the set of atoms representing places in \(pred(t)\). The rule (\ref{eq:conflict}) is translated into the ASP rule
 \[\verb|:- p-v, n-v.|\]
 for each \(v \in V\). 
-This ASP rule guarantees that two places representing the same node in \(\mathcal{N}\) never belong to the same siphon of \(\mathcal{P}\), representig the conflict-freeness.
+This ASP rule guarantees that two places representing the same node in \(\mathcal{N}\) never belong to the same siphon of \(\mathcal{P}\), representing the conflict-freeness.
 Naturally, a Herbrand model (see, e.g.,~\cite{DBLP:journals/aicom/GebserKKOSS11}) of \(\mathcal{L}\) is equivalent to a conflict-free siphon of \(\mathcal{P}\).
 To guarantee that a Herbrand model is also a stable model (an answer set), we need to add to \(\mathcal{L}\) the two choice rules
 \[
