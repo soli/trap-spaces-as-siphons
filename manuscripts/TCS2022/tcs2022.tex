@@ -404,14 +404,14 @@ Let \(s\) be a state of the Boolean network and \(m_s\) be its corresponding mar
 It holds that \(\forall v \in V\), \(s(v) = 0\) if and only if \(m_s(\overline{p}_v) = 1\) and \(s(v) = 1\) if and only if \(m_s(p_v) = 1\). Note also that at any marking \(m\) of the Petri net encoding a Boolean network, it always holds that \(m(p_v) + m(\overline{p}_v) = 1\).
 
 The main property of this encoding is that it is completely faithful with respect to the update scheme of the original Boolean network.
-For each node \(v\) of \(\mathcal{N}\), only transitions corresponding to \(v\) can change the current marking of \(p_v\) or \(\overline{p_v}\).
+For each node \(v\) of \(\mathcal{N}\), only transitions corresponding to \(v\) can change the current marking of \(p_v\) or \(\overline{p}_v\).
 In addition, at any marking at most one of such transitions is enabled because \(m(p_v) + m(\overline{p}_v) = 1\) holds.
 Hence, for any update scheme in \(\mathcal{N}\), we have a corresponding firing scheme in \(\mathcal{P}\), which preserves the equivalence between the dynamics of \(\mathcal{N}\) and \(\mathcal{P}\)~\cite{DBLP:journals/nc/ChatainHKPT20}.
 
 For illustration, let us reconsider the Boolean network shown in Example~\ref{example:BN}.
 Figure~\ref{fig:PN} shows the Petri net encoding of this Boolean network.
-Place \(p_{x_1}\) (resp. \(\overline{p_{x_1}}\)) in \(\mathcal{P}\) represents the activation (resp.\ the inactivation) of node \(x_1\) in \(\mathcal{N}\).
-Marking \(\{p_{x_1}, \overline{p_{x_2}}\}\) in \(\mathcal{P}\) represents state 10 in \(\mathcal{N}\).
+Place \(p_{x_1}\) (resp. \(\overline{p}_{x_1}\)) in \(\mathcal{P}\) represents the activation (resp.\ the inactivation) of node \(x_1\) in \(\mathcal{N}\).
+Marking \(\{p_{x_1}, \overline{p}_{x_2}\}\) in \(\mathcal{P}\) represents state 10 in \(\mathcal{N}\).
 Transitions \(t^{1}_{x_1}\) and \(t^{2}_{x_1}\) represent the update of node \(x_1\).
 Of course, in any marking \(t^{1}_{x_1}\) and \(t^{2}_{x_1}\) cannot be both enabled.
 Then, the fully asynchronous update scheme in \(\mathcal{N}\) corresponds to the classical firing scheme in \(\mathcal{P}\) where only one of the enabled transitions for a given marking will be fired~\cite{Murata1989}.
@@ -474,7 +474,7 @@ Intuitively, a siphon is a set of places that once unmarked remains so.
 If it is conflict-free then its dual corresponds to a partial-state of the model such that whatever update, the fixed values remain so (since the unmarked places remain unmarked).
 This is precisely the definition of a trap space and maximality of the siphon is equivalent to as many fixed values as possible, hence minimality of the trap space.
 For example, the Boolean network given in Example~\ref{example:BN} has two trap spaces, \(m_1 = 11\) and \(m_2 = \star\star\).
-The Petri net encoding of this Boolean network has five generic siphons, \(S_1 = \emptyset\), \(S_2 = \{p_{x_1}, \overline{p_{x_1}}\}\), \(S_3 = \{p_{x_2}, \overline{p_{x_2}}\}\), \(S_4 = \{\overline{p_{x_1}}, \overline{p_{x_2}}\}\), and \(S_5 = \{p_{x_1}, \overline{p_{x_1}}, p_{x_2}, \overline{p_{x_2}}\}\).
+The Petri net encoding of this Boolean network has five generic siphons, \(S_1 = \emptyset\), \(S_2 = \{p_{x_1}, \overline{p}_{x_1}\}\), \(S_3 = \{p_{x_2}, \overline{p}_{x_2}\}\), \(S_4 = \{\overline{p}_{x_1}, \overline{p}_{x_2}\}\), and \(S_5 = \{p_{x_1}, \overline{p}_{x_1}, p_{x_2}, \overline{p}_{x_2}\}\).
 However, only \(S_1\) and \(S_4\) are conflict-free siphons and correspond to \(m_2\) and \(m_1\), respectively.
 Since \(S_1 \subset S_4\), \(S_4\) is a maximal siphon corresponding to the minimal trap space \(m_1\).
 Hereafter, we formally prove that a maximal conflict-free siphon is equivalent to a minimal trap space.
@@ -655,7 +655,7 @@ The system of all the rules of the above form with respect to all pairs \((p, t)
 To make \(S\) to be a conflict-free siphon, we need to add to the system the rule
 \begin{equation}
 \label{eq:conflict}
-p_v \in S \Rightarrow \overline{p_v} \not \in S \wedge \overline{p_v} \in S \Rightarrow p_v \not \in S
+p_v \in S \Rightarrow \overline{p}_v \not \in S \wedge \overline{p}_v \in S \Rightarrow p_v \not \in S
 \end{equation}for each node \(v \in V\).
 By definition, the final system fully characterizes all conflict-free siphons of the encoded Petri net.
 
@@ -670,7 +670,7 @@ The following Boolean Constraint Satisfaction Problem (CSP) directly derives fro
   \begin{itemize}%
     \item \(R = P\), i.e., a variable is introduced for each place of \(\mathcal{P}\),
     \item \(D(p) = \mathbb{B}\) for all \(p \in R\), i.e., the variables are Boolean,
-    \item \(C = \{\neg p_v \vee \neg \overline{p_v} = 1 \mid \forall v \in V\} \bigwedge
+    \item \(C = \{\neg p_v \vee \neg \overline{p}_v = 1 \mid \forall v \in V\} \bigwedge
 \{(p = 1 \rightarrow \bigvee_{p' \in pred(t)}p' = 1) \mid p \in P, t \in pred(p)\}\).
   \end{itemize}
 
@@ -688,7 +688,7 @@ The following Boolean Constraint Satisfaction Problem (CSP) directly derives fro
 
 \begin{proof}
 
-  By the former part \(\neg p_v \vee \neg \overline{p_v}\) = 1 of \(C\), the conflict-freeness is imposed because for any satisfable valuation \(r\), \(r(p_v) = r(\overline{p_v}) = 1\) is impossible for all \(v \in V\).
+  By the former part \(\neg p_v \vee \neg \overline{p}_v\) = 1 of \(C\), the conflict-freeness is imposed because for any satisfable valuation \(r\), \(r(p_v) = r(\overline{p}_v) = 1\) is impossible for all \(v \in V\).
   As shown in~\cite{nabli2016enumerating}, the latter part of \(C\) can characterize the set of all generic siphons of \(\mathcal{P}\).
   Hence, we can conclude the proof.
   
@@ -700,7 +700,7 @@ For enumerating siphons in the set inclusion order, the proposed method by~\cite
 The method has two implementations, one uses an iterated SAT procedure and the other uses Constraint Logic Programming with backtracking.
 
 One natural question is that how to use the CSP-based method for enumerating all the maximal conflict-free siphons of a Petri net encoding a Boolean model?
-Of course, the set of all conflict-free siphons of the Petri net can easily characterized by the CSP model presented in~\cite{nabli2016enumerating} along with the additional constraint \(\neg p_v \vee \neg \overline{p_v} = 1\), for each \(v \in V\), which represents the conflict-freeness.
+Of course, the set of all conflict-free siphons of the Petri net can easily characterized by the CSP model presented in~\cite{nabli2016enumerating} along with the additional constraint \(\neg p_v \vee \neg \overline{p}_v = 1\), for each \(v \in V\), which represents the conflict-freeness.
 However, the main concern is to enumerate all the \emph{maximal} ones, which is not trivial to adapt from the CSP-based method.
 By Proposition~\ref{prop:csp_conflict_free_siphon}, the set of all maximal conflict-free siphons of \(\mathcal{P}\) can be enumerated in the (maximality) set inclusion order, by restarting the search each time a conflict-free siphon \(S\) is found, with the following additional constraint for disallowing any subset of that conflict-free siphon: \(\bigvee_{p \not \in S} p = 1\).
 For enumerating conflict-free siphons in the set inclusion order, we can use the same technique as used in~\cite{nabli2016enumerating} but with the opposite setting, i.e., labeling directly the Boolean variables with decreasing value selection.
@@ -710,7 +710,7 @@ Similar to~\cite{nabli2016enumerating}, the newly CSP-based method can also be i
 However a more direct method is to use a MaxSAT solver.
 We construct a MaxSAT problem with the following hard clauses:
 \[
-  (\neg p_v \vee \neg \overline{p_v}), \forall v \in V
+  (\neg p_v \vee \neg \overline{p}_v), \forall v \in V
 \]
 and
 \[
@@ -723,7 +723,7 @@ This is what is implemented in \texttt{trappist} using the RC2 MaxSAT solver~\ci
 \label{subsec:computation_asp}
 
 Another possible method is to translate the characterization shown in Subsection~\ref{subsec:siphon_characterization} into the ASP \(\mathcal{L}\) as follows.
-We introduce atom \verb|p-v| (resp. \verb|n-v|) to denote place \(p_v\) (resp. \(\overline{p_v}\)), \(\forall v \in V\). 
+We introduce atom \verb|p-v| (resp. \verb|n-v|) to denote place \(p_v\) (resp. \(\overline{p}_v\)), \(\forall v \in V\). 
 The set of all atoms in \(\mathcal{L}\) is given as \(\mathcal{A} = \bigcup_{v \in V}\{\verb|p-v|, \verb|n-v|\}\).
 For each pair \((p, t)\) where \(p \in P, t \in T, t \in pred(p)\), we translate the rule (\ref{eq:siphon}) into the ASP rule
 \[
@@ -756,7 +756,7 @@ By using this built-in option, we can compute all the set-inclusion maximal answ
 \label{subsec:computation_ilp}
 
 We first show how an Integer Linear Programming (ILP) \(\mathcal{I}\) can define a set of all conflict-free siphons of the encoded Petri net \(\mathcal{P}\).
-We introduce \emph{binary} variable \verb|p-v| (resp. \verb|n-v|) to denote place \(p_v\) (resp. \(\overline{p_v}\)), \(\forall v \in V\).
+We introduce \emph{binary} variable \verb|p-v| (resp. \verb|n-v|) to denote place \(p_v\) (resp. \(\overline{p}_v\)), \(\forall v \in V\).
 The set of all binary variables in \(\mathcal{I}\) is \(\bigcup_{v \in V}\{\verb|p-v|, \verb|n-v|\}\).
 For each pair \((p, t)\) where \(p \in P, t \in T, t \in pred(p)\), we translate the rule (\ref{eq:siphon}) into the ILP inequality
 \[
