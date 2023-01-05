@@ -932,7 +932,7 @@ All the models and a CoLoMoTo notebook realizing the benchmarks can be found at 
 
 \setlength{\tabcolsep}{4pt}
 \begin{table}[!htb]
-  \caption{Timing comparisons between bioLQM (LQM), PyBoolNet (PBN), mpbn and the four variants of Trappist on the PyBoolNet repository.}
+  \caption{Timing comparisons (in seconds) between bioLQM (LQM), PyBoolNet (PBN), mpbn and the four variants of Trappist on the PyBoolNet repository.}
   \centering%
   \label{tab:pyboolnet_repo}
   \scalebox{0.85}{
@@ -977,13 +977,15 @@ All the models and a CoLoMoTo notebook realizing the benchmarks can be found at 
 \end{table}
 \setcounter{rownumber}{0}
 
-Column \(n\) denotes the number of nodes of each model. Column \(|M|\) denotes the number of minimal trap spaces and for each method is given the computation time in seconds, asking only for the first 1000 trap spaces.
-A number in bold indicates a ratio greater than three compared to the best result. ``NM'' indicates a non-locally-monotonic model.
+Table~\ref{tab:pyboolnet_repo} shows the experimental results on the models from the PyBoolNet repository.
+Column \(n\) denotes the number of nodes of each model. 
+Column \(|M|\) denotes the number of minimal trap spaces and for each method is given the computation time in seconds, asking only for the first 1000 trap spaces.
+A number in bold indicates a ratio greater than three compared to the best result. 
+``NM'' indicates a non-locally-monotonic model.
     
 As shown in Table~\ref{tab:pyboolnet_repo}, for most of the models of the official PyBoolNet repository\footnote{\url{https://github.com/hklarner/pyboolnet/tree/master/pyboolnet/repository}}, the results are comparable with all minimal trap spaces found very fast.
 For 5 of the 29 models, mpbn did not give any answer because it recognized these models as not locally-monotonic.
 Note that on some very small models, Trappist is sometimes slower than PyBoolNet and/or mpbn, but still significantly under one second.
-Moreover, we believe that the result on the arellano\_rootstem model is caused by the cold start of the JVM for bioLQM.\@
 On the contrary, on every model that was a bit challenging for PyBoolNet or mpbn, the new method is far more efficient with speedups between one and two orders of magnitude.
 
 \subsection{BBM repository}
@@ -1019,15 +1021,17 @@ Table~\ref{tab:bbm_repo} shows the experimental results on the 211 real-world mo
 
 We used a set of real-world Boolean networks lying in various scales collected from numerous bibliographic sources.
 These models are quite big (in size), complex (i.e., having high average in-degree, which is related to the number of prime-implicants) and most of them have never been fully analyzed.
-We then applied PyBoolNet, mpbn, and Trappist to computing minimal trap spaces of these real-world models.
+We then applied bioLQM, PyBoolNet, mpbn, and the four variants of Trappist to computing minimal trap spaces of these real-world models.
 It is notable that unlike existing analysis shown in the literature, we did not fix specific values for source nodes in these models.
-Table~\ref{tab:result_real} shows the experimental results on those models. Hereafter, we analyze in detail the results with respect to minimal trap space computation.
-
-Column \(n\) (resp.\ \(s\)) denotes the number of nodes (resp.\ source nodes) of each model. Column \(|M|\) denotes the number of minimal trap spaces and for each method is given the computation time in seconds.
-``DNF'' means that the method did not finish the computation (stopping at the first 1000 minimal trap spaces, or all for the last column) within the timeout of two minutes. ``NM'' indicates a non-locally-monotonic model.
+Table~\ref{tab:result_real} shows the experimental results on those models. 
+``DNF'' means that the method did not finish the computation (stopping at the first 1000 minimal trap spaces) within the timeout of two minutes.
+In the case of bioLQM, ``N/A'' means that the number of all minimal trap spaces of the model is larger than 1000 and we did not recorded the running time of bioLQM because it always requires to compute all minimal trap spaces.
+A number in bold indicates a ratio greater than or equal to 10 compared to the best result.
+Other notations are similar to those in Table~\ref{tab:pyboolnet_repo}.
+Hereafter, we analyze in detail the results with respect to minimal trap space computation.
     
 \begin{table}[!htb]
-  \caption{Timing comparisons between bioLQM (LQM), PyBoolNet (PBN), mpbn and the four variants of Trappist on selected models from the literature.}
+  \caption{Timing comparisons (in seconds) between bioLQM (LQM), PyBoolNet (PBN), mpbn and the four variants of Trappist on selected models from the literature.}
   % in bold if greater than or equal to 10
   \centering%
   \label{tab:result_real}
