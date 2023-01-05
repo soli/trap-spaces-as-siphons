@@ -251,6 +251,7 @@ In the case of multi-level logical models, an encoding into a Boolean network is
     
     \item \(F = \{f_1, \dots, f_n\}\) is the set of update functions.
     Each function \(f_i\) is associated with node \(v_i\) and satisfies \(f_i \colon \mathbb{B}^{\vert IN(v_i)\vert} \mapsto \mathbb{B}\) where \(\mathbb{B} = \{0, 1\}\) and \(IN(v_i)\) denotes the set of input nodes of \(v_i\).
+    Note that a node \(v_i \in V\) is called a \emph{source} node if and only if \(f_{i} = v_i\).
   \end{itemize}
 
 \label{def:BN}
@@ -906,7 +907,7 @@ However, using a state-of-the-art tool like PyBoolNet~\cite{klarner2015computing
 mpbn~\cite{Paulev2020} does not give any answer either because it recognizes that model as non-locally-monotonic.
 And hence, it is not possible to extract any (complex) attractor at all.
 This is also true for the Alzheimer model also mentioned in that same article and originally from~\cite{ogishima2016alzpathway} (\verb|F4| file in the original supplementary material, and ``Alzheimer'' in Table~\ref{tab:result_real}), but actually not for the MAPK model for which the first trap spaces can be obtained in reasonable time.
-The current practice usually revolves then around fixing some inputs to plausible values and reducing the model accordingly.
+The current practice usually revolves then around fixing some source nodes to plausible values and reducing the model accordingly.
 While this approach makes sense, it relies on potentially arbitrary decisions, and \emph{hides away} critical modelling choices that were actually not part of the original Boolean network or even of the starting map.
 
 Using the method presented above, it is possible to convert the model to PNML in about one second and to obtain the first 1000 minimal trap spaces (including ones that contain more than one state) in a few milliseconds.
@@ -987,6 +988,11 @@ On the contrary, on every model that was a bit challenging for PyBoolNet or mpbn
 
 \subsection{BBM repository}
 
+Currently, a research group has made a great effort for building a collection (called BBM) of real-world Boolean models from various sources used in systems biology.
+It aims to be a comprehensive collection suitable for benchmarking and testing new tools and methods.
+This is released and maintained at \url{https://github.com/sybila/biodivine-boolean-models}.
+We here tested all the compared methods on this model repository.
+
 \setlength{\tabcolsep}{4pt}
 \begin{table}[!h]
   \caption{Results on the real-world models from the BBM repository.}
@@ -996,8 +1002,8 @@ On the contrary, on every model that was a bit challenging for PyBoolNet or mpbn
     \toprule
     Method & 10s & 60s & 180s & avg-mono (s) & avg-all (s) \\ \midrule
     bioLQM & 12 (134) & 9 (134) & 9 (134) & N/A & N/A \\
-    PyBoolNet & - & - & - & - & - \\
-    mpbn & 28 (187) & 26 (187) & 26 (187) & 2.31 & N/A \\
+    PyBoolNet & 22 & 17 & 12 & 11.00 & 13.59 \\
+    mpbn & 4 (187) & 2 (187) & 2 (187) & 2.31 & N/A \\
     Trappist-maxSAT & 1 & 1 & 1 & 1.09 & 1.01 \\
     Trappist-CLP & - & - & - & - & - \\
     Trappist-ILP & - & - & - & - & - \\
@@ -1007,12 +1013,14 @@ On the contrary, on every model that was a bit challenging for PyBoolNet or mpbn
 \end{table}
 \setcounter{rownumber}{0}
 
+Table~\ref{tab:bbm_repo} shows the experimental results on the 211 real-world models from the BBM repository.
+
 \subsection{Selected models}
 
 We used a set of real-world Boolean networks lying in various scales collected from numerous bibliographic sources.
 These models are quite big (in size), complex (i.e., having high average in-degree, which is related to the number of prime-implicants) and most of them have never been fully analyzed.
 We then applied PyBoolNet, mpbn, and Trappist to computing minimal trap spaces of these real-world models.
-It is notable that unlike existing analysis shown in the literature, we did not fix specific values for source nodes (i.e., some node \(v\) such that \(f_v = v\)) in these models.
+It is notable that unlike existing analysis shown in the literature, we did not fix specific values for source nodes in these models.
 Table~\ref{tab:result_real} shows the experimental results on those models. Hereafter, we analyze in detail the results with respect to minimal trap space computation.
 
 Column \(n\) (resp.\ \(s\)) denotes the number of nodes (resp.\ source nodes) of each model. Column \(|M|\) denotes the number of minimal trap spaces and for each method is given the computation time in seconds.
