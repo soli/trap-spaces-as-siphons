@@ -77,8 +77,9 @@ def solve_cp(
     else:
         remaining = None
     # TODO handle time limit?
-    while (remaining is None or remaining > timedelta()) and \
-          (max_output == 0 or nsol < max_output):
+    while (remaining is None or remaining > timedelta()) and (
+        max_output == 0 or nsol < max_output
+    ):
         start = perf_counter()
         result = inst.solve(timeout=remaining, processes=nprocs)
         end = perf_counter()

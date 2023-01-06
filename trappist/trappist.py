@@ -216,7 +216,7 @@ def main():
     parser.add_argument(
         "-d",
         "--debug",
-        action=argparse.store_true,
+        action="store_true",
         help="Print debugging information.",
     )
     parser.add_argument(
@@ -253,7 +253,7 @@ def main():
         default="asp",
         type=str,
         help="Solver to compute the Maximal conflict-free siphons.\n"
-             "'asp' requires clingo, 'cp' requires minizinc.",
+        "'asp' requires clingo, 'cp' requires minizinc.",
     )
     parser.add_argument(
         "infile",
