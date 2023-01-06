@@ -69,7 +69,7 @@ def solve_cp(
     nprocs: int,
 ) -> Generator[List[int], None, None]:
     """Run an CP solver on given WCNF and get the solutions."""
-    solver = Solver.lookup("gecode")
+    solver = Solver.lookup("chuffed")
     inst = Instance(solver, model)
     nsol = 0
     if time_limit > 0:
@@ -109,7 +109,8 @@ def solve_cp(
             model.add_string(f"constraint {or_string};")
             inst = Instance(solver, model)
         else:
-            print(result.status)
+            if result.status != Status.UNSATISFIABLE:
+                print(result.status)
             break
 
 
