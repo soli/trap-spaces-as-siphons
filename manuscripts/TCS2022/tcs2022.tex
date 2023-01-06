@@ -435,7 +435,6 @@ As such, we will explore how this transformation, here using BDDs in bioLQM, and
 
 Siphons are a static and classical property of Petri nets~\cite{peterson1981petri}.
 Note however that the use of siphons for the analysis of biological models, though it is not new, has been mostly relevant to the ODE-based continuous semantics of Chemical Reaction Networks~\cite{angeli2007petri,angeli2011persistence,degrand2020graphical}.
-
 We recall here the basic definition establishing that to produce something in a siphon you must consume something from the siphon.
 This corresponds to the idea that a siphon is a set of places that once unmarked remains unmarked.
 
@@ -478,7 +477,7 @@ For example, the Boolean network given in Example~\ref{example:BN} has two trap 
 The Petri net encoding of this Boolean network has five generic siphons, \(S_1 = \emptyset\), \(S_2 = \{p_{x_1}, \overline{p}_{x_1}\}\), \(S_3 = \{p_{x_2}, \overline{p}_{x_2}\}\), \(S_4 = \{\overline{p}_{x_1}, \overline{p}_{x_2}\}\), and \(S_5 = \{p_{x_1}, \overline{p}_{x_1}, p_{x_2}, \overline{p}_{x_2}\}\).
 However, only \(S_1\) and \(S_4\) are conflict-free siphons and correspond to \(m_2\) and \(m_1\), respectively.
 Since \(S_1 \subset S_4\), \(S_4\) is a maximal siphon corresponding to the minimal trap space \(m_1\).
-Hereafter, we formally prove that a maximal conflict-free siphon is equivalent to a minimal trap space.
+Hereafter, we formally prove that a (maximal) conflict-free siphon is equivalent to a (minimal) trap space.
 
 \begin{definition}
 
@@ -605,7 +604,7 @@ This property is important because we can use it to approximate the set of attra
   Assume that \(\mathcal{S}_{\mathcal{N}}[m_1] \cap \mathcal{S}_{\mathcal{N}}[m_2] \neq \emptyset\).
   Let \(S_1\) and \(S_2\) be the mirrors of \(m_1\) and \(m_2\), respectively.
   By Theorem~\ref{theo:min_ts_2_max_sp}, \(S_1\) and \(S_2\) are maximal conflict-free siphons of \(\mathcal{P}\).
-  We have that \(S = S_1 \cup S_2\) is also a siphon because of the property of siphons in Petri nets~\cite{DBLP:journals/isci/LiuB16}.
+  We have that \(S = S_1 \cup S_2\) is also a siphon because of Proposition~\ref{prop:siphon_set}.
   For every node \(v \in V\), assume that \(p_v \in S\) and \(\overline{p}_v \in S\) hold.
   Since \(S_1\) and \(S_2\) are conflict-free, there are all two cases.
   Case 1: \(p_v \in S_1\) and \(\overline{p}_v \in S_2\).
@@ -626,7 +625,7 @@ As we have mentioned at the beginning of this article, there may be a huge numbe
 Hence, the checking method in~\cite{klarner2017pyboolnet} shows its limitations.
 Instead, we can first compute the mirror \(S_m\) of \(m\) in the Petri net encoding.
 Then, by Proposition~\ref{prop:siphon_set} and Theorem~\ref{theo:ts_2_sp}, we check if \(pred(S_m) \subseteq succ(S_m)\).
-Note that the above computation (also the Petri net construction) is quadratic in the number of transitions of the Petri net, which can be much smaller than the number of prime-implicants~\cite{chatain2014characterization}.
+Note that the above computation (also the Petri net construction) is quadratic in the number of transitions of the Petri net in worst cases, which can be much smaller than the number of prime-implicants~\cite{chatain2014characterization}.
 
 Furthermore, by Theorem~\ref{theo:min_ts_2_max_sp}, we can reduce the problem of computing all minimal trap spaces of a Boolean network to the problem of computing all maximal conflict-free siphons of its Petri net encoding.
 Note that in the case of special types of trap spaces (e.g., fixed points), this can be put in regard to special types of siphons in Petri nets.
@@ -822,15 +821,15 @@ Let \(\varepsilon\) be the special trap space of \(\mathcal{N}\) where all the n
 Of course, \(\varepsilon\) corresponds to the special conflict-free siphon \(\emptyset\).
 A trap space \(m\) is called maximal if \(m \neq \varepsilon\) and there is no other trap space \(m'\) such that \(m' \neq \varepsilon\) and \(m < m'\).
 Analogously, a conflict-free siphon \(S\) is called minimal if \(S \neq \emptyset\) and there is no other trap space \(S'\) such that \(S' \neq \emptyset\) and \(S' \subset S\).
-By using the reasoning similar to the proof of Theorem~\ref{theo:min_ts_2_max_sp}, we can easily conclude that a maximal trap space of \(\mathcal{N}\) is equivalent to a minimal conflict-free siphon of its Petri net \(\mathcal{P}\).
-Let \(\mathcal{L}\) be the ASP characterizing all siphons of \(\mathcal{P}\) (see Subsection~\ref{subsec:computation_asp}).
+By using the reasoning similar to the proof of Theorem~\ref{theo:min_ts_2_max_sp}, we can easily conclude that a maximal trap space of \(\mathcal{N}\) is equivalent to a minimal conflict-free siphon of its encoded Petri net \(\mathcal{P}\).
+Let \(\mathcal{L}\) be the ASP characterizing all conflict-free siphons of \(\mathcal{P}\) (see Subsection~\ref{subsec:computation_asp}).
 Naturally, we need to exclude \(\emptyset\) from the solution space of \(\mathcal{L}\) (equivalently exclude \(\varepsilon\) from the set of trap spaces).
 To do this, we add to \(\mathcal{L}\) the ASP rule
 \[
   \verb|p-v_1| ; \verb|n-v_1| ; \dots ; \verb|p-v_n| ; \verb|n-v_n|.
 \]
 that ensures that every answer set of \(\mathcal{L}\) cannot be empty.
-Then a set-inclusion minimal answer set of \(\mathcal{L}\) is equivalent to a minimal conflict-free siphon of \(\mathcal{P}\), thus a maximal trap space of \(\mathcal{N}\)
+Then a set-inclusion minimal answer set of \(\mathcal{L}\) is equivalent to a minimal conflict-free siphon of \(\mathcal{P}\), thus a maximal trap space of \(\mathcal{N}\).
 
 Second, we consider fixed points in Boolean networks.
 Let \(s\) be a fixed point of a Boolean network \(\mathcal{N}\).
@@ -867,7 +866,7 @@ Now \(\mathcal{L}\) characterizes all trap spaces that intersect \(m^{*}\).
 
 Finally, we consider the trap spaces that are inside a given subspace \(m^{*}\) of a Boolean network.
 We first adjust \(\mathcal{L}\) to characterize all such trap spaces.
-A trap space \(m\) is inside \(m^{*}\) if and only if \(m(v) = m^{*}(v)\) for every \(v \in D_m\).
+A trap space \(m\) is inside \(m^{*}\) if and only if \(m(v) = m^{*}(v)\) for every \(v \in D_{m^{*}}\).
 If \(m^{*}(v) = 0\), we add to \(\mathcal{L}\) the ASP rule
 \[
   \verb|p-v.|
@@ -889,8 +888,7 @@ In the case that \(m^{*} = \varepsilon\), we have all maximal trap spaces of the
 
 
 \section{Motivating example}
-
-% TODO Choose another motivating example because this Boolean model can be easily handled by mpbn 1.7
+\label{sec:case_study}
 
 For a few years now we have been collaborating with biologists who build very large detailed and annotated maps and now wish to analyze the dynamics of the corresponding models.
 One of the main maps studied this way represents knowledge about the Rheumatoïd Arthritis~\cite{singh2018computational}, and was the main motivation for the development of a tool to automatically transform it into an executable Boolean network~\cite{aghamiri2020automated}.
@@ -916,17 +914,18 @@ Unfortunately since this was not available at the time, the analysis of the mode
 \section{Evaluation}%
 \label{sec:eval}
 
-To assess the efficiency of the proposed method, implemented as a Python package named Trappist, we compared it with the state-of-the-art method implemented in the tool PyBoolNet~\cite{klarner2015computing,klarner2017pyboolnet} on both its own repository of models and large models from the literature.
-In addition, we also included the tool mpbn~\cite{Paulev2020} to the benchmarks although it only handles locally-monotonic models, whereas both Trappist and PyBoolNet can handle general models.
+To evaluate the performance of the newly proposed methods (implemented as a Python package named Trappist) and the state-of-the-art methods (bioLQM\footnote{\url{http://colomoto.org/biolqm/doc/tools-trapspace.html}}, PyBoolNet~\cite{klarner2015computing,klarner2017pyboolnet}, and mpbn~\cite{Paulev2020}), we compared them on both PyBoolNet's own model repository and many real-world models from various sources in the literature.
+It is worth noting that mpbn~\cite{Paulev2020} only handles locally-monotonic models, whereas the other methods can handle general models.
 To obtain a more comprehensive comparison, we also used random models generated by a third-party software (i.e., BoolNet R package~\cite{mussel2010boolnet}).
+As explained in Section~\ref{sec:case_study}, in our benchmarks, we only searched for the first 1000 solutions for each model.
 
-To solve the ASP problems, we used the same ASP solver CLINGO~\cite{DBLP:journals/aicom/GebserKKOSS11} and the same configuration as that used in PyBoolNet~\cite{klarner2015computing,klarner2017pyboolnet}.
-Specifically, we used the configuration \texttt{-heuristic=Domain -enum-mod=domRec -dom-mod=3} (subset maximality, equivalent to the deprecated \texttt{--dom-pref=32 --heuristic=domain --dom-mod=7} used by PyBoolNet). We ran all the benchmarks on a machine whose environment is CPU: \@ Intel\textregistered\ Core\texttrademark\ i9-11950H 2.60GHz × 16, 16 GB DDR4 RAM, Ubuntu 20.04.5 LTS. Finally, we set a time limit of two minutes for each model.
-Note that we did not get the opportunity to run this benchmark on a proper dedicated computing workstation, the results are therefore only indicative of global trends and should not be interpreted as precise performance.
-This is also why in some rare cases finding all minimal trap spaces was faster than with the limit to 1000.
+To solve the ASP problems, we used the same ASP solver CLINGO~\cite{DBLP:journals/aicom/GebserKKOSS11} and the same configuration as that used in PyBoolNet~\cite{klarner2015computing,klarner2017pyboolnet} and mpbn~\cite{Paulev2020}.
+Specifically, we used the configuration \texttt{-heuristic=Domain -enum-mod=domRec -dom-mod=3} (subset maximality, equivalent to the deprecated \texttt{--dom-pref=32 --heuristic=domain --dom-mod=7} used by PyBoolNet). 
+We ran all the benchmarks on a machine whose environment is CPU: \@ Intel\textregistered\ Core\texttrademark\ i9-11950H 2.60GHz × 16, 16 GB DDR4 RAM, Ubuntu 20.04.5 LTS. 
+Finally, we set a time limit of three minutes for each model.
 
-For all the above tools, namely PyBoolNet, mpbn and CLINGO, we used the version available in the latest CoLoMoTo docker image tagged \texttt{2022-05-01}.
-All the models and a CoLoMoTo notebook realizing the benchmarks can be found at \url{https://github.com/soli/trap-spaces-as-siphons}. These can be run on a Docker image in the cloud by clicking the ``Binder'' button.
+All the models and a Jupyter notebook realizing the benchmarks can be found at~\url{https://github.com/soli/trap-spaces-as-siphons}.
+These can be run on a Docker image in the cloud by clicking the ``Binder'' button.
 
 \subsection{PyBoolNet repository}
 
@@ -977,13 +976,14 @@ All the models and a CoLoMoTo notebook realizing the benchmarks can be found at 
 \end{table}
 \setcounter{rownumber}{0}
 
-Table~\ref{tab:pyboolnet_repo} shows the experimental results on the models from the PyBoolNet repository.
+Table~\ref{tab:pyboolnet_repo} shows the experimental results on the models from the official PyBoolNet repository\footnote{\url{https://github.com/hklarner/pyboolnet/tree/master/pyboolnet/repository}}.
 Column \(n\) denotes the number of nodes of each model. 
 Column \(|M|\) denotes the number of minimal trap spaces and for each method is given the computation time in seconds, asking only for the first 1000 trap spaces.
 A number in bold indicates a ratio greater than three compared to the best result. 
 ``NM'' indicates a non-locally-monotonic model.
+There are four variants of Trappist: SAT (i.e., the MaxSAT-based method shown in Subsection~\ref{subsec:computation_csp}), CLP (i.e., the CLP-based method shown in Subsection~\ref{subsec:computation_csp}), ILP (i.e., the ILP-based method shown in Subsection~\ref{subsec:computation_ilp}), and ASP (i.e., the ASP-based method shown in Subsection~\ref{subsec:computation_asp}).
     
-As shown in Table~\ref{tab:pyboolnet_repo}, for most of the models of the official PyBoolNet repository\footnote{\url{https://github.com/hklarner/pyboolnet/tree/master/pyboolnet/repository}}, the results are comparable with all minimal trap spaces found very fast.
+As shown in Table~\ref{tab:pyboolnet_repo}, for most of the models of the PyBoolNet repository, the results are comparable with all minimal trap spaces found very fast.
 For 5 of the 29 models, mpbn did not give any answer because it recognized these models as not locally-monotonic.
 Note that on some very small models, Trappist is sometimes slower than PyBoolNet and/or mpbn, but still significantly under one second.
 On the contrary, on every model that was a bit challenging for PyBoolNet or mpbn, the new method is far more efficient with speedups between one and two orders of magnitude.
@@ -992,7 +992,7 @@ On the contrary, on every model that was a bit challenging for PyBoolNet or mpbn
 
 Currently, a research group has made a great effort for building a collection (called BBM) of real-world Boolean models from various sources used in systems biology.
 It aims to be a comprehensive collection suitable for benchmarking and testing new tools and methods.
-This is released and maintained at \url{https://github.com/sybila/biodivine-boolean-models}.
+It is released and maintained at \url{https://github.com/sybila/biodivine-boolean-models}.
 We here tested all the compared methods on this model repository.
 
 \setlength{\tabcolsep}{4pt}
@@ -1000,27 +1000,37 @@ We here tested all the compared methods on this model repository.
   \caption{Results on the real-world models from the BBM repository.}
   \centering%
   \label{tab:bbm_repo}
-  \begin{tabular}{l||r|r|r||r|r}
+  \begin{tabular}{lrrrr}
     \toprule
-    Method & 10s & 60s & 180s & avg-mono (s) & avg-all (s) \\ \midrule
-    bioLQM & 12 (134) & 9 (134) & 9 (134) & N/A & N/A \\
-    PyBoolNet & 22 & 17 & 12 & 11.00 & 13.59 \\
-    mpbn & 4 (187) & 2 (187) & 2 (187) & 2.31 & N/A \\
-    Trappist-maxSAT & 1 & 1 & 1 & 1.09 & 1.01 \\
-    Trappist-CLP & - & - & - & - & - \\
-    Trappist-ILP & - & - & - & - & - \\
-    Trappist-ASP & 1 & 1 & 1 & 1.02 & 0.93 \\
+    Method & \# failures & avg-lqm (s) & avg-mono (s) & avg-all (s) \\ \midrule
+    bioLQM & 9 (134) & 12.87 & N/A & N/A \\
+    PyBoolNet & 12 & 8.87 & 11.00 & 13.59 \\
+    mpbn & 2 (187) & N/A & 2.31 & N/A \\
+    Trappist-maxSAT & 1 & 0.03 & 1.09 & 1.01 \\
+    Trappist-CLP & - & - & - & - \\
+    Trappist-ILP & - & - & - & - \\
+    Trappist-ASP & 1 & 0.05 & 1.02 & 0.93 \\
     \bottomrule
   \end{tabular}
 \end{table}
 \setcounter{rownumber}{0}
 
 Table~\ref{tab:bbm_repo} shows the experimental results on the 211 real-world models from the BBM repository.
+Columns 2 expresses the numbers of failures (i.e., did not finish the computation within a time limit of three minutes) of each method.
+For the case of bioLQM, we only considered the models that have at most 1000 minimal trap spaces.
+The number of such models is 134 (per all 211 models) and is denoted inside the parentheses.
+For the case of mpbn, we only considered the models that are locally-monotonic.
+The number of such models is 187 (per all 211 models) and is denoted inside the parentheses.
+Columns 3-5 express the average running time (in seconds) of each method for the models having at most 1000 minimal trap spaces, the locally-monotonic models, and all the models, respectively.
+Note that when computing the average running time, if the running time exceeds 180s, it is considered as 180s.
+From the results shown in Table~\ref{tab:bbm_repo}, we reported several observations as follows.
+
 
 \subsection{Selected models}
 
 We used a set of real-world Boolean networks lying in various scales collected from numerous bibliographic sources.
 These models are quite big (in size), complex (i.e., having high average in-degree, which is related to the number of prime-implicants) and most of them have never been fully analyzed.
+Note that these models are not included in the PyBoolNet and BBM repositories.
 We then applied bioLQM, PyBoolNet, mpbn, and the four variants of Trappist to computing minimal trap spaces of these real-world models.
 It is notable that unlike existing analysis shown in the literature, we did not fix specific values for source nodes in these models.
 Table~\ref{tab:result_real} shows the experimental results on those models. 
@@ -1121,12 +1131,11 @@ We randomly generated a set of N-K models~\cite{glass1973logical} with network s
 We chose N-K models because they are a useful tool for studying the dynamics of Boolean networks~\cite{glass1973logical,klarner2015computing}).
 For each network size, 50 instances were generated using the \verb|generateRandomNKNetwork| function.
 In total, we have 350 random models. 
-We then applied the compared methods to these models and recorded the numbers of failures (i.e., failed to obtain the result within the time limit) of each method.
-We considered three time limits: 10 seconds, 60 seconds, and 180 seconds.
+We then applied the compared methods to these models and recorded the numbers of failures (i.e., failed to obtain the result within a time limit of three minutes) as well as the average running time (inside the parentheses) in each method for each network size \(n\).
 It is worth noting that N-K models usually have small numbers of minimal trap spaces~\cite{klarner2015computing}.
 Hence, we searched for all solutions in each model, which makes the comparison to bioLQM more comprehensive.
 In addition, each node has only three input nodes, i.e., the number of prime-implicants of the associated Boolean function is small.
-Hence, PyBoolNet always passed the phase of computing prime-implicants in every model even with the time limit of 10s, which enables us to compare the ASP encoding of PyBoolNet and that of Trappist.
+Hence, PyBoolNet always passed the phase of computing prime-implicants in every model even within 1s, which enables us to compare the ASP encoding of PyBoolNet and that of Trappist.
 
 \begin{table}[!htb]
   \caption{Results on N-K models.}
@@ -1136,15 +1145,15 @@ Hence, PyBoolNet always passed the phase of computing prime-implicants in every 
     \toprule
     & & & & \multicolumn{4}{c}{Trappist}\\
     \cmidrule(rr){5-8}
-    \(n\) & LQM & mpbn & PBN & maxSAT & CLP & ILP & ASP \\
+    \(n\) & LQM & mpbn & PBN & SAT & CLP & ILP & ASP \\
     \midrule
-    100 & 50-50-50 & 50-50-50 & 0-0-0 & 0-0-0 & - & - & 0-0-0 \\
-    150 & 50-50-50 & 50-50-50 & 0-0-0 & 0-0-0 & - & - & 0-0-0 \\
-    200 & 50-50-50 & 50-50-50 & 0-0-0 & 0-0-0 & - & - & 0-0-0 \\
-    250 & 50-50-50 & 50-50-50 & 1-0-0 & 0-0-0 & - & - & 0-0-0 \\
-    300 & 50-50-50 & 50-50-50 & 10-1-0 & 6-0-0 & - & - & 0-0-0 \\
-    350 & 50-50-50 & 50-50-50 & 43-14-1 & 31-3-0 & - & - & 7-0-0 \\
-    400 & 50-50-50 & 50-50-50 & 49-44-29 & 47-26-12 & - & - & 39-8-1 \\
+    100 & 50 ($>$ 180) & 50 (N/A) & 0 (0.07) & 0 (0.05) & - () & - () & 0 (0.09) \\
+    150 & 50 ($>$ 180) & 50 (N/A) & 0 (0.14) & 0 (0.10) & - () & - () & 0 (0.14) \\
+    200 & 50 ($>$ 180) & 50 (N/A) & 0 (0.43) & 0 (0.25) & - () & - () & 0 (0.24) \\
+    250 & 50 ($>$ 180) & 50 (N/A) & 0 (1.92) & 0 (1.04) & - () & - () & 0 (0.56) \\
+    300 & 50 ($>$ 180) & 50 (N/A) & 0 (9.68) & 0 (4.46) & - () & - () & 0 (1.83) \\
+    350 & 50 ($>$ 180) & 50 (N/A) & 1 (46.54) & 0 (20.09) & - () & - () & 0 (6.10) \\
+    400 & 50 ($>$ 180) & 50 (N/A) & 29 (144.09) & 12 (90.36) & - () & - () & 1 (33.01) \\
     \bottomrule
   \end{tabular}
 \end{table}
