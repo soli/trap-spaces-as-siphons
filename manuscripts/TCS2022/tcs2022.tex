@@ -217,28 +217,40 @@ Petri nets were introduced in the 60s as simple formalism for describing and ana
 The use of Petri nets for representing biochemical reaction systems, by mapping molecular species to places and reactions to transitions, hinted at already in~\cite{peterson1981petri,Murata1989} was used more thoroughly quite late in~\cite{reddy1993petri}, together with some Petri net concepts and tools for the analysis of metabolic networks.
 Siphons are such a concept, but they have not been used a lot for the study of biochemical systems~\cite{zevedei2003topological,blatke2015biomodel} even if the practical cost of computing their minimal/maximal elements appear much more manageable than the theoretical complexity would indicate~\cite{oanea2010new,nabli2016enumerating}.
 
-In this article we present an alternative method to compute minimal trap spaces, and hence complex attractors, of a general Boolean network. It replaces the need for prime-implicants by a completely different technique, namely the enumeration of maximal siphons in the Petri net encoding of the original model (Section~\ref{sec:Main_finding}).
-After some technical preliminaries (Section~\ref{sec:Preliminaries}), we expose the concrete need for such a method and detail its implementation using Answer Set Programming (Section~\ref{sec:Computation}).
-We then demonstrate its efficiency and compare it to implicant-based methods on several large real-world models from the literature and randomly generated models (Section~\ref{sec:eval}).
+In this article we explore and prove for the first time a connection between trap spaces of a general Boolean network and siphons of its Petri net encoding.
+Not only having important theoretical applications in studying properties of trap spaces in Boolean networks, the connection has important applications in the trap space computation.
+Specifically, based on the connection, we propose an alternative approach to compute minimal trap spaces, and hence complex attractors, of a general Boolean network.
+It replaces the need for prime-implicants by a completely different technique, namely the enumeration of maximal siphons in the Petri net encoding of the original model.
+We then demonstrate its efficiency and compare it to the state-of-the-art methods for computing minimal trap spaces in Boolean networks on many real-world models from various sources in the literature and randomly generated models.
 
-All models used for evaluation and the implementation of the presented method are available at \url{https://github.com/soli/trap-spaces-as-siphons} and executable as a CoLoMoTo docker image.
+%After recalling several technical preliminaries (Section~\ref{sec:Preliminaries}), we expose the concrete need for such a method and detail its implementation using Answer Set Programming (Section~\ref{sec:Computation}).
+
+%All models used for evaluation and the implementation of the presented method are available at \url{https://github.com/soli/trap-spaces-as-siphons} and executable as a CoLoMoTo docker image.
 
 % Mention the extensions for the journal version
 Herein we revise and extend our previous work in~\cite{DBLP:conf/cmsb/TrinhBHS22} as follows.
 First, more formal definitions are given and the existing proofs are made more detailed.
-In particular, the updated proof provides another way to prove the independence of trap spaces of a Boolean network on its update scheme, which was originally proved in~\cite{klarner2015computing}.
-Second, we showcase one theoretical application of the connection between trap spaces in Boolean networks and conflict-free siphons in Petri nets.
-Third, beyond the proposed ASP method, we propose several other possible methods for computing minimal trap spaces using MaxSAT, CLP, and ILP.
+In particular, an updated proof provides another way to prove the independence of trap spaces of a Boolean network on its update scheme, which was originally proved in~\cite{klarner2015computing}.
+Second, we showcase a theoretical application of the connection between trap spaces in Boolean networks and conflict-free siphons in Petri nets.
+Third, beyond the proposed ASP method implementing the alternative approach~\cite{DBLP:conf/cmsb/TrinhBHS22}, we propose several other possible methods for computing minimal trap spaces using MaxSAT, CLP, and ILP.
 Forth, we discuss in detail how to compute several special types of trap spaces in a Boolean network.
-Fifth, regarding the implementation, we have developed a converter that directly reads a .bnet file and builds the Petri net encoding, instead of using the PNML conversion of bioLQM~\cite{DBLP:conf/cmsb/TrinhBHS22}.
-%Finally, we explore several complexity analysis on maximal (conflict-free) siphon problems.
-Finally, we conduct a more comprehensive benchmark on both real-world models from various sources and randomly generated models to evaluate all the proposed methods.
+Fifth, regarding the implementation, we have developed a new converter that directly reads a .bnet file and builds the Petri net encoding, instead of using the PNML conversion of bioLQM~\cite{DBLP:conf/cmsb/TrinhBHS22}.
+Finally, we conduct a more comprehensive benchmark on more real-world models from various sources and randomly generated models to evaluate all the proposed methods (the benchmark conducted in~\cite{DBLP:conf/cmsb/TrinhBHS22} considers only real-world models).
+
+%%% Paper structure %%%
+The rest of this paper is organized as follows: Section~\ref{sec:Preliminaries} recalls the basic concepts including Boolean networks, attractors, trap spaces, Petri nets, and siphons.
+Section~\ref{sec:Main_finding} presents the main finding, the connection between trap spaces in Boolean networks and siphons in Petri nets.
+Section~\ref{sec:Computation} presents the alternative approach for computing minimal trap spaces and the four possible methods implementing it.
+Section~\ref{sec:case_study} shows an important biological case study showing the applicability of the new approach.
+Section~\ref{sec:eval} reports the experimental results for evaluating the efficiency of the proposed methods.
+Finally, Section~\ref{sec:Conclusion} concludes the paper and draws future work.
 
 \section{Preliminaries}
 \label{sec:Preliminaries}
 
 We shall briefly recall here some preliminaries on Boolean networks related to trap spaces and Petri nets.
-In the case of multi-level logical models, an encoding into a Boolean network is always possible~\cite{Didier2011}.
+%In the case of multi-level logical models, an encoding into a Boolean network is always possible~\cite{Didier2011}.
+\vangiang{Remove this statement because there is not sure if the encoded Boolean network preserves the trap spaces of the original multi-level logical model.}
 
 \subsection{Boolean networks}
 
@@ -266,7 +278,7 @@ We denote the set of all possible states of a Boolean network \(\mathcal{N}\) by
 At each time step \(t\), node \(v_i\) can update its state by
 \[v_i(t + 1) = f_i(v(t))\]
 where \(v(t)\) is the state of \(\mathcal{N}\) at time \(t\) and \(v_i(t + 1)\) is the state of node \(v_i\) at time \(t + 1\).
-Note that for simplicity, we write \(f_i(v(t))\) even \(IN(v_i) \subset V\).
+Note that for simplicity, we write \(f_i(v(t))\) even \(IN(v_i) \subset V\) (i.e., \(IN(v_i)\) does not contain some nodes of \(V\)).
 An update scheme of a Boolean network specifies the way that the nodes update their states through time evolution~\cite{thomas1991regulatory}. 
 Following the update scheme, the Boolean network transits from a state to another state (possibly identical).
 This transition is called the \emph{state transition} and denoted by \(\rightarrow \subseteq \mathcal{S}_{\mathcal{N}} \times \mathcal{S}_{\mathcal{N}}\).
@@ -308,7 +320,7 @@ Since \(m_1 < m_2\), \(m_1\) is a minimal trap space of the Boolean network.
 We give a Boolean network \(\mathcal{N} = (V, F)\), where \(V = (x_1, x_2)\) and \(F = (f_1, f_2)\) with \(f_1 = (x_1 \land x_2) \lor (\neg x_1 \land \neg x_2), f_2 = (x_1 \land x_2) \lor (\neg x_1 \land \neg x_2)\). Herein, \(\land\), \(\lor\), and \(\neg\) denote the conjunction, disjunction, and negation logical operators, respectively.\label{example:BN}
 \end{example}
 
-\begin{figure}[!ht]
+\begin{figure}[!htb]
 \centering
 \begin{subfigure}[b]{0.3\textwidth}
 \centering
@@ -624,7 +636,7 @@ In PyBoolNet~\cite{klarner2017pyboolnet}, this is checked by using the percolati
 As we have mentioned at the beginning of this article, there may be a huge number of prime-implicants.
 Hence, the checking method in~\cite{klarner2017pyboolnet} shows its limitations.
 Instead, we can first compute the mirror \(S_m\) of \(m\) in the Petri net encoding.
-Then, by Proposition~\ref{prop:siphon_set} and Theorem~\ref{theo:ts_2_sp}, we check if \(pred(S_m) \subseteq succ(S_m)\).
+Then, by Proposition~\ref{prop:siphon_set} and Theorem~\ref{theo:ts_2_sp}, we can check if \(pred(S_m) \subseteq succ(S_m)\).
 Note that the above computation (also the Petri net construction) is quadratic in the number of transitions of the Petri net in worst cases, which can be much smaller than the number of prime-implicants~\cite{chatain2014characterization}.
 
 Furthermore, by Theorem~\ref{theo:min_ts_2_max_sp}, we can reduce the problem of computing all minimal trap spaces of a Boolean network to the problem of computing all maximal conflict-free siphons of its Petri net encoding.
@@ -694,12 +706,12 @@ The following Boolean Constraint Satisfaction Problem (CSP) directly derives fro
   
 \end{proof}
 
-In~\cite{nabli2016enumerating}, the set of all siphons of a given Petri net is characterized by a similar Boolean Constraint Satisfcation Problem (CSP) except the conflict-freeness constraint.
+In~\cite{nabli2016enumerating}, the set of all siphons of a given Petri net is characterized by a similar Boolean CSP except the conflict-freeness constraint.
 From the encoded CSP, the set of all \emph{minimal} siphons of the Petri net can be enumerated in the set inclusion order.
 For enumerating siphons in the set inclusion order, the proposed method by~\cite{nabli2016enumerating} uses the technique that labels directly the Boolean variables with increasing value selection (i.e., to test first the absence, then the presence of a place in the candidate solution).
-The method has two implementations, one uses an iterated SAT procedure and the other uses Constraint Logic Programming with backtracking.
+The method has two implementations, one uses an iterated SAT procedure and the other uses Constraint Logic Programming (CLP) with backtracking.
 
-One natural question is that how to use the CSP-based method for enumerating all the maximal conflict-free siphons of a Petri net encoding a Boolean model?
+One natural question is that how to use the CSP-based method for enumerating all the maximal conflict-free siphons of a Petri net encoding a Boolean network?
 Of course, the set of all conflict-free siphons of the Petri net can easily characterized by the CSP model presented in~\cite{nabli2016enumerating} along with the additional constraint \(\neg p_v \vee \neg \overline{p}_v = 1\), for each \(v \in V\), which represents the conflict-freeness.
 However, the main concern is to enumerate all the \emph{maximal} ones, which is not trivial to adapt from the CSP-based method.
 By Proposition~\ref{prop:csp_conflict_free_siphon}, the set of all maximal conflict-free siphons of \(\mathcal{P}\) can be enumerated in the (maximality) set inclusion order, by restarting the search each time a conflict-free siphon \(S\) is found, with the following additional constraint for disallowing any subset of that conflict-free siphon: \(\bigvee_{p \not \in S} p = 1\).
@@ -707,7 +719,7 @@ For enumerating conflict-free siphons in the set inclusion order, we can use the
 The correctness of this technique comes from the fact that once \(S\) is found, it is the conflict-free siphon of maximum cardinality among all the remaining feasible conflict-free siphons.
 Similar to~\cite{nabli2016enumerating}, the newly CSP-based method can also be implemented with SAT and CLP solvers.
 
-However a more direct method is to use a MaxSAT solver.
+For the SAT-based method, however a more direct method is to use a MaxSAT solver.
 We construct a MaxSAT problem with the following hard clauses:
 \[
   (\neg p_v \vee \neg \overline{p}_v), \forall v \in V
@@ -717,7 +729,9 @@ and
   (\neg p \vee \bigvee_{p' \in pred(t)}p'), \forall p \in P, \forall t \in pred(p).
 \]
 We set a soft clause for each variable of the CSP and then use a ``minimal correction subset'' blocking strategy, which will ensure set-inclusion maximality of the solutions.
-This is what is implemented in \texttt{trappist} using the RC2 MaxSAT solver~\cite{DBLP:journals/jsat/IgnatievMM19} available through the \texttt{python-sat} package\footnote{\url{https://pysathq.github.io/docs/html/api/examples/rc2.html}}.
+This is what is implemented in Trappist using the RC2 MaxSAT solver~\cite{DBLP:journals/jsat/IgnatievMM19} available through the python-sat package\footnote{\url{https://pysathq.github.io/docs/html/api/examples/rc2.html}}.
+
+For the CLP-based method, we use \dots
 
 \subsection{Answer set programming-based method}
 \label{subsec:computation_asp}
@@ -801,13 +815,14 @@ Hence, \(S'\) is also a maximal conflict-free siphon.
 Again, we add to \(\mathcal{I}\) a new inequality with respect to the newly found siphon.
 The above process is iterated until \(\mathcal{I}\) becomes unfeasible, this means that there is no further maximal conflict-free siphon.
 Thus, all the maximal conflict-free siphons of the Petri net have been found.
+We use \dots as the ILP solver.
 
 \subsection{Computation of special types of trap spaces}
 \label{subsec:computation_special_ts}
 
 In the field of systems biology, biologists may want to compute more special types of trap spaces beyond minimal trap spaces~\cite{klarner2017pyboolnet}.
 We shall show that our proposed methods can be easily adjusted to compute popular types of trap spaces.
-We illustrate the adjustments via the ASP-based method (see Subsection~\ref{subsec:computation_asp}), but these adjustments are completely applicable for other approaches such as MaxSAT, CSP, and ILP.
+We illustrate the adjustments via the ASP-based method (see Subsection~\ref{subsec:computation_asp}), but these adjustments are completely applicable for other approaches such as MaxSAT, CLP, and ILP.
 
 First, the work by~\cite{Rozum2021} uses the concept of stable motifs to build the succession diagram of a Boolean network, a summary of the decisions in the network dynamics that lead to successively more restrictive nested stable motifs.
 The succession diagram is useful for control and decision making on this Boolean network.
@@ -919,7 +934,7 @@ It is worth noting that mpbn~\cite{Paulev2020} only handles locally-monotonic mo
 To obtain a more comprehensive comparison, we also used random models generated by a third-party software (i.e., BoolNet R package~\cite{mussel2010boolnet}).
 As explained in Section~\ref{sec:case_study}, in our benchmarks, we only searched for the first 1000 solutions for each model.
 
-To solve the ASP problems, we used the same ASP solver CLINGO~\cite{DBLP:journals/aicom/GebserKKOSS11} and the same configuration as that used in PyBoolNet~\cite{klarner2015computing,klarner2017pyboolnet} and mpbn~\cite{Paulev2020}.
+To solve the ASP problems, we used the same ASP solver Clingo~\cite{DBLP:journals/aicom/GebserKKOSS11} and the same configuration as that used in PyBoolNet~\cite{klarner2015computing,klarner2017pyboolnet} and mpbn~\cite{Paulev2020}.
 Specifically, we used the configuration \texttt{-heuristic=Domain -enum-mod=domRec -dom-mod=3} (subset maximality, equivalent to the deprecated \texttt{--dom-pref=32 --heuristic=domain --dom-mod=7} used by PyBoolNet). 
 We ran all the benchmarks on a machine whose environment is CPU: \@ Intel\textregistered\ Core\texttrademark\ i9-11950H 2.60GHz × 16, 16 GB DDR4 RAM, Ubuntu 20.04.5 LTS. 
 Finally, we set a time limit of three minutes for each model.
@@ -996,7 +1011,7 @@ It is released and maintained at \url{https://github.com/sybila/biodivine-boolea
 We here tested all the compared methods on this model repository.
 
 \setlength{\tabcolsep}{4pt}
-\begin{table}[!h]
+\begin{table}[!htb]
   \caption{Results on the real-world models from the BBM repository.}
   \centering%
   \label{tab:bbm_repo}
@@ -1006,7 +1021,7 @@ We here tested all the compared methods on this model repository.
     bioLQM & 9 (134) & 12.87 & N/A & N/A \\
     PyBoolNet & 12 & 8.87 & 11.00 & 13.59 \\
     mpbn & 2 (187) & N/A & 2.31 & N/A \\
-    Trappist-maxSAT & 1 & 0.03 & 1.09 & 1.01 \\
+    Trappist-MaxSAT & 1 & 0.03 & 1.09 & 1.01 \\
     Trappist-CLP & - & - & - & - \\
     Trappist-ILP & - & - & - & - \\
     Trappist-ASP & 1 & 0.05 & 1.02 & 0.93 \\
@@ -1158,37 +1173,35 @@ Hence, PyBoolNet always passed the phase of computing prime-implicants in every 
   \end{tabular}
 \end{table}
 
-% \begin{table}[!htb]
-%   \caption{Results on scale-free models.}
-%   \centering%
-%   \label{tab:result_scale_free}
-%   \begin{tabular}{rrrrrrrr}
-%     \toprule
-%     & & & & \multicolumn{4}{c}{Trappist}\\
-%     \cmidrule(rr){5-8}
-%     \(n\) & LQM & mpbn & PBN & maxSAT & CLP & ILP & ASP \\
-%     \midrule
-%     500 & 50-50-50 & 50-50-50 & - & - & - & - & - \\
-%     750 & 50-50-50 & 50-50-50 & - & - & - & - & - \\
-%     1000 & 50-50-50 & 50-50-50 & - & - & - & - & - \\
-%     1250 & 50-50-50 & 50-50-50 & - & - & - & - & - \\
-%     1500 & 50-50-50 & 50-50-50 & - & - & - & - & - \\
-%     1750 & 50-50-50 & 50-50-50 & - & - & - & - & - \\
-%     2000 & 50-50-50 & 50-50-50 & - & - & - & - & - \\
-%     \bottomrule
-%   \end{tabular}
-% \end{table}
+Table~\ref{tab:result_N_K} shows the experimental results on N-K models.
+Column \(n\) denotes the network size.
+Columns ``LQM'' and ``PBN'' show the results of bioLQM and PyBoolNet, respectively.
+For each method, the number outside the parentheses indicates the number of failures, whereas the number inside the parentheses indicates the average running time (in seconds).
+Note that when computing the average running time, if the running time exceeds 180s, it is considered as 180s.
+From these results, we obtained several observations consistent with those obtained for real-world models.
+
+First, \dots
+
+Second, \dots
+
+Third, \dots
+
+Finally, \dots
 
 \section{Conclusion}
+\label{sec:Conclusion}
 
-In this article we proposed a new method for the computation of minimal trap spaces of Boolean networks, based on a new concept called maximal conflict-free siphons.
-This method is evaluated on large models from the literature and shows that it can scale up much better than the state-of-the-art prime-implicants based techniques.
+In this article we explored and proved for the first time the equivalence between (minimal) trap spaces of a general Boolean network and (maximal) conflict-free siphons of its Petri net encoding.
+From this equivalence, we proposed a new approach for the computation of minimal trap spaces of Boolean networks, based on the enumeration of maximal conflict-free siphons of Petri nets.
+We also proposed the four possible methods using MaxSAT, CLP, ILP, and ASP for implementing the new approach.
+The proposed methods were evaluated on many real-world models from the literature and randomly generated models.
+The experimental results show that \dots
 We believe that this opens up the way to a much better analysis of large Boolean networks, which is needed with the advent of automatic model-generation pipelines~\cite{ostaszewski2021covid19}.
 
-Though we benchmarked this new approach against state-of-the-art tools, there are many more evaluations that we plan to do in the future.
-First, the bioLQM platform that we are using is providing another implicant-based method using BDDs in \url{http://colomoto.org/biolqm/doc/tools-trapspace.html} and though we expect it to behave mostly like PyBoolNet, that remains to be checked.
-Note that this also raises the question of replacing altogether the bioLQM preprocessing step we use to obtain the Petri net encoding, since its use of BDDs might not be optimal for that step.
-The trade-off between a small Petri net, and hence small ASP, and the time it takes to compute it (in other words, the trade-off of allowing redundant constraints) has to be evaluated in depth.
+%Though we benchmarked this new approach against state-of-the-art tools, there are many more evaluations that we plan to do in the future.
+%First, the bioLQM platform that we are using is providing another implicant-based method using BDDs in \url{http://colomoto.org/biolqm/doc/tools-trapspace.html} and though we expect it to behave mostly like PyBoolNet, that remains to be checked.
+%Note that this also raises the question of replacing altogether the bioLQM preprocessing step we use to obtain the Petri net encoding, since its use of BDDs might not be optimal for that step.
+%The trade-off between a small Petri net, and hence small ASP, and the time it takes to compute it (in other words, the trade-off of allowing redundant constraints) has to be evaluated in depth.
 
 Second, the experimental results shown in this paper mostly expose the differences caused by the prime-implicant phase of PyBoolNet. There is much more information required to distinctly study the practical differences between our ASP encoding and that of PyBoolNet, and notably their size/efficiency ratio.
 Hence, we plan to conduct experiments on more real-world models or maybe random models that can be randomly generated by using BoolNet~\cite{mussel2010boolnet}.
