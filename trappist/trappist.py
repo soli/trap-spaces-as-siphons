@@ -30,6 +30,7 @@ import networkx as nx  # TODO maybe replace with lists/dicts
 from . import pnml_to_asp, version
 from .bnet import read_bnet
 from .cp import get_cp_solutions
+from .ilp import get_ilp_solutions
 from .max_sat import get_sat_solutions
 from .naive import write_naive_asp
 
@@ -168,7 +169,7 @@ def compute_trap_spaces(
         infile = open(infile, "r", encoding="utf-8")
         toclose = True
 
-    if infile.name.endswith(".pnml") and method in ("asp", "sat", "cp"):
+    if infile.name.endswith(".pnml") and method not in ("naive"):
         petri_net = read_pnml(infile)
     elif infile.name.endswith(".bnet"):
         petri_net = read_bnet(infile, method)
@@ -193,6 +194,8 @@ def compute_trap_spaces(
         solutions = get_sat_solutions(petri_net, max_output, time_limit, places)
     elif method == "cp":
         solutions = get_cp_solutions(petri_net, max_output, time_limit, places, nprocs)
+    elif method == "ilp":
+        solutions = get_ilp_solutions(petri_net, max_output, time_limit, places, nprocs)
     else:
         solutions_output = get_asp_output(
             petri_net, max_output, time_limit, method, debug, nprocs
@@ -249,7 +252,7 @@ def main():
     parser.add_argument(
         "-s",
         "--solver",
-        choices=["asp", "cp", "sat", "naive"],
+        choices=["asp", "cp", "ilp", "sat", "naive"],
         default="asp",
         type=str,
         help="Solver to compute the Maximal conflict-free siphons.\n"

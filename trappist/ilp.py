@@ -25,11 +25,11 @@ from minizinc import Instance, Model, Result, Solver, Status
 
 import networkx as nx  # TODO maybe replace with lists/dicts
 
+from .cp import cp_to_bool, zincify
 
-def create_cp(petri_net: nx.DiGraph) -> Model:
-    """Create the CP program for the max conflict-free siphons of petri net."""
+def create_ilp(petri_net: nx.DiGraph) -> Model:
+    """Create the ILP program for the max conflict-free siphons of petri net."""
     model = Model()
-    model.add_string('include "globals.mzn";\n')
     variables = []
     for node in (n for n, k in petri_net.nodes(data="kind") if k == "place"):
         v = zincify(node)
@@ -39,7 +39,7 @@ def create_cp(petri_net: nx.DiGraph) -> Model:
         if kind == "place":
             if not node.startswith("-"):
                 # conflict-freeness
-                model.add_string(f"constraint not {node} \\/ not not_{node};\n")
+                model.add_string(f"constraint {node} + not_{node} <= 1;\n")
         else:
             # it's a transition, apply siphon
             # (if one succ is true, one pred must be true)
@@ -47,29 +47,22 @@ def create_cp(petri_net: nx.DiGraph) -> Model:
             for succ in petri_net.successors(node):
                 zsucc = zincify(succ)
                 if zsucc not in or_preds:  # optimize obvious tautologies
-                    or_string = " \\/ ".join(or_preds)
-                    model.add_string(f"constraint {zsucc} -> {or_string};\n")
+                    or_string = " + ".join(or_preds)
+                    model.add_string(f"constraint {zsucc} <= {or_string};\n")
     model.add_string(
-        f"solve :: bool_search([{', '.join(variables)}], input_order, indomain_max) satisfy;\n"
+        f"solve maximize {' + '.join(variables)};\n"
     )
     return model
 
 
-def zincify(variable: str) -> str:
-    """Return the name of the corresponding CP variable."""
-    if variable.startswith("-"):
-        return f"not_{variable[1:]}"
-    return variable
-
-
-def solve_cp(
+def solve_ilp(
     model: Model,
     max_output: int,
     time_limit: int,
     nprocs: int,
 ) -> Generator[List[int], None, None]:
-    """Run an CP solver on given Model and get the solutions."""
-    solver = Solver.lookup("chuffed")
+    """Run an ILP solver on given model and get the solutions."""
+    solver = Solver.lookup("cbc")
     inst = Instance(solver, model)
     nsol = 0
     if time_limit > 0:
@@ -86,28 +79,19 @@ def solve_cp(
         if remaining is not None:
             remaining -= timedelta(seconds=(end - start))
             # print(f"{remaining} remaining")
-        if result.status == Status.SATISFIED:
+        if result.status == Status.OPTIMAL_SOLUTION:
             nsol += 1
             # print(result.solution)
             yield result
             d = asdict(result.solution)
             del d["_checker"]
-            # lexicographic constraint to restart from last solution
-            # first remove old one if there was already a solution found
-            if nsol > 1:
-                with model._lock:
-                    del model._code_fragments[-2]
-            model.add_string(
-                f"constraint lex_less([{', '.join(d.keys())}], "
-                f" [{', '.join(map(str, map(int, d.values())))}]);"
-            )
             # non subset constrait for maximality
             non_sub = []
             for k, v in d.items():
                 if not v:
                     non_sub.append(k)
-            or_string = " \\/ ".join(non_sub)
-            model.add_string(f"constraint {or_string};")
+            or_string = " + ".join(non_sub)
+            model.add_string(f"constraint 1 <= {or_string};")
             inst = Instance(solver, model)
         else:
             if result.status != Status.UNSATISFIABLE:
@@ -115,20 +99,7 @@ def solve_cp(
             break
 
 
-def cp_to_bool(places: List[str], res: Result) -> List[str]:
-    """Transform a Result to a list of 0/1/- strings."""
-    result = []
-    for place in places:
-        if res[place]:
-            result.append("0")
-        elif res["not_" + place]:
-            result.append("1")
-        else:
-            result.append("-")
-    return result
-
-
-def get_cp_solutions(
+def get_ilp_solutions(
     petri_net: nx.DiGraph,
     max_output: int,
     time_limit: int,
@@ -136,5 +107,5 @@ def get_cp_solutions(
     nprocs: int,
 ) -> Generator[List[str], None, None]:
     """Print the solutions."""
-    for result in solve_cp(create_cp(petri_net), max_output, time_limit, nprocs):
+    for result in solve_ilp(create_ilp(petri_net), max_output, time_limit, nprocs):
         yield cp_to_bool(places, result)

@@ -67,7 +67,7 @@ def read_bnet(fileobj: IO, method: str) -> nx.DiGraph:
         net.add_node(
             "-" + x, kind="place"
         )  # convention in PNML files obtained from bnet
-        if method in ("asp", "sat", "cp"):
+        if method in ("asp", "sat", "cp", "ilp"):
             vx = bddvar(x)
             fx = expr2bdd(expr(fx))
             # print(x, fx)
