@@ -107,7 +107,7 @@
 %%             country={}}
 %% \fntext[label3]{}
 
-\title{Minimal trap spaces of Boolean networks are maximal siphons of their Petri net encoding}
+\title{Trap spaces of Boolean networks are conflict-free siphons of their Petri net encoding}
 
 %% use optional labels to link authors explicitly to addresses:
 %% \author[label1,label2]{}
@@ -153,14 +153,16 @@
 \begin{abstract}
 %% Text of abstract
 
-Boolean modeling of gene regulation but also of post-trans\-criptomic systems has proven over the years that it can bring powerful analyses and corresponding insight to the many cases where precise biological data is not sufficiently available to build a detailed quantitative model.
-This is even more true for very large models where such data is frequently missing and led to a constant increase in size of logical models \emph{à la} Thomas.
-Besides simulation, the analysis of such models is mostly based on attractor computation, since those correspond roughly to observable biological \emph{phenotypes}. The recent use of trap spaces made a real breakthrough in that field allowing to consider medium-sized models that used to be out of reach.
-However, with the continuing increase in model-size, the state-of-the-art computation of minimal trap spaces based on \emph{prime-implicants} shows its limits as there can be a huge number of implicants.
+Boolean network modeling of gene regulation but also of post-trans\-criptomic systems has proven over the years that it can bring powerful analyses and corresponding insight to the many cases where precise biological data is not sufficiently available to build a detailed quantitative model.
+%This is even more true for very large models where such data is frequently missing and led to a constant increase in size of logical models \emph{à la} Thomas.
+Besides simulation, the analysis of such models is mostly based on attractor computation, since those correspond roughly to observable biological \emph{phenotypes}. 
+The recent use of trap spaces made a real breakthrough in that field allowing to consider medium-sized models that used to be out of reach.
+However, with the continuing increase in model size and complexity of Boolean update functions, the state-of-the-art computation of minimal trap spaces based on \emph{prime-implicants} shows its limits due to the difficulty of the prime-implicant computation.
 
-In this article we present an alternative method to compute minimal trap spaces, and hence complex attractors, of a Boolean network. It replaces the need for prime-implicants by a completely different technique, namely the enumeration of maximal siphons in the Petri net encoding of the original model.
-After some technical preliminaries, we expose the concrete need for such a method and detail its implementation using Answer Set Programming.
-We then demonstrate its efficiency and compare it to implicant-based methods on some large Boolean networks from the literature.
+In this article we explore and prove for the first time a connection between trap spaces of a general Boolean network and siphons of its Petri net encoding.
+Besides important theoretical applications in studying properties of trap spaces, the connection enables us to propose an alternative approach to compute minimal trap spaces, and hence complex attractors, of a general Boolean network.
+It replaces the need for prime-implicants by a completely different technique, namely the enumeration of maximal siphons in the Petri net encoding of the original model.
+We then demonstrate its efficiency and compare it to the state-of-the-art methods on a large collection of real-world and randomly generated models.
   
 \end{abstract}
 
@@ -183,7 +185,7 @@ We then demonstrate its efficiency and compare it to implicant-based methods on 
 %% MSC codes here, in the form: \MSC code \sep code
 %% or \MSC[2008] code \sep code (2000 is the default)
 
-Logical model \sep Boolean network \sep Trap space \sep Attractor computation \sep Petri net \sep Siphon \sep Answer set programming \sep Systems biology
+Logical model \sep Boolean network \sep Trap space \sep Attractor computation \sep Petri net \sep Siphon \sep Systems biology
 \end{keyword}
 
 \end{frontmatter}
@@ -196,18 +198,20 @@ Logical model \sep Boolean network \sep Trap space \sep Attractor computation \s
 From the observation that the transcriptional regulation behaved in a sigmoid step-like way, came the original idea to represent models of gene regulation as discrete event systems.
 Those Gene Regulation Networks (GRN) use thresholds or equivalently logical functions to represent the different regulations~\cite{glass1973logical,thomas1973boolean,thomas1990biological,thomas1991regulatory}.
 
-Boolean modelling has proven over the years that it can bring powerful analyses and corresponding insight to the many cases where precise biological data is not sufficiently available to build a detailed quantitative model~\cite{wang2012boolean}, even for modelling post-transcriptional mechanisms.
+Boolean net modeling has proven over the years that it can bring powerful analyses and corresponding insight to the many cases where precise biological data is not sufficiently available to build a detailed quantitative model~\cite{wang2012boolean}, even for modelling post-transcriptional mechanisms.
 This is even more true for very large models where such data is frequently missing and led to a constant increase in size of logical models \emph{à la} Thomas~\cite{aghamiri2020automated}.
 Besides simulation, the analysis of such models is mostly based on attractor computation, since those correspond roughly to observable biological \emph{phenotypes}.
 The recent use of trap spaces~\cite{klarner2015computing} made a real breakthrough in that field allowing to consider medium-sized models that used to be out of reach.
-However, with the continuing increase in model-size, the state-of-the-art computation of minimal trap spaces based on \emph{prime-implicants} shows its limits as there can be a huge number of implicants.
+However, with the continuing increase in model size and complexity of Boolean update functions, the state-of-the-art computation of minimal trap spaces based on \emph{prime-implicants} shows its limits.
+More specifically, the number of prime implicants of a Boolean function is in general exponential in the number of input nodes of this function~\cite{klarner2015computing}.
+Moreover, the computation of prime implicants is a demanding task, especially for complex Boolean functions.
 
 It is worth noting that the recent method presented in~\cite{DBLP:conf/ictai/ChevalierFPZ19} for computing minimal trap spaces avoids the prime-implicants computation by relying on the \emph{most-permissive} semantics of Boolean networks.
-This method has been implemented in the tool mpbn\footnote{\url{https://github.com/bnediction/mpbn}} demonstrated in~\cite{Paulev2020} for handling medium-sized models from the literature and very large synthetic models (up to 100,000 nodes).
+This method has been implemented in the tool \texttt{mpbn}\footnote{\url{https://github.com/bnediction/mpbn}} demonstrated in~\cite{Paulev2020} for handling medium-sized models from the literature and very large synthetic models (up to 100,000 nodes).
 However, this method is only applicable for \emph{locally-monotonic} Boolean networks, whereas the prime-implicants based method~\cite{klarner2015computing} is applicable for \emph{general} Boolean networks (i.e., including both locally-monotonic and non-locally-monotonic ones).
-In addition, the bioLQM platform also provides another method using Binary Decision Diagrams (BDDs) in \url{http://colomoto.org/biolqm/doc/tools-trapspace.html}.
+In addition, the \texttt{bioLQM} platform also provides another method using Binary Decision Diagrams (BDDs) in \url{http://colomoto.org/biolqm/doc/tools-trapspace.html}.
 This method avoids the prime-implicants computation as it characterizes the set of generic trap spaces of a Boolean network by a BDD, then filters this set to get the set of all minimal trap spaces.
-By this characteristic, it requires the computation of all solutions, while the ASP-based methods~\cite{klarner2015computing,Paulev2020} can start enumerating them as they are found.
+By this approach, it requires the computation of all solutions, whereas the ASP-based methods~\cite{klarner2015computing,Paulev2020} can start enumerating them as they are found.
 Moreover, the main issue with the BDD-based method is that the number of generic trap spaces of a Boolean network may be extremely larger than the number of minimal trap spaces of this Boolean network.
 This issue limits the efficiency of the BDD-based method.
 The study~\cite{DBLP:journals/tcs/NoualRS13} highlights the need for non-locally-monotonic Boolean networks in both biological and theoretical aspects.
@@ -218,7 +222,7 @@ The use of Petri nets for representing biochemical reaction systems, by mapping 
 Siphons are such a concept, but they have not been used a lot for the study of biochemical systems~\cite{zevedei2003topological,blatke2015biomodel} even if the practical cost of computing their minimal/maximal elements appear much more manageable than the theoretical complexity would indicate~\cite{oanea2010new,nabli2016enumerating}.
 
 In this article we explore and prove for the first time a connection between trap spaces of a general Boolean network and siphons of its Petri net encoding.
-Not only having important theoretical applications in studying properties of trap spaces in Boolean networks, the connection has important applications in the trap space computation.
+Not only having important theoretical applications in studying properties of trap spaces in Boolean networks, the connection has important practical applications in the trap space computation.
 Specifically, based on the connection, we propose an alternative approach to compute minimal trap spaces, and hence complex attractors, of a general Boolean network.
 It replaces the need for prime-implicants by a completely different technique, namely the enumeration of maximal siphons in the Petri net encoding of the original model.
 We then demonstrate its efficiency and compare it to the state-of-the-art methods for computing minimal trap spaces in Boolean networks on many real-world models from various sources in the literature and randomly generated models.
@@ -232,9 +236,9 @@ Herein we revise and extend our previous work in~\cite{DBLP:conf/cmsb/TrinhBHS22
 First, more formal definitions are given and the existing proofs are made more detailed.
 In particular, an updated proof provides another way to prove the independence of trap spaces of a Boolean network on its update scheme, which was originally proved in~\cite{klarner2015computing}.
 Second, we showcase a theoretical application of the connection between trap spaces in Boolean networks and conflict-free siphons in Petri nets.
-Third, beyond the proposed ASP method implementing the alternative approach~\cite{DBLP:conf/cmsb/TrinhBHS22}, we propose several other possible methods for computing minimal trap spaces using MaxSAT, CLP, and ILP.
+Third, beyond the proposed ASP method implementing the alternative approach~\cite{DBLP:conf/cmsb/TrinhBHS22}, we propose several other possible methods for computing minimal trap spaces using Maximum Satisfiability (MaxSAT), Constraint Logic Program (CLP), and Integer Linear Programming (ILP).
 Forth, we discuss in detail how to compute several special types of trap spaces in a Boolean network.
-Fifth, regarding the implementation, we have developed a new converter that directly reads a .bnet file and builds the Petri net encoding, instead of using the PNML conversion of bioLQM~\cite{DBLP:conf/cmsb/TrinhBHS22}.
+Fifth, regarding the implementation, we have developed a new converter that directly reads a \texttt{.bnet} file and builds the Petri net encoding, instead of using the \texttt{PNML} conversion of \texttt{bioLQM}~\cite{DBLP:conf/cmsb/TrinhBHS22}.
 Finally, we conduct a more comprehensive benchmark on more real-world models from various sources and randomly generated models to evaluate all the proposed methods (the benchmark conducted in~\cite{DBLP:conf/cmsb/TrinhBHS22} considers only real-world models).
 
 %%% Paper structure %%%
@@ -430,7 +434,7 @@ Of course, in any marking \(t^{1}_{x_1}\) and \(t^{2}_{x_1}\) cannot be both ena
 Then, the fully asynchronous update scheme in \(\mathcal{N}\) corresponds to the classical firing scheme in \(\mathcal{P}\) where only one of the enabled transitions for a given marking will be fired~\cite{Murata1989}.
 
 
-Note that given a Boolean network in the standard SBML-Qual format~\cite{chaouiya2013sbml}, i.e., the package of SBML v3~\cite{keating2020sbml} for such models, one can easily obtain its Petri net encoding in the Petri Net Markup Language  (PNML)\footnote{\url{https://www.pnml.org/}} standard using the bioLQM\footnote{\url{http://www.colomoto.org/biolqm/}} library.
+Note that given a Boolean network in the standard SBML-Qual format~\cite{chaouiya2013sbml}, i.e., the package of SBML v3~\cite{keating2020sbml} for such models, one can easily obtain its Petri net encoding in the Petri Net Markup Language  (PNML)\footnote{\url{https://www.pnml.org/}} standard using the \texttt{bioLQM}\footnote{\url{http://www.colomoto.org/biolqm/}} library.
 This piece of software extracted from GINsim~\cite{chaouiya2012logical} and part of the CoLoMoTo\footnote{\url{http://colomoto.org/}}~\cite{naldi2015cooperative} software suite allows for easy conversion between standard formats.
 It also accepts many other common formats for Boolean networks, notably the \verb|.bnet| files of the  BoolNet~\cite{mussel2010boolnet,klarner2017pyboolnet} tools.
 The conversion is executed as follows:
@@ -441,7 +445,7 @@ Note that transforming a Boolean network defined by its functions into its Petri
 Though this might appear quite computationally intensive it is important to remark first that contrary to the prime-implicants case, there is no need to find \emph{minimal} DNFs.
 One way to look at this is to consider that this amounts to a similar approach as that used in~\cite{DBLP:conf/ictai/ChevalierFPZ19} but with the encoding of both activation and inhibition functions as DNFs in order to take into account possible non-local-monotonicity.
 This does not change the worst-case-complexity (obtaining a single DNF being exponential) but might matter a lot in practice.
-As such, we will explore how this transformation, here using BDDs in bioLQM, and the one based on the most-permissive semantics compare in the Section~\ref{sec:eval} on evaluation.
+As such, we will explore how this transformation, here using BDDs in \texttt{bioLQM}, and the one based on the most-permissive semantics compare in the Section~\ref{sec:eval} on evaluation.
 
 \subsection{Siphons}
 
@@ -632,12 +636,13 @@ This property is important because we can use it to approximate the set of attra
 \end{proof}
 
 One naturally computational application of Theorem~\ref{theo:ts_2_sp} is that we can efficiently decide whether a subspace \(m\) is a trap space.
-In PyBoolNet~\cite{klarner2017pyboolnet}, this is checked by using the percolation on the prime-implicants of the Boolean functions.
-As we have mentioned at the beginning of this article, there may be a huge number of prime-implicants.
+In \texttt{PyBoolNet}~\cite{klarner2017pyboolnet}, this is checked by using the percolation on the prime-implicants of the Boolean functions.
+As we have mentioned at the beginning of this article, the computation of prime-implicants is a demanding task for complex Boolean networks, even is sometimes intractable.
 Hence, the checking method in~\cite{klarner2017pyboolnet} shows its limitations.
 Instead, we can first compute the mirror \(S_m\) of \(m\) in the Petri net encoding.
 Then, by Proposition~\ref{prop:siphon_set} and Theorem~\ref{theo:ts_2_sp}, we can check if \(pred(S_m) \subseteq succ(S_m)\).
-Note that the above computation (also the Petri net construction) is quadratic in the number of transitions of the Petri net in worst cases, which can be much smaller than the number of prime-implicants~\cite{chatain2014characterization}.
+Note that the Petri net construction is less computationally demanding than the prime-implicant computation because it only requires computing generic (not prime) implicants of the Boolean functions~\cite{chatain2014characterization}.
+In addition, the time complexity of the above checking method is quadratic in the number of transitions of the Petri net in worst cases.
 
 Furthermore, by Theorem~\ref{theo:min_ts_2_max_sp}, we can reduce the problem of computing all minimal trap spaces of a Boolean network to the problem of computing all maximal conflict-free siphons of its Petri net encoding.
 Note that in the case of special types of trap spaces (e.g., fixed points), this can be put in regard to special types of siphons in Petri nets.
@@ -757,7 +762,7 @@ Note that the number of atoms of \(\mathcal{L}\) is only \(2n\), whereas the ASP
 In~\cite{DBLP:conf/ictai/ChevalierFPZ19}, there is an ASP characterization of trap spaces that does not rely on minimal DNFs either and thus seems very similar to our ASP encoding.
 Remarkably it only requires the DNF for the \emph{activation} part, using the information that it will only be used for locally-monotonic Boolean networks.
 We would therefore expect that, when available, it will have comparable performance on the ASP part (the ASP program would be approximately twice smaller, though redundancy is not always bad in that field), but can also avoid combinatorial explosion of the Petri net encoding for some formula where the activation DNF is simple but the inhibition is not.
-Since mpbn is included in our benchmark this will be evaluated in our experiments.
+Since \texttt{mpbn} is included in our benchmark this will be evaluated in our experiments.
 
 Now, a solution (simply an answer set) \(A \subseteq \mathcal{A}\) of \(\mathcal{L}\) is equivalent to a conflict-free siphon \(S\) of \(\mathcal{P}\), thus a trap space \(m\) of \(\mathcal{N}\). 
 The conversion from \(A\) to \(m\) is straightforward. If \(\verb|p-v| \in A\) then \(v \in D_m\) and \(m(v) = 0\). 
@@ -916,37 +921,37 @@ In practice, even if there is a huge number of attractors in such a model, obtai
 In particular, it provides a feature-rich alternative to random simulations for this type of very non-deterministic model.
 Being able to detect that there are inconsistencies with published experimental data in some of the first 1000 attractors, for instance, can lead to a much quicker Systems Biology loop: model, invalidate, refine.
 
-However, using a state-of-the-art tool like PyBoolNet~\cite{klarner2015computing} on that model actually fails at the phase of prime-implicant generation.
-mpbn~\cite{Paulev2020} does not give any answer either because it recognizes that model as non-locally-monotonic.
+However, using a state-of-the-art tool like \texttt{PyBoolNet}~\cite{klarner2015computing} on that model actually fails at the phase of prime-implicant generation.
+\texttt{mpbn}~\cite{Paulev2020} does not give any answer either because it recognizes that model as non-locally-monotonic.
 And hence, it is not possible to extract any (complex) attractor at all.
 This is also true for the Alzheimer model also mentioned in that same article and originally from~\cite{ogishima2016alzpathway} (\verb|F4| file in the original supplementary material, and ``Alzheimer'' in Table~\ref{tab:result_real}), but actually not for the MAPK model for which the first trap spaces can be obtained in reasonable time.
 The current practice usually revolves then around fixing some source nodes to plausible values and reducing the model accordingly.
 While this approach makes sense, it relies on potentially arbitrary decisions, and \emph{hides away} critical modelling choices that were actually not part of the original Boolean network or even of the starting map.
 
-Using the method presented above, it is possible to convert the model to PNML in about one second and to obtain the first 1000 minimal trap spaces (including ones that contain more than one state) in a few milliseconds.
+Using the method presented above, it is possible to convert the model to \texttt{PNML} in about one second and to obtain the first 1000 minimal trap spaces (including ones that contain more than one state) in a few milliseconds.
 Unfortunately since this was not available at the time, the analysis of the model remained very high-level and qualitative, instead of being able to use the rich information of computed minimal trap spaces.
 
 \section{Evaluation}%
 \label{sec:eval}
 
-To evaluate the performance of the newly proposed methods (implemented as a Python package named Trappist) and the state-of-the-art methods (bioLQM\footnote{\url{http://colomoto.org/biolqm/doc/tools-trapspace.html}}, PyBoolNet~\cite{klarner2015computing,klarner2017pyboolnet}, and mpbn~\cite{Paulev2020}), we compared them on both PyBoolNet's own model repository and many real-world models from various sources in the literature.
-It is worth noting that mpbn~\cite{Paulev2020} only handles locally-monotonic models, whereas the other methods can handle general models.
-To obtain a more comprehensive comparison, we also used random models generated by a third-party software (i.e., BoolNet R package~\cite{mussel2010boolnet}).
-As explained in Section~\ref{sec:case_study}, in our benchmarks, we only searched for the first 1000 solutions for each model.
+To evaluate the performance of the newly proposed methods (implemented as a Python package named Trappist) and the state-of-the-art methods (\texttt{bioLQM}\footnote{\url{http://colomoto.org/biolqm/doc/tools-trapspace.html}}, \texttt{PyBoolNet}~\cite{klarner2015computing,klarner2017pyboolnet}, and \texttt{mpbn}~\cite{Paulev2020}), we compared them on both \texttt{PyBoolNet}'s own model repository and many real-world models from various sources in the literature.
+It is worth noting that \texttt{mpbn}~\cite{Paulev2020} only handles locally-monotonic models, whereas the other methods can handle general models.
+To obtain a more comprehensive comparison, we also used random models generated by a third-party software (i.e., \texttt{BoolNet R} package~\cite{mussel2010boolnet}).
+As explained in Section~\ref{sec:case_study}, in our benchmarks, we only searched for the first 1000 minimal trap spaces for each model.
 
-To solve the ASP problems, we used the same ASP solver Clingo~\cite{DBLP:journals/aicom/GebserKKOSS11} and the same configuration as that used in PyBoolNet~\cite{klarner2015computing,klarner2017pyboolnet} and mpbn~\cite{Paulev2020}.
-Specifically, we used the configuration \texttt{-heuristic=Domain -enum-mod=domRec -dom-mod=3} (subset maximality, equivalent to the deprecated \texttt{--dom-pref=32 --heuristic=domain --dom-mod=7} used by PyBoolNet). 
+To solve the ASP problems, we used the same ASP solver Clingo~\cite{DBLP:journals/aicom/GebserKKOSS11} and the same configuration as that used in \texttt{PyBoolNet}~\cite{klarner2015computing,klarner2017pyboolnet} and \texttt{mpbn}~\cite{Paulev2020}.
+Specifically, we used the configuration \texttt{-heuristic=Domain -enum-mod=domRec -dom-mod=3} (subset maximality, equivalent to the deprecated \texttt{--dom-pref=32 --heuristic=domain --dom-mod=7} used by \texttt{PyBoolNet}). 
 We ran all the benchmarks on a machine whose environment is CPU: \@ Intel\textregistered\ Core\texttrademark\ i9-11950H 2.60GHz × 16, 16 GB DDR4 RAM, Ubuntu 20.04.5 LTS. 
 Finally, we set a time limit of three minutes for each model.
 
 All the models and a Jupyter notebook realizing the benchmarks can be found at~\url{https://github.com/soli/trap-spaces-as-siphons}.
 These can be run on a Docker image in the cloud by clicking the ``Binder'' button.
 
-\subsection{PyBoolNet repository}
+\subsection{\texttt{PyBoolNet} repository}
 
 \setlength{\tabcolsep}{4pt}
 \begin{table}[!htb]
-  \caption{Timing comparisons (in seconds) between bioLQM (LQM), PyBoolNet (PBN), mpbn and the four variants of Trappist on the PyBoolNet repository.}
+  \caption{Timing comparisons (in seconds) between \texttt{bioLQM} (LQM), \texttt{PyBoolNet} (PBN), \texttt{mpbn} and the four variants of Trappist on the \texttt{PyBoolNet} repository.}
   \centering%
   \label{tab:pyboolnet_repo}
   \scalebox{0.85}{
@@ -954,7 +959,7 @@ These can be run on a Docker image in the cloud by clicking the ``Binder'' butto
     \toprule
     & & & & & & & \multicolumn{4}{c}{Trappist}\\
     \cmidrule(rr){8-11}
-    & model & \(n\) & \(|M|\) & LQM & PBN & mpbn & SAT & CLP & ILP & ASP \\
+    & model & \(n\) & \(|M|\) & LQM & PBN & \texttt{mpbn} & SAT & CLP & ILP & ASP \\
     \midrule
     \rownb & arellano\_rootstem & 9 & 4 & \textbf{0.13} & 0.01 & 0.00 & 0.00 & - & - & 0.01\\
     \rownb & calzone\_cellfate & 28 & 27 & \textbf{0.12} & 0.02 & 0.01 & 0.01 & - & - & 0.01\\
@@ -991,17 +996,17 @@ These can be run on a Docker image in the cloud by clicking the ``Binder'' butto
 \end{table}
 \setcounter{rownumber}{0}
 
-Table~\ref{tab:pyboolnet_repo} shows the experimental results on the models from the official PyBoolNet repository\footnote{\url{https://github.com/hklarner/pyboolnet/tree/master/pyboolnet/repository}}.
+Table~\ref{tab:pyboolnet_repo} shows the experimental results on the models from the official \texttt{PyBoolNet} repository\footnote{\url{https://github.com/hklarner/pyboolnet/tree/master/pyboolnet/repository}}.
 Column \(n\) denotes the number of nodes of each model. 
 Column \(|M|\) denotes the number of minimal trap spaces and for each method is given the computation time in seconds, asking only for the first 1000 trap spaces.
 A number in bold indicates a ratio greater than three compared to the best result. 
 ``NM'' indicates a non-locally-monotonic model.
 There are four variants of Trappist: SAT (i.e., the MaxSAT-based method shown in Subsection~\ref{subsec:computation_csp}), CLP (i.e., the CLP-based method shown in Subsection~\ref{subsec:computation_csp}), ILP (i.e., the ILP-based method shown in Subsection~\ref{subsec:computation_ilp}), and ASP (i.e., the ASP-based method shown in Subsection~\ref{subsec:computation_asp}).
     
-As shown in Table~\ref{tab:pyboolnet_repo}, for most of the models of the PyBoolNet repository, the results are comparable with all minimal trap spaces found very fast.
-For 5 of the 29 models, mpbn did not give any answer because it recognized these models as not locally-monotonic.
-Note that on some very small models, Trappist is sometimes slower than PyBoolNet and/or mpbn, but still significantly under one second.
-On the contrary, on every model that was a bit challenging for PyBoolNet or mpbn, the new method is far more efficient with speedups between one and two orders of magnitude.
+As shown in Table~\ref{tab:pyboolnet_repo}, for most of the models of the \texttt{PyBoolNet} repository, the results are comparable with all minimal trap spaces found very fast.
+For 5 of the 29 models, \texttt{mpbn} did not give any answer because it recognized these models as not locally-monotonic.
+Note that on some very small models, Trappist is sometimes slower than \texttt{PyBoolNet} and/or \texttt{mpbn}, but still significantly under one second.
+On the contrary, on every model that was a bit challenging for \texttt{PyBoolNet} or \texttt{mpbn}, the new method is far more efficient with speedups between one and two orders of magnitude.
 
 \subsection{BBM repository}
 
@@ -1018,9 +1023,9 @@ We here tested all the compared methods on this model repository.
   \begin{tabular}{lrrrr}
     \toprule
     Method & \# failures & avg-lqm (s) & avg-mono (s) & avg-all (s) \\ \midrule
-    bioLQM & 9 (134) & 12.87 & N/A & N/A \\
-    PyBoolNet & 12 & 8.87 & 11.00 & 13.59 \\
-    mpbn & 2 (187) & N/A & 2.31 & N/A \\
+    \texttt{bioLQM} & 9 (134) & 12.87 & N/A & N/A \\
+    \texttt{PyBoolNet} & 12 & 8.87 & 11.00 & 13.59 \\
+    \texttt{mpbn} & 2 (187) & N/A & 2.31 & N/A \\
     Trappist-MaxSAT & 1 & 0.03 & 1.09 & 1.01 \\
     Trappist-CLP & - & - & - & - \\
     Trappist-ILP & - & - & - & - \\
@@ -1032,9 +1037,9 @@ We here tested all the compared methods on this model repository.
 
 Table~\ref{tab:bbm_repo} shows the experimental results on the 211 real-world models from the BBM repository.
 Columns 2 expresses the numbers of failures (i.e., did not finish the computation within a time limit of three minutes) of each method.
-For the case of bioLQM, we only considered the models that have at most 1000 minimal trap spaces.
+For the case of \texttt{bioLQM}, we only considered the models that have at most 1000 minimal trap spaces.
 The number of such models is 134 (per all 211 models) and is denoted inside the parentheses.
-For the case of mpbn, we only considered the models that are locally-monotonic.
+For the case of \texttt{mpbn}, we only considered the models that are locally-monotonic.
 The number of such models is 187 (per all 211 models) and is denoted inside the parentheses.
 Columns 3-5 express the average running time (in seconds) of each method for the models having at most 1000 minimal trap spaces, the locally-monotonic models, and all the models, respectively.
 Note that when computing the average running time, if the running time exceeds 180s, it is considered as 180s.
@@ -1045,18 +1050,18 @@ From the results shown in Table~\ref{tab:bbm_repo}, we reported several observat
 
 We used a set of real-world Boolean networks lying in various scales collected from numerous bibliographic sources.
 These models are quite big (in size), complex (i.e., having high average in-degree, which is related to the number of prime-implicants) and most of them have never been fully analyzed.
-Note that these models are not included in the PyBoolNet and BBM repositories.
-We then applied bioLQM, PyBoolNet, mpbn, and the four variants of Trappist to computing minimal trap spaces of these real-world models.
+Note that these models are not included in the \texttt{PyBoolNet} and BBM repositories.
+We then applied \texttt{bioLQM}, \texttt{PyBoolNet}, \texttt{mpbn}, and the four variants of Trappist to computing minimal trap spaces of these real-world models.
 It is notable that unlike existing analysis shown in the literature, we did not fix specific values for source nodes in these models.
 Table~\ref{tab:result_real} shows the experimental results on those models. 
 ``DNF'' means that the method did not finish the computation (stopping at the first 1000 minimal trap spaces) within the timeout of two minutes.
-In the case of bioLQM, ``N/A'' means that the number of all minimal trap spaces of the model is larger than 1000 and we did not recorded the running time of bioLQM because it always requires to compute all minimal trap spaces.
+In the case of \texttt{bioLQM}, ``N/A'' means that the number of all minimal trap spaces of the model is larger than 1000 and we did not recorded the running time of \texttt{bioLQM} because it always requires to compute all minimal trap spaces.
 A number in bold indicates a ratio greater than or equal to 10 compared to the best result.
 Other notations are similar to those in Table~\ref{tab:pyboolnet_repo}.
 Hereafter, we analyze in detail the results with respect to minimal trap space computation.
     
 \begin{table}[!htb]
-  \caption{Timing comparisons (in seconds) between bioLQM (LQM), PyBoolNet (PBN), mpbn and the four variants of Trappist on selected models from the literature.}
+  \caption{Timing comparisons (in seconds) between \texttt{bioLQM} (LQM), \texttt{PyBoolNet} (PBN), \texttt{mpbn} and the four variants of Trappist on selected models from the literature.}
   % in bold if greater than or equal to 10
   \centering%
   \label{tab:result_real}
@@ -1065,7 +1070,7 @@ Hereafter, we analyze in detail the results with respect to minimal trap space c
     \toprule
     & & & & & & & \multicolumn{4}{c}{Trappist}\\
     \cmidrule(rr){8-11}
-    & model & \(n\) & \(|M|\) & LQM & PBN & mpbn & SAT & CLP & ILP & ASP \\
+    & model & \(n\) & \(|M|\) & LQM & PBN & \texttt{mpbn} & SAT & CLP & ILP & ASP \\
     \midrule % n < 100
     \rownb & Arabidopsis\_thaliana~\cite{DesignPrinciplesGeneNetworks} & 15 & 8 & \textbf{0.10} & 0.06 & NM & 0.01 & - & - & 0.02 \\
     \rownb & Bcell~\cite{Dutta2019} & 73 & 72 & 0.23 & 0.04 & 0.08 & 0.06 & - & - & 0.05 \\
@@ -1110,14 +1115,14 @@ Hereafter, we analyze in detail the results with respect to minimal trap space c
   }
 \end{table}
 
-The first observation is that for 26 of the 33 models (more than 78\%), mpbn did not give any answer because it recognized that these models as not locally-monotonic.
-For 6 of the 33 models where mpbn returned the answers, mpbn and Trappist are comparable in computation time, though surprisingly mpbn appears a bit slower on average.
-Note however that mpbn was the only tool to provide a solution for the SN-5 model, thus confirming that if the activation function is in the right form, not having to compute the inactivation function's disjunctive normal form can render a difficult problem tractable.
+The first observation is that for 26 of the 33 models (more than 78\%), \texttt{mpbn} did not give any answer because it recognized that these models as not locally-monotonic.
+For 6 of the 33 models where \texttt{mpbn} returned the answers, \texttt{mpbn} and Trappist are comparable in computation time, though surprisingly \texttt{mpbn} appears a bit slower on average.
+Note however that \texttt{mpbn} was the only tool to provide a solution for the SN-5 model, thus confirming that if the activation function is in the right form, not having to compute the inactivation function's disjunctive normal form can render a difficult problem tractable.
 However, since mbpn can handle only locally-monotonic models and Trappist can handle general models, it is difficult to further compare between them.
-Hence, we focus on only comparisons between PyBoolNet and Trappist in the following observations.
+Hence, we focus on only comparisons between \texttt{PyBoolNet} and Trappist in the following observations.
 
-The second observation is that the proposed method vastly outperforms PyBoolNet in computational time, on each and every model, and sometimes with orders of magnitude of difference (e.g., for most models in the 100--1000 nodes size range).
-Note that for all the cases where PyBoolNet did not manage to finish before the timeout, as marked by ``DNF'' in Table~\ref{tab:result_real}, the timeout occurred during the computation of the prime-implicants.
+The second observation is that the proposed method vastly outperforms \texttt{PyBoolNet} in computational time, on each and every model, and sometimes with orders of magnitude of difference (e.g., for most models in the 100--1000 nodes size range).
+Note that for all the cases where \texttt{PyBoolNet} did not manage to finish before the timeout, as marked by ``DNF'' in Table~\ref{tab:result_real}, the timeout occurred during the computation of the prime-implicants.
 Hence, not even a single minimal trap space was output by that method.
 The computational advantage is therefore immediately a practical advantage since on the one hand the state-of-the-art method did not allow any analysis whatsoever of the models, and on the other hand the proposed method could provide, very often under one second, the first thousand minimal trap spaces.
 For modellers having a critical look at a model and in a \emph{model, invalidate, refine} loop this means a huge difference in the models that are amenable to study.
@@ -1127,16 +1132,16 @@ Though it might seem impractical to handle tens of thousands of such possible co
 Since the ASP code is declarative by nature, it is also possible to add to it supplementary constraints coming from the modeler in case one is looking for specific attractors.
 Finally, sampling from the ASP-generated solutions as is done in~\cite{chevalier2020synthesis} would allow for a different type of exploration.
 
-The third observation is that for all the models where PyBoolNet finished before the timeout, once PyBoolNet went through the prime-implicant phase, its ASP solving phase quickly returned the first 1000 minimal trap spaces, all under one second.
+The third observation is that for all the models where \texttt{PyBoolNet} finished before the timeout, once \texttt{PyBoolNet} went through the prime-implicant phase, its ASP solving phase quickly returned the first 1000 minimal trap spaces, all under one second.
 For these models, the ASP solving phase of the proposed method also took very short time, all under one second.
-Hence, with the experimental results shown in this paper, the practical differences between our ASP encoding and that of PyBoolNet are not distinctly exposed.
+Hence, with the experimental results shown in this paper, the practical differences between our ASP encoding and that of \texttt{PyBoolNet} are not distinctly exposed.
 The fact that our new ASP encoding is guaranteed to be linear in the number of nodes of the original model does not seem to be crucial here, however a much deeper analysis of those cases remains to be done.
 
 The last observation is that for very large models (i.e., more than two thousand nodes) the proposed method did not manage to finish the Petri net conversion before the timeout, as marked by ``???'' in Table~\ref{tab:result_real}.
 This points to the fact that our current choice of using a BDD-based translation to obtain that Petri net encoding, though it provides a small/efficient ASP might be too costly to handle the largest models.
 In such a case, a more \emph{naive} encoding might provide a much larger ASP program, with many redundant rules, but easier/faster to obtain.
 The evaluation of the feasibility of such strategy, and of its impact on smaller instances, remains to be done and is out of the scope of this first article.
-Recognizing that a model is locally-monotonic and applying in that specific case dedicated strategies as those of mpbn might also be a partial solution as shown in the SN-5 case, but not for the turei-2016 model.
+Recognizing that a model is locally-monotonic and applying in that specific case dedicated strategies as those of \texttt{mpbn} might also be a partial solution as shown in the SN-5 case, but not for the turei-2016 model.
 
 Note that though enumerating the extremal siphons of a Petri net is exponential (see~\cite{nabli2016enumerating} for instance) this is apparently not the bottleneck of the proposed method, showing once again that networks obtained from biochemical models do have a specific structure.
 
@@ -1148,9 +1153,9 @@ For each network size, 50 instances were generated using the \verb|generateRando
 In total, we have 350 random models. 
 We then applied the compared methods to these models and recorded the numbers of failures (i.e., failed to obtain the result within a time limit of three minutes) as well as the average running time (inside the parentheses) in each method for each network size \(n\).
 It is worth noting that N-K models usually have small numbers of minimal trap spaces~\cite{klarner2015computing}.
-Hence, we searched for all solutions in each model, which makes the comparison to bioLQM more comprehensive.
+Hence, we searched for all solutions in each model, which makes the comparison to \texttt{bioLQM} more comprehensive.
 In addition, each node has only three input nodes, i.e., the number of prime-implicants of the associated Boolean function is small.
-Hence, PyBoolNet always passed the phase of computing prime-implicants in every model even within 1s, which enables us to compare the ASP encoding of PyBoolNet and that of Trappist.
+Hence, \texttt{PyBoolNet} always passed the phase of computing prime-implicants in every model even within 1s, which enables us to compare the ASP encoding of \texttt{PyBoolNet} and that of Trappist.
 
 \begin{table}[!htb]
   \caption{Results on N-K models.}
@@ -1160,7 +1165,7 @@ Hence, PyBoolNet always passed the phase of computing prime-implicants in every 
     \toprule
     & & & & \multicolumn{4}{c}{Trappist}\\
     \cmidrule(rr){5-8}
-    \(n\) & LQM & mpbn & PBN & SAT & CLP & ILP & ASP \\
+    \(n\) & LQM & \texttt{mpbn} & PBN & SAT & CLP & ILP & ASP \\
     \midrule
     100 & 50 ($>$ 180) & 50 (N/A) & 0 (0.07) & 0 (0.05) & - () & - () & 0 (0.09) \\
     150 & 50 ($>$ 180) & 50 (N/A) & 0 (0.14) & 0 (0.10) & - () & - () & 0 (0.14) \\
@@ -1175,7 +1180,7 @@ Hence, PyBoolNet always passed the phase of computing prime-implicants in every 
 
 Table~\ref{tab:result_N_K} shows the experimental results on N-K models.
 Column \(n\) denotes the network size.
-Columns ``LQM'' and ``PBN'' show the results of bioLQM and PyBoolNet, respectively.
+Columns ``LQM'' and ``PBN'' show the results of \texttt{bioLQM} and \texttt{PyBoolNet}, respectively.
 For each method, the number outside the parentheses indicates the number of failures, whereas the number inside the parentheses indicates the average running time (in seconds).
 Note that when computing the average running time, if the running time exceeds 180s, it is considered as 180s.
 From these results, we obtained several observations consistent with those obtained for real-world models.
@@ -1199,11 +1204,11 @@ The experimental results show that \dots
 We believe that this opens up the way to a much better analysis of large Boolean networks, which is needed with the advent of automatic model-generation pipelines~\cite{ostaszewski2021covid19}.
 
 %Though we benchmarked this new approach against state-of-the-art tools, there are many more evaluations that we plan to do in the future.
-%First, the bioLQM platform that we are using is providing another implicant-based method using BDDs in \url{http://colomoto.org/biolqm/doc/tools-trapspace.html} and though we expect it to behave mostly like PyBoolNet, that remains to be checked.
-%Note that this also raises the question of replacing altogether the bioLQM preprocessing step we use to obtain the Petri net encoding, since its use of BDDs might not be optimal for that step.
+%First, the \texttt{bioLQM} platform that we are using is providing another implicant-based method using BDDs in \url{http://colomoto.org/biolqm/doc/tools-trapspace.html} and though we expect it to behave mostly like \texttt{PyBoolNet}, that remains to be checked.
+%Note that this also raises the question of replacing altogether the \texttt{bioLQM} preprocessing step we use to obtain the Petri net encoding, since its use of BDDs might not be optimal for that step.
 %The trade-off between a small Petri net, and hence small ASP, and the time it takes to compute it (in other words, the trade-off of allowing redundant constraints) has to be evaluated in depth.
 
-Second, the experimental results shown in this paper mostly expose the differences caused by the prime-implicant phase of PyBoolNet. There is much more information required to distinctly study the practical differences between our ASP encoding and that of PyBoolNet, and notably their size/efficiency ratio.
+Second, the experimental results shown in this paper mostly expose the differences caused by the prime-implicant phase of \texttt{PyBoolNet}. There is much more information required to distinctly study the practical differences between our ASP encoding and that of \texttt{PyBoolNet}, and notably their size/efficiency ratio.
 Hence, we plan to conduct experiments on more real-world models or maybe random models that can be randomly generated by using BoolNet~\cite{mussel2010boolnet}.
 Such experiments should include a time-course of the number of ASP solutions found for proper comparison of the ASP encodings.
 
