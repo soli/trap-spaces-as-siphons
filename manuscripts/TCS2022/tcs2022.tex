@@ -1065,13 +1065,12 @@ In particular, it provides a feature-rich alternative to random simulations for 
 Being able to detect that there are inconsistencies with published experimental data in some of the first 1000 attractors, for instance, can lead to a much quicker Systems Biology loop: model, invalidate, refine.
 
 However, using a state-of-the-art tool like \texttt{PyBoolNet}~\cite{klarner2015computing} on that model actually fails at the phase of prime-implicant generation.
-\texttt{mpbn}~\cite{Paulev2020} does not give any answer either because it recognizes that model as non-locally-monotonic.
-And hence, it is not possible to extract any (complex) attractor at all.
-This is also true for the Alzheimer model also mentioned in that same article and originally from~\cite{ogishima2016alzpathway} (\verb|F4| file in the original supplementary material, and ``Alzheimer'' in Table~\ref{tab:result_real}), but actually not for the MAPK model for which the first trap spaces can be obtained in reasonable time.
+\texttt{mpbn}~\cite{Paulev2020} can return the first 1000 solution within 1.43s, but indeed, it limits the modeling range of the modelers as it does not permit using non-locally-monotonic Boolean functions.
+This is also true for the Alzheimer model also mentioned in that same article and originally from~\cite{ogishima2016alzpathway} (\verb|F4| file in the original supplementary material, and ``Alzheimer'' in Table~\ref{tab:result_real}), where \texttt{PyBoolNet} also fails at the prime-implicant computation and \texttt{mpbn} does not give any answer because this model is actually non-locally-monotonic.
 The current practice usually revolves then around fixing some source nodes to plausible values and reducing the model accordingly.
 While this approach makes sense, it relies on potentially arbitrary decisions, and \emph{hides away} critical modelling choices that were actually not part of the original Boolean network or even of the starting map.
 
-Using the method presented above, it is possible to convert the model to \texttt{PNML} in about one second and to obtain the first 1000 minimal trap spaces (including ones that contain more than one state) in a few milliseconds.
+Using the ASP-based method presented in Section~\ref{subsec:computation_asp}, it is possible to obtain the first 1000 minimal trap spaces (including ones that contain more than one state) within 0.19s, which is much quicker than \texttt{mpbn}.
 Unfortunately since this was not available at the time, the analysis of the model remained very high-level and qualitative, instead of being able to use the rich information of computed minimal trap spaces.
 
 \section{Evaluation}%
