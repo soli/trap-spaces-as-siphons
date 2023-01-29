@@ -436,8 +436,8 @@ Of course, in any marking \(t^{1}_{x_1}\) and \(t^{2}_{x_1}\) cannot be both ena
 Then, the fully asynchronous update scheme in \(\mathcal{N}\) corresponds to the classical firing scheme in \(\mathcal{P}\) where only one of the enabled transitions for a given marking will be fired~\cite{Murata1989}.
 
 
-Note that given a Boolean network in the standard SBML-Qual format~\cite{chaouiya2013sbml}, i.e., the package of SBML v3~\cite{keating2020sbml} for such models, one can easily obtain its Petri net encoding in the Petri Net Markup Language  (PNML)\footnote{\url{https://www.pnml.org/}} standard using the \texttt{bioLQM}\footnote{\url{http://www.colomoto.org/biolqm/}} library.
-This piece of software extracted from GINsim~\cite{chaouiya2012logical} and part of the CoLoMoTo\footnote{\url{http://colomoto.org/}}~\cite{naldi2015cooperative} software suite allows for easy conversion between standard formats.
+Note that given a Boolean network in the standard \texttt{SBML-Qual} format~\cite{chaouiya2013sbml}, i.e., the package of SBML v3~\cite{keating2020sbml} for such models, one can easily obtain its Petri net encoding in the Petri Net Markup Language  (PNML)\footnote{\url{https://www.pnml.org/}} standard using the \texttt{bioLQM}\footnote{\url{http://www.colomoto.org/biolqm/}} library.
+This piece of software extracted from \texttt{GINsim}~\cite{chaouiya2012logical} and part of the \texttt{CoLoMoTo}\footnote{\url{http://colomoto.org/}}~\cite{naldi2015cooperative} software suite allows for easy conversion between standard formats.
 It also accepts many other common formats for Boolean networks, notably the \verb|.bnet| files of the  BoolNet~\cite{mussel2010boolnet,klarner2017pyboolnet} tools.
 The conversion is executed as follows:
 
@@ -736,7 +736,7 @@ and
   (\neg p \vee \bigvee_{p' \in pred(t)}p'), \forall p \in P, \forall t \in pred(p).
 \]
 We set a soft clause for each variable of the CSP and then use a ``minimal correction subset'' blocking strategy, which will ensure set-inclusion maximality of the solutions.
-This is what is implemented in \texttt{Trappist} using the \texttt{RC2} MaxSAT solver~\cite{DBLP:journals/jsat/IgnatievMM19} available through the python-sat package\footnote{\url{https://pysathq.github.io/docs/html/api/examples/rc2.html}}.
+This is what is implemented in \texttt{Trappist} using the \texttt{RC2} MaxSAT solver~\cite{DBLP:journals/jsat/IgnatievMM19} available through the \texttt{python-sat} package\footnote{\url{https://pysathq.github.io/docs/html/api/examples/rc2.html}}.
 
 For the CLP-based method, we use TODO: \dots
 
@@ -769,7 +769,7 @@ Since \texttt{mpbn} is included in our benchmark this will be evaluated in our e
 Now, a solution (simply an answer set) \(A \subseteq \mathcal{A}\) of \(\mathcal{L}\) is equivalent to a conflict-free siphon \(S\) of \(\mathcal{P}\), thus a trap space \(m\) of \(\mathcal{N}\). 
 The conversion from \(A\) to \(m\) is straightforward. If \(\verb|p-v| \in A\) then \(v \in D_m\) and \(m(v) = 0\). 
 Conversely, if \(\verb|n-v| \in A\) then \(v \in D_m\) and \(m(v) = 1\). 
-Otherwise, \(v \not \in D_m\). Computing multiple answer sets is built into ASP solvers and the solving collection POTASSCO~\cite{DBLP:journals/aicom/GebserKKOSS11} also features the option to find set-inclusion maximal answer sets with respect to the set of atoms. 
+Otherwise, \(v \not \in D_m\). Computing multiple answer sets is built into ASP solvers and the solving collection \texttt{POTASSCO}~\cite{DBLP:journals/aicom/GebserKKOSS11} also features the option to find set-inclusion maximal answer sets with respect to the set of atoms. 
 Naturally, a set-inclusion maximal answer set of \(\mathcal{L}\) is equivalent to a maximal conflict-free siphon of \(\mathcal{P}\), thus a minimal trap space of \(\mathcal{N}\). 
 By using this built-in option, we can compute all the set-inclusion maximal answer sets of \(\mathcal{L}\) (resp.\ all the minimal trap spaces of \(\mathcal{N}\)) in one execution.
 
@@ -822,7 +822,7 @@ Hence, \(S'\) is also a maximal conflict-free siphon.
 Again, we add to \(\mathcal{I}\) a new inequality with respect to the newly found siphon.
 The above process is iterated until \(\mathcal{I}\) becomes unfeasible, this means that there is no further maximal conflict-free siphon.
 Thus, all the maximal conflict-free siphons of the Petri net have been found.
-We use \dots as the ILP solver.
+We use \dots as the ILP solver. TODO: \dots
 
 \subsection{Computation of special types of trap spaces}
 \label{subsec:computation_special_ts}
@@ -1150,9 +1150,9 @@ For 5 of the 29 models, \texttt{mpbn} did not give any answer because it recogni
 Note that on some very small models, \texttt{Trappist} is sometimes slower than \texttt{PyBoolNet} and/or \texttt{mpbn}, but still significantly under one second.
 On the contrary, on every model that was a bit challenging for \texttt{PyBoolNet} or \texttt{mpbn}, the new method is far more efficient with speedups between one and two orders of magnitude.
 
-\subsection{BBM repository}
+\subsection{\texttt{BBM} repository}
 
-Currently, a research group has made a great effort for building a collection (called BBM) of real-world Boolean models from various sources used in systems biology.
+Currently, a research group has made a great effort for building a collection (called \texttt{BBM}) of real-world Boolean models from various sources used in systems biology.
 It aims to be a comprehensive collection suitable for benchmarking and testing new tools and methods.
 It is released and maintained at \url{https://github.com/sybila/biodivine-boolean-models}.
 We here tested all the compared methods on this model repository.
@@ -1177,8 +1177,8 @@ We here tested all the compared methods on this model repository.
 \end{table}
 \setcounter{rownumber}{0}
 
-Table~\ref{tab:bbm_repo} shows the experimental results on the 211 real-world models from the BBM repository.
-Columns 2 expresses the numbers of failures (i.e., did not finish the computation within a time limit of three minutes) of each method.
+Table~\ref{tab:bbm_repo} shows the experimental results on the 211 real-world models from the \texttt{BBM} repository.
+Column 2 expresses the numbers of failures (i.e., did not finish the computation within a time limit of three minutes) of each method.
 For the case of \texttt{bioLQM}, we only considered the models that have at most 1000 minimal trap spaces.
 The number of such models is 134 (per all 211 models) and is denoted inside the parentheses.
 For the case of \texttt{mpbn}, we only considered the models that are locally-monotonic.
