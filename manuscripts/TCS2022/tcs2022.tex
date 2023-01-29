@@ -238,7 +238,7 @@ In particular, an updated proof provides another way to prove the independence o
 Second, we showcase a theoretical application of the connection between trap spaces in Boolean networks and conflict-free siphons in Petri nets.
 Third, beyond the proposed ASP method implementing the alternative approach~\cite{DBLP:conf/cmsb/TrinhBHS22}, we propose several other possible methods for computing minimal trap spaces using Maximum Satisfiability (MaxSAT), Constraint Logic Programming (CLP), and Integer Linear Programming (ILP).
 Fourth, we discuss in detail how to compute several special types of trap spaces in a Boolean network.
-Fifth, we present the idea for using our Petri net approach to handle the problem of inconsistent and incomplete data.
+Fifth, we present the idea for using our Petri net approach to handle the problem of inconsistent and incomplete data in modeling biological systems.
 Sixth, regarding the implementation, we have developed a new converter that directly reads a \texttt{.bnet} file and builds the Petri net encoding, instead of using the \texttt{PNML} conversion of \texttt{bioLQM}~\cite{DBLP:conf/cmsb/TrinhBHS22}.
 Finally, we conduct a more comprehensive benchmark on more real-world models from various sources and randomly generated models to evaluate all the proposed methods (the benchmark conducted in~\cite{DBLP:conf/cmsb/TrinhBHS22} considers only real-world models).
 
@@ -246,6 +246,7 @@ Finally, we conduct a more comprehensive benchmark on more real-world models fro
 The rest of this paper is organized as follows: Section~\ref{sec:Preliminaries} recalls the basic concepts including Boolean networks, attractors, trap spaces, Petri nets, and siphons.
 Section~\ref{sec:Main_finding} presents the main finding, the connection between trap spaces in Boolean networks and siphons in Petri nets.
 Section~\ref{sec:Computation} presents the alternative approach for computing minimal trap spaces and the four possible methods implementing it.
+Section~\ref{sec:incomplete-data} presents the idea to deal with problem of inconsistent and incomplete data.
 Section~\ref{sec:case_study} shows an important biological case study showing the applicability of the new approach.
 Section~\ref{sec:eval} reports the experimental results for evaluating the efficiency of the proposed methods.
 Finally, Section~\ref{sec:Conclusion} concludes the paper and draws future work.
@@ -907,7 +908,8 @@ where \(\{v_{i_1}, \dots, v_{i_k}\}\) is the set of free nodes of \(m^{*}\).
 This rule ensures that \(m \neq m^{*}\).
 In the case that \(m^{*} = \varepsilon\), we have all maximal trap spaces of the original Boolean network.
 
-\subsection{Inconsistent and incomplete data}
+\section{Inconsistent and incomplete data}
+\label{sec:incomplete-data}
 
 So far we have assumed that we are always able to derive complete
 and consistent truth-tables (i.e., Boolean functions) that correctly capture the behavior of each node in a Boolean network. 
