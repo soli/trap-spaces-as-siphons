@@ -4,7 +4,13 @@ Trappist is a tool for computing _minimal trap spaces_ of a Boolean model.
 
 # Install
 
-You can install trappist with `pip`:
+You can install trappist with `pip` directly from the Package Index:
+
+``` sh
+$ python3 -m pip install trappist
+```
+
+or grab the very latest version from the source:
 
 ``` sh
 $ python3 -m pip install -e git+https://github.com/soli/trap-spaces-as-siphons.git

@@ -263,7 +263,7 @@ def main():
         type=argparse.FileType("r", encoding="utf-8"),
         nargs="?",
         default=sys.stdin,
-        help="Petri-net (PNML) file",
+        help="Boolnet (.bnet) file of the model or Petri-net (PNML) file of its Petri net encoding.",
     )
     args = parser.parse_args()
 
