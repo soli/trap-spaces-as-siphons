@@ -1,22 +1,3 @@
-%% 
-%% Copyright 2007-2020 Elsevier Ltd
-%% 
-%% This file is part of the 'Elsarticle Bundle'.
-%% ---------------------------------------------
-%% 
-%% It may be distributed under the conditions of the LaTeX Project Public
-%% License, either version 1.2 of this license or (at your option) any
-%% later version.  The latest version of this license is in
-%%    http://www.latex-project.org/lppl.txt
-%% and version 1.2 or later is part of all distributions of LaTeX
-%% version 1999/12/01 or later.
-%% 
-%% The list of all files belonging to the 'Elsarticle Bundle' is
-%% given in the file `manifest.txt'.
-%% 
-%% Template article for Elsevier's document class `elsarticle'
-%% with harvard style bibliographic references
-
 \documentclass[preprint,12pt]{elsarticle}
 
 %% Use the option review to obtain double line spacing
@@ -30,10 +11,6 @@
 %% \documentclass[final,3p,times,twocolumn]{elsarticle}
 %% \documentclass[final,5p,times]{elsarticle}
 %% \documentclass[final,5p,times,twocolumn]{elsarticle}
-
-%% For including figures, graphicx.sty has been loaded in
-%% elsarticle.cls. If you prefer to use the old commands
-%% please give \usepackage{epsfig}
 
 %% The amssymb package provides various useful mathematical symbols
 \usepackage{amssymb}
@@ -132,9 +109,9 @@
 \ead{belaid.benhamou@lis-lab.fr}
 
 \affiliation[1]{organization={LIS, Aix-Marseille University},%Department and Organization
-            %addressline={}, 
+            %addressline={},
             city={Marseille},
-            %postcode={}, 
+            %postcode={},
             %state={},
             country={France}}
 
@@ -142,9 +119,9 @@
 \ead{Sylvain.Soliman@inria.fr}
 
 \affiliation[2]{organization={Lifeware team, Inria Saclay center},%Department and Organization
-            %addressline={}, 
+            %addressline={},
             city={Palaiseau},
-            %postcode={}, 
+            %postcode={},
             %state={},
             country={France}}
 
@@ -155,7 +132,7 @@
 
 Boolean network modeling of gene regulation but also of post-trans\-criptomic systems has proven over the years that it can bring powerful analyses and corresponding insight to the many cases where precise biological data is not sufficiently available to build a detailed quantitative model.
 %This is even more true for very large models where such data is frequently missing and led to a constant increase in size of logical models \emph{à la} Thomas.
-Besides simulation, the analysis of such models is mostly based on attractor computation, since those correspond roughly to observable biological \emph{phenotypes}. 
+Besides simulation, the analysis of such models is mostly based on attractor computation, since those correspond roughly to observable biological \emph{phenotypes}.
 The recent use of trap spaces made a real breakthrough in that field allowing to consider medium-sized models that used to be out of reach.
 However, with the continuing increase in model size and complexity of Boolean update functions, the state-of-the-art computation of minimal trap spaces based on \emph{prime-implicants} shows its limits due to the difficulty of the prime-implicant computation.
 
@@ -163,7 +140,7 @@ In this article we explore and prove for the first time a connection between tra
 Besides important theoretical applications in studying properties of trap spaces, the connection enables us to propose an alternative approach to compute minimal trap spaces, and hence complex attractors, of a general Boolean network.
 It replaces the need for prime-implicants by a completely different technique, namely the enumeration of maximal siphons in the Petri net encoding of the original model.
 We then demonstrate its efficiency and compare it to the state-of-the-art methods on a large collection of real-world and randomly generated models.
-  
+
 \end{abstract}
 
 %%Graphical abstract
@@ -190,7 +167,7 @@ Logical model \sep Boolean network \sep Trap space \sep Attractor computation \s
 
 \end{frontmatter}
 
-\linenumbers
+\linenumbers%
 
 %% main text
 \section{Introduction}
@@ -236,7 +213,7 @@ Herein we revise and extend our previous work in~\cite{DBLP:conf/cmsb/TrinhBHS22
 First, more formal definitions are given and the existing proofs are made more detailed.
 In particular, an updated proof provides another way to prove the independence of trap spaces of a Boolean network on its update scheme, which was originally proved in~\cite{klarner2015computing}.
 Second, we showcase a theoretical application of the connection between trap spaces in Boolean networks and conflict-free siphons in Petri nets.
-Third, beyond the proposed ASP method implementing the alternative approach~\cite{DBLP:conf/cmsb/TrinhBHS22}, we propose several other possible methods for computing minimal trap spaces using Maximum Satisfiability (MaxSAT), Constraint Logic Programming (CLP), and Integer Linear Programming (ILP).
+Third, beyond the proposed ASP method implementing the alternative approach~\cite{DBLP:conf/cmsb/TrinhBHS22}, we propose several other possible methods for computing minimal trap spaces using Maximum Satisfiability (MaxSAT), Constraint Programming (CP), and Integer Linear Programming (ILP).
 Fourth, we discuss in detail how to compute several special types of trap spaces in a Boolean network.
 Fifth, we present the idea for using our Petri net approach to handle the problem of inconsistent and incomplete data in modeling biological systems.
 Sixth, regarding the implementation, we have developed a new converter that directly reads a \texttt{.bnet} file and builds the Petri net encoding, instead of using the \texttt{PNML} conversion of \texttt{bioLQM}~\cite{DBLP:conf/cmsb/TrinhBHS22}.
@@ -251,7 +228,7 @@ Section~\ref{sec:case_study} shows an important biological case study showing th
 Section~\ref{sec:eval} reports the experimental results for evaluating the efficiency of the proposed methods.
 Finally, Section~\ref{sec:Conclusion} concludes the paper and draws future work.
 
-\section{Preliminaries}
+\section{Preliminaries}%
 \label{sec:Preliminaries}
 
 We shall briefly recall here some preliminaries on Boolean networks related to trap spaces and Petri nets.
@@ -260,23 +237,23 @@ We shall briefly recall here some preliminaries on Boolean networks related to t
 
 \subsection{Boolean networks}
 
-\begin{definition}
+\begin{definition}%
+\label{def:BN}
 
   A Boolean Network (BN) is a pair \(\mathcal{N} = (V, F)\) where:
   \begin{itemize}
     \item \(V = \{v_1, \dots, v_n\}\) is the set of nodes.
     We use \(v_i\) to denote both the node \(v_i\) and its associated Boolean variable.
-    
+
     \item \(F = \{f_1, \dots, f_n\}\) is the set of update functions.
     Each function \(f_i\) is associated with node \(v_i\) and satisfies \(f_i \colon \mathbb{B}^{\vert IN(v_i)\vert} \mapsto \mathbb{B}\) where \(\mathbb{B} = \{0, 1\}\) and \(IN(v_i)\) denotes the set of input nodes of \(v_i\).
     Note that a node \(v_i \in V\) is called a \emph{source} node if and only if \(f_{i} = v_i\).
   \end{itemize}
 
-\label{def:BN}
 \end{definition}
 
 A Boolean function is \emph{locally-monotonic} if it can be represented by a formula in disjunctive normal form in which all occurrences of any given literal are either negated or non-negated~\cite{Paulev2020}.
-A Boolean network is said to be locally-monotonic if all its Boolean functions are locally-monotonic. 
+A Boolean network is said to be locally-monotonic if all its Boolean functions are locally-monotonic.
 Otherwise, this model is said to be non-locally-monotonic.
 
 A state \(v \in \mathbb{B}^{n}\) is as a mapping \(v \colon V \mapsto \mathbb{B}\) that assigns either 0 (inactive) or 1 (active) to each node.
@@ -285,7 +262,7 @@ At each time step \(t\), node \(v_i\) can update its state by
 \[v_i(t + 1) = f_i(v(t))\]
 where \(v(t)\) is the state of \(\mathcal{N}\) at time \(t\) and \(v_i(t + 1)\) is the state of node \(v_i\) at time \(t + 1\).
 Note that for simplicity, we write \(f_i(v(t))\) even \(IN(v_i) \subset V\) (i.e., \(IN(v_i)\) does not contain some nodes of \(V\)).
-An update scheme of a Boolean network specifies the way that the nodes update their states through time evolution~\cite{thomas1991regulatory}. 
+An update scheme of a Boolean network specifies the way that the nodes update their states through time evolution~\cite{thomas1991regulatory}.
 Following the update scheme, the Boolean network transits from a state to another state (possibly identical).
 This transition is called the \emph{state transition} and denoted by \(\rightarrow \subseteq \mathcal{S}_{\mathcal{N}} \times \mathcal{S}_{\mathcal{N}}\).
 Then the dynamics of \(\mathcal{N}\) is captured by the directed graph \((\mathcal{S}_{\mathcal{N}}, \rightarrow)\) called the State Transition Graph (STG).
@@ -400,13 +377,13 @@ We give a Boolean network \(\mathcal{N} = (V, F)\), where \(V = (x_1, x_2)\) and
   and \(W : (P \times T) \cup (T \times P) \mapsto \mathbb{N} \) is a weight function attached to the arcs.
 
 \end{definition}
-A \emph{marking} for a Petri net is a mapping \(m : P \mapsto \mathbb{N}\) that assigns a number of tokens to each place. 
-A place \(p\) is marked by a marking \(m\) if and only if \(m(p) > 0\). 
+A \emph{marking} for a Petri net is a mapping \(m : P \mapsto \mathbb{N}\) that assigns a number of tokens to each place.
+A place \(p\) is marked by a marking \(m\) if and only if \(m(p) > 0\).
 Marking \(m\) can be seen as a subset of \(P\) that contains all marked places by \(m\).
 We shall write \(pred(x)\) (resp.\ \(succ(x)\)) to represent the set of vertices that have a (non-zero weighted) arc leading to (resp.\ coming from) \(x\).
 In this work, we consider a class of Petri nets called 1-safe Petri nets where every place has at most 1 token and all arcs are of weight 1.
 In this case, weights are implicitly omitted in the arcs of a Petri net.
-Then, a transition \(t \in T\) is \emph{enabled} at a marking \(m\) if and only if \(pred(t) \subseteq m\). 
+Then, a transition \(t \in T\) is \emph{enabled} at a marking \(m\) if and only if \(pred(t) \subseteq m\).
 A marking \(m\) is called a deadlock if there are no enabled transitions at \(m\).
 The firing of \(t\) leads to a new marking \(m'\) specified by \(m' = (m \backslash pred(t)) \cup succ(t)\).
 Note that when multiple transitions are enabled, we need to embed one firing scheme (similar to the update scheme of a Boolean network) to the Petri net.
@@ -419,7 +396,7 @@ Since our study is focused on Boolean networks, we briefly recall the original e
 Its basis is that every node (\emph{gene}) \(v\) of the original model \(\mathcal{N} = (V, F)\) is represented by two separate places (\(p_v\) and \(\overline{p}_v\)), corresponding to its two states, active, and inactive, respectively.
 Each conjunct of the logical function that activates the \emph{gene} will lead to a transition \(t\), consuming the inactive place (i.e., a directional arc from \(\overline{p}_v\) to \(t\)), producing the active place (i.e., a directional arc from \(t\) to \(p_v\)), and with all other literals both consumed and produced (i.e., a bidirectional arc).
 And conversely for the inactivation.
-Let \(s\) be a state of the Boolean network and \(m_s\) be its corresponding marking in the encoded Petri net. 
+Let \(s\) be a state of the Boolean network and \(m_s\) be its corresponding marking in the encoded Petri net.
 It holds that \(\forall v \in V\), \(s(v) = 0\) if and only if \(m_s(\overline{p}_v) = 1\) and \(s(v) = 1\) if and only if \(m_s(p_v) = 1\). Note also that at any marking \(m\) of the Petri net encoding a Boolean network, it always holds that \(m(p_v) + m(\overline{p}_v) = 1\).
 
 The main property of this encoding is that it is completely faithful with respect to the update scheme of the original Boolean network.
@@ -447,7 +424,8 @@ Note that transforming a Boolean network defined by its functions into its Petri
 Though this might appear quite computationally intensive it is important to remark first that contrary to the prime-implicants case, there is no need to find \emph{minimal} DNFs.
 One way to look at this is to consider that this amounts to a similar approach as that used in~\cite{DBLP:conf/ictai/ChevalierFPZ19} but with the encoding of both activation and inhibition functions as DNFs in order to take into account possible non-local-monotonicity.
 This does not change the worst-case-complexity (obtaining a single DNF being exponential) but might matter a lot in practice.
-As such, we will explore how this transformation, here using BDDs in \texttt{bioLQM}, and the one based on the most-permissive semantics compare in the Section~\ref{sec:eval} on evaluation.
+As such, we will explore how this transformation, here using BDDs in \texttt{bioLQM} and directly in our tool using the \texttt{pyeda}\footnote{\url{https://pyeda.readthedocs.io/en/latest/}} library, and the one based on the most-permissive semantics compare in the Section~\ref{sec:eval} on evaluation.
+
 
 \subsection{Siphons}
 
@@ -468,7 +446,7 @@ Let \(pred(S) := \bigcup_{s \in S}pred(s)\) and \(succ(S) := \bigcup_{s \in S}su
 If \(S = \emptyset\), then conventionally \(pred(S) = succ(S) = \emptyset\).
 We have an important property on siphons~\cite{DBLP:journals/isci/LiuB16} as follows.
 
-\begin{proposition}
+\begin{proposition}%
 \label{prop:siphon_set}
   Let \(S\) be a siphon of a Petri net \((P, T, W)\).
   Then \(pred(S) \subseteq succ(S)\).
@@ -476,7 +454,7 @@ We have an important property on siphons~\cite{DBLP:journals/isci/LiuB16} as fol
 \end{proposition}
 
 
-\section{Minimal trap spaces as maximal conflict-free siphons}
+\section{Minimal trap spaces as maximal conflict-free siphons}%
 \label{sec:Main_finding}
 
 First, we add a definition related to any set of places of a Petri net encoding a Boolean network, and notably a siphon of such a net.
@@ -499,7 +477,7 @@ Hereafter, we formally prove that a (maximal) conflict-free siphon is equivalent
 
 \begin{definition}
 
-  Let \(m\) be a subspace of Boolean network \(\mathcal{N} = (V, F)\). 
+  Let \(m\) be a subspace of Boolean network \(\mathcal{N} = (V, F)\).
   A \emph{mirror} of \(m\) is a set of places \(S\) in the Petri net encoding \(\mathcal{P}\) of \(\mathcal{N}\) such that:
   \[\forall v \in D_m, m(v) = 0 \Leftrightarrow p_v \in S, m(v) = 1 \Leftrightarrow \overline{p}_v \in S\] and \[\forall v \in V \setminus D_m, p_v \not \in S, \overline{p}_v \not \in S.\]
 
@@ -514,13 +492,13 @@ Hereafter, we formally prove that a (maximal) conflict-free siphon is equivalent
 
 \begin{proof}
 
-  First, we show that if \(m\) is a trap space of \(\mathcal{N}\), then \(S\) is a conflict-free siphon of \(\mathcal{P}\) (*). 
-  If \(D_m = \emptyset\), then \(S = \emptyset\) is trivially a conflict-free siphon of \(\mathcal{P}\). 
+  First, we show that if \(m\) is a trap space of \(\mathcal{N}\), then \(S\) is a conflict-free siphon of \(\mathcal{P}\) (*).
+  If \(D_m = \emptyset\), then \(S = \emptyset\) is trivially a conflict-free siphon of \(\mathcal{P}\).
   Thus, we consider the case that \(D_m \neq \emptyset\) (resp. \(S \neq \emptyset\)).
-  Assume that \(S\) is not a siphon of \(\mathcal{P}\). 
+  Assume that \(S\) is not a siphon of \(\mathcal{P}\).
   Then, there is a transition \(t \in T\) such that \(S \cap succ(t) \neq \emptyset\) but \(S \cap pred(t) = \emptyset\).
   This implies that there is a place \(p \in S\) such that \(p \in succ(t)\) but \(p \not \in pred(t)\).
-  Let \(v\) be the corresponding node in \(\mathcal{N}\) of \(p\). 
+  Let \(v\) be the corresponding node in \(\mathcal{N}\) of \(p\).
   By the characteristics of the encoding~\cite{chaouiya2004qualitative}, there is a directional arc from \(t\) to \(p\) and a directional arc from the complementary place of \(p\) to \(t\).
   Without loss of generality, we assume that \(p = p_v\), then there is a directional arc from \(t\) to \(p_v\) and a directional arc from \(\overline{p}_v\) to \(t\).
   %In addition, there is also no arc or a bidirectional arc between \(t\) and another place rather than \(p_v\) and \(\overline{p}_v\).
@@ -532,7 +510,7 @@ Hereafter, we formally prove that a (maximal) conflict-free siphon is equivalent
   For the remaining nodes of \(\mathcal{N}\), we can always set Boolean values to these nodes to preserve that \(s \in \mathcal{S}_{\mathcal{N}}[m]\).
   We also have \(m_s(p_v) = 0\) by the characteristics of the encoding~\cite{chaouiya2004qualitative}.
   Now, \(t\) is enabled at marking \(m_s\).
-  Its firing leads to a new marking \(m'_s\) such that \(m'_s(p_v) = 1\) and \(m'_s(\overline{p}_v) = 0\). 
+  Its firing leads to a new marking \(m'_s\) such that \(m'_s(p_v) = 1\) and \(m'_s(\overline{p}_v) = 0\).
   Let \(s'\) be the corresponding state in \(\mathcal{N}\) of \(m'_s\).
   We have \(s'(v) = 1\) because \(m'_s(p_v) = 1\) and \(m(v) = 0\) because \(p_v \in S\).
   This implies that \(s' \not \in \mathcal{S}_{\mathcal{N}}[m]\).
@@ -541,8 +519,8 @@ Hereafter, we formally prove that a (maximal) conflict-free siphon is equivalent
   Hence, \(S\) is a siphon of \(\mathcal{P}\).
   By the definition of a mirror, \(S\) is also a conflict-free one.
 
-  Second, we show that if \(S\) is a conflict-free siphon of \(\mathcal{P}\), then \(m\) is a trap space of \(\mathcal{N}\) (**). 
-  By the definition of a mirror, \(m\) is a subspace of \(\mathcal{N}\). 
+  Second, we show that if \(S\) is a conflict-free siphon of \(\mathcal{P}\), then \(m\) is a trap space of \(\mathcal{N}\) (**).
+  By the definition of a mirror, \(m\) is a subspace of \(\mathcal{N}\).
   Let \(s\) be an arbitrary state in \(\mathcal{S}_{\mathcal{N}}[m]\) and \(m_s\) be its corresponding marking in \(\mathcal{P}\).
   Assume that there is a place \(p \in S\) such that \(m_s(p) = 1\).
   Let \(v\) be the corresponding node in \(\mathcal{N}\) of \(p\).
@@ -577,21 +555,21 @@ This exhibits the very first theoretical application of the connection between t
 
 \begin{proof}
 
-  First, we show that if \(m\) is a minimal trap space of \(\mathcal{N}\), then \(S\) is a maximal conflict-free siphon of \(\mathcal{P}\) (*). 
-  Since \(m\) is a trap space of \(\mathcal{N}\), \(S\) is a conflict-free siphon of \(\mathcal{P}\) by Theorem~\ref{theo:ts_2_sp}. Assume that \(S\) is not maximal. 
-  Then, there is another conflict-free siphon \(S'\) such that \(S \subset S'\). 
-  By Theorem~\ref{theo:ts_2_sp}, there is a trap space \(m'\) corresponding to \(S'\). 
+  First, we show that if \(m\) is a minimal trap space of \(\mathcal{N}\), then \(S\) is a maximal conflict-free siphon of \(\mathcal{P}\) (*).
+  Since \(m\) is a trap space of \(\mathcal{N}\), \(S\) is a conflict-free siphon of \(\mathcal{P}\) by Theorem~\ref{theo:ts_2_sp}. Assume that \(S\) is not maximal.
+  Then, there is another conflict-free siphon \(S'\) such that \(S \subset S'\).
+  By Theorem~\ref{theo:ts_2_sp}, there is a trap space \(m'\) corresponding to \(S'\).
   Following the definition of a mirror, \(D_m \subset D_{m'}\) and \(m(v) = m'(v), \forall v \in D_m\).
   It follows that \(S_{\mathcal{N}}[m'] \subset S_{\mathcal{N}}[m]\), thus \(m' < m\).
-  This contradicts to the minimality of \(m\). 
+  This contradicts to the minimality of \(m\).
   Hence, \(S\) is a maximal conflict-free siphon of \(\mathcal{P}\).
 
   Second, we show that if \(S\) is a maximal conflict-free siphon of \(\mathcal{P}\), then \(m\) is a minimal trap space of \(\mathcal{N}\) (**).
-  Since \(S\) is a conflict-free siphon of \(\mathcal{P}\), \(m\) is a trap space of \(\mathcal{N}\) by Theorem~\ref{theo:ts_2_sp}. 
+  Since \(S\) is a conflict-free siphon of \(\mathcal{P}\), \(m\) is a trap space of \(\mathcal{N}\) by Theorem~\ref{theo:ts_2_sp}.
   Assume that \(m\) is not minimal.
   Then, there is another trap space \(m'\) such that \(m' < m\).
   By the definition of the partial order \(<\) on subspaces, \(\mathcal{S}_{\mathcal{N}}[m'] \subset \mathcal{S}_{\mathcal{N}}[m]\). Let \(S'\) be the mirror of \(m'\).
-  \(S'\) is a conflict-free siphon by Theorem~\ref{theo:ts_2_sp}. 
+  \(S'\) is a conflict-free siphon by Theorem~\ref{theo:ts_2_sp}.
   Following the definition of a mirror, \(S \subset S'\), which contradicts to the maximality of \(S\).
   Hence, \(m\) is a minimal trap space of \(\mathcal{N}\).
 
@@ -634,7 +612,7 @@ This property is important because we can use it to approximate the set of attra
   Now, we have that \(S\) is a conflict-free siphon but \(S_1 \subset S\) or \(S_2 \subset S\) holds because \(S_1 \neq S_2\).
   This contradicts to the maximality of \(S_1\) and \(S_2\).
   Hence, \(\mathcal{S}_{\mathcal{N}}[m_1] \cap \mathcal{S}_{\mathcal{N}}[m_2] = \emptyset\) holds.
-  
+
 \end{proof}
 
 One naturally computational application of Theorem~\ref{theo:ts_2_sp} is that we can efficiently decide whether a subspace \(m\) is a trap space.
@@ -652,14 +630,14 @@ See Subsection~\ref{subsec:computation_special_ts} for more discussions about ma
 It might actually be possible to generalize our result to any 1-safe place-complementary Petri net to define a notion of trap spaces that might be useful for the analysis of Petri nets, but this is out of the scope of this present article.
 
 It is noted that there are no existing methods specifically designed for computing maximal conflict-free siphons (even maximal siphons) of a Petri net.
-The reason might be that researchers mainly focus on minimal generic siphons~\cite{DBLP:journals/isci/LiuB16} in the field of Petri nets. 
-Hence, we here propose several methods for computing maximal conflict-free siphons of a Petri net. 
+The reason might be that researchers mainly focus on minimal generic siphons~\cite{DBLP:journals/isci/LiuB16} in the field of Petri nets.
+Hence, we here propose several methods for computing maximal conflict-free siphons of a Petri net.
 The details of the proposed methods shall be given in the next section.
 
-\section{Computation methods}
+\section{Computation methods}%
 \label{sec:Computation}
 
-\subsection{Characterization}
+\subsection{Characterization}%
 \label{subsec:siphon_characterization}
 
 First, we show the characterization of all conflict-free siphons of the encoded Petri net \(\mathcal{P} = (P, T, W)\).
@@ -678,7 +656,7 @@ p_v \in S \Rightarrow \overline{p}_v \not \in S \wedge \overline{p}_v \in S \Rig
 \end{equation}for each node \(v \in V\).
 By definition, the final system fully characterizes all conflict-free siphons of the encoded Petri net.
 
-\subsection{Constraint satisfaction problem}
+\subsection{Constraint satisfaction problem}%
 \label{subsec:computation_csp}
 
 The following Boolean Constraint Satisfaction Problem (CSP) directly derives from the above characterization:
@@ -695,7 +673,7 @@ The following Boolean Constraint Satisfaction Problem (CSP) directly derives fro
 
 \end{definition}
 
-\begin{proposition}
+\begin{proposition}%
 \label{prop:csp_conflict_free_siphon}
   \(\mathcal{C}(\mathcal{P})\) is satisfied by a valuation \(r\) if and only if
   \[
@@ -710,13 +688,13 @@ The following Boolean Constraint Satisfaction Problem (CSP) directly derives fro
   By the former part \(\neg p_v \vee \neg \overline{p}_v\) = 1 of \(C\), the conflict-freeness is imposed because for any satisfable valuation \(r\), \(r(p_v) = r(\overline{p}_v) = 1\) is impossible for all \(v \in V\).
   As shown in~\cite{nabli2016enumerating}, the latter part of \(C\) can characterize the set of all generic siphons of \(\mathcal{P}\).
   Hence, we can conclude the proof.
-  
+
 \end{proof}
 
 In~\cite{nabli2016enumerating}, the set of all siphons of a given Petri net is characterized by a similar Boolean CSP except the conflict-freeness constraint.
 From the encoded CSP, the set of all \emph{minimal} siphons of the Petri net can be enumerated in the set inclusion order.
 For enumerating siphons in the set inclusion order, the proposed method by~\cite{nabli2016enumerating} uses the technique that labels directly the Boolean variables with increasing value selection (i.e., to test first the absence, then the presence of a place in the candidate solution).
-The method has two implementations, one uses an iterated SAT procedure and the other uses Constraint Logic Programming (CLP) with backtracking.
+The method has two implementations, one uses an iterated SAT procedure and the other uses Constraint Programming (CP) with backtracking.
 
 One natural question is that how to use the CSP-based method for enumerating all the maximal conflict-free siphons of a Petri net encoding a Boolean network?
 Of course, the set of all conflict-free siphons of the Petri net can easily characterized by the CSP model presented in~\cite{nabli2016enumerating} along with the additional constraint \(\neg p_v \vee \neg \overline{p}_v = 1\), for each \(v \in V\), which represents the conflict-freeness.
@@ -724,7 +702,10 @@ However, the main concern is to enumerate all the \emph{maximal} ones, which is 
 By Proposition~\ref{prop:csp_conflict_free_siphon}, the set of all maximal conflict-free siphons of \(\mathcal{P}\) can be enumerated in the (maximality) set inclusion order, by restarting the search each time a conflict-free siphon \(S\) is found, with the following additional constraint for disallowing any subset of that conflict-free siphon: \(\bigvee_{p \not \in S} p = 1\).
 For enumerating conflict-free siphons in the set inclusion order, we can use the same technique as used in~\cite{nabli2016enumerating} but with the opposite setting, i.e., labeling directly the Boolean variables with decreasing value selection.
 The correctness of this technique comes from the fact that once \(S\) is found, it is the conflict-free siphon of maximum cardinality among all the remaining feasible conflict-free siphons.
-Similar to~\cite{nabli2016enumerating}, the newly CSP-based method can also be implemented with SAT and CLP solvers.
+Similar to~\cite{nabli2016enumerating}, the newly CSP-based method can also be implemented with SAT and CP solvers.
+
+This method was implemented using the state-of-the-art CP solver Chuffed\footnote{\url{https://github.com/chuffed/chuffed}}~\cite{demirovic2018solution} via its MiniZinc~\cite{nethercote2007minizinc} interface.
+Because it is a high-level interface, the backtrack-and-replay method of~\cite{nabli2016enumerating} was not used but rather the alternative implementation with two global constraints for lexicographic ordering (ensuring enumeration of solutions) and iterated non-subset of each already found solution (for maximality).
 
 For the SAT-based method, however a more direct method is to use a MaxSAT solver.
 We construct a MaxSAT problem with the following hard clauses:
@@ -738,13 +719,11 @@ and
 We set a soft clause for each variable of the CSP and then use a ``minimal correction subset'' blocking strategy, which will ensure set-inclusion maximality of the solutions.
 This is what is implemented in \texttt{Trappist} using the \texttt{RC2} MaxSAT solver~\cite{DBLP:journals/jsat/IgnatievMM19} available through the \texttt{python-sat} package\footnote{\url{https://pysathq.github.io/docs/html/api/examples/rc2.html}}.
 
-For the CLP-based method, we use TODO: \dots
-
-\subsection{Answer set programming-based method}
+\subsection{Answer set programming-based method}%
 \label{subsec:computation_asp}
 
 Another possible method is to translate the characterization shown in Subsection~\ref{subsec:siphon_characterization} into the ASP \(\mathcal{L}\) as follows.
-We introduce atom \verb|p-v| (resp. \verb|n-v|) to denote place \(p_v\) (resp. \(\overline{p}_v\)), \(\forall v \in V\). 
+We introduce atom \verb|p-v| (resp. \verb|n-v|) to denote place \(p_v\) (resp. \(\overline{p}_v\)), \(\forall v \in V\).
 The set of all atoms in \(\mathcal{L}\) is given as \(\mathcal{A} = \bigcup_{v \in V}\{\verb|p-v|, \verb|n-v|\}\).
 For each pair \((p, t)\) where \(p \in P, t \in T, t \in pred(p)\), we translate the rule (\ref{eq:siphon}) into the ASP rule
 \[
@@ -752,7 +731,7 @@ For each pair \((p, t)\) where \(p \in P, t \in T, t \in pred(p)\), we translate
 \]
 where \(\verb|a| \in \mathcal{A}\) is the atom representing place \(p\) and \(\{\verb|a_1|, \dots,\verb|a_k|\} \subseteq \mathcal{A}\) is the set of atoms representing places in \(pred(t)\). The rule (\ref{eq:conflict}) is translated into the ASP rule
 \[\verb|:- p-v, n-v.|\]
-for each \(v \in V\). 
+for each \(v \in V\).
 This ASP rule guarantees that two places representing the same node in \(\mathcal{N}\) never belong to the same siphon of \(\mathcal{P}\), representing the conflict-freeness.
 Naturally, a Herbrand model (see, e.g.,~\cite{DBLP:journals/aicom/GebserKKOSS11}) of \(\mathcal{L}\) is equivalent to a conflict-free siphon of \(\mathcal{P}\).
 To guarantee that a Herbrand model is also a stable model (an answer set), we need to add to \(\mathcal{L}\) the two choice rules
@@ -766,14 +745,14 @@ Remarkably it only requires the DNF for the \emph{activation} part, using the in
 We would therefore expect that, when available, it will have comparable performance on the ASP part (the ASP program would be approximately twice smaller, though redundancy is not always bad in that field), but can also avoid combinatorial explosion of the Petri net encoding for some formula where the activation DNF is simple but the inhibition is not.
 Since \texttt{mpbn} is included in our benchmark this will be evaluated in our experiments.
 
-Now, a solution (simply an answer set) \(A \subseteq \mathcal{A}\) of \(\mathcal{L}\) is equivalent to a conflict-free siphon \(S\) of \(\mathcal{P}\), thus a trap space \(m\) of \(\mathcal{N}\). 
-The conversion from \(A\) to \(m\) is straightforward. If \(\verb|p-v| \in A\) then \(v \in D_m\) and \(m(v) = 0\). 
-Conversely, if \(\verb|n-v| \in A\) then \(v \in D_m\) and \(m(v) = 1\). 
-Otherwise, \(v \not \in D_m\). Computing multiple answer sets is built into ASP solvers and the solving collection \texttt{POTASSCO}~\cite{DBLP:journals/aicom/GebserKKOSS11} also features the option to find set-inclusion maximal answer sets with respect to the set of atoms. 
-Naturally, a set-inclusion maximal answer set of \(\mathcal{L}\) is equivalent to a maximal conflict-free siphon of \(\mathcal{P}\), thus a minimal trap space of \(\mathcal{N}\). 
+Now, a solution (simply an answer set) \(A \subseteq \mathcal{A}\) of \(\mathcal{L}\) is equivalent to a conflict-free siphon \(S\) of \(\mathcal{P}\), thus a trap space \(m\) of \(\mathcal{N}\).
+The conversion from \(A\) to \(m\) is straightforward. If \(\verb|p-v| \in A\) then \(v \in D_m\) and \(m(v) = 0\).
+Conversely, if \(\verb|n-v| \in A\) then \(v \in D_m\) and \(m(v) = 1\).
+Otherwise, \(v \not \in D_m\). Computing multiple answer sets is built into ASP solvers and the solving collection \texttt{POTASSCO}~\cite{DBLP:journals/aicom/GebserKKOSS11} also features the option to find set-inclusion maximal answer sets with respect to the set of atoms.
+Naturally, a set-inclusion maximal answer set of \(\mathcal{L}\) is equivalent to a maximal conflict-free siphon of \(\mathcal{P}\), thus a minimal trap space of \(\mathcal{N}\).
 By using this built-in option, we can compute all the set-inclusion maximal answer sets of \(\mathcal{L}\) (resp.\ all the minimal trap spaces of \(\mathcal{N}\)) in one execution.
 
-\subsection{Integer linear programming-based method}
+\subsection{Integer linear programming-based method}%
 \label{subsec:computation_ilp}
 
 We first show how an Integer Linear Programming (ILP) \(\mathcal{I}\) can define a set of all conflict-free siphons of the encoded Petri net \(\mathcal{P}\).
@@ -822,14 +801,15 @@ Hence, \(S'\) is also a maximal conflict-free siphon.
 Again, we add to \(\mathcal{I}\) a new inequality with respect to the newly found siphon.
 The above process is iterated until \(\mathcal{I}\) becomes unfeasible, this means that there is no further maximal conflict-free siphon.
 Thus, all the maximal conflict-free siphons of the Petri net have been found.
-We use \dots as the ILP solver. TODO: \dots
 
-\subsection{Computation of special types of trap spaces}
+Since we used the MiniZinc framework to interface with the CP solver, it was simple to make the slight modifications described above and use that same interface to call the Coin-OR CBC solver\footnote{\url{https://github.com/coin-or/Cbc}}~\cite{john_forrest_2022_6522795}.
+
+\subsection{Computation of special types of trap spaces}%
 \label{subsec:computation_special_ts}
 
 In the field of systems biology, biologists may want to compute more special types of trap spaces beyond minimal trap spaces~\cite{klarner2017pyboolnet}.
 We shall show that our proposed methods can be easily adjusted to compute popular types of trap spaces.
-We illustrate the adjustments via the ASP-based method (see Subsection~\ref{subsec:computation_asp}), but these adjustments are completely applicable for other approaches such as MaxSAT, CLP, and ILP.
+We illustrate the adjustments via the ASP-based method (see Subsection~\ref{subsec:computation_asp}), but these adjustments are completely applicable for other approaches such as MaxSAT, CP, and ILP\@.
 
 First, the work by~\cite{Rozum2021} uses the concept of stable motifs to build the succession diagram of a Boolean network, a summary of the decisions in the network dynamics that lead to successively more restrictive nested stable motifs.
 The succession diagram is useful for control and decision making on this Boolean network.
@@ -869,7 +849,7 @@ Equivalently, the trap space corresponding to \(S\) is always a fixed point.
 Now, the set of answer sets of the encoded ASP is equivalent to the set of fixed points of \(\mathcal{N}\).
 In particular, when solving the encoded ASP using an ASP solver, we do not need to use the built-in option for computing set-inclusion maximal answer sets.
 Note that we can also build another ASP characterizing all fixed points of \(\mathcal{N}\) based on the equivalence between a fixed point of \(\mathcal{N}\) and a deadlock of its Petri net encoding~\cite{chatain2014characterization}.
-This approach may give a more compact ASP.
+This approach may give a more compact ASP\@.
 
 Third, we consider the trap spaces intersecting a given subspace \(m^{*}\) of a Boolean network.
 A trap space \(m\) intersects \(m^{*}\) if and only if \(S_{\mathcal{N}}[m] \cap S_{\mathcal{N}}[m^{*}] \neq \emptyset\).
@@ -908,13 +888,13 @@ where \(\{v_{i_1}, \dots, v_{i_k}\}\) is the set of free nodes of \(m^{*}\).
 This rule ensures that \(m \neq m^{*}\).
 In the case that \(m^{*} = \varepsilon\), we have all maximal trap spaces of the original Boolean network.
 
-\section{Inconsistent and incomplete data}
+\section{Inconsistent and incomplete data}%
 \label{sec:incomplete-data}
 
 So far we have assumed that we are always able to derive complete
-and consistent truth tables (i.e., Boolean functions) that correctly capture the behavior of each node in a Boolean network. 
+and consistent truth tables (i.e., Boolean functions) that correctly capture the behavior of each node in a Boolean network.
 However, in practice it is rarely the
-case that a Boolean network of a biological system is fully understood and indeed, this is one important reason for modeling such networks. 
+case that a Boolean network of a biological system is fully understood and indeed, this is one important reason for modeling such networks.
 The data provided may be incomplete in the sense that information is missing about what happens in certain states, or it may be inconsistent in that we have conflicting information.
 The result is that the behavior of some nodes under certain conditions may be non-deterministic~\cite{Steggles2006}.
 
@@ -957,7 +937,7 @@ The result Petri net following our idea is given in Figure~\ref{fig:incomplete-d
 Herein, \(t^3_{g_2}\) and \(t^4_{g_2}\) are the two conflicting transitions representing the unknown-output row.
 This Petri net has only one maximal conflict-free siphon \(\{p_{g_1}, p_{g_2}, \overline{p}_{g_3}\}\) corresponding to the common minimal trap space 001.
 
-\label{example:incomplete-BN}
+\label{example:incomplete-BN}%
 \end{example}
 
 \begin{figure}[!htb]
@@ -973,24 +953,24 @@ This Petri net has only one maximal conflict-free siphon \(\{p_{g_1}, p_{g_2}, \
 		\node[] (2) [left=of 6] {010};
 		\node[] (3) [left=of 1] {011};
 		\node[] (7) [below=of 3] {111};
-		
+
 		\draw[->] (0) edge [] (1);
 		\draw[->] (4) edge [] (0);
 		\draw[->] (4) edge [bend left] (6);
 		\draw[->] (6) edge [bend left] (4);
-		
+
 		\draw[->] (5) edge [] (1);
 		\draw[->] (5) edge [] (7);
-		
+
 		\draw[->] (2) edge [] (6);
 		\draw[->] (2) edge [] (0);
 		\draw[->] (2) edge [] (3);
-		
+
 		\draw[->] (3) edge [] (1);
 		\draw[->] (3) edge [] (7);
-		
+
 		\draw[->] (7) edge [] (6);
-		
+
 		\end{tikzpicture}
 		\caption{}%
 		%\label{fig:stg}
@@ -1000,33 +980,33 @@ This Petri net has only one maximal conflict-free siphon \(\{p_{g_1}, p_{g_2}, \
 		\begin{tikzpicture}[node distance=1cm and 1cm, every node/.style={scale=1.0}]\footnotesize
 		\node[circle,draw,label=left:$p_{g_1}$] (x1) {};
 		\node[circle,draw,label=left:$\overline{p}_{g_1}$] (nx1) [below=of x1, yshift=-0.5cm] {};
-		
+
 		\node[circle,draw,label=right:$p_{g_2}$] (x2) [right=of x1, xshift=2.5cm] {};
 		\node[circle,draw,label=right:$\overline{p}_{g_2}$] (nx2) [below=of x2, yshift=-0.5cm] {};
-		
+
 		\node[circle,draw,label=left:$p_{g_3}$] (x3) [below=of nx1, yshift=-0.5cm] {};
 		\node[circle,draw,label=right:$\overline{p}_{g_3}$] (nx3) [below=of nx2, yshift=-0.5cm] {};
-		
+
 		\node[rectangle,draw,label=above:$t^1_{g_2}$] (t1x2) [right=of x1] {};
 		\node[rectangle,draw,label=above:$t^2_{g_2}$] (t2x2) [right=of nx1] {};
-		
+
 		\node[rectangle,draw,label=left:$t^3_{g_2}$] (t3x2) [left=of nx2] {};
 		\node[rectangle,draw,label=left:$t^4_{g_2}$] (t4x2) [left=of nx3] {};
-		
+
 		\draw[->] (x2) -- (t1x2);
 		\draw[->] (t1x2) -- (nx2);
 		\draw[<->] (t1x2) -- (nx1);
-		
+
 		\draw[->] (nx2) edge [bend left] (t2x2);
 		\draw[->] (t2x2) -- (x2);
 		\draw[<->] (t2x2) -- (x1);
 		\draw[<->] (t2x2) -- (x3);
-		
+
 		\draw[->] (x2) -- (t3x2);
 		\draw[->] (t3x2) -- (nx2);
 		\draw[<->] (t3x2) -- (x1);
 		\draw[<->] (t3x2) -- (nx3);
-		
+
 		\draw[->] (nx2) -- (t4x2);
 		\draw[->] (t4x2) -- (x2);
 		\draw[<->] (t4x2) edge [bend left=15] (x1);
@@ -1046,9 +1026,9 @@ This is actually a significant advantage, since we do not need to consider \(2^k
 It is worth noting that the approach proposed in~\cite{Steggles2006} is only shown to deal with the case that \(k = 1\), thus it is not clear how this approach can handle the case that \(k > 1\).
 Furthermore, as more data becomes available for the underlying biological system, the Petri net model can be refined to reduce the
 amount of non-determinism (i.e., the number of conflicting transitions) it contains.
-Hence, Petri nets provide an interesting means of documenting the development of knowledge for a biological system. 
+Hence, Petri nets provide an interesting means of documenting the development of knowledge for a biological system.
 
-\section{Motivating example}
+\section{Motivating example}%
 \label{sec:case_study}
 
 For a few years now we have been collaborating with biologists who build very large detailed and annotated maps and now wish to analyze the dynamics of the corresponding models.
@@ -1081,8 +1061,8 @@ As explained in Section~\ref{sec:case_study}, in our benchmarks, we only searche
 It is worth noting that unlike existing analysis shown in the literature, we did not fix specific values for source nodes in all the considered models.
 
 To solve the ASP problems, we used the same ASP solver \texttt{Clingo}~\cite{DBLP:journals/aicom/GebserKKOSS11} and the same configuration as that used in \texttt{PyBoolNet}~\cite{klarner2015computing,klarner2017pyboolnet} and \texttt{mpbn}~\cite{Paulev2020}.
-Specifically, we used the configuration \texttt{-heuristic=Domain -enum-mod=domRec -dom-mod=3} (subset maximality, equivalent to the deprecated \texttt{--dom-pref=32 --heuristic=domain --dom-mod=7} used by \texttt{PyBoolNet}). 
-We ran all the benchmarks on a machine whose environment is CPU: \@ Intel\textregistered\ Core\texttrademark\ i9-11950H 2.60GHz × 16, 16 GB DDR4 RAM, Ubuntu 20.04.5 LTS. 
+Specifically, we used the configuration \texttt{-heuristic=Domain -enum-mod=domRec -dom-mod=3} (subset maximality, equivalent to the deprecated \texttt{--dom-pref=32 --heuristic=domain --dom-mod=7} used by \texttt{PyBoolNet}).
+We ran all the benchmarks on a machine whose environment is CPU\@: Intel\textregistered\ Core\texttrademark\ i9-11950H 2.60GHz × 16, 16 GB DDR4 RAM, Ubuntu 20.04.5 LTS\@.
 Finally, we set a time limit of three minutes for each model.
 
 All the models and a Jupyter notebook realizing the benchmarks can be found at~\url{https://github.com/soli/trap-spaces-as-siphons}.
@@ -1100,7 +1080,7 @@ These can be run on a Docker image in the cloud by clicking the ``Binder'' butto
     \toprule
     & & & & & & & \multicolumn{4}{c}{\texttt{Trappist}}\\
     \cmidrule(rr){8-11}
-    & model & \(n\) & \(|M|\) & LQM & PBN & \texttt{mpbn} & SAT & CLP & ILP & ASP \\
+    & model & \(n\) & \(|M|\) & LQM & PBN & \texttt{mpbn} & SAT & CP & ILP & ASP \\
     \midrule
     \rownb & arellano\_rootstem & 9 & 4 & \textbf{0.13} & 0.01 & 0.00 & 0.00 & - & - & 0.01\\
     \rownb & calzone\_cellfate & 28 & 27 & \textbf{0.12} & 0.02 & 0.01 & 0.01 & - & - & 0.01\\
@@ -1138,13 +1118,13 @@ These can be run on a Docker image in the cloud by clicking the ``Binder'' butto
 \setcounter{rownumber}{0}
 
 Table~\ref{tab:pyboolnet_repo} shows the experimental results on the models from the official \texttt{PyBoolNet} repository\footnote{\url{https://github.com/hklarner/pyboolnet/tree/master/pyboolnet/repository}}.
-Column \(n\) denotes the number of nodes of each model. 
+Column \(n\) denotes the number of nodes of each model.
 Column \(|M|\) denotes the number of minimal trap spaces and for each method is given the computation time in seconds, asking only for the first 1000 trap spaces.
 In the case of \texttt{bioLQM}, ``N/A'' means that the number of all minimal trap spaces of the model is larger than 1000 and we did not recorded the running time of \texttt{bioLQM} because it always requires to compute all minimal trap spaces.
-A number in bold indicates a ratio greater than three compared to the best result. 
+A number in bold indicates a ratio greater than three compared to the best result.
 ``NM'' indicates a non-locally-monotonic model.
-There are four variants of \texttt{Trappist}: SAT (i.e., the MaxSAT-based method shown in Subsection~\ref{subsec:computation_csp}), CLP (i.e., the CLP-based method shown in Subsection~\ref{subsec:computation_csp}), ILP (i.e., the ILP-based method shown in Subsection~\ref{subsec:computation_ilp}), and ASP (i.e., the ASP-based method shown in Subsection~\ref{subsec:computation_asp}).
-    
+There are four variants of \texttt{Trappist}: SAT (i.e., the MaxSAT-based method shown in Subsection~\ref{subsec:computation_csp}), CP (i.e., the CP-based method shown in Subsection~\ref{subsec:computation_csp}), ILP (i.e., the ILP-based method shown in Subsection~\ref{subsec:computation_ilp}), and ASP (i.e., the ASP-based method shown in Subsection~\ref{subsec:computation_asp}).
+
 As shown in Table~\ref{tab:pyboolnet_repo}, for most of the models of the \texttt{PyBoolNet} repository, the results are comparable with all minimal trap spaces found very fast.
 For 5 of the 29 models, \texttt{mpbn} did not give any answer because it recognized these models as not locally-monotonic.
 Note that on some very small models, \texttt{Trappist} is sometimes slower than \texttt{PyBoolNet} and/or \texttt{mpbn}, but still significantly under one second.
@@ -1169,7 +1149,7 @@ We here tested all the compared methods on this model repository.
     \texttt{PyBoolNet} & 12 & 8.87 & 11.00 & 13.59 \\
     \texttt{mpbn} & 2 (187) & N/A & 2.31 & N/A \\
     \texttt{Trappist}-MaxSAT & 1 & 0.03 & 1.09 & 1.01 \\
-    \texttt{Trappist}-CLP & - & - & - & - \\
+    \texttt{Trappist}-CP & - & - & - & - \\
     \texttt{Trappist}-ILP & - & - & - & - \\
     \texttt{Trappist}-ASP & 1 & 0.05 & 1.02 & 0.93 \\
     \bottomrule
@@ -1194,13 +1174,13 @@ We used a set of real-world Boolean networks lying in various scales collected f
 Most of these models are quite big (in size), complex (i.e., having high average in-degree, which is related to the number of prime-implicants) and have never been fully analyzed.
 Note that these models are not included in the \texttt{PyBoolNet} and \texttt{BBM} repositories.
 We then applied \texttt{bioLQM}, \texttt{PyBoolNet}, \texttt{mpbn}, and the four variants of \texttt{Trappist} to computing minimal trap spaces of these real-world models.
-Table~\ref{tab:result_real} shows the obtained experimental results. 
+Table~\ref{tab:result_real} shows the obtained experimental results.
 ``DNF'' means that the method did not finish the computation (stopping at the first 1000 minimal trap spaces) within the timeout of two minutes.
 %In the case of \texttt{bioLQM}, ``N/A'' means that the number of all minimal trap spaces of the model is larger than 1000 and we did not recorded the running time of \texttt{bioLQM} because it always requires to compute all minimal trap spaces.
 A number in bold indicates a ratio greater than or equal to 10 compared to the best result.
 The remaining notations are similar to those in Table~\ref{tab:pyboolnet_repo}.
 Hereafter, we analyze in detail the results with respect to minimal trap space computation.
-    
+
 \begin{table}[!htb]
   \caption{Timing comparisons (in seconds) between \texttt{bioLQM} (\texttt{LQM}), \texttt{PyBoolNet} (\texttt{PBN}), \texttt{mpbn} and the four variants of \texttt{Trappist} on selected models from the literature.}
   % in bold if greater than or equal to 10
@@ -1211,7 +1191,7 @@ Hereafter, we analyze in detail the results with respect to minimal trap space c
     \toprule
     & & & & & & & \multicolumn{4}{c}{\texttt{Trappist}}\\
     \cmidrule(rr){8-11}
-    & model & \(n\) & \(|M|\) & LQM & PBN & \texttt{mpbn} & SAT & CLP & ILP & ASP \\
+    & model & \(n\) & \(|M|\) & LQM & PBN & \texttt{mpbn} & SAT & CP & ILP & ASP \\
     \midrule % n < 100
     \rownb & metastatic~\cite{DesignPrinciplesGeneNetworks} & 10 & 4 & \textbf{0.10} & 0.04 & NM & 0.01 & - & - & 0.02 \\
     \rownb & Arabidopsis\_thaliana~\cite{DesignPrinciplesGeneNetworks} & 15 & 8 & \textbf{0.10} & 0.06 & NM & 0.01 & - & - & 0.02 \\
@@ -1230,7 +1210,7 @@ Hereafter, we analyze in detail the results with respect to minimal trap space c
     \rownb & Bcell~\cite{Dutta2019} & 73 & 72 & 0.23 & 0.04 & 0.08 & 0.06 & - & - & 0.05 \\
     \rownb & mast\_cell~\cite{aghamiri2020automated} & 73 & $>1000$ & N/A & 0.09 & 0.55 & 0.37 & - & - & 0.15 \\
     \rownb & Corral\_ThIL17diff~\cite{corral2021interplay} & 92 & $>1000$ & N/A & \textbf{107.57} & 0.76 & 0.56 & - & - & 0.16 \\
-    
+
     \midrule % 100 <= n < 200
      \rownb & Adhesion\_CIP~\cite{guberman2020boolean} & 121 & 78 & \textbf{56.81} & \textbf{4.25} & 0.23 & 0.17 & - & - & 0.19 \\
     \rownb & EMT\_Mech~\cite{Sullivan2022} & 136 & 82 & \textbf{DNF} & \textbf{14.01} & 0.27 & 0.20 & - & - & 0.25 \\
@@ -1240,7 +1220,7 @@ Hereafter, we analyze in detail the results with respect to minimal trap space c
     \rownb & EMT\_Mech\_TGFbeta~\cite{Sullivan2022} & 150 & 492 & \textbf{DNF} & \textbf{11.28} & 0.78 & 0.69 & - & - & 0.35 \\
     \rownb & RA\_apoptosis~\cite{aghamiri2020automated} & 180 & $>1000$ & N/A & \textbf{DNF} & 1.43 & 1.55 & - & - & 0.19 \\
     \rownb & MAPK~\cite{aghamiri2020automated} & 181 & $>1000$ & N/A & \textbf{13.58} & 1.76 & 1.51 & - & - & 0.27 \\
-    
+
     \midrule % 200 <= n
     \rownb & Snf1-pathway~\cite{Lubitz2015} & 202 & $>1000$ & N/A & 1.13 & 1.47 & 1.43 & - & - & 0.31 \\
     \rownb & T-cell-co-receptor~\cite{DesignPrinciplesGeneNetworks} & 206 & $>1000$ & N/A & \textbf{DNF} & 1.52 & 2.26 & - & - & 0.35 \\
@@ -1249,7 +1229,7 @@ Hereafter, we analyze in detail the results with respect to minimal trap space c
     \rownb & Leishmania~\cite{DesignPrinciplesGeneNetworks} & 342 & $>1000$ & N/A & \textbf{DNF} & 2.56 & \textbf{5.62} & - & - & 0.46 \\
     \rownb & Cholocystokinin~\cite{aghamiri2020automated} & 383 & $>1000$ & N/A & 0.36 & 2.99 & \textbf{4.81} & - & - & 0.37 \\
     \rownb & Alzheimer~\cite{aghamiri2020automated} & 762 & $>1000$ & N/A & \textbf{DNF} & NM & \textbf{18.21} & - & - & 0.79 \\
-    
+
     \bottomrule
   \end{tabular}
   }
@@ -1258,7 +1238,7 @@ Hereafter, we analyze in detail the results with respect to minimal trap space c
 The first observation is that for 26 of the 33 models (more than 78\%), \texttt{mpbn} did not give any answer because it recognized that these models as not locally-monotonic.
 For 6 of the 33 models where \texttt{mpbn} returned the answers, \texttt{mpbn} and \texttt{Trappist} are comparable in computation time, though surprisingly \texttt{mpbn} appears a bit slower on average.
 Note however that \texttt{mpbn} was the only tool to provide a solution for the SN-5 model, thus confirming that if the activation function is in the right form, not having to compute the inactivation function's disjunctive normal form can render a difficult problem tractable.
-However, since mbpn can handle only locally-monotonic models and \texttt{Trappist} can handle general models, it is difficult to further compare between them.
+However, since \texttt{mbpn} can handle only locally-monotonic models and \texttt{Trappist} can handle general models, it is difficult to further compare between them.
 Hence, we focus on only comparisons between \texttt{PyBoolNet} and \texttt{Trappist} in the following observations.
 
 The second observation is that the proposed method vastly outperforms \texttt{PyBoolNet} in computational time, on each and every model, and sometimes with orders of magnitude of difference (e.g., for most models in the 100--1000 nodes size range).
@@ -1282,9 +1262,9 @@ Note that though enumerating the extremal siphons of a Petri net is exponential 
 \subsection{Randomly generated models}
 
 We randomly generated a set of N-K models~\cite{glass1973logical} with network size \(n\) in the set \{100, 150, 200, 250, 300, 350, 400\} and \(K = 3\) (i.e., each node has exactly three input nodes).
-We chose N-K models because they are a useful tool for studying the dynamics of Boolean networks~\cite{glass1973logical,klarner2015computing}).
+We chose N-K models because they are a useful tool for studying the dynamics of Boolean networks~\cite{glass1973logical,klarner2015computing}.
 For each network size, 50 instances were generated using the \verb|generateRandomNKNetwork| function.
-In total, we have 350 random models. 
+In total, we have 350 random models.
 We then applied the compared methods to these models and recorded the numbers of failures (i.e., failed to obtain the result within a time limit of three minutes) as well as the average running time (inside the parentheses) in each method for each network size \(n\).
 It is worth noting that N-K models usually have small numbers of minimal trap spaces~\cite{klarner2015computing}.
 Hence, we searched for all solutions in each model, which makes the comparison to \texttt{bioLQM} more comprehensive.
@@ -1299,7 +1279,7 @@ Hence, \texttt{PyBoolNet} always passed the phase of computing prime-implicants 
     \toprule
     & & & & \multicolumn{4}{c}{\texttt{Trappist}}\\
     \cmidrule(rr){5-8}
-    \(n\) & \texttt{LQM} & \texttt{mpbn} & \texttt{PBN} & SAT & CLP & ILP & ASP \\
+    \(n\) & \texttt{LQM} & \texttt{mpbn} & \texttt{PBN} & SAT & CP & ILP & ASP \\
     \midrule
     100 & 50 ($>$ 180) & 50 (N/A) & 0 (0.07) & 0 (0.05) & - () & - () & 0 (0.09) \\
     150 & 50 ($>$ 180) & 50 (N/A) & 0 (0.14) & 0 (0.10) & - () & - () & 0 (0.14) \\
@@ -1329,13 +1309,13 @@ Third, \dots
 
 Finally, \dots
 
-\section{Conclusion}
+\section{Conclusion}%
 \label{sec:Conclusion}
 
 In this article we have explored and proved for the first time the equivalence between (minimal) trap spaces of a general Boolean network and (maximal) conflict-free siphons of its Petri net encoding.
-We have shown several important applications of this finding to studying properties of trap spaces in Boolean networks. 
+We have shown several important applications of this finding to studying properties of trap spaces in Boolean networks.
 As an important practical application of the equivalence, we have proposed a new approach for the computation of minimal trap spaces of Boolean networks, based on the enumeration of maximal conflict-free siphons of Petri nets.
-We have also proposed the four possible methods using MaxSAT, CLP, ILP, and ASP for implementing the new approach.
+We have also proposed the four possible methods using MaxSAT, CP, ILP, and ASP for implementing the new approach.
 The proposed methods have been evaluated on many real-world models from the literature and randomly generated models.
 The experimental results show that the new approach vastly outperforms all the state-of-the-art methods in terms of general Boolean networks and is comparable to the \texttt{mpbn} method even better in average in term of locally-monotonic Boolean networks.
 We believe that this opens up the way to a much better analysis of large Boolean networks, which is needed with the advent of automatic model-generation pipelines~\cite{ostaszewski2021covid19}.
@@ -1348,7 +1328,7 @@ The evaluation of the feasibility of such strategy, and of its impact on smaller
 Recognizing that a model is locally-monotonic and applying in that specific case dedicated strategies as those of \texttt{mpbn} might also be a partial solution.
 
 It is worth noting that there may be possibly other methods for computing minimal/maximal conflict-free siphons in Petri nets, like the methods for generic siphon computation in the field of Petri nets (see~\cite{DBLP:journals/isci/LiuB16} for a survey about these methods).
-Although these approaches do not directly support the minimal/maximal conflict-free siphon computation now, we plan to investigate them in the future. 
+Although these approaches do not directly support the minimal/maximal conflict-free siphon computation now, we plan to investigate them in the future.
 They could replace our proposed methods if they give significantly better performance.
 However, the current methods appear to already perform very well even on the biggest models we have considered.
 
@@ -1361,7 +1341,7 @@ Finally, we think that the links between Petri nets and Boolean networks that we
 %% \section{}
 %% \label{}
 
-%% For citations use: 
+%% For citations use:
 %%       \citet{<label>} ==> Jones et al. [21]
 %%       \citep{<label>} ==> [21]
 %%
@@ -1369,7 +1349,7 @@ Finally, we think that the links between Petri nets and Boolean networks that we
 %% If you have bibdatabase file and want bibtex to generate the
 %% bibitems, please use
 %%
-\bibliographystyle{elsarticle-num-names} 
+\bibliographystyle{elsarticle-num-names}
 \bibliography{tcs2022.bib}
 
 %% else use the following coding to input the bibitems directly in the
