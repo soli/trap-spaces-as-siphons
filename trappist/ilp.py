@@ -21,11 +21,12 @@ from datetime import timedelta
 from time import perf_counter
 from typing import Generator, List
 
-from minizinc import Instance, Model, Result, Solver, Status
+from minizinc import Instance, Model, Solver, Status
 
 import networkx as nx  # TODO maybe replace with lists/dicts
 
 from .cp import cp_to_bool, zincify
+
 
 def create_ilp(petri_net: nx.DiGraph) -> Model:
     """Create the ILP program for the max conflict-free siphons of petri net."""
@@ -49,9 +50,7 @@ def create_ilp(petri_net: nx.DiGraph) -> Model:
                 if zsucc not in or_preds:  # optimize obvious tautologies
                     or_string = " + ".join(or_preds)
                     model.add_string(f"constraint {zsucc} <= {or_string};\n")
-    model.add_string(
-        f"solve maximize {' + '.join(variables)};\n"
-    )
+    model.add_string(f"solve maximize {' + '.join(variables)};\n")
     return model
 
 

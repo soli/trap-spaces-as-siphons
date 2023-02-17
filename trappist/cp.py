@@ -81,7 +81,7 @@ def solve_cp(
         max_output == 0 or nsol < max_output
     ):
         start = perf_counter()
-        #result = inst.solve(timeout=remaining, processes=nprocs)
+        # result = inst.solve(timeout=remaining, processes=nprocs)
         result = inst.solve_async(timeout=remaining, processes=nprocs)
         end = perf_counter()
         if remaining is not None:
