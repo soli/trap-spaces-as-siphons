@@ -1307,11 +1307,20 @@ From these results, we obtained several observations consistent with those obtai
 
 TODO: \dots
 
-First, \dots
+First, \texttt{mpbn} did not be able to handle any model because all the models are non-locally-monotonic.
+Recall that a Boolean network is non-locally-monotonic if only one of its Boolean functions is non-locally-monotonic.
+Hence, it is apparent that all the randomly generated models are non-locally-monotonic.
+This observation confirms the limit on the applicable model class of \texttt{mpbn}.
 
-Second, \dots
+Second, surprisingly \texttt{bioLQM} could not handle any model.
+One of the reason may be that the BDD characterizing all trap spaces is too large, and its computation is slow.
+It is apparent because the network size is large (\(\geq 100\)) and the Boolean functions are not simple.
 
-Third, \dots
+Third, \texttt{PyBoolNet} could handle every model of network size less than or equal to 300.
+It only failed in one model of network size 350 but 29 models of network size 400.
+The average running time vastly increases as the network size increases.
+As compared to the four methods of our approach, the performance of \texttt{PyBoolNet} is comparable for the 100-node and 200-node models.
+However, from \(n = 250\), the performance difference is exhibited more clearly.  
 
 Finally, \dots
 
