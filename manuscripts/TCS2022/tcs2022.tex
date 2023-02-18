@@ -842,7 +842,7 @@ In addition, since \(\left\vert S_{\mathcal{N}}[m]\right\vert = 1\), \(m\) is al
 To compute all fixed points of \(\mathcal{N}\), we can add more constraints to the encoded ASP characterizing all conflict-free siphons (equivalently trap spaces).
 For every \(v \in V\), we add to the encoded ASP the rule
 \[
-  \verb|p-v ; n-v.|
+  \verb|p-v; n-v.|
 \]
 that ensures that for every conflict-free siphon \(S\), it contains either \(\verb|p-v|\) or \(\verb|n-v|\) for every \(v \in V\).
 Equivalently, the trap space corresponding to \(S\) is always a fixed point.
@@ -901,8 +901,8 @@ The result is that the behavior of some nodes under certain conditions may be no
 Non-deterministic behavior is problematic for Boolean networks with the synchronous update scheme, which are unable to represent the possibility of more than one next state.
 It can be addressed by using Boolean networks with asynchronous update schemes because of their non-determinism.
 However, multiple update functions may be considered for each node, which is problematic for existing analysis methods in Boolean networks.
-For example, if the truth table of a node have \(k\) unknown-output rows, then this node may have \(2^k\) possible Boolean functions and the analysis methods such as \texttt{PyBoolNet} and \texttt{mpbn} need to consider \(2^k\) possible Boolean networks due to their inputs are Boolean networks with complete Boolean functions.
-Moreover, one interesting question maybe raised from systems biologists is if there is a common behavioral property (e.g., minimal trap space, attractor) among all possible combinations.
+For example, if the truth table of a node have \(k\) unknown-output rows, then this node may have \(2^k\) possible Boolean functions and the analysis methods such as \texttt{PyBoolNet} and \texttt{mpbn} need to consider \(2^k\) possible Boolean networks due to they require complete Boolean functions for their underlying processing.
+Moreover, one interesting question maybe raised from systems biologists is if there is a common behavioral property (e.g., minimal trap space, fixed point, attractor) among all possible combinations.
 To answer this question, the existing analysis methods maybe need to consider \(2^k\) possible Boolean networks as well.
 
 We shall show how our Petri net approach presented the previous section can handle the problem of inconsistent and incomplete data.
@@ -933,7 +933,7 @@ The first one has one minimal trap space: 001.
 The second one has two minimal trap spaces: 001 and 110.
 Both have a common minimal trap space: 001.
 The asynchronous dynamics of the incomplete Boolean network is shown in Figure~\ref{fig:incomplete-dynamics-new-PN}a.
-The result Petri net following our idea is given in Figure~\ref{fig:incomplete-dynamics-new-PN}b.
+The resulting Petri net following our idea is given in Figure~\ref{fig:incomplete-dynamics-new-PN}b.
 Herein, \(t^3_{g_2}\) and \(t^4_{g_2}\) are the two conflicting transitions representing the unknown-output row.
 This Petri net has only one maximal conflict-free siphon \(\{p_{g_1}, p_{g_2}, \overline{p}_{g_3}\}\) corresponding to the common minimal trap space 001.
 
@@ -1024,9 +1024,15 @@ In summary, we can still perform meaningful analysis on the resulting Petri net.
 Note that the new Petri net may have more transitions, however the number of additional transitions is only \(O(2k)\) where \(k\) is the number of unknown-output rows in the truth tables.
 This is actually a significant advantage, since we do not need to consider \(2^k\) possible Boolean networks.
 It is worth noting that the approach proposed in~\cite{Steggles2006} is only shown to deal with the case that \(k = 1\), thus it is not clear how this approach can handle the case that \(k > 1\).
-Furthermore, as more data becomes available for the underlying biological system, the Petri net model can be refined to reduce the
+Moreover, in the context of Boolean models construction of biological systems from prior knowledge and experimental data, the work by~\cite{chevalier2020synthesis} also deals with some kind of uncertainty.
+It uses ASP to represent all possible Boolean networks possessing the same given property, where each solution of this ASP is equivalent to a distinct Boolean network.
+Then it samples through that solution space with heuristics to select \emph{diverse} Boolean networks, and proceed further simulations or analysis on every individual Boolean network.
+Compared to our Petri net approach presented above, it still requires to consider multiple Boolean networks as well as it is only applicable for locally-monotonic Boolean networks~\cite{chevalier2020synthesis}.
+
+To this end, as more data becomes available for the underlying biological system, the Petri net model can be refined to reduce the
 amount of non-determinism (i.e., the number of conflicting transitions) it contains.
-Hence, Petri nets provide an interesting means of documenting the development of knowledge for a biological system.
+Specifically, if we know the output for an unknown-output row of a node, we can remove one of the two conflicting transitions corresponding to this unknown-output row.
+Hence, Petri nets provide an interesting means of documenting the development of knowledge for a biological system, and our Petri net-based approach can be more useful in the model refinement loop.
 
 \section{Motivating example}%
 \label{sec:case_study}
