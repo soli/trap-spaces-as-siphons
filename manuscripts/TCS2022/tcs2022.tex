@@ -215,15 +215,15 @@ In particular, an updated proof provides another way to prove the independence o
 Second, we showcase a theoretical application of the connection between trap spaces in Boolean networks and conflict-free siphons in Petri nets.
 Third, beyond the proposed ASP method implementing the alternative approach~\cite{DBLP:conf/cmsb/TrinhBHS22}, we propose several other possible methods for computing minimal trap spaces using Maximum Satisfiability (MaxSAT), Constraint Programming (CP), and Integer Linear Programming (ILP).
 Fourth, we discuss in detail how to compute several special types of trap spaces in a Boolean network.
-Fifth, we present the idea for using our Petri net approach to handle the problem of inconsistent and incomplete data in modeling biological systems.
-Sixth, regarding the implementation, we have developed a new converter that directly reads a \texttt{.bnet} file and builds the Petri net encoding, instead of using the \texttt{PNML} conversion of \texttt{bioLQM}~\cite{DBLP:conf/cmsb/TrinhBHS22}.
+%Fifth, we present the idea for using our Petri net approach to handle the problem of inconsistent and incomplete data in modeling biological systems.
+Fifth, regarding the implementation, we have developed a new converter that directly reads a \texttt{.bnet} file and builds the Petri net encoding, instead of using the \texttt{PNML} conversion of \texttt{bioLQM}~\cite{DBLP:conf/cmsb/TrinhBHS22}.
 Finally, we conduct a more comprehensive benchmark on more real-world models from various sources and randomly generated models to evaluate all the proposed methods (the benchmark conducted in~\cite{DBLP:conf/cmsb/TrinhBHS22} considers only real-world models).
 
 %%% Paper structure %%%
 The rest of this paper is organized as follows: Section~\ref{sec:Preliminaries} recalls the basic concepts including Boolean networks, attractors, trap spaces, Petri nets, and siphons.
 Section~\ref{sec:Main_finding} presents the main finding, the connection between trap spaces in Boolean networks and siphons in Petri nets.
 Section~\ref{sec:Computation} presents the alternative approach for computing minimal trap spaces and the four possible methods implementing it.
-Section~\ref{sec:incomplete-data} presents the idea to deal with problem of inconsistent and incomplete data.
+%Section~\ref{sec:incomplete-data} presents the idea to deal with problem of inconsistent and incomplete data.
 Section~\ref{sec:case_study} shows an important biological case study showing the applicability of the new approach.
 Section~\ref{sec:eval} reports the experimental results for evaluating the efficiency of the proposed methods.
 Finally, Section~\ref{sec:Conclusion} concludes the paper and draws future work.
@@ -888,151 +888,151 @@ where \(\{v_{i_1}, \dots, v_{i_k}\}\) is the set of free nodes of \(m^{*}\).
 This rule ensures that \(m \neq m^{*}\).
 In the case that \(m^{*} = \varepsilon\), we have all maximal trap spaces of the original Boolean network.
 
-\section{Inconsistent and incomplete data}%
-\label{sec:incomplete-data}
-
-So far we have assumed that we are always able to derive complete
-and consistent truth tables (i.e., Boolean functions) that correctly capture the behavior of each node in a Boolean network.
-However, in practice it is rarely the
-case that a Boolean network of a biological system is fully understood and indeed, this is one important reason for modeling such networks.
-The data provided may be incomplete in the sense that information is missing about what happens in certain states, or it may be inconsistent in that we have conflicting information.
-The result is that the behavior of some nodes under certain conditions may be non-deterministic~\cite{Steggles2006}.
-
-Non-deterministic behavior is problematic for Boolean networks with the synchronous update scheme, which are unable to represent the possibility of more than one next state.
-It can be addressed by using Boolean networks with asynchronous update schemes because of their non-determinism.
-However, multiple update functions may be considered for each node, which is problematic for existing analysis methods in Boolean networks.
-For example, if the truth table of a node have \(k\) unknown-output rows, then this node may have \(2^k\) possible Boolean functions and the analysis methods such as \texttt{PyBoolNet} and \texttt{mpbn} need to consider \(2^k\) possible Boolean networks due to they require complete Boolean functions for their underlying processing.
-Moreover, one interesting question maybe raised from systems biologists is if there is a common behavioral property (e.g., minimal trap space, fixed point, attractor) among all possible combinations.
-To answer this question, the existing analysis methods maybe need to consider \(2^k\) possible Boolean networks as well.
-
-We shall show how our Petri net approach presented the previous section can handle the problem of inconsistent and incomplete data.
-The idea is to build the Petri net encoding of the Boolean network from its partial truth tables.
-More specifically, for each unknown-output row in the truth table of a node, we create two conflicting transitions representing the two possible outputs (i.e., 0 or 1).
-For the remaining rows, we create transitions as usual following the Petri net encoding~\cite{chatain2014characterization}.
-Because of the non–deterministic choice mechanisms of Petri nets, the new Petri net is still equivalent in dynamics to the incomplete Boolean network.
-One notable advantage of the connection between trap spaces of a Boolean network and conflict-free siphons of its Petri net encoding is that it still holds if the Petri net encoding changes (e.g., more or less transitions) but still maintain the equivalence in dynamics to the Boolean network.
-Hence, the minimal trap spaces of the incomplete Boolean network can be computed by computing maximal conflict-free siphons of the resulting Petri net.
-As a consequence, we can easily answer the question on common behavioral property.
-
-\begin{example}
-Consider an incomplete Boolean network \(\mathcal{N} = (V, F)\) (mentioned in~\cite{Steggles2006}), where \(V = (g_1, g_2, g_3)\) and \(F = (f_1, f_2, f_3)\) with \(f_1 = g_2, f_3 = \neg g_1\). Herein, \(f_2\) is an incomplete function and the partial truth table is as follows.
-\begin{center}
-	\begin{tabular}{rr|r}
-		\toprule
-		$g_1$ & $g_3$ & $g_2$ \\ \midrule
-		0 & 0 & 0 \\
-		0 & 1 & 0 \\
-		1 & 0 & ? \\
-		1 & 1 & 1 \\
-		\bottomrule
-	\end{tabular}
-\end{center}
-We have two possible update functions for \(g_2\): \(f_2 = g_1 \land g_3\) for the case that \(? = 0\) and \(f_2 = g_1\) for the case that \(? = 1\).
-Accordingly, we have two possible Boolean networks.
-The first one has one minimal trap space: 001.
-The second one has two minimal trap spaces: 001 and 110.
-Both have a common minimal trap space: 001.
-The asynchronous dynamics of the incomplete Boolean network is shown in Figure~\ref{fig:incomplete-dynamics-new-PN}a.
-The resulting Petri net following our idea is given in Figure~\ref{fig:incomplete-dynamics-new-PN}b.
-Herein, \(t^3_{g_2}\) and \(t^4_{g_2}\) are the two conflicting transitions representing the unknown-output row.
-This Petri net has only one maximal conflict-free siphon \(\{p_{g_1}, p_{g_2}, \overline{p}_{g_3}\}\) corresponding to the common minimal trap space 001.
-
-\label{example:incomplete-BN}%
-\end{example}
-
-\begin{figure}[!htb]
-	\centering
-	\begin{subfigure}[b]{0.3\textwidth}
-		\centering
-		\begin{tikzpicture}[node distance=1cm and 1cm, every node/.style={scale=1.0}]
-		\node[] (0) [] {000};
-		\node[] (1) [left=of 0] {001};
-		\node[] (4) [above=of 0] {100};
-		\node[] (6) [above=of 1] {110};
-		\node[] (5) [below=of 1] {101};
-		\node[] (2) [left=of 6] {010};
-		\node[] (3) [left=of 1] {011};
-		\node[] (7) [below=of 3] {111};
-
-		\draw[->] (0) edge [] (1);
-		\draw[->] (4) edge [] (0);
-		\draw[->] (4) edge [bend left] (6);
-		\draw[->] (6) edge [bend left] (4);
-
-		\draw[->] (5) edge [] (1);
-		\draw[->] (5) edge [] (7);
-
-		\draw[->] (2) edge [] (6);
-		\draw[->] (2) edge [] (0);
-		\draw[->] (2) edge [] (3);
-
-		\draw[->] (3) edge [] (1);
-		\draw[->] (3) edge [] (7);
-
-		\draw[->] (7) edge [] (6);
-
-		\end{tikzpicture}
-		\caption{}%
-		%\label{fig:stg}
-	\end{subfigure}\hfill%
-	\begin{subfigure}[b]{0.6\textwidth}
-		\centering
-		\begin{tikzpicture}[node distance=1cm and 1cm, every node/.style={scale=1.0}]\footnotesize
-		\node[circle,draw,label=left:$p_{g_1}$] (x1) {};
-		\node[circle,draw,label=left:$\overline{p}_{g_1}$] (nx1) [below=of x1, yshift=-0.5cm] {};
-
-		\node[circle,draw,label=right:$p_{g_2}$] (x2) [right=of x1, xshift=2.5cm] {};
-		\node[circle,draw,label=right:$\overline{p}_{g_2}$] (nx2) [below=of x2, yshift=-0.5cm] {};
-
-		\node[circle,draw,label=left:$p_{g_3}$] (x3) [below=of nx1, yshift=-0.5cm] {};
-		\node[circle,draw,label=right:$\overline{p}_{g_3}$] (nx3) [below=of nx2, yshift=-0.5cm] {};
-
-		\node[rectangle,draw,label=above:$t^1_{g_2}$] (t1x2) [right=of x1] {};
-		\node[rectangle,draw,label=above:$t^2_{g_2}$] (t2x2) [right=of nx1] {};
-
-		\node[rectangle,draw,label=left:$t^3_{g_2}$] (t3x2) [left=of nx2] {};
-		\node[rectangle,draw,label=left:$t^4_{g_2}$] (t4x2) [left=of nx3] {};
-
-		\draw[->] (x2) -- (t1x2);
-		\draw[->] (t1x2) -- (nx2);
-		\draw[<->] (t1x2) -- (nx1);
-
-		\draw[->] (nx2) edge [bend left] (t2x2);
-		\draw[->] (t2x2) -- (x2);
-		\draw[<->] (t2x2) -- (x1);
-		\draw[<->] (t2x2) -- (x3);
-
-		\draw[->] (x2) -- (t3x2);
-		\draw[->] (t3x2) -- (nx2);
-		\draw[<->] (t3x2) -- (x1);
-		\draw[<->] (t3x2) -- (nx3);
-
-		\draw[->] (nx2) -- (t4x2);
-		\draw[->] (t4x2) -- (x2);
-		\draw[<->] (t4x2) edge [bend left=15] (x1);
-		\draw[<->] (t4x2) -- (nx3);
-
-		\end{tikzpicture}
-		\caption{}%
-		%\label{fig:PN}
-	\end{subfigure}%
-	\caption{Asynchronous dynamics (self arcs are omitted for simplicity) and new Petri net encoding (the transitions corresponding to \(g_1\) and \(g_3\) are omitted for simplicity) of the incomplete Boolean network of Example~\ref{example:incomplete-BN}.}%
-	\label{fig:incomplete-dynamics-new-PN}
-\end{figure}
-
-In summary, we can still perform meaningful analysis on the resulting Petri net.
-Note that the new Petri net may have more transitions, however the number of additional transitions is only \(O(2k)\) where \(k\) is the number of unknown-output rows in the truth tables.
-This is actually a significant advantage, since we do not need to consider \(2^k\) possible Boolean networks.
-It is worth noting that the approach proposed in~\cite{Steggles2006} is only shown to deal with the case that \(k = 1\), thus it is not clear how this approach can handle the case that \(k > 1\).
-Moreover, in the context of Boolean models construction of biological systems from prior knowledge and experimental data, the work by~\cite{chevalier2020synthesis} also deals with some kind of uncertainty.
-It uses ASP to represent all possible Boolean networks possessing the same given property, where each solution of this ASP is equivalent to a distinct Boolean network.
-Then it samples through that solution space with heuristics to select \emph{diverse} Boolean networks, and proceed further simulations or analysis on every individual Boolean network.
-Compared to our Petri net approach presented above, it still requires to consider multiple Boolean networks as well as it is only applicable for locally-monotonic Boolean networks~\cite{chevalier2020synthesis}.
-
-To this end, as more data becomes available for the underlying biological system, the Petri net model can be refined to reduce the
-amount of non-determinism (i.e., the number of conflicting transitions) it contains.
-Specifically, if we know the output for an unknown-output row of a node, we can remove one of the two conflicting transitions corresponding to this unknown-output row.
-Hence, Petri nets provide an interesting means of documenting the development of knowledge for a biological system, and our Petri net-based approach can be more useful in the model refinement loop.
+%\section{Inconsistent and incomplete data}%
+%\label{sec:incomplete-data}
+%
+%So far we have assumed that we are always able to derive complete
+%and consistent truth tables (i.e., Boolean functions) that correctly capture the behavior of each node in a Boolean network.
+%However, in practice it is rarely the
+%case that a Boolean network of a biological system is fully understood and indeed, this is one important reason for modeling such networks.
+%The data provided may be incomplete in the sense that information is missing about what happens in certain states, or it may be inconsistent in that we have conflicting information.
+%The result is that the behavior of some nodes under certain conditions may be non-deterministic~\cite{Steggles2006}.
+%
+%Non-deterministic behavior is problematic for Boolean networks with the synchronous update scheme, which are unable to represent the possibility of more than one next state.
+%It can be addressed by using Boolean networks with asynchronous update schemes because of their non-determinism.
+%However, multiple update functions may be considered for each node, which is problematic for existing analysis methods in Boolean networks.
+%For example, if the truth table of a node have \(k\) unknown-output rows, then this node may have \(2^k\) possible Boolean functions and the analysis methods such as \texttt{PyBoolNet} and \texttt{mpbn} need to consider \(2^k\) possible Boolean networks due to they require complete Boolean functions for their underlying processing.
+%Moreover, one interesting question maybe raised from systems biologists is if there is a common behavioral property (e.g., minimal trap space, fixed point, attractor) among all possible combinations.
+%To answer this question, the existing analysis methods maybe need to consider \(2^k\) possible Boolean networks as well.
+%
+%We shall show how our Petri net approach presented the previous section can handle the problem of inconsistent and incomplete data.
+%The idea is to build the Petri net encoding of the Boolean network from its partial truth tables.
+%More specifically, for each unknown-output row in the truth table of a node, we create two conflicting transitions representing the two possible outputs (i.e., 0 or 1).
+%For the remaining rows, we create transitions as usual following the Petri net encoding~\cite{chatain2014characterization}.
+%Because of the non–deterministic choice mechanisms of Petri nets, the new Petri net is still equivalent in dynamics to the incomplete Boolean network.
+%One notable advantage of the connection between trap spaces of a Boolean network and conflict-free siphons of its Petri net encoding is that it still holds if the Petri net encoding changes (e.g., more or less transitions) but still maintain the equivalence in dynamics to the Boolean network.
+%Hence, the minimal trap spaces of the incomplete Boolean network can be computed by computing maximal conflict-free siphons of the resulting Petri net.
+%As a consequence, we can easily answer the question on common behavioral property.
+%
+%\begin{example}
+%Consider an incomplete Boolean network \(\mathcal{N} = (V, F)\) (mentioned in~\cite{Steggles2006}), where \(V = (g_1, g_2, g_3)\) and \(F = (f_1, f_2, f_3)\) with \(f_1 = g_2, f_3 = \neg g_1\). Herein, \(f_2\) is an incomplete function and the partial truth table is as follows.
+%\begin{center}
+%	\begin{tabular}{rr|r}
+%		\toprule
+%		$g_1$ & $g_3$ & $g_2$ \\ \midrule
+%		0 & 0 & 0 \\
+%		0 & 1 & 0 \\
+%		1 & 0 & ? \\
+%		1 & 1 & 1 \\
+%		\bottomrule
+%	\end{tabular}
+%\end{center}
+%We have two possible update functions for \(g_2\): \(f_2 = g_1 \land g_3\) for the case that \(? = 0\) and \(f_2 = g_1\) for the case that \(? = 1\).
+%Accordingly, we have two possible Boolean networks.
+%The first one has one minimal trap space: 001.
+%The second one has two minimal trap spaces: 001 and 110.
+%Both have a common minimal trap space: 001.
+%The asynchronous dynamics of the incomplete Boolean network is shown in Figure~\ref{fig:incomplete-dynamics-new-PN}a.
+%The resulting Petri net following our idea is given in Figure~\ref{fig:incomplete-dynamics-new-PN}b.
+%Herein, \(t^3_{g_2}\) and \(t^4_{g_2}\) are the two conflicting transitions representing the unknown-output row.
+%This Petri net has only one maximal conflict-free siphon \(\{p_{g_1}, p_{g_2}, \overline{p}_{g_3}\}\) corresponding to the common minimal trap space 001.
+%
+%\label{example:incomplete-BN}%
+%\end{example}
+%
+%\begin{figure}[!htb]
+%	\centering
+%	\begin{subfigure}[b]{0.3\textwidth}
+%		\centering
+%		\begin{tikzpicture}[node distance=1cm and 1cm, every node/.style={scale=1.0}]
+%		\node[] (0) [] {000};
+%		\node[] (1) [left=of 0] {001};
+%		\node[] (4) [above=of 0] {100};
+%		\node[] (6) [above=of 1] {110};
+%		\node[] (5) [below=of 1] {101};
+%		\node[] (2) [left=of 6] {010};
+%		\node[] (3) [left=of 1] {011};
+%		\node[] (7) [below=of 3] {111};
+%
+%		\draw[->] (0) edge [] (1);
+%		\draw[->] (4) edge [] (0);
+%		\draw[->] (4) edge [bend left] (6);
+%		\draw[->] (6) edge [bend left] (4);
+%
+%		\draw[->] (5) edge [] (1);
+%		\draw[->] (5) edge [] (7);
+%
+%		\draw[->] (2) edge [] (6);
+%		\draw[->] (2) edge [] (0);
+%		\draw[->] (2) edge [] (3);
+%
+%		\draw[->] (3) edge [] (1);
+%		\draw[->] (3) edge [] (7);
+%
+%		\draw[->] (7) edge [] (6);
+%
+%		\end{tikzpicture}
+%		\caption{}%
+%		%\label{fig:stg}
+%	\end{subfigure}\hfill%
+%	\begin{subfigure}[b]{0.6\textwidth}
+%		\centering
+%		\begin{tikzpicture}[node distance=1cm and 1cm, every node/.style={scale=1.0}]\footnotesize
+%		\node[circle,draw,label=left:$p_{g_1}$] (x1) {};
+%		\node[circle,draw,label=left:$\overline{p}_{g_1}$] (nx1) [below=of x1, yshift=-0.5cm] {};
+%
+%		\node[circle,draw,label=right:$p_{g_2}$] (x2) [right=of x1, xshift=2.5cm] {};
+%		\node[circle,draw,label=right:$\overline{p}_{g_2}$] (nx2) [below=of x2, yshift=-0.5cm] {};
+%
+%		\node[circle,draw,label=left:$p_{g_3}$] (x3) [below=of nx1, yshift=-0.5cm] {};
+%		\node[circle,draw,label=right:$\overline{p}_{g_3}$] (nx3) [below=of nx2, yshift=-0.5cm] {};
+%
+%		\node[rectangle,draw,label=above:$t^1_{g_2}$] (t1x2) [right=of x1] {};
+%		\node[rectangle,draw,label=above:$t^2_{g_2}$] (t2x2) [right=of nx1] {};
+%
+%		\node[rectangle,draw,label=left:$t^3_{g_2}$] (t3x2) [left=of nx2] {};
+%		\node[rectangle,draw,label=left:$t^4_{g_2}$] (t4x2) [left=of nx3] {};
+%
+%		\draw[->] (x2) -- (t1x2);
+%		\draw[->] (t1x2) -- (nx2);
+%		\draw[<->] (t1x2) -- (nx1);
+%
+%		\draw[->] (nx2) edge [bend left] (t2x2);
+%		\draw[->] (t2x2) -- (x2);
+%		\draw[<->] (t2x2) -- (x1);
+%		\draw[<->] (t2x2) -- (x3);
+%
+%		\draw[->] (x2) -- (t3x2);
+%		\draw[->] (t3x2) -- (nx2);
+%		\draw[<->] (t3x2) -- (x1);
+%		\draw[<->] (t3x2) -- (nx3);
+%
+%		\draw[->] (nx2) -- (t4x2);
+%		\draw[->] (t4x2) -- (x2);
+%		\draw[<->] (t4x2) edge [bend left=15] (x1);
+%		\draw[<->] (t4x2) -- (nx3);
+%
+%		\end{tikzpicture}
+%		\caption{}%
+%		%\label{fig:PN}
+%	\end{subfigure}%
+%	\caption{Asynchronous dynamics (self arcs are omitted for simplicity) and new Petri net encoding (the transitions corresponding to \(g_1\) and \(g_3\) are omitted for simplicity) of the incomplete Boolean network of Example~\ref{example:incomplete-BN}.}%
+%	\label{fig:incomplete-dynamics-new-PN}
+%\end{figure}
+%
+%In summary, we can still perform meaningful analysis on the resulting Petri net.
+%Note that the new Petri net may have more transitions, however the number of additional transitions is only \(O(2k)\) where \(k\) is the number of unknown-output rows in the truth tables.
+%This is actually a significant advantage, since we do not need to consider \(2^k\) possible Boolean networks.
+%It is worth noting that the approach proposed in~\cite{Steggles2006} is only shown to deal with the case that \(k = 1\), thus it is not clear how this approach can handle the case that \(k > 1\).
+%Moreover, in the context of Boolean models construction of biological systems from prior knowledge and experimental data, the work by~\cite{chevalier2020synthesis} also deals with some kind of uncertainty.
+%It uses ASP to represent all possible Boolean networks possessing the same given property, where each solution of this ASP is equivalent to a distinct Boolean network.
+%Then it samples through that solution space with heuristics to select \emph{diverse} Boolean networks, and proceed further simulations or analysis on every individual Boolean network.
+%Compared to our Petri net approach presented above, it still requires to consider multiple Boolean networks as well as it is only applicable for locally-monotonic Boolean networks~\cite{chevalier2020synthesis}.
+%
+%To this end, as more data becomes available for the underlying biological system, the Petri net model can be refined to reduce the
+%amount of non-determinism (i.e., the number of conflicting transitions) it contains.
+%Specifically, if we know the output for an unknown-output row of a node, we can remove one of the two conflicting transitions corresponding to this unknown-output row.
+%Hence, Petri nets provide an interesting means of documenting the development of knowledge for a biological system, and our Petri net-based approach can be more useful in the model refinement loop.
 
 \section{Motivating example}%
 \label{sec:case_study}
