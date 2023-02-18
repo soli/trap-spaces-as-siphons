@@ -1320,10 +1320,10 @@ Finally, \dots
 
 In this article we have explored and proved for the first time the equivalence between (minimal) trap spaces of a general Boolean network and (maximal) conflict-free siphons of its Petri net encoding.
 We have shown several important applications of this finding to studying properties of trap spaces in Boolean networks.
-As an important practical application of the equivalence, we have proposed a new approach for the computation of minimal trap spaces of Boolean networks, based on the enumeration of maximal conflict-free siphons of Petri nets.
+As an important practical application of the equivalence, we have proposed a new approach for the computation of minimal trap spaces in Boolean networks, based on the enumeration of maximal conflict-free siphons of Petri nets.
 We have also proposed the four possible methods using MaxSAT, CP, ILP, and ASP for implementing the new approach.
-The proposed methods have been evaluated on many real-world models from the literature and randomly generated models.
-The experimental results show that the new approach vastly outperforms all the state-of-the-art methods in terms of general Boolean networks and is comparable to the \texttt{mpbn} method even better in average in term of locally-monotonic Boolean networks.
+The proposed methods have been evaluated on many real-world models from the literature as well as randomly generated models.
+The experimental results show that the new approach vastly outperforms all the state-of-the-art methods in terms of general Boolean networks and is comparable to the \texttt{mpbn} method even better in average in terms of locally-monotonic Boolean networks.
 We believe that this opens up the way to a much better analysis of large Boolean networks, which is needed with the advent of automatic model-generation pipelines~\cite{ostaszewski2021covid19}.
 
 Although the experimental results show the superiority of our approach to \texttt{mpbn} in general, we however note that there is a model in the \texttt{BBM} repository (with identifier 122) where all the four proposed methods for the new approach did not manage to finish the Petri net conversion before the timeout, whereas \texttt{mpbn} can still handle this model.
@@ -1338,7 +1338,10 @@ Although these approaches do not directly support the minimal/maximal conflict-f
 They could replace our proposed methods if they give significantly better performance.
 However, the current methods appear to already perform very well even on the biggest models we have considered.
 
-Finally, we think that the links between Petri nets and Boolean networks that we stumbled upon in this method might have deeper roots. Exploring those connections might lead both to interesting topics of research for Petri nets, like a notion of trap-spaces, and for Boolean networks.
+Finally, we think that the links between Petri nets and Boolean networks that we stumbled upon in this method might have deeper roots. 
+Exploring those connections might lead both to interesting topics of research for Petri nets, like a notion of trap-spaces, and for Boolean networks.
+We also believe that the connection between trap spaces of Boolean networks and siphons of Petri nets can be a very useful tool for exploring and proving more new properties of trap spaces in Boolean networks, as we have used it to successfully prove the separation of minimal trap spaces.
+Diving into this direction is one of our future work.
 
 %% The Appendices part is started with the command \appendix;
 %% appendix sections are then done as normal sections
