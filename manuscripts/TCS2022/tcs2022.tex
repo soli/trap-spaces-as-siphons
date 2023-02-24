@@ -22,6 +22,9 @@
 \newtheorem{definition}{Definition}[section]
 \newtheorem{proposition}{Proposition}[section]
 
+\usepackage{pgfplots}
+\pgfplotsset{width=10cm,compat=1.13}
+
 %% The lineno packages adds line numbers. Start line numbering with
 %% \begin{linenumbers}, end it with \end{linenumbers}. Or switch it on
 %% for the whole article with \linenumbers.
@@ -1087,7 +1090,7 @@ These can be run on a Docker image in the cloud by clicking the ``Binder'' butto
     \toprule
     & & & & & & & \multicolumn{4}{c}{\texttt{Trappist}}\\
     \cmidrule(rr){8-11}
-    & model & \(n\) & \(|M|\) & LQM & PBN & \texttt{mpbn} & SAT & CP & ILP & ASP \\
+    & model & \(n\) & \(|M|\) & \texttt{LQM} & \texttt{PBN} & \texttt{mpbn} & \texttt{SAT} & \texttt{CP} & \texttt{ILP} & \texttt{ASP} \\
     \midrule
     \rownb & arellano\_rootstem & 9 & 4 & \textbf{0.13} & 0.01 & 0.00 & 0.00 & - & - & 0.01\\
     \rownb & calzone\_cellfate & 28 & 27 & \textbf{0.12} & 0.02 & 0.01 & 0.01 & - & - & 0.01\\
@@ -1130,7 +1133,7 @@ Column \(|M|\) denotes the number of minimal trap spaces and for each method is 
 In the case of \texttt{bioLQM}, ``N/A'' means that the number of all minimal trap spaces of the model is larger than 1000 and we did not recorded the running time of \texttt{bioLQM} because it always requires to compute all minimal trap spaces.
 A number in bold indicates a ratio greater than three compared to the best result.
 ``NM'' indicates a non-locally-monotonic model.
-There are four variants of \texttt{Trappist}: SAT (i.e., the MaxSAT-based method shown in Subsection~\ref{subsec:computation_csp}), CP (i.e., the CP-based method shown in Subsection~\ref{subsec:computation_csp}), ILP (i.e., the ILP-based method shown in Subsection~\ref{subsec:computation_ilp}), and ASP (i.e., the ASP-based method shown in Subsection~\ref{subsec:computation_asp}).
+There are four variants of \texttt{Trappist}: \texttt{SAT} (i.e., the MaxSAT-based method shown in Subsection~\ref{subsec:computation_csp}), \texttt{CP} (i.e., the CP-based method shown in Subsection~\ref{subsec:computation_csp}), \texttt{ILP} (i.e., the ILP-based method shown in Subsection~\ref{subsec:computation_ilp}), and \texttt{ASP} (i.e., the ASP-based method shown in Subsection~\ref{subsec:computation_asp}).
 
 As shown in Table~\ref{tab:pyboolnet_repo}, for most of the models of the \texttt{PyBoolNet} repository, the results are comparable with all minimal trap spaces found very fast.
 For 5 of the 29 models, \texttt{mpbn} did not give any answer because it recognized these models as not locally-monotonic.
@@ -1193,12 +1196,12 @@ Hereafter, we analyze in detail the results with respect to minimal trap space c
   % in bold if greater than or equal to 10
   \centering%
   \label{tab:result_real}
-  \scalebox{0.8}{
+  \scalebox{0.82}{
   \begin{tabular}{rlrrrrrrrrr}
     \toprule
     & & & & & & & \multicolumn{4}{c}{\texttt{Trappist}}\\
     \cmidrule(rr){8-11}
-    & model & \(n\) & \(|M|\) & LQM & PBN & \texttt{mpbn} & SAT & CP & ILP & ASP \\
+    & model & \(n\) & \(|M|\) & \texttt{LQM} & \texttt{PBN} & \texttt{mpbn} & \texttt{SAT} & \texttt{CP} & \texttt{ILP} & \texttt{ASP} \\
     \midrule % n < 100
     \rownb & metastatic~\cite{DesignPrinciplesGeneNetworks} & 10 & 4 & \textbf{0.10} & 0.04 & NM & 0.01 & - & - & 0.02 \\
     \rownb & Arabidopsis\_thaliana~\cite{DesignPrinciplesGeneNetworks} & 15 & 8 & \textbf{0.10} & 0.06 & NM & 0.01 & - & - & 0.02 \\
@@ -1278,26 +1281,110 @@ Hence, we searched for all solutions in each model, which makes the comparison t
 In addition, each node has only three input nodes, i.e., the number of prime-implicants of the associated Boolean function is small.
 Hence, \texttt{PyBoolNet} always passed the phase of computing prime-implicants in every model even within 1s, which enables us to compare the ASP encoding of \texttt{PyBoolNet} and that of \texttt{Trappist}.
 
-\begin{table}[!htb]
-  \caption{Results on N-K models.}
-  \centering%
-  \label{tab:result_N_K}
-  \begin{tabular}{rrrrrrrr}
-    \toprule
-    & & & & \multicolumn{4}{c}{\texttt{Trappist}}\\
-    \cmidrule(rr){5-8}
-    \(n\) & \texttt{LQM} & \texttt{mpbn} & \texttt{PBN} & SAT & CP & ILP & ASP \\
-    \midrule
-    100 & 50 ($>$ 180) & 50 (N/A) & 0 (0.07) & 0 (0.05) & - () & - () & 0 (0.09) \\
-    150 & 50 ($>$ 180) & 50 (N/A) & 0 (0.14) & 0 (0.10) & - () & - () & 0 (0.14) \\
-    200 & 50 ($>$ 180) & 50 (N/A) & 0 (0.43) & 0 (0.25) & - () & - () & 0 (0.24) \\
-    250 & 50 ($>$ 180) & 50 (N/A) & 0 (1.92) & 0 (1.04) & - () & - () & 0 (0.56) \\
-    300 & 50 ($>$ 180) & 50 (N/A) & 0 (9.68) & 0 (4.46) & - () & - () & 0 (1.83) \\
-    350 & 50 ($>$ 180) & 50 (N/A) & 1 (46.54) & 0 (20.09) & - () & - () & 0 (6.10) \\
-    400 & 50 ($>$ 180) & 50 (N/A) & 29 (144.09) & 12 (90.36) & - () & - () & 1 (33.01) \\
-    \bottomrule
-  \end{tabular}
-\end{table}
+\begin{figure}[ht]
+	\centering
+	\begin{tikzpicture}
+	\begin{semilogxaxis}[
+		%title={},
+		xlabel={Time (s)},
+		ylabel={Models solved},
+		xmin=-1, xmax=180,
+		log basis x={10},
+		%scale only axis,
+		ymin=0, ymax=350,
+		%ymode=log,
+		%log basis y={10},
+		xtick={0.5, 1, 2, 5, 10, 20, 50, 100, 180},
+		xticklabels = {0.5, 1, 2, 5, 10, 20, 50, 100, 180},
+		ytick={0, 50, 100, 150, 200, 250, 300, 350},
+		y=0.5cm/30,
+		%legend style={font=\fontsize{7}{8}\selectfont},
+		%legend style={at={(0.0,-0.1)},anchor=north},
+		legend pos=outer north east,
+		ymajorgrids=true,
+		grid style=dashed,
+	]
+	
+	\addplot[
+		smooth,
+		thick,
+		color=blue,
+		mark=*,
+	]
+	coordinates {
+		(0.5, 141)(1, 174)(2, 193)(5, 220)(10, 247)(20, 262)(50, 285)(100, 306)(180, 320)
+	}; \addlegendentry{\texttt{PyBoolNet}}
+	
+	\addplot[
+		smooth,
+		thick,
+		%dashed,
+		color=cyan,
+		mark=triangle,
+	]
+	coordinates {
+		(0.5, 0)(1, 0)(2, 0)(5, 0)(10, 0)(20, 0)(50, 0)(100, 0)(180, 0)
+	}; \addlegendentry{\texttt{mpbn}}
+	
+	\addplot[
+		smooth,
+		thick,
+		dashed,
+		color=orange,
+		mark=asterisk,
+	]
+	coordinates {
+		(0.5, 0)(1, 0)(2, 0)(5, 0)(10, 0)(20, 0)(50, 0)(100, 0)(180, 0)
+	}; \addlegendentry{\texttt{bioLQM}}
+	
+	\addplot[
+		smooth,
+		thick,
+		%dashed,
+		color=magenta,
+		mark=square,
+	]
+	coordinates {
+		(0.5, 164)(1, 190)(2, 214)(5, 249)(10, 266)(20, 291)(50, 317)(100, 328)(180, 338)
+	}; \addlegendentry{\texttt{Trappist-maxSAT}}
+	
+	\addplot[
+		smooth,
+		thick,
+		dashed,
+		color=violet,
+		mark=star,
+	]
+	coordinates {
+		(0.5, 179)(1, 211)(2, 244)(5, 274)(10, 304)(20, 327)(50, 339)(100, 347)(180, 349)
+	}; \addlegendentry{\texttt{Trappist-ASP}}
+	
+	\end{semilogxaxis}
+	\end{tikzpicture}
+	\caption{Cumulative numbers of random models solved by the competing methods with respect to enumerating the first 1000 minimal trap spaces.}
+	\label{fig:random_cumul_first}
+\end{figure}
+
+%\begin{table}[!htb]
+%  \caption{Results on N-K models.}
+%  \centering%
+%  \label{tab:result_N_K}
+%  \begin{tabular}{rrrrrrrr}
+%    \toprule
+%    & & & & \multicolumn{4}{c}{\texttt{Trappist}}\\
+%    \cmidrule(rr){5-8}
+%    \(n\) & \texttt{LQM} & \texttt{mpbn} & \texttt{PBN} & \texttt{SAT} & \texttt{CP} & \texttt{ILP} & \texttt{ASP} \\
+%    \midrule
+%    100 & 50 ($>$ 180) & 50 (N/A) & 0 (0.07) & 0 (0.05) & - () & - () & 0 (0.09) \\
+%    150 & 50 ($>$ 180) & 50 (N/A) & 0 (0.14) & 0 (0.10) & - () & - () & 0 (0.14) \\
+%    200 & 50 ($>$ 180) & 50 (N/A) & 0 (0.43) & 0 (0.25) & - () & - () & 0 (0.24) \\
+%    250 & 50 ($>$ 180) & 50 (N/A) & 0 (1.92) & 0 (1.04) & - () & - () & 0 (0.56) \\
+%    300 & 50 ($>$ 180) & 50 (N/A) & 0 (9.68) & 0 (4.46) & - () & - () & 0 (1.83) \\
+%    350 & 50 ($>$ 180) & 50 (N/A) & 1 (46.54) & 0 (20.09) & - () & - () & 0 (6.10) \\
+%    400 & 50 ($>$ 180) & 50 (N/A) & 29 (144.09) & 12 (90.36) & - () & - () & 1 (33.01) \\
+%    \bottomrule
+%  \end{tabular}
+%\end{table}
 
 Table~\ref{tab:result_N_K} shows the experimental results on N-K models.
 Column \(n\) denotes the network size.
