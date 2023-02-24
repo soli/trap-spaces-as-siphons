@@ -215,9 +215,10 @@ In particular, an updated proof provides another way to prove the independence o
 Second, we showcase a theoretical application of the connection between trap spaces in Boolean networks and conflict-free siphons in Petri nets.
 Third, beyond the proposed ASP method implementing the alternative approach~\cite{DBLP:conf/cmsb/TrinhBHS22}, we propose several other possible methods for computing minimal trap spaces using Maximum Satisfiability (MaxSAT), Constraint Programming (CP), and Integer Linear Programming (ILP).
 Fourth, we discuss in detail how to compute several special types of trap spaces in a Boolean network.
+Besides minimal trap spaces, these special types also play crucial roles in analyzing Boolean networks~\cite{Rozum2021}.
 %Fifth, we present the idea for using our Petri net approach to handle the problem of inconsistent and incomplete data in modeling biological systems.
 Fifth, regarding the implementation, we have developed a new converter that directly reads a \texttt{.bnet} file and builds the Petri net encoding, instead of using the \texttt{PNML} conversion of \texttt{bioLQM}~\cite{DBLP:conf/cmsb/TrinhBHS22}.
-Finally, we conduct a more comprehensive benchmark on more real-world models from various sources and randomly generated models to evaluate all the proposed methods (the benchmark conducted in~\cite{DBLP:conf/cmsb/TrinhBHS22} considers only real-world models).
+Finally, we conduct a more comprehensive benchmark on more real-world models from various sources and randomly generated models to evaluate all the proposed methods (the benchmark conducted in~\cite{DBLP:conf/cmsb/TrinhBHS22} considers only dozens of representative real-world models).
 
 %%% Paper structure %%%
 The rest of this paper is organized as follows: Section~\ref{sec:Preliminaries} recalls the basic concepts including Boolean networks, attractors, trap spaces, Petri nets, and siphons.
@@ -233,7 +234,7 @@ Finally, Section~\ref{sec:Conclusion} concludes the paper and draws future work.
 
 We shall briefly recall here some preliminaries on Boolean networks related to trap spaces and Petri nets.
 %In the case of multi-level logical models, an encoding into a Boolean network is always possible~\cite{Didier2011}.
-\vangiang{Remove this statement because there is not sure if the encoded Boolean network preserves the trap spaces of the original multi-level logical model.}
+%\vangiang{Remove this statement because there is not sure if the encoded Boolean network preserves the trap spaces of the original multi-level logical model.}
 
 \subsection{Boolean networks}
 
@@ -1081,7 +1082,7 @@ These can be run on a Docker image in the cloud by clicking the ``Binder'' butto
   \caption{Timing comparisons (in seconds) between \texttt{bioLQM} (\texttt{LQM}), \texttt{PyBoolNet} (\texttt{PBN}), \texttt{mpbn} and the four variants of \texttt{Trappist} on the \texttt{PyBoolNet} repository.}
   \centering%
   \label{tab:pyboolnet_repo}
-  \scalebox{0.85}{
+  \scalebox{0.9}{
   \begin{tabular}{rlrrrrrrrrr}
     \toprule
     & & & & & & & \multicolumn{4}{c}{\texttt{Trappist}}\\
@@ -1097,7 +1098,7 @@ These can be run on a Docker image in the cloud by clicking the ``Binder'' butto
     \rownb & faure\_cellcycle & 10 & 2 & \textbf{0.11} & 0.02 & 0.01 & 0.01 & - & - & 0.01\\
     \rownb & grieco\_mapk & 53 & 18 & \textbf{0.19} & 0.03 & 0.02 & 0.03 & - & - & 0.02\\
     \rownb & irons\_yeast & 18 & 1 & \textbf{0.12} & 0.03 & 0.01 & 0.01 & - & - & 0.02\\
-    \rownb & jaoude\_thdiff & 103 & $>1000$ & N/A & \textbf{0.85} & \textbf{0.45} & \textbf{0.56} & - & - & 0.09\\
+    \rownb & jaoude\_thdiff & 103 & $1000^+$ & N/A & \textbf{0.85} & \textbf{0.45} & \textbf{0.56} & - & - & 0.09\\
     \rownb & klamt\_tcr & 40 & 8 & \textbf{0.11} & 0.01 & 0.01 & 0.01 & - & - & 0.02\\
     \rownb & krumsiek\_myeloid & 11 & 6 & \textbf{0.10} & 0.01 & 0.00 & 0.00 & - & - & 0.01\\
     \rownb & multivalued & 13 & 4 & \textbf{0.10} & 0.01 & 0.00 & 0.00 & - & - & 0.01\\
@@ -1112,7 +1113,7 @@ These can be run on a Docker image in the cloud by clicking the ``Binder'' butto
     \rownb & randomnet\_n7k3 & 7 & 10 & \textbf{0.10} & 0.01 & \textbf{NM} & 0.00 & - & - & 0.01\\
     \rownb & remy\_tumorigenesis & 34 & 25 & \textbf{0.15} & \textbf{0.94} & 0.02 & 0.02 & - & - & 0.02\\
     \rownb & saadatpour\_guardcell & 13 & 1 & \textbf{0.10} & 0.06 & 0.00 & 0.00 & - & - & 0.02\\
-    \rownb & selvaggio\_emt & 56 & $>1000$ & N/A & \textbf{0.48} & \textbf{0.28} & \textbf{0.28} & - & - & 0.09\\
+    \rownb & selvaggio\_emt & 56 & $1000^+$ & N/A & \textbf{0.48} & \textbf{0.28} & \textbf{0.28} & - & - & 0.09\\
     \rownb & tournier\_apoptosis & 12 & 3 & \textbf{0.10} & 0.01 & 0.00 & 0.00 & - & - & 0.01\\
     \rownb & xiao\_wnt5a & 7 & 4 & \textbf{0.10} & 0.01 & 0.00 & 0.00 & - & - & 0.01\\
     \rownb & zhang\_tlgl & 60 & 156 & \textbf{0.60} & 0.09 & 0.09 & 0.07 & - & - & 0.04\\
@@ -1208,33 +1209,33 @@ Hereafter, we analyze in detail the results with respect to minimal trap space c
     \rownb & Rho-GTPases~\cite{DesignPrinciplesGeneNetworks} & 33 & 2 & 0.17 & 0.57 & \textbf{40.39} & 0.07 & - & - & 0.11 \\
     \rownb & Pluripotency~\cite{YachieKinoshita2018} & 36 & 440 & \textbf{DNF} & \textbf{DNF} & NM & 0.16 & - & - & 0.28 \\
     \rownb & Pluripotent~\cite{DesignPrinciplesGeneNetworks} & 36 & 276 & 0.37 & 0.43 & NM & 0.07 & - & - & 0.06 \\
-    \rownb & Pancreatic\_Cancer~\cite{DesignPrinciplesGeneNetworks} & 43 & $>1000$ & N/A & 0.11 & 0.36 & 0.17 & - & - & 0.06 \\
+    \rownb & Pancreatic\_Cancer~\cite{DesignPrinciplesGeneNetworks} & 43 & $1000^+$ & N/A & 0.11 & 0.36 & 0.17 & - & - & 0.06 \\
     \rownb & Drosophila~\cite{RodrguezVega2014} & 52 & 128 & 0.33 & 0.05 & 0.07 & 0.06 & - & - & 0.05 \\
     \rownb & Cacace\_TdevModel~\cite{Cacace2020} & 61 & 28 & \textbf{1.29} & \textbf{5.67} & NM & 0.06 & - & - & 0.08 \\
-    \rownb & hedgehog~\cite{DesignPrinciplesGeneNetworks} & 65 & $>1000$ & N/A & \textbf{DNF} & 0.50 & 0.34 & - & - & 0.33 \\
+    \rownb & hedgehog~\cite{DesignPrinciplesGeneNetworks} & 65 & $1000^+$ & N/A & \textbf{DNF} & 0.50 & 0.34 & - & - & 0.33 \\
     \rownb & EMT~\cite{Rozum2021} & 69 & 268 & \textbf{39.22} & \textbf{1.01} & 0.20 & 0.12 & - & - & 0.05 \\
     \rownb & Bcell~\cite{Dutta2019} & 73 & 72 & 0.23 & 0.04 & 0.08 & 0.06 & - & - & 0.05 \\
-    \rownb & mast\_cell~\cite{aghamiri2020automated} & 73 & $>1000$ & N/A & 0.09 & 0.55 & 0.37 & - & - & 0.15 \\
-    \rownb & Corral\_ThIL17diff~\cite{corral2021interplay} & 92 & $>1000$ & N/A & \textbf{107.57} & 0.76 & 0.56 & - & - & 0.16 \\
+    \rownb & mast\_cell~\cite{aghamiri2020automated} & 73 & $1000^+$ & N/A & 0.09 & 0.55 & 0.37 & - & - & 0.15 \\
+    \rownb & Corral\_ThIL17diff~\cite{corral2021interplay} & 92 & $1000^+$ & N/A & \textbf{107.57} & 0.76 & 0.56 & - & - & 0.16 \\
 
     \midrule % 100 <= n < 200
      \rownb & Adhesion\_CIP~\cite{guberman2020boolean} & 121 & 78 & \textbf{56.81} & \textbf{4.25} & 0.23 & 0.17 & - & - & 0.19 \\
     \rownb & EMT\_Mech~\cite{Sullivan2022} & 136 & 82 & \textbf{DNF} & \textbf{14.01} & 0.27 & 0.20 & - & - & 0.25 \\
-    \rownb & macrophage~\cite{DesignPrinciplesGeneNetworks} & 136 & $>1000$ & N/A & 0.54 & 1.09 & 0.84 & - & - & 0.27 \\
-    \rownb & angiogenesis~\cite{DesignPrinciplesGeneNetworks} & 141 & $>1000$ & N/A & 0.16 & 1.07 & 1.06 & - & - & 0.16 \\
-    \rownb & angiofull~\cite{Weinstein2017} & 142 & $>1000$ & N/A & 0.17 & 1.06 & 0.88 & - & - & 0.23 \\
+    \rownb & macrophage~\cite{DesignPrinciplesGeneNetworks} & 136 & $1000^+$ & N/A & 0.54 & 1.09 & 0.84 & - & - & 0.27 \\
+    \rownb & angiogenesis~\cite{DesignPrinciplesGeneNetworks} & 141 & $1000^+$ & N/A & 0.16 & 1.07 & 1.06 & - & - & 0.16 \\
+    \rownb & angiofull~\cite{Weinstein2017} & 142 & $1000^+$ & N/A & 0.17 & 1.06 & 0.88 & - & - & 0.23 \\
     \rownb & EMT\_Mech\_TGFbeta~\cite{Sullivan2022} & 150 & 492 & \textbf{DNF} & \textbf{11.28} & 0.78 & 0.69 & - & - & 0.35 \\
-    \rownb & RA\_apoptosis~\cite{aghamiri2020automated} & 180 & $>1000$ & N/A & \textbf{DNF} & 1.43 & 1.55 & - & - & 0.19 \\
-    \rownb & MAPK~\cite{aghamiri2020automated} & 181 & $>1000$ & N/A & \textbf{13.58} & 1.76 & 1.51 & - & - & 0.27 \\
+    \rownb & RA\_apoptosis~\cite{aghamiri2020automated} & 180 & $1000^+$ & N/A & \textbf{DNF} & 1.43 & 1.55 & - & - & 0.19 \\
+    \rownb & MAPK~\cite{aghamiri2020automated} & 181 & $1000^+$ & N/A & \textbf{13.58} & 1.76 & 1.51 & - & - & 0.27 \\
 
     \midrule % 200 <= n
-    \rownb & Snf1-pathway~\cite{Lubitz2015} & 202 & $>1000$ & N/A & 1.13 & 1.47 & 1.43 & - & - & 0.31 \\
-    \rownb & T-cell-co-receptor~\cite{DesignPrinciplesGeneNetworks} & 206 & $>1000$ & N/A & \textbf{DNF} & 1.52 & 2.26 & - & - & 0.35 \\
-    \rownb & TcellCheckPoint~\cite{hernandez2020computational} & 218 & $>1000$ & N/A & \textbf{4.99} & NM & 1.96 & - & - & 0.28 \\
-    \rownb & Mycobacterium~\cite{DesignPrinciplesGeneNetworks} & 317 & $>1000$ & N/A & 0.42 & 2.36 & \textbf{4.91} & - & - & 0.44 \\
-    \rownb & Leishmania~\cite{DesignPrinciplesGeneNetworks} & 342 & $>1000$ & N/A & \textbf{DNF} & 2.56 & \textbf{5.62} & - & - & 0.46 \\
-    \rownb & Cholocystokinin~\cite{aghamiri2020automated} & 383 & $>1000$ & N/A & 0.36 & 2.99 & \textbf{4.81} & - & - & 0.37 \\
-    \rownb & Alzheimer~\cite{aghamiri2020automated} & 762 & $>1000$ & N/A & \textbf{DNF} & NM & \textbf{18.21} & - & - & 0.79 \\
+    \rownb & Snf1-pathway~\cite{Lubitz2015} & 202 & $1000^+$ & N/A & 1.13 & 1.47 & 1.43 & - & - & 0.31 \\
+    \rownb & T-cell-co-receptor~\cite{DesignPrinciplesGeneNetworks} & 206 & $1000^+$ & N/A & \textbf{DNF} & 1.52 & 2.26 & - & - & 0.35 \\
+    \rownb & TcellCheckPoint~\cite{hernandez2020computational} & 218 & $1000^+$ & N/A & \textbf{4.99} & NM & 1.96 & - & - & 0.28 \\
+    \rownb & Mycobacterium~\cite{DesignPrinciplesGeneNetworks} & 317 & $1000^+$ & N/A & 0.42 & 2.36 & \textbf{4.91} & - & - & 0.44 \\
+    \rownb & Leishmania~\cite{DesignPrinciplesGeneNetworks} & 342 & $1000^+$ & N/A & \textbf{DNF} & 2.56 & \textbf{5.62} & - & - & 0.46 \\
+    \rownb & Cholocystokinin~\cite{aghamiri2020automated} & 383 & $1000^+$ & N/A & 0.36 & 2.99 & \textbf{4.81} & - & - & 0.37 \\
+    \rownb & Alzheimer~\cite{aghamiri2020automated} & 762 & $1000^+$ & N/A & \textbf{DNF} & NM & \textbf{18.21} & - & - & 0.79 \\
 
     \bottomrule
   \end{tabular}
