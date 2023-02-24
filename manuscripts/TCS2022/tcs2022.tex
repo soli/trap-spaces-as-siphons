@@ -24,6 +24,7 @@
 
 \usepackage{pgfplots}
 \pgfplotsset{width=10cm,compat=1.13}
+\usepgfplotslibrary{groupplots}
 
 %% The lineno packages adds line numbers. Start line numbering with
 %% \begin{linenumbers}, end it with \end{linenumbers}. Or switch it on
@@ -583,7 +584,7 @@ This exhibits the very first theoretical application of the connection between t
 We here showcase a theoretical application of the connection between trap spaces in Boolean networks and conflict-free siphons in Petri nets.
 We use it to prove a property of minimal trap spaces, which has surprisingly not been formally proved.
 Specifically, all minimal trap spaces of a Boolean network are mutually disjoint.
-This property is important because we can use it to approximate the set of attractors of the Boolean network~\cite{klarner2015computing}.
+This property is important because we can use it to approximate the set of attractors of the Boolean network under any update scheme~\cite{klarner2015computing} or to compute exactly the set of complex attractors of the Boolean network under the fully asynchronous update scheme~\cite{DBLP:conf/bcb/TrinhHB22}.
 
 \begin{theorem}%
 \label{theo:separation_min_ts}
@@ -1147,25 +1148,222 @@ It aims to be a comprehensive collection suitable for benchmarking and testing n
 It is released and maintained at \url{https://github.com/sybila/biodivine-boolean-models}.
 We here tested all the compared methods on this model repository.
 
-\setlength{\tabcolsep}{4pt}
-\begin{table}[!htb]
-  \caption{Results on the real-world models from the BBM repository.}
-  \centering%
-  \label{tab:bbm_repo}
-  \begin{tabular}{lrrrr}
-    \toprule
-    Method & \# failures & avg-lqm (s) & avg-mono (s) & avg-all (s) \\ \midrule
-    \texttt{bioLQM} & 9 (134) & 12.87 & N/A & N/A \\
-    \texttt{PyBoolNet} & 12 & 8.87 & 11.00 & 13.59 \\
-    \texttt{mpbn} & 2 (187) & N/A & 2.31 & N/A \\
-    \texttt{Trappist}-MaxSAT & 1 & 0.03 & 1.09 & 1.01 \\
-    \texttt{Trappist}-CP & - & - & - & - \\
-    \texttt{Trappist}-ILP & - & - & - & - \\
-    \texttt{Trappist}-ASP & 1 & 0.05 & 1.02 & 0.93 \\
-    \bottomrule
-  \end{tabular}
-\end{table}
-\setcounter{rownumber}{0}
+%\setlength{\tabcolsep}{4pt}
+%\begin{table}[!htb]
+%  \caption{Results on the real-world models from the BBM repository.}
+%  \centering%
+%  \label{tab:bbm_repo}
+%  \begin{tabular}{lrrrr}
+%    \toprule
+%    Method & \# failures & avg-lqm (s) & avg-mono (s) & avg-all (s) \\ \midrule
+%    \texttt{bioLQM} & 9 (134) & 12.87 & N/A & N/A \\
+%    \texttt{PyBoolNet} & 12 & 8.87 & 11.00 & 13.59 \\
+%    \texttt{mpbn} & 2 (187) & N/A & 2.31 & N/A \\
+%    \texttt{Trappist}-MaxSAT & 1 & 0.03 & 1.09 & 1.01 \\
+%    \texttt{Trappist}-CP & - & - & - & - \\
+%    \texttt{Trappist}-ILP & - & - & - & - \\
+%    \texttt{Trappist}-ASP & 1 & 0.05 & 1.02 & 0.93 \\
+%    \bottomrule
+%  \end{tabular}
+%\end{table}
+%\setcounter{rownumber}{0}
+
+\begin{figure}[ht]
+	\centering
+	\begin{tikzpicture}
+		\begin{semilogxaxis}[
+			%title={},
+			xlabel={Time (s)},
+			ylabel={Models solved},
+			xmin=-1, xmax=180,
+			log basis x={10},
+			%scale only axis,
+			ymin=100, ymax=134,
+			%ymode=log,
+			%log basis y={10},
+			xtick={0.5, 1, 2, 5, 10, 20, 50, 100, 180},
+			xticklabels = {0.5, 1, 2, 5, 10, 20, 50, 100, 180},
+			ytick={100, 110, 120, 130},
+			y=0.5cm/4,
+			%legend style={font=\fontsize{7}{8}\selectfont},
+			%legend style={at={(1.2,-0.1)},anchor=north west},
+			legend pos=outer north east,
+			ymajorgrids=true,
+			grid style=dashed,
+		]
+		
+		\addplot[
+			smooth,
+			thick,
+			dashed,
+			color=orange,
+			mark=asterisk,
+		]
+		coordinates {
+			(0.5, 115)(1, 118)(2, 121)(5, 122)(10, 122)(20, 123)(50, 125)(100, 125)(180, 125)
+		}; \addlegendentry{\texttt{bioLQM}}
+		
+		\addplot[
+			smooth,
+			thick,
+			color=blue,
+			mark=*,
+		]
+		coordinates {
+			(0.5, 108)(1, 118)(2, 121)(5, 126)(10, 126)(20, 126)(50, 128)(100, 128)(180, 128)
+		}; \addlegendentry{\texttt{PyBoolNet}}
+		
+		\addplot[
+			smooth,
+			thick,
+			%dashed,
+			color=cyan,
+			mark=triangle,
+		]
+		coordinates {
+			(0.5, 116)(1, 117)(2, 117)(5, 117)(10, 117)(20, 117)(50, 118)(100, 118)(180, 118)
+		}; \addlegendentry{\texttt{mpbn}}
+		
+		\addplot[
+			smooth,
+			thick,
+			%dashed,
+			color=teal,
+			mark=square,
+		]
+		coordinates {
+			(0.5, 133)(1, 134)(2, 134)(5, 134)(10, 134)(20, 134)(50, 134)(100, 134)(180, 134)
+		}; \addlegendentry{\texttt{maxSAT}}
+		
+%		\addplot[
+%			smooth,
+%			thick,
+%			%dashed,
+%			color=green,
+%			mark=star,
+%		]
+%		coordinates {
+%			(0.5, 143)(1, 176)(2, 195)(5, 222)(10, 249)(20, 264)(50, 287)(100, 308)(180, 322)
+%		}; \addlegendentry{\texttt{CP}}
+		
+		
+%		\addplot[
+%			smooth,
+%			thick,
+%			dashed,
+%			color=magenta,
+%			mark=star,
+%		]
+%		coordinates {
+%			(0.5, 144)(1, 177)(2, 196)(5, 223)(10, 250)(20, 265)(50, 288)(100, 309)(180, 323)
+%		}; \addlegendentry{\texttt{ILP}}
+		
+		\addplot[
+			smooth,
+			thick,
+			dashed,
+			color=violet,
+			mark=star,
+		]
+		coordinates {
+			(0.5, 131)(1, 134)(2, 134)(5, 134)(10, 134)(20, 134)(50, 134)(100, 134)(180, 134)
+		}; \addlegendentry{\texttt{ASP}}
+		
+		\end{semilogxaxis}
+	\end{tikzpicture}
+	\begin{tikzpicture}
+		\begin{semilogxaxis}[
+			%title={},
+			xlabel={Time (s)},
+			ylabel={Models solved},
+			xmin=-1, xmax=180,
+			log basis x={10},
+			%scale only axis,
+			ymin=150, ymax=211,
+			%ymode=log,
+			%log basis y={10},
+			xtick={0.5, 1, 2, 5, 10, 20, 50, 100, 180},
+			xticklabels = {0.5, 1, 2, 5, 10, 20, 50, 100, 180},
+			ytick={150, 170, 190, 210},
+			y=0.5cm/7,
+			%legend style={font=\fontsize{7}{8}\selectfont},
+			%legend style={at={(0.0,-0.1)},anchor=north},
+			legend pos=outer north east,
+			ymajorgrids=true,
+			grid style=dashed,
+		]
+	
+		\addplot[
+			smooth,
+			thick,
+			color=blue,
+			mark=*,
+		]
+		coordinates {
+			(0.5, 151)(1, 170)(2, 178)(5, 188)(10, 189)(20, 190)(50, 194)(100, 198)(180, 199)
+		}; \addlegendentry{\texttt{PyBoolNet}}
+		
+		\addplot[
+			smooth,
+			thick,
+			%dashed,
+			color=cyan,
+			mark=triangle,
+		]
+		coordinates {
+			(0.5, 160)(1, 177)(2, 181)(5, 183)(10, 183)(20, 184)(50, 185)(100, 185)(180, 185)
+		}; \addlegendentry{\texttt{mpbn}}
+		
+		\addplot[
+			smooth,
+			thick,
+			%dashed,
+			color=teal,
+			mark=square,
+		]
+		coordinates {
+			(0.5, 191)(1, 204)(2, 208)(5, 210)(10, 210)(20, 210)(50, 210)(100, 210)(180, 210)
+		}; \addlegendentry{\texttt{maxSAT}}
+		
+		%		\addplot[
+		%			smooth,
+		%			thick,
+		%			%dashed,
+		%			color=green,
+		%			mark=star,
+		%		]
+		%		coordinates {
+		%			(0.5, 143)(1, 176)(2, 195)(5, 222)(10, 249)(20, 264)(50, 287)(100, 308)(180, 322)
+		%		}; \addlegendentry{\texttt{CP}}
+		
+		
+		%		\addplot[
+		%			smooth,
+		%			thick,
+		%			dashed,
+		%			color=magenta,
+		%			mark=star,
+		%		]
+		%		coordinates {
+		%			(0.5, 144)(1, 177)(2, 196)(5, 223)(10, 250)(20, 265)(50, 288)(100, 309)(180, 323)
+		%		}; \addlegendentry{\texttt{ILP}}
+		
+		\addplot[
+			smooth,
+			thick,
+			dashed,
+			color=violet,
+			mark=star,
+		]
+		coordinates {
+			(0.5, 205)(1, 208)(2, 209)(5, 210)(10, 210)(20, 210)(50, 210)(100, 210)(180, 210)
+		}; \addlegendentry{\texttt{ASP}}
+	
+	\end{semilogxaxis}
+	\end{tikzpicture}
+	\caption{Cumulative numbers of the \texttt{BBM} models that have less than 1000 minimal trap spaces (above) and \texttt{BBM} models (below) solved by the competing methods with respect to enumerating the first 1000 minimal trap spaces.}
+	\label{fig:BBM_cumul}
+\end{figure}
 
 Table~\ref{tab:bbm_repo} shows the experimental results on the 211 real-world models from the \texttt{BBM} repository.
 Column 2 expresses the numbers of failures (i.e., did not finish the computation within a time limit of three minutes) of each method.
@@ -1308,6 +1506,17 @@ Hence, \texttt{PyBoolNet} always passed the phase of computing prime-implicants 
 	\addplot[
 		smooth,
 		thick,
+		dashed,
+		color=orange,
+		mark=asterisk,
+	]
+	coordinates {
+		(0.5, 0)(1, 0)(2, 0)(5, 0)(10, 0)(20, 0)(50, 0)(100, 0)(180, 0)
+	}; \addlegendentry{\texttt{bioLQM}}
+	
+	\addplot[
+		smooth,
+		thick,
 		color=blue,
 		mark=*,
 	]
@@ -1329,24 +1538,36 @@ Hence, \texttt{PyBoolNet} always passed the phase of computing prime-implicants 
 	\addplot[
 		smooth,
 		thick,
-		dashed,
-		color=orange,
-		mark=asterisk,
-	]
-	coordinates {
-		(0.5, 0)(1, 0)(2, 0)(5, 0)(10, 0)(20, 0)(50, 0)(100, 0)(180, 0)
-	}; \addlegendentry{\texttt{bioLQM}}
-	
-	\addplot[
-		smooth,
-		thick,
 		%dashed,
-		color=magenta,
+		color=teal,
 		mark=square,
 	]
 	coordinates {
 		(0.5, 164)(1, 190)(2, 214)(5, 249)(10, 266)(20, 291)(50, 317)(100, 328)(180, 338)
-	}; \addlegendentry{\texttt{Trappist-maxSAT}}
+	}; \addlegendentry{\texttt{maxSAT}}
+
+	\addplot[
+		smooth,
+		thick,
+		%dashed,
+		color=green,
+		mark=star,
+	]
+	coordinates {
+		(0.5, 143)(1, 176)(2, 195)(5, 222)(10, 249)(20, 264)(50, 287)(100, 308)(180, 322)
+	}; \addlegendentry{\texttt{CP}}
+
+
+	\addplot[
+		smooth,
+		thick,
+		dashed,
+		color=magenta,
+		mark=star,
+	]
+	coordinates {
+		(0.5, 144)(1, 177)(2, 196)(5, 223)(10, 250)(20, 265)(50, 288)(100, 309)(180, 323)
+	}; \addlegendentry{\texttt{ILP}}
 	
 	\addplot[
 		smooth,
@@ -1357,11 +1578,11 @@ Hence, \texttt{PyBoolNet} always passed the phase of computing prime-implicants 
 	]
 	coordinates {
 		(0.5, 179)(1, 211)(2, 244)(5, 274)(10, 304)(20, 327)(50, 339)(100, 347)(180, 349)
-	}; \addlegendentry{\texttt{Trappist-ASP}}
-	
+	}; \addlegendentry{\texttt{ASP}}
+
 	\end{semilogxaxis}
 	\end{tikzpicture}
-	\caption{Cumulative numbers of random models solved by the competing methods with respect to enumerating the first 1000 minimal trap spaces.}
+	\caption{Cumulative numbers of random models solved by the competing methods with respect to enumerating all the minimal trap spaces.}
 	\label{fig:random_cumul_first}
 \end{figure}
 
@@ -1386,14 +1607,18 @@ Hence, \texttt{PyBoolNet} always passed the phase of computing prime-implicants 
 %  \end{tabular}
 %\end{table}
 
-Table~\ref{tab:result_N_K} shows the experimental results on N-K models.
-Column \(n\) denotes the network size.
-Columns \texttt{LQM} and \texttt{PBN} show the results of \texttt{bioLQM} and \texttt{PyBoolNet}, respectively.
-For each method, the number outside the parentheses indicates the number of failures, whereas the number inside the parentheses indicates the average running time (in seconds).
-Note that when computing the average running time, if the running time exceeds 180s, it is considered as 180s.
-From these results, we obtained several observations consistent with those obtained for real-world models.
+%Table~\ref{tab:result_N_K} shows the experimental results on N-K models.
+%Column \(n\) denotes the network size.
+%Columns \texttt{LQM} and \texttt{PBN} show the results of \texttt{bioLQM} and \texttt{PyBoolNet}, respectively.
+%For each method, the number outside the parentheses indicates the number of failures, whereas the number inside the parentheses indicates the average running time (in seconds).
+%Note that when computing the average running time, if the running time exceeds 180s, it is considered as 180s.
+%From these results, we obtained several observations consistent with those obtained for real-world models.
 
-TODO: \dots
+Figure~\ref{fig:random_cumul_first} shows cumulative numbers of random models solved by the competing methods with respect to enumerating all the minimal trap spaces.
+The number of succeeded models within three minutes for each method is as follows: \texttt{bioLQM} (0), \texttt{PyBoolNet} (320), \texttt{mpbn} (0), \texttt{Trappist-maxSAT} (338), \texttt{Trappist-CP} (0), \texttt{Trappist-ILP} (0), \texttt{Trappist-ASP} (349).
+We can see that \texttt{Trappist-ASP} is the method that could handle the most number of models.
+Note that none of the other methods could handle the model failed by \texttt{Trappist-ASP}.
+Upon closer inspection, we obtained several observations consistent with those obtained for real-world models as follows.
 
 First, \texttt{mpbn} did not be able to handle any model because all the models are non-locally-monotonic.
 Recall that a Boolean network is non-locally-monotonic if only one of its Boolean functions is non-locally-monotonic.
@@ -1402,6 +1627,7 @@ This observation confirms the limit on the applicable model class of \texttt{mpb
 
 Second, surprisingly \texttt{bioLQM} could not handle any model.
 One of the reason may be that the BDD characterizing all trap spaces is too large, and its computation is slow.
+In addition, having too many generic trap spaces before the filtering process may be also a reason.
 It is apparent because the network size is large (\(\geq 100\)) and the Boolean functions are not simple.
 
 Third, \texttt{PyBoolNet} could handle every model of network size less than or equal to 300.
