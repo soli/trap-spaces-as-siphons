@@ -1453,35 +1453,34 @@ Hereafter, we analyze in detail the results with respect to minimal trap space c
 The first observation is that for 11 of the 32 models (more than 34\%), \texttt{mpbn} did not give any answer because these models as not locally-monotonic.
 For 22 of the 32 models where \texttt{mpbn} returned the answers, \texttt{mpbn} and \texttt{Trappist} are comparable in computation time, though surprisingly \texttt{mpbn} appears quite slower on average than the best variant of \texttt{Trappist}.
 In particular, for the Rho-GTPases model, \texttt{mpbn} is \(577\times\) slower than the best variant of \texttt{Trappist}.
-%Note however that \texttt{mpbn} was the only tool to provide a solution for the SN-5 model, thus confirming that if the activation function is in the right form, not having to compute the inactivation function's disjunctive normal form can render a difficult problem tractable.
 However, since \texttt{mbpn} can handle only locally-monotonic models and \texttt{Trappist} can handle general models, it is difficult to further compare between them.
 Hence, we focus on only comparisons among \texttt{bioLQM}, \texttt{PyBoolNet}, and \texttt{Trappist} in the following observations.
 
-The second observation is that the proposed method vastly outperforms \texttt{PyBoolNet} in computational time, on each and every model, and sometimes with orders of magnitude of difference (e.g., for most models in the 100--1000 nodes size range).
-Note that for all the cases where \texttt{PyBoolNet} did not manage to finish before the timeout, as marked by ``DNF'' in Table~\ref{tab:result_real}, the timeout occurred during the computation of the prime-implicants.
-Hence, not even a single minimal trap space was output by that method.
-The computational advantage is therefore immediately a practical advantage since on the one hand the state-of-the-art method did not allow any analysis whatsoever of the models, and on the other hand the proposed method could provide, very often under one second, the first thousand minimal trap spaces.
-For modellers having a critical look at a model and in a \emph{model, invalidate, refine} loop this means a huge difference in the models that are amenable to study.
-
-Note that even with a very restricted time-limit of two minutes, it was possible with the proposed technique to find \emph{all} minimal trap spaces of small models (roughly under 130 nodes, i.e., considered as quite big up to now).
-Though it might seem impractical to handle tens of thousands of such possible complex attractors in a manual way, i.e., to compare them to specific experimental conditions and corresponding data, we hope that an automatic analysis of such attractors might become possible with systematic verification methods, not unlike that described in~\cite{hernandez2020computational}.
-Since the ASP code is declarative by nature, it is also possible to add to it supplementary constraints coming from the modeler in case one is looking for specific attractors.
-Finally, sampling from the ASP-generated solutions as is done in~\cite{chevalier2020synthesis} would allow for a different type of exploration.
-
-The third observation is that for all the models where \texttt{PyBoolNet} finished before the timeout, once \texttt{PyBoolNet} went through the prime-implicant phase, its ASP solving phase quickly returned the first 1000 minimal trap spaces, all under one second.
-For these models, the ASP solving phase of the proposed method also took very short time, all under one second.
-Hence, with the experimental results shown in this paper, the practical differences between our ASP encoding and that of \texttt{PyBoolNet} are not distinctly exposed.
-The fact that our new ASP encoding is guaranteed to be linear in the number of nodes of the original model does not seem to be crucial here, however a much deeper analysis of those cases remains to be done.
-
-Note that though enumerating the extremal siphons of a Petri net is exponential (see~\cite{nabli2016enumerating} for instance) this is apparently not the bottleneck of the proposed method, showing once again that networks obtained from biochemical models do have a specific structure.
+%The second observation is that the proposed method vastly outperforms \texttt{PyBoolNet} in computational time, on each and every model, and sometimes with orders of magnitude of difference (e.g., for most models in the 100--1000 nodes size range).
+%Note that for all the cases where \texttt{PyBoolNet} did not manage to finish before the timeout, as marked by ``DNF'' in Table~\ref{tab:result_real}, the timeout occurred during the computation of the prime-implicants.
+%Hence, not even a single minimal trap space was output by that method.
+%The computational advantage is therefore immediately a practical advantage since on the one hand the state-of-the-art method did not allow any analysis whatsoever of the models, and on the other hand the proposed method could provide, very often under one second, the first thousand minimal trap spaces.
+%For modellers having a critical look at a model and in a \emph{model, invalidate, refine} loop this means a huge difference in the models that are amenable to study.
+%
+%Note that even with a very restricted time-limit of two minutes, it was possible with the proposed technique to find \emph{all} minimal trap spaces of small models (roughly under 130 nodes, i.e., considered as quite big up to now).
+%Though it might seem impractical to handle tens of thousands of such possible complex attractors in a manual way, i.e., to compare them to specific experimental conditions and corresponding data, we hope that an automatic analysis of such attractors might become possible with systematic verification methods, not unlike that described in~\cite{hernandez2020computational}.
+%Since the ASP code is declarative by nature, it is also possible to add to it supplementary constraints coming from the modeler in case one is looking for specific attractors.
+%Finally, sampling from the ASP-generated solutions as is done in~\cite{chevalier2020synthesis} would allow for a different type of exploration.
+%
+%The third observation is that for all the models where \texttt{PyBoolNet} finished before the timeout, once \texttt{PyBoolNet} went through the prime-implicant phase, its ASP solving phase quickly returned the first 1000 minimal trap spaces, all under one second.
+%For these models, the ASP solving phase of the proposed method also took very short time, all under one second.
+%Hence, with the experimental results shown in this paper, the practical differences between our ASP encoding and that of \texttt{PyBoolNet} are not distinctly exposed.
+%The fact that our new ASP encoding is guaranteed to be linear in the number of nodes of the original model does not seem to be crucial here, however a much deeper analysis of those cases remains to be done.
+%
+%Note that though enumerating the extremal siphons of a Petri net is exponential (see~\cite{nabli2016enumerating} for instance) this is apparently not the bottleneck of the proposed method, showing once again that networks obtained from biochemical models do have a specific structure.
 
 \subsection{Randomly generated models}
 
 We randomly generated a set of N-K models~\cite{glass1973logical} with network size \(n\) in the set \{100, 150, 200, 250, 300, 350, 400\} and \(K = 3\) (i.e., each node has exactly three input nodes).
-We chose N-K models because they are a useful tool for studying the dynamics of Boolean networks~\cite{glass1973logical,klarner2015computing}.
+We chose N-K models because they are a useful tool for studying the dynamics of Boolean networks~\cite{glass1973logical,klarner2015computing,Rozum2021}.
 For each network size, 50 instances were generated using the \verb|generateRandomNKNetwork| function.
 In total, we have 350 random models.
-We then applied the compared methods to these models and recorded the numbers of failures (i.e., failed to obtain the result within a time limit of three minutes) as well as the average running time (inside the parentheses) in each method for each network size \(n\).
+We then applied the compared methods to these models and recorded the running time of each method for each model.
 It is worth noting that N-K models usually have small numbers of minimal trap spaces~\cite{klarner2015computing}.
 Hence, we searched for all solutions in each model, which makes the comparison to \texttt{bioLQM} more comprehensive.
 In addition, each node has only three input nodes, i.e., the number of prime-implicants of the associated Boolean function is small.
@@ -1552,7 +1551,7 @@ Hence, \texttt{PyBoolNet} always passed the phase of computing prime-implicants 
 	]
 	coordinates {
 		(0.5, 164)(1, 190)(2, 214)(5, 249)(10, 266)(20, 291)(50, 317)(100, 328)(180, 338)
-	}; \addlegendentry{\texttt{maxSAT}}
+	}; \addlegendentry{\texttt{SAT}}
 
 	\addplot[
 		smooth,
@@ -1630,19 +1629,21 @@ Upon closer inspection, we obtained several observations consistent with those o
 
 First, \texttt{mpbn} did not be able to handle any model because all the models are non-locally-monotonic.
 Recall that a Boolean network is non-locally-monotonic if only one of its Boolean functions is non-locally-monotonic.
-Hence, it is apparent that all the randomly generated models are non-locally-monotonic.
+Hence, it is apparent that all the randomly generated models are non-locally-monotonic because of the number of nodes is large (\(n \geq 100\)).
 This observation confirms the limit on the applicable model class of \texttt{mpbn}.
 
 Second, surprisingly \texttt{bioLQM} could not handle any model.
 One of the reason may be that the BDD characterizing all trap spaces is too large, and its computation is slow.
 In addition, having too many generic trap spaces before the filtering process may be also a reason.
-It is apparent because the network size is large (\(\geq 100\)) and the Boolean functions are not simple.
+It is apparent because the network size is large (\(n \geq 100\)) and the Boolean functions are not simple.
 
-Third, \texttt{PyBoolNet} could handle every model of network size less than or equal to 300.
-It only failed in one model of network size 350 but 29 models of network size 400.
-The average running time vastly increases as the network size increases.
-As compared to the four methods of our approach, the performance of \texttt{PyBoolNet} is comparable for the 100-node and 200-node models.
-However, from \(n = 250\), the performance difference is exhibited more clearly.  
+%Third, \texttt{PyBoolNet} could handle every model of network size less than or equal to 300.
+%It only failed in one model of network size 350 but 29 models of network size 400.
+%The average running time vastly increases as the network size increases.
+%As compared to the four methods of our approach, the performance of \texttt{PyBoolNet} is comparable for the 100-node and 200-node models.
+%However, from \(n = 250\), the performance difference is exhibited more clearly.
+
+Third, \dots  
 
 Finally, \dots
 
