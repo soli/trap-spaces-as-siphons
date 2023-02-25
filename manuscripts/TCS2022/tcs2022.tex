@@ -620,7 +620,7 @@ This property is important because we can use it to approximate the set of attra
 
 \end{proof}
 
-One naturally computational application of Theorem~\ref{theo:ts_2_sp} is that we can efficiently decide whether a subspace \(m\) is a trap space.
+A naturally computational application of Theorem~\ref{theo:ts_2_sp} is that we can efficiently decide whether a subspace \(m\) is a trap space.
 In \texttt{PyBoolNet}~\cite{klarner2017pyboolnet}, this is checked by using the percolation on the prime-implicants of the Boolean functions.
 As we have mentioned at the beginning of this article, the computation of prime-implicants is a demanding task for complex Boolean networks, even is sometimes intractable.
 Hence, the checking method in~\cite{klarner2017pyboolnet} shows its limitations.
@@ -812,7 +812,7 @@ Since we used the MiniZinc framework to interface with the CP solver, it was sim
 \subsection{Computation of special types of trap spaces}%
 \label{subsec:computation_special_ts}
 
-In the field of systems biology, biologists may want to compute more special types of trap spaces beyond minimal trap spaces~\cite{klarner2017pyboolnet}.
+In the field of systems biology, biologists may want to compute more special types of trap spaces beyond minimal trap spaces~\cite{klarner2017pyboolnet}, which also play crucial roles in analysis of Boolean networks.
 We shall show that our proposed methods can be easily adjusted to compute popular types of trap spaces.
 We illustrate the adjustments via the ASP-based method (see Subsection~\ref{subsec:computation_asp}), but these adjustments are completely applicable for other approaches such as MaxSAT, CP, and ILP\@.
 
@@ -1130,21 +1130,22 @@ These can be run on a Docker image in the cloud by clicking the ``Binder'' butto
 
 Table~\ref{tab:pyboolnet_repo} shows the experimental results on the models from the official \texttt{PyBoolNet} repository\footnote{\url{https://github.com/hklarner/pyboolnet/tree/master/pyboolnet/repository}}.
 Column \(n\) denotes the number of nodes of each model.
-Column \(|M|\) denotes the number of minimal trap spaces and for each method is given the computation time in seconds, asking only for the first 1000 trap spaces.
+Column \(|M|\) denotes the number of minimal trap spaces and for each method is given the computation time in seconds, asking only for the first 1000 minimal trap spaces.
 In the case of \texttt{bioLQM}, ``N/A'' means that the number of all minimal trap spaces of the model is larger than 1000 and we did not recorded the running time of \texttt{bioLQM} because it always requires to compute all minimal trap spaces.
 A number in bold indicates a ratio greater than three compared to the best result.
 ``NM'' indicates a non-locally-monotonic model.
 There are four variants of \texttt{Trappist}: \texttt{SAT} (i.e., the MaxSAT-based method shown in Subsection~\ref{subsec:computation_csp}), \texttt{CP} (i.e., the CP-based method shown in Subsection~\ref{subsec:computation_csp}), \texttt{ILP} (i.e., the ILP-based method shown in Subsection~\ref{subsec:computation_ilp}), and \texttt{ASP} (i.e., the ASP-based method shown in Subsection~\ref{subsec:computation_asp}).
 
 As shown in Table~\ref{tab:pyboolnet_repo}, for most of the models of the \texttt{PyBoolNet} repository, the results are comparable with all minimal trap spaces found very fast.
-For 5 of the 29 models, \texttt{mpbn} did not give any answer because it recognized these models as not locally-monotonic.
-Note that on some very small models, \texttt{Trappist} is sometimes slower than \texttt{PyBoolNet} and/or \texttt{mpbn}, but still significantly under one second.
-On the contrary, on every model that was a bit challenging for \texttt{PyBoolNet} or \texttt{mpbn}, the new method is far more efficient with speedups between one and two orders of magnitude.
+For 3 of the 29 models, \texttt{mpbn} did not give any answer because these models are locally-monotonic.
+%Note that on some very small models, \texttt{Trappist} is sometimes slower than \texttt{PyBoolNet} and/or \texttt{mpbn}, but still significantly under one second.
+%On the contrary, on every model that was a bit challenging for \texttt{PyBoolNet} or \texttt{mpbn}, the new method is far more efficient with speedups between one and two orders of magnitude.
 
 \subsection{\texttt{BBM} repository}
 
 Currently, a research group has made a great effort for building a collection (called \texttt{BBM}) of real-world Boolean models from various sources used in systems biology.
 It aims to be a comprehensive collection suitable for benchmarking and testing new tools and methods.
+\texttt{BBM} consists of 211 models (24 out of them are non-locally-monotonic), peaking at 321 nodes, 1100 regulations among the nodes, and 133 source nodes, respectively.
 It is released and maintained at \url{https://github.com/sybila/biodivine-boolean-models}.
 We here tested all the compared methods on this model repository.
 
@@ -1233,7 +1234,7 @@ We here tested all the compared methods on this model repository.
 		]
 		coordinates {
 			(0.5, 133)(1, 134)(2, 134)(5, 134)(10, 134)(20, 134)(50, 134)(100, 134)(180, 134)
-		}; \addlegendentry{\texttt{maxSAT}}
+		}; \addlegendentry{\texttt{SAT}}
 		
 %		\addplot[
 %			smooth,
@@ -1323,7 +1324,7 @@ We here tested all the compared methods on this model repository.
 		]
 		coordinates {
 			(0.5, 191)(1, 204)(2, 208)(5, 210)(10, 210)(20, 210)(50, 210)(100, 210)(180, 210)
-		}; \addlegendentry{\texttt{maxSAT}}
+		}; \addlegendentry{\texttt{SAT}}
 		
 		%		\addplot[
 		%			smooth,
@@ -1365,26 +1366,32 @@ We here tested all the compared methods on this model repository.
 	\label{fig:BBM_cumul}
 \end{figure}
 
-Table~\ref{tab:bbm_repo} shows the experimental results on the 211 real-world models from the \texttt{BBM} repository.
-Column 2 expresses the numbers of failures (i.e., did not finish the computation within a time limit of three minutes) of each method.
-For the case of \texttt{bioLQM}, we only considered the models that have at most 1000 minimal trap spaces.
-The number of such models is 134 (per all 211 models) and is denoted inside the parentheses.
-For the case of \texttt{mpbn}, we only considered the models that are locally-monotonic.
-The number of such models is 187 (per all 211 models) and is denoted inside the parentheses.
-Columns 3-5 express the average running time (in seconds) of each method for the models having at most 1000 minimal trap spaces, the locally-monotonic models, and all the models, respectively.
-Note that when computing the average running time, if the running time exceeds 180s, it is considered as 180s.
-From the results shown in Table~\ref{tab:bbm_repo}, we reported several observations as follows.
+Figure~\ref{fig:BBM_cumul} (above) shows cumulative numbers of the \texttt{BBM} models that have less than 1000 minimal trap spaces solved by the competing methods with respect to enumerating the first 1000 minimal trap spaces.
+The number of such models is 134 (per all 211 models), and 15 of them are non-locally-monotonic.
+We can first see that \dots
+
+
+Figure~\ref{fig:BBM_cumul} (below) shows cumulative numbers of the \texttt{BBM} models solved by the competing methods (except \texttt{bioLQM}) with respect to enumerating the first 1000 minimal trap spaces. \dots
+
+%Table~\ref{tab:bbm_repo} shows the experimental results on the 211 real-world models from the \texttt{BBM} repository.
+%Column 2 expresses the numbers of failures (i.e., did not finish the computation within a time limit of three minutes) of each method.
+%For the case of \texttt{bioLQM}, we only considered the models that have at most 1000 minimal trap spaces.
+%The number of such models is 134 (per all 211 models) and is denoted inside the parentheses.
+%For the case of \texttt{mpbn}, we only considered the models that are locally-monotonic.
+%The number of such models is 187 (per all 211 models) and is denoted inside the parentheses.
+%Columns 3-5 express the average running time (in seconds) of each method for the models having at most 1000 minimal trap spaces, the locally-monotonic models, and all the models, respectively.
+%Note that when computing the average running time, if the running time exceeds 180s, it is considered as 180s.
+%From the results shown in Table~\ref{tab:bbm_repo}, we reported several observations as follows.
 
 
 \subsection{Selected models}
 
-We used a set of real-world Boolean networks lying in various scales collected from numerous bibliographic sources.
-Most of these models are quite big (in size), complex (i.e., having high average in-degree, which is related to the number of prime-implicants) and have never been fully analyzed.
+We used a set of real-world Boolean networks lying in various scales collected from numerous bibliographic sources in the literature.
+Most of these models are quite big (in size), complex (i.e., having high average in-degree, which is related to the number of prime-implicants), and have never been fully analyzed.
 Note that these models are not included in the \texttt{PyBoolNet} and \texttt{BBM} repositories.
 We then applied \texttt{bioLQM}, \texttt{PyBoolNet}, \texttt{mpbn}, and the four variants of \texttt{Trappist} to computing minimal trap spaces of these real-world models.
 Table~\ref{tab:result_real} shows the obtained experimental results.
-``DNF'' means that the method did not finish the computation (stopping at the first 1000 minimal trap spaces) within the timeout of two minutes.
-%In the case of \texttt{bioLQM}, ``N/A'' means that the number of all minimal trap spaces of the model is larger than 1000 and we did not recorded the running time of \texttt{bioLQM} because it always requires to compute all minimal trap spaces.
+``DNF'' means that the method did not finish the computation (stopping at the first 1000 minimal trap spaces) within the time limit of three minutes.
 A number in bold indicates a ratio greater than or equal to 10 compared to the best result.
 The remaining notations are similar to those in Table~\ref{tab:pyboolnet_repo}.
 Hereafter, we analyze in detail the results with respect to minimal trap space computation.
@@ -1443,11 +1450,12 @@ Hereafter, we analyze in detail the results with respect to minimal trap space c
   }
 \end{table}
 
-The first observation is that for 26 of the 33 models (more than 78\%), \texttt{mpbn} did not give any answer because it recognized that these models as not locally-monotonic.
-For 6 of the 33 models where \texttt{mpbn} returned the answers, \texttt{mpbn} and \texttt{Trappist} are comparable in computation time, though surprisingly \texttt{mpbn} appears a bit slower on average.
-Note however that \texttt{mpbn} was the only tool to provide a solution for the SN-5 model, thus confirming that if the activation function is in the right form, not having to compute the inactivation function's disjunctive normal form can render a difficult problem tractable.
+The first observation is that for 11 of the 32 models (more than 34\%), \texttt{mpbn} did not give any answer because these models as not locally-monotonic.
+For 22 of the 32 models where \texttt{mpbn} returned the answers, \texttt{mpbn} and \texttt{Trappist} are comparable in computation time, though surprisingly \texttt{mpbn} appears quite slower on average than the best variant of \texttt{Trappist}.
+In particular, for the Rho-GTPases model, \texttt{mpbn} is \(577\times\) slower than the best variant of \texttt{Trappist}.
+%Note however that \texttt{mpbn} was the only tool to provide a solution for the SN-5 model, thus confirming that if the activation function is in the right form, not having to compute the inactivation function's disjunctive normal form can render a difficult problem tractable.
 However, since \texttt{mbpn} can handle only locally-monotonic models and \texttt{Trappist} can handle general models, it is difficult to further compare between them.
-Hence, we focus on only comparisons between \texttt{PyBoolNet} and \texttt{Trappist} in the following observations.
+Hence, we focus on only comparisons among \texttt{bioLQM}, \texttt{PyBoolNet}, and \texttt{Trappist} in the following observations.
 
 The second observation is that the proposed method vastly outperforms \texttt{PyBoolNet} in computational time, on each and every model, and sometimes with orders of magnitude of difference (e.g., for most models in the 100--1000 nodes size range).
 Note that for all the cases where \texttt{PyBoolNet} did not manage to finish before the timeout, as marked by ``DNF'' in Table~\ref{tab:result_real}, the timeout occurred during the computation of the prime-implicants.
