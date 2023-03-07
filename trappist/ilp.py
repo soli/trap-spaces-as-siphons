@@ -16,6 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
+from asyncio import run
 from dataclasses import asdict
 from datetime import timedelta
 from time import perf_counter
@@ -73,7 +74,7 @@ def solve_ilp(
         max_output == 0 or nsol < max_output
     ):
         start = perf_counter()
-        result = inst.solve(timeout=remaining, processes=nprocs)
+        result = run(inst.solve_async(timeout=remaining, processes=nprocs))
         end = perf_counter()
         if remaining is not None:
             remaining -= timedelta(seconds=(end - start))
