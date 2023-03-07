@@ -16,7 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from asyncio import run
+from asyncio import run, get_running_loop
 from dataclasses import asdict
 from datetime import timedelta
 from time import perf_counter
@@ -28,6 +28,7 @@ import networkx as nx  # TODO maybe replace with lists/dicts
 
 from .cp import cp_to_bool, zincify
 
+from concurrent.futures import ThreadPoolExecutor
 
 def create_ilp(petri_net: nx.DiGraph) -> Model:
     """Create the ILP program for the max conflict-free siphons of petri net."""
@@ -74,7 +75,14 @@ def solve_ilp(
         max_output == 0 or nsol < max_output
     ):
         start = perf_counter()
-        result = run(inst.solve_async(timeout=remaining, processes=nprocs))
+        #result = run(inst.solve_async(timeout=remaining, processes=nprocs))
+        try:
+            get_running_loop()
+            with ThreadPoolExecutor(1) as pool:
+                result = pool.submit(lambda: run(inst.solve_async(timeout=remaining, processes=nprocs))).result()
+        except RuntimeError:
+            result = run(inst.solve_async(timeout=remaining, processes=nprocs))
+
         end = perf_counter()
         if remaining is not None:
             remaining -= timedelta(seconds=(end - start))
