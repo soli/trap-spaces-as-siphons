@@ -52,7 +52,7 @@ def create_ilp(petri_net: nx.DiGraph) -> Model:
                 if zsucc not in or_preds:  # optimize obvious tautologies
                     or_string = " + ".join(or_preds)
                     model.add_string(f"constraint {zsucc} <= {or_string};\n")
-    model.add_string(f"solve maximize {' + '.join(variables)};\n")
+    model.add_string(f"solve maximize ({' + '.join(variables)});\n")
     return model
 
 
@@ -76,6 +76,7 @@ def solve_ilp(
     ):
         start = perf_counter()
         #result = run(inst.solve_async(timeout=remaining, processes=nprocs))
+        
         try:
             get_running_loop()
             with ThreadPoolExecutor(1) as pool:
@@ -96,7 +97,8 @@ def solve_ilp(
             # non subset constrait for maximality
             non_sub = []
             for k, v in d.items():
-                if not v:
+                #if not v:
+                if not v and k != "objective":
                     non_sub.append(k)
             or_string = " + ".join(non_sub)
             model.add_string(f"constraint 1 <= {or_string};")
