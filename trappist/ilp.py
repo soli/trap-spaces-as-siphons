@@ -16,7 +16,8 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
-from asyncio import run, get_running_loop
+from asyncio import get_running_loop, run
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import asdict
 from datetime import timedelta
 from time import perf_counter
@@ -28,7 +29,6 @@ import networkx as nx  # TODO maybe replace with lists/dicts
 
 from .cp import cp_to_bool, zincify
 
-from concurrent.futures import ThreadPoolExecutor
 
 def create_ilp(petri_net: nx.DiGraph) -> Model:
     """Create the ILP program for the max conflict-free siphons of petri net."""
@@ -75,14 +75,14 @@ def solve_ilp(
         max_output == 0 or nsol < max_output
     ):
         start = perf_counter()
-        #result = run(inst.solve_async(timeout=remaining, processes=nprocs))
-        
+
         try:
             get_running_loop()
             with ThreadPoolExecutor(1) as pool:
-                result = pool.submit(lambda: run(inst.solve_async(timeout=remaining, processes=nprocs))).result()
+                coroutine = inst.solve_async(timeout=remaining, processes=nprocs)
+                result = pool.submit(lambda: run(coroutine)).result()  # noqa: B023
         except RuntimeError:
-            result = run(inst.solve_async(timeout=remaining, processes=nprocs))
+            result = inst.solve(timeout=remaining, processes=nprocs)
 
         end = perf_counter()
         if remaining is not None:
@@ -97,7 +97,6 @@ def solve_ilp(
             # non subset constrait for maximality
             non_sub = []
             for k, v in d.items():
-                #if not v:
                 if not v and k != "objective":
                     non_sub.append(k)
             or_string = " + ".join(non_sub)
