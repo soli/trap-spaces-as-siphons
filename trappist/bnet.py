@@ -54,7 +54,7 @@ def read_bnet(fileobj: IO, method: str) -> nx.DiGraph:
     net = nx.DiGraph()
 
     # big bnets…
-    setrecursionlimit(2048)
+    setrecursionlimit(204800)
     for line in fileobj.readlines():
         if line.startswith("#") or line.startswith("targets, factors"):
             continue
