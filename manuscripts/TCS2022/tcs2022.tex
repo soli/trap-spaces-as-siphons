@@ -812,9 +812,9 @@ Since we used the MiniZinc framework to interface with the CP solver, it was sim
 \subsection{Computation of special types of trap spaces}%
 \label{subsec:computation_special_ts}
 
-In the field of systems biology, biologists may want to compute more special types of trap spaces beyond minimal trap spaces~\cite{klarner2017pyboolnet}, which also play crucial roles in analysis of Boolean networks.
+In the field of systems biology, biologists may want to compute more special types of trap spaces beyond minimal trap spaces~\cite{klarner2017pyboolnet}, which also play crucial roles in analysis and control of Boolean networks~\cite{cifuentes2020control,Rozum2021}.
 We shall show that our proposed methods can be easily adjusted to compute popular types of trap spaces.
-We illustrate the adjustments via the ASP-based method (see Subsection~\ref{subsec:computation_asp}), but these adjustments are completely applicable for other approaches such as MaxSAT, CP, and ILP\@.
+We illustrate the adjustments via the ASP-based method (see Subsection~\ref{subsec:computation_asp}) because ASP is declarative by nature, but these adjustments are completely applicable for other approaches such as MaxSAT, CP, and ILP\@.
 
 First, the work by~\cite{Rozum2021} uses the concept of stable motifs to build the succession diagram of a Boolean network, a summary of the decisions in the network dynamics that lead to successively more restrictive nested stable motifs.
 The succession diagram is useful for control and decision making on this Boolean network.
@@ -839,6 +839,9 @@ that ensures that every answer set of \(\mathcal{L}\) cannot be empty.
 Then a set-inclusion minimal answer set of \(\mathcal{L}\) is equivalent to a minimal conflict-free siphon of \(\mathcal{P}\), thus a maximal trap space of \(\mathcal{N}\).
 
 Second, we consider fixed points in Boolean networks.
+To date, the analysis of the fixed points of a Boolean network remains
+a very useful tool in understanding the behavior of complex biological models not only due to the fact that in some cases the full computation of complex attractors remains intractable, but also because for many biological systems, the expected long-term behavior is not cyclic~\cite{corral2021interplay}.
+Furthermore, the fixed point computation is also the crucial starting point for several state-of-the-art methods for computing complex attractors of Boolean networks~\cite{DBLP:conf/bcb/TrinhHB22}.
 Let \(s\) be a fixed point of a Boolean network \(\mathcal{N}\).
 We have a subspace \(m\) corresponding to \(s\) as follows: \(\forall v \in V, m(v) = s(v)\), i.e., all nodes are fixed in \(m\).
 Clearly, \(s\) is a trap set of \(\mathcal{N}\) regardless of the update scheme.
@@ -857,6 +860,7 @@ Note that we can also build another ASP characterizing all fixed points of \(\ma
 This approach may give a more compact ASP\@.
 
 Third, we consider the trap spaces intersecting a given subspace \(m^{*}\) of a Boolean network.
+Such trap spaces are used in the trap space-based control method~\cite{cifuentes2020control}.
 A trap space \(m\) intersects \(m^{*}\) if and only if \(S_{\mathcal{N}}[m] \cap S_{\mathcal{N}}[m^{*}] \neq \emptyset\).
 It follows that for every \(v\), if \(m^{*}(v) = 0\) then \(m(v) = 0\) or \(m(v) = \star\), if \(m^{*}(v) = 1\) then \(m(v) = 1\) or \(m(v) = \star\).
 For the former case, we add to \(\mathcal{L}\) the ASP rule
@@ -872,6 +876,7 @@ that ensures that \(m(v)\) cannot be 0.
 Now \(\mathcal{L}\) characterizes all trap spaces that intersect \(m^{*}\).
 
 Finally, we consider the trap spaces that are inside a given subspace \(m^{*}\) of a Boolean network.
+Such trap spaces are used in the iterative procedure of building the succession diagram of a Boolean network~\cite{Rozum2021}, which is hierarchical.
 We first adjust \(\mathcal{L}\) to characterize all such trap spaces.
 A trap space \(m\) is inside \(m^{*}\) if and only if \(m(v) = m^{*}(v)\) for every \(v \in D_{m^{*}}\).
 If \(m^{*}(v) = 0\), we add to \(\mathcal{L}\) the ASP rule
