@@ -514,7 +514,7 @@ Hereafter, we formally prove that a (maximal) conflict-free siphon is equivalent
   Assume that \(S\) is not a siphon of \(\mathcal{P}\).
   Then, there is a transition \(t \in T\) such that \(S \cap \succ(t) \neq \emptyset\) but \(S \cap \pred(t) = \emptyset\).
   This implies that there is a place \(p \in S\) such that \(p \in \succ(t)\) but \(p \not \in \pred(t)\).
-  Let \(v\) be the corresponding node in \(\mathcal{N}\) of \(p\).
+  Let \(v\) be the node in \(\mathcal{N}\) corresponding to \(p\).
   By the characteristics of the encoding~\cite{chaouiya2004qualitative}, there is a directional arc from \(t\) to \(p\) and a directional arc from the complementary place of \(p\) to \(t\).
   Without loss of generality, we assume that \(p = p_v\), then there is a directional arc from \(t\) to \(p_v\) and a directional arc from \(\overline{p}_v\) to \(t\).
   %In addition, there is also no arc or a bidirectional arc between \(t\) and another place rather than \(p_v\) and \(\overline{p}_v\).
@@ -557,10 +557,10 @@ Hereafter, we formally prove that a (maximal) conflict-free siphon is equivalent
   From (*) and (**), we can conclude the proof.
 \end{proof}
 
-From the proof of Theorem~\ref{theo:ts_2_sp}, we can see that this theorem still holds for any update scheme of the Boolean network.
+From the proof of Theorem~\ref{theo:ts_2_sp}, we can see that the theorem holds for any update scheme associated to the Boolean network.
 Since the Petri net encoding of a Boolean network is independent of its update scheme and siphons are a static property of a Petri net, we can imply that trap spaces of a Boolean network are independent of its update scheme.
 Note that the original proof for this property of trap spaces (see Theorem 1 of~\cite{klarner2015computing}) only considers the two popular update schemes (i.e., synchronous and fully asynchronous).
-This exhibits the very first theoretical application of the connection between trap spaces of Boolean networks and siphons of Petri nets.
+Theorem~\ref{theo:ts_2_sp} exhibits the very first theoretical application of the connection between trap spaces of Boolean networks and siphons of Petri nets.
 
 \begin{theorem}%
 \label{theo:min_ts_2_max_sp}
@@ -594,6 +594,7 @@ This exhibits the very first theoretical application of the connection between t
 
 We here showcase a theoretical application of the connection between trap spaces in Boolean networks and conflict-free siphons in Petri nets.
 We use it to prove a property of minimal trap spaces, which has surprisingly not been formally proved.
+\sylvain{I'm not sure how much we should insist on the ``surprise''. The proof directly on trap-spaces is quite obvious and follows the same structure: the intersection would be a trap-space, and smaller than the original ones, hence a contradiction\ldots}
 Specifically, all minimal trap spaces of a Boolean network are mutually disjoint.
 This property is important because we can use it to approximate the set of attractors of the Boolean network under any update scheme~\cite{klarner2015computing} or to compute exactly the set of complex attractors of the Boolean network under the fully asynchronous update scheme~\cite{DBLP:conf/bcb/TrinhHB22}.
 
@@ -631,7 +632,7 @@ This property is important because we can use it to approximate the set of attra
 
 \end{proof}
 
-A naturally computational application of Theorem~\ref{theo:ts_2_sp} is that we can efficiently decide whether a subspace \(m\) is a trap space.
+A natural computational application of Theorem~\ref{theo:ts_2_sp} is that we can efficiently decide whether a subspace \(m\) is a trap space.
 In \texttt{PyBoolNet}~\cite{klarner2017pyboolnet}, this is checked by using the percolation on the prime-implicants of the Boolean functions.
 As we have mentioned at the beginning of this article, the computation of prime-implicants is a demanding task for complex Boolean networks, even is sometimes intractable.
 Hence, the checking method in~\cite{klarner2017pyboolnet} shows its limitations.
@@ -643,9 +644,9 @@ In addition, the time complexity of the above checking method is quadratic in th
 Furthermore, by Theorem~\ref{theo:min_ts_2_max_sp}, we can reduce the problem of computing all minimal trap spaces of a Boolean network to the problem of computing all maximal conflict-free siphons of its Petri net encoding.
 Note that in the case of special types of trap spaces (e.g., fixed points), this can be put in regard to special types of siphons in Petri nets.
 See Subsection~\ref{subsec:computation_special_ts} for more discussions about many special types of trap spaces.
-It might actually be possible to generalize our result to any 1-safe place-complementary Petri net to define a notion of trap spaces that might be useful for the analysis of Petri nets, but this is out of the scope of this present article.
+It might actually be possible to generalize our result to any 1-safe place-complementary Petri net to define a notion of trap spaces that might be useful for the analysis of Petri nets, but this is out of the scope of the present article.
 
-It is noted that there are no existing methods specifically designed for computing maximal conflict-free siphons (even maximal siphons) of a Petri net.
+Note that there are no existing methods specifically designed for computing maximal conflict-free siphons (even maximal siphons) of a Petri net.
 The reason might be that researchers mainly focus on minimal generic siphons~\cite{DBLP:journals/isci/LiuB16} in the field of Petri nets.
 Hence, we here propose several methods for computing maximal conflict-free siphons of a Petri net.
 The details of the proposed methods shall be given in the next section.
