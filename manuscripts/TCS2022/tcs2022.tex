@@ -57,6 +57,12 @@
 \newcommand{\belaid}[1]{\textcolor{blue}{#1}}
 \newcommand{\sylvain}[1]{\textcolor{teal}{#1}}
 
+\usepackage{amsmath}
+\newcommand{\IN}{\mathit{IN}}
+\DeclareMathOperator{\pred}{pred}
+\let\succ\relax
+\DeclareMathOperator{\succ}{succ}
+
 \journal{Theoretical Computer Science}
 
 \begin{document}
@@ -164,7 +170,7 @@ We then demonstrate its efficiency and compare it to the state-of-the-art method
 %% PACS codes here, in the form: \PACS code \sep code
 
 %% MSC codes here, in the form: \MSC code \sep code
-%% or \MSC[2008] code \sep code (2000 is the default)
+%% or \MSC[2008] code \sep code 2000 is the default
 
 Logical model \sep Boolean network \sep Trap space \sep Attractor computation \sep Petri net \sep Siphon \sep Systems biology
 \end{keyword}
@@ -193,7 +199,7 @@ However, this method is only applicable for \emph{locally-monotonic} Boolean net
 In addition, the \texttt{bioLQM} platform also provides another method using Binary Decision Diagrams (BDDs) in \url{http://colomoto.org/biolqm/doc/tools-trapspace.html}.
 This method avoids the prime-implicants computation as it characterizes the set of generic trap spaces of a Boolean network by a BDD, then filters this set to get the set of all minimal trap spaces.
 By this approach, it requires the computation of all solutions, whereas the ASP-based methods~\cite{klarner2015computing,Paulev2020} can start enumerating them as they are found.
-Moreover, the main issue with the BDD-based method is that the number of generic trap spaces of a Boolean network may be extremely larger than the number of minimal trap spaces of this Boolean network.
+Moreover, the main issue with the BDD-based method is that the number of generic trap spaces of a Boolean network may be extremely larger than its number of minimal trap spaces.
 This issue limits the efficiency of the BDD-based method.
 The study~\cite{DBLP:journals/tcs/NoualRS13} highlights the need for non-locally-monotonic Boolean networks in both biological and theoretical aspects.
 Hence, it is still necessary to develop efficient methods for computing minimal trap spaces of large-scale general Boolean networks.
@@ -206,7 +212,7 @@ In this article we explore and prove for the first time a connection between tra
 Not only having important theoretical applications in studying properties of trap spaces in Boolean networks, the connection has important practical applications in the trap space computation.
 Specifically, based on the connection, we propose an alternative approach to compute minimal trap spaces, and hence complex attractors, of a general Boolean network.
 It replaces the need for prime-implicants by a completely different technique, namely the enumeration of maximal siphons in the Petri net encoding of the original model.
-We then demonstrate its efficiency and compare it to the state-of-the-art methods for computing minimal trap spaces in Boolean networks on many real-world models from various sources in the literature and randomly generated models.
+We then demonstrate its efficiency and compare it to the state-of-the-art methods for computing minimal trap spaces of Boolean networks on many real-world models from various sources in the literature and on randomly generated models.
 
 %After recalling several technical preliminaries (Section~\ref{sec:Preliminaries}), we expose the concrete need for such a method and detail its implementation using Answer Set Programming (Section~\ref{sec:Computation}).
 
@@ -251,7 +257,7 @@ We shall briefly recall here some preliminaries on Boolean networks related to t
     We use \(v_i\) to denote both the node \(v_i\) and its associated Boolean variable.
 
     \item \(F = \{f_1, \dots, f_n\}\) is the set of update functions.
-    Each function \(f_i\) is associated with node \(v_i\) and satisfies \(f_i \colon \mathbb{B}^{\vert IN(v_i)\vert} \mapsto \mathbb{B}\) where \(\mathbb{B} = \{0, 1\}\) and \(IN(v_i)\) denotes the set of input nodes of \(v_i\).
+    Each function \(f_i\) is associated with node \(v_i\) and satisfies \(f_i \colon \mathbb{B}^{\vert \IN(v_i)\vert} \mapsto \mathbb{B}\) where \(\mathbb{B} = \{0, 1\}\) and \(\IN(v_i)\) denotes the set of input nodes of \(v_i\).
     Note that a node \(v_i \in V\) is called a \emph{source} node if and only if \(f_{i} = v_i\).
   \end{itemize}
 
@@ -263,25 +269,30 @@ Otherwise, this model is said to be non-locally-monotonic.
 
 A state \(v \in \mathbb{B}^{n}\) is as a mapping \(v \colon V \mapsto \mathbb{B}\) that assigns either 0 (inactive) or 1 (active) to each node.
 We denote the set of all possible states of a Boolean network \(\mathcal{N}\) by \(\mathcal{S}_{\mathcal{N}} = \mathbb{B}^n\).
-At each time step \(t\), node \(v_i\) can update its state by
-\[v_i(t + 1) = f_i(v(t))\]
-where \(v(t)\) is the state of \(\mathcal{N}\) at time \(t\) and \(v_i(t + 1)\) is the state of node \(v_i\) at time \(t + 1\).
-Note that for simplicity, we write \(f_i(v(t))\) even \(IN(v_i) \subset V\) (i.e., \(IN(v_i)\) does not contain some nodes of \(V\)).
-An update scheme of a Boolean network specifies the way that the nodes update their states through time evolution~\cite{thomas1991regulatory}.
+At each time step \(t\), node \(v_i\) can, depending on the update scheme, update its state by
+\[v_i(t + 1) =
+  \begin{cases}
+    &f_i(v(t))\\
+    \text{or} &v(t)
+  \end{cases}
+\]
+where \(v(t)\) is the state of \(\mathcal{N}\) at time \(t\). % and \(v_i(t + 1)\) is the state of node \(v_i\) at time \(t + 1\).
+Note that for simplicity, we write \(f_i(v(t))\) even if \(\IN(v_i) \subsetneq V\) (i.e., \(\IN(v_i)\) does not contain some nodes of \(V\)).
+An update scheme of a Boolean network specifies which nodes update their states, as defined above, through time evolution~\cite{thomas1991regulatory}.
 Following the update scheme, the Boolean network transits from a state to another state (possibly identical).
 This transition is called the \emph{state transition} and denoted by \(\rightarrow \subseteq \mathcal{S}_{\mathcal{N}} \times \mathcal{S}_{\mathcal{N}}\).
 Then the dynamics of \(\mathcal{N}\) is captured by the directed graph \((\mathcal{S}_{\mathcal{N}}, \rightarrow)\) called the State Transition Graph (STG).
-There are two main types of update schemes~\cite{thomas1991regulatory}: synchronous, where all the nodes are update simultaneously, and fully asynchronous, where only one node is nondeterministically selected to be updated.
+There are many different update schemes, but the two main types~\cite{thomas1991regulatory} are: synchronous, where all the nodes are update simultaneously, and fully asynchronous, where only one node is selected to be updated.
 
 \subsection{Traps spaces}
 
 We recall here some definitions from~\cite{klarner2015computing} for the introduction of \emph{trap spaces}.
 Minimal trap spaces prove to be a very good approximation of the attractors of a Boolean network under asynchronous update schemes and have become the \emph{de facto} standard way to analyze models of a few tens of \emph{genes}~\cite{klarner2017pyboolnet,cifuentes2020control}.
 
-An non-empty set \(T \subseteq \mathcal{S}_{\mathcal{N}}\) is a trap set with respect to \(\rightarrow\) if for every \(x \in T\) and \(y \in S\) with \(x \rightarrow y\) it holds that \(y \in T\)~\cite{klarner2015computing}.
+A non-empty set \(T \subseteq \mathcal{S}_{\mathcal{N}}\) is a trap set with respect to \(\rightarrow\) if for every \(x \in T\) and \(y \in S\) with \(x \rightarrow y\) it holds that \(y \in T\)~\cite{klarner2015computing}.
 An attractor of \(\mathcal{N}\) with respect to \(\rightarrow\) can be defined as an inclusion-wise minimal trap set of \((\mathcal{S}_{\mathcal{N}}, \rightarrow)\).
 An attractor can be also seen as a terminal strongly connected component of \((\mathcal{S}_{\mathcal{N}}, \rightarrow)\)~\cite{chatain2014characterization}.
-An attractor of size 1 is called a fixed point, otherwise a cyclic attractor~\cite{klarner2015computing}.
+An attractor of size 1 is called a fixed point, otherwise it is called a cyclic or complex attractor~\cite{klarner2015computing}.
 
 A subspace \(m\) of a Boolean network \(\mathcal{N} = (V, F)\) is a mapping \(m \colon V \mapsto \mathbb{B} \cup \{\star\}\).
 \(m(v_i) \in \mathbb{B}\) means that the value of \(v_i\) is fixed in \(m\) and \(v_i\) is called a fixed variable.
@@ -290,7 +301,7 @@ We denote \(D_m\) the set of all fixed variables of \(m\).
 A subspace \(m\) is equivalent to a set of states:
 \[
 \mathcal{S}_{\mathcal{N}}[m] := \{s \in \mathcal{S}_{\mathcal{N}} \mid \forall v \in D_m \colon s(v) = m(v)\}.
-\] For example, \(m = \star\star1\) (for simplicity, we write subspaces likes states) means that \(D_m = \{v_3\}, m(v_3) = 1\), and it is equivalent to the set of states \(\{001, 011, 101, 111\}\).
+\] For example, \(m = \star\star1\) (for simplicity, we shall write subspaces likes states as a sequence of values) means that \(D_m = \{v_3\}, m(v_3) = 1\), and it is equivalent to the set of states \(\{001, 011, 101, 111\}\).
 We denote \(\mathcal{S}_{\mathcal{N}}^{\star} = (\mathbb{B} \cup \{\star\})^n\) the set of all possible subspaces of \(\mathcal{N}\).
 Note that \(\left\vert\mathcal{S}_{\mathcal{N}}^{\star}\right\vert = 3^n\) and \(S_{\mathcal{N}} \subset \mathcal{S}_{\mathcal{N}}^{\star}\)~\cite{klarner2015computing}.
 
@@ -300,9 +311,9 @@ Then, we define a partial order \(<\) on \(\mathcal{S}_{\mathcal{N}}^{\star}\) a
 Consequently, a trap space \(m\) is minimal if and only if there is no trap space \(m' \in \mathcal{S}_{\mathcal{N}}^{\star}\) such that \(m' < m\).
 
 For example, let us consider the Boolean network shown in Example~\ref{example:BN}.
-Figure~\ref{fig:stg} shows the dynamics of this model under the fully asynchronous update (i.e., only one node is nondeterministically selected in order to be updated at each time step).
-The model has all two trap spaces, \(m_1 = 11\) and \(m_2 = \star\star\).
-Since \(m_1 < m_2\), \(m_1\) is a minimal trap space of the Boolean network.
+Figure~\ref{fig:stg} shows the dynamics of this model under the fully asynchronous update (i.e., only one node is updated at each time step).
+The model has all trap spaces, \(m_1 = 11\) and \(m_2 = \star\star\).
+Since \(m_1 < m_2\), \(m_1\) is the only minimal trap space of the Boolean network.
 
 \begin{example}
 We give a Boolean network \(\mathcal{N} = (V, F)\), where \(V = (x_1, x_2)\) and \(F = (f_1, f_2)\) with \(f_1 = (x_1 \land x_2) \lor (\neg x_1 \land \neg x_2), f_2 = (x_1 \land x_2) \lor (\neg x_1 \land \neg x_2)\). Herein, \(\land\), \(\lor\), and \(\neg\) denote the conjunction, disjunction, and negation logical operators, respectively.\label{example:BN}
@@ -385,12 +396,12 @@ We give a Boolean network \(\mathcal{N} = (V, F)\), where \(V = (x_1, x_2)\) and
 A \emph{marking} for a Petri net is a mapping \(m : P \mapsto \mathbb{N}\) that assigns a number of tokens to each place.
 A place \(p\) is marked by a marking \(m\) if and only if \(m(p) > 0\).
 Marking \(m\) can be seen as a subset of \(P\) that contains all marked places by \(m\).
-We shall write \(pred(x)\) (resp.\ \(succ(x)\)) to represent the set of vertices that have a (non-zero weighted) arc leading to (resp.\ coming from) \(x\).
+We shall write \(\pred(x)\) (resp.\ \(\succ(x)\)) to represent the set of vertices that have a (non-zero weighted) arc leading to (resp.\ coming from) \(x\).
 In this work, we consider a class of Petri nets called 1-safe Petri nets where every place has at most 1 token and all arcs are of weight 1.
 In this case, weights are implicitly omitted in the arcs of a Petri net.
-Then, a transition \(t \in T\) is \emph{enabled} at a marking \(m\) if and only if \(pred(t) \subseteq m\).
+Then, a transition \(t \in T\) is \emph{enabled} at a marking \(m\) if and only if \(\pred(t) \subseteq m\).
 A marking \(m\) is called a deadlock if there are no enabled transitions at \(m\).
-The firing of \(t\) leads to a new marking \(m'\) specified by \(m' = (m \backslash pred(t)) \cup succ(t)\).
+The firing of \(t\) leads to a new marking \(m'\) specified by \(m' = (m \backslash \pred(t)) \cup \succ(t)\).
 Note that when multiple transitions are enabled, we need to embed one firing scheme (similar to the update scheme of a Boolean network) to the Petri net.
 The classical firing scheme is that only one of the enabled transition is non-deterministically chosen to fire~\cite{Murata1989}.
 
@@ -423,13 +434,13 @@ This piece of software extracted from \texttt{GINsim}~\cite{chaouiya2012logical}
 It also accepts many other common formats for Boolean networks, notably the \verb|.bnet| files of the  BoolNet~\cite{mussel2010boolnet,klarner2017pyboolnet} tools.
 The conversion is executed as follows:
 
-\noindent{\small \verb|java -jar GINsim.jar -lqm <input.{sbml,bnet,zginml,...}> <output.pnml>|}
+{\small \verb|java -jar GINsim.jar -lqm <input.{sbml,bnet,...}> <output.pnml>|}
 
 Note that transforming a Boolean network defined by its functions into its Petri net encoding roughly relies on obtaining conditions for the activation and inactivation of the states. In~\cite{chaouiya2004qualitative} this took the form of the whole truth table of the Boolean functions, but as shown in Appendix 1 of~\cite{chatain2014characterization} computing Disjunctive Normal Forms (DNF) of each Boolean function is enough.
 Though this might appear quite computationally intensive it is important to remark first that contrary to the prime-implicants case, there is no need to find \emph{minimal} DNFs.
 One way to look at this is to consider that this amounts to a similar approach as that used in~\cite{DBLP:conf/ictai/ChevalierFPZ19} but with the encoding of both activation and inhibition functions as DNFs in order to take into account possible non-local-monotonicity.
 This does not change the worst-case-complexity (obtaining a single DNF being exponential) but might matter a lot in practice.
-As such, we will explore how this transformation, here using BDDs in \texttt{bioLQM} and directly in our tool using the \texttt{pyeda}\footnote{\url{https://pyeda.readthedocs.io/en/latest/}} library, and the one based on the most-permissive semantics compare in the Section~\ref{sec:eval} on evaluation.
+As such, we will explore how this transformation, here using BDDs in \texttt{bioLQM} or directly in our tool using the \texttt{pyeda}\footnote{\url{https://pyeda.readthedocs.io/en/latest/}} library, and the one based on the most-permissive semantics compare in the Section~\ref{sec:eval} on evaluation.
 
 
 \subsection{Siphons}
@@ -442,19 +453,19 @@ This corresponds to the idea that a siphon is a set of places that once unmarked
 \begin{definition}
 
   A \emph{siphon} of a Petri net \((P, T, W)\) is a set of places \(S\) such that:
-  \[\forall t\in T, S\cap succ(t)\not =\emptyset\Rightarrow S\cap pred(t)\not =\emptyset.\]
+  \[\forall t\in T, S\cap \succ(t)\not =\emptyset\Rightarrow S\cap \pred(t)\not =\emptyset.\]
   Note that \(\emptyset\) is trivially a siphon.
 
 \end{definition}
 
-Let \(pred(S) := \bigcup_{s \in S}pred(s)\) and \(succ(S) := \bigcup_{s \in S}succ(s)\).
-If \(S = \emptyset\), then conventionally \(pred(S) = succ(S) = \emptyset\).
+Let \(\pred(S) := \bigcup_{s \in S}\pred(s)\) and \(\succ(S) := \bigcup_{s \in S}\succ(s)\).
+If \(S = \emptyset\), then conventionally \(\pred(S) = \succ(S) = \emptyset\).
 We have an important property on siphons~\cite{DBLP:journals/isci/LiuB16} as follows.
 
 \begin{proposition}%
 \label{prop:siphon_set}
   Let \(S\) be a siphon of a Petri net \((P, T, W)\).
-  Then \(pred(S) \subseteq succ(S)\).
+  Then \(\pred(S) \subseteq \succ(S)\).
 
 \end{proposition}
 
@@ -501,14 +512,14 @@ Hereafter, we formally prove that a (maximal) conflict-free siphon is equivalent
   If \(D_m = \emptyset\), then \(S = \emptyset\) is trivially a conflict-free siphon of \(\mathcal{P}\).
   Thus, we consider the case that \(D_m \neq \emptyset\) (resp. \(S \neq \emptyset\)).
   Assume that \(S\) is not a siphon of \(\mathcal{P}\).
-  Then, there is a transition \(t \in T\) such that \(S \cap succ(t) \neq \emptyset\) but \(S \cap pred(t) = \emptyset\).
-  This implies that there is a place \(p \in S\) such that \(p \in succ(t)\) but \(p \not \in pred(t)\).
+  Then, there is a transition \(t \in T\) such that \(S \cap \succ(t) \neq \emptyset\) but \(S \cap \pred(t) = \emptyset\).
+  This implies that there is a place \(p \in S\) such that \(p \in \succ(t)\) but \(p \not \in \pred(t)\).
   Let \(v\) be the corresponding node in \(\mathcal{N}\) of \(p\).
   By the characteristics of the encoding~\cite{chaouiya2004qualitative}, there is a directional arc from \(t\) to \(p\) and a directional arc from the complementary place of \(p\) to \(t\).
   Without loss of generality, we assume that \(p = p_v\), then there is a directional arc from \(t\) to \(p_v\) and a directional arc from \(\overline{p}_v\) to \(t\).
   %In addition, there is also no arc or a bidirectional arc between \(t\) and another place rather than \(p_v\) and \(\overline{p}_v\).
-  We follow the following procedure to find a state \(s \in \mathcal{S}_{\mathcal{N}}[m]\) such that \(m_s(p') = 1, \forall p' \in pred(t)\) where \(m_s\) is the corresponding marking in \(\mathcal{P}\) of \(s\).
-  For every place \(p' \in pred(t)\), let \(p''\) be the complementary place of \(p'\) and \(v'\) be the corresponding node in \(\mathcal{N}\) of \(p'\) and \(p''\).
+  We follow the following procedure to find a state \(s \in \mathcal{S}_{\mathcal{N}}[m]\) such that \(m_s(p') = 1, \forall p' \in \pred(t)\) where \(m_s\) is the corresponding marking in \(\mathcal{P}\) of \(s\).
+  For every place \(p' \in \pred(t)\), let \(p''\) be the complementary place of \(p'\) and \(v'\) be the corresponding node in \(\mathcal{N}\) of \(p'\) and \(p''\).
   If \(p'' \not \in S\), then \(v' \not \in D_m\) and we can always set a Boolean value to \(s(v')\) such that \(s \in \mathcal{S}_{\mathcal{N}}[m]\) and \(m_s(p') = 1\).
   If \(p'' \in S\), then \(v' \in D_m\) and we set \(s(v') = m(v')\).
   In this case, if \(p' = p_{v'}\) then \(s(v') = m(v') = 1\) leading to \(m_s(p') = 1\), if \(p' = \overline{p}_{v'}\) then \(s(v') = m(v') = 0\) leading to \(m_s(p') = 1\).
@@ -625,7 +636,7 @@ In \texttt{PyBoolNet}~\cite{klarner2017pyboolnet}, this is checked by using the 
 As we have mentioned at the beginning of this article, the computation of prime-implicants is a demanding task for complex Boolean networks, even is sometimes intractable.
 Hence, the checking method in~\cite{klarner2017pyboolnet} shows its limitations.
 Instead, we can first compute the mirror \(S_m\) of \(m\) in the Petri net encoding.
-Then, by Proposition~\ref{prop:siphon_set} and Theorem~\ref{theo:ts_2_sp}, we can check if \(pred(S_m) \subseteq succ(S_m)\).
+Then, by Proposition~\ref{prop:siphon_set} and Theorem~\ref{theo:ts_2_sp}, we can check if \(\pred(S_m) \subseteq \succ(S_m)\).
 Note that the Petri net construction is less computationally demanding than the prime-implicant computation because it only requires computing generic (not prime) implicants of the Boolean functions~\cite{chatain2014characterization}.
 In addition, the time complexity of the above checking method is quadratic in the number of transitions of the Petri net in worst cases.
 
@@ -646,14 +657,14 @@ The details of the proposed methods shall be given in the next section.
 \label{subsec:siphon_characterization}
 
 First, we show the characterization of all conflict-free siphons of the encoded Petri net \(\mathcal{P} = (P, T, W)\).
-Suppose that \(S\) is a generic siphon of \(\mathcal{P}\). If a place \(p\) should belong to \(S\), then by Proposition~\ref{prop:siphon_set} all the transitions in \(pred(p)\) must belong to \(succ(S)\).
-A transition \(t\) belongs to \(succ(S)\) if and only if there is at least one place \(p'\) in \(S\) such that \(p' \in pred(t)\).
-Hence, for each transition \(t \in pred(p)\), we can state that
+Suppose that \(S\) is a generic siphon of \(\mathcal{P}\). If a place \(p\) should belong to \(S\), then by Proposition~\ref{prop:siphon_set} all the transitions in \(\pred(p)\) must belong to \(\succ(S)\).
+A transition \(t\) belongs to \(\succ(S)\) if and only if there is at least one place \(p'\) in \(S\) such that \(p' \in \pred(t)\).
+Hence, for each transition \(t \in \pred(p)\), we can state that
 \begin{equation}
 \label{eq:siphon}
-p \in S \Rightarrow \bigvee_{p' \in pred(t)}p' \in S.
+p \in S \Rightarrow \bigvee_{p' \in \pred(t)}p' \in S.
 \end{equation}
-The system of all the rules of the above form with respect to all pairs \((p, t)\) where \(p \in P, t \in T, t \in pred(p)\) fully characterizes all generic siphons of a Petri net and has been used with SAT solvers in~\cite{oanea2010new,nabli2016enumerating}.
+The system of all the rules of the above form with respect to all pairs \((p, t)\) where \(p \in P, t \in T, t \in \pred(p)\) fully characterizes all generic siphons of a Petri net and has been used with SAT solvers in~\cite{oanea2010new,nabli2016enumerating}.
 To make \(S\) to be a conflict-free siphon, we need to add to the system the rule
 \begin{equation}
 \label{eq:conflict}
@@ -673,7 +684,7 @@ The following Boolean Constraint Satisfaction Problem (CSP) directly derives fro
     \item \(R = P\), i.e., a variable is introduced for each place of \(\mathcal{P}\),
     \item \(D(p) = \mathbb{B}\) for all \(p \in R\), i.e., the variables are Boolean,
     \item \(C = \{\neg p_v \vee \neg \overline{p}_v = 1 \mid \forall v \in V\} \bigwedge
-\{(p = 1 \rightarrow \bigvee_{p' \in pred(t)}p' = 1) \mid p \in P, t \in pred(p)\}\).
+\{(p = 1 \rightarrow \bigvee_{p' \in \pred(t)}p' = 1) \mid p \in P, t \in \pred(p)\}\).
   \end{itemize}
 
 \end{definition}
@@ -719,7 +730,7 @@ We construct a MaxSAT problem with the following hard clauses:
 \]
 and
 \[
-  (\neg p \vee \bigvee_{p' \in pred(t)}p'), \forall p \in P, \forall t \in pred(p).
+  (\neg p \vee \bigvee_{p' \in \pred(t)}p'), \forall p \in P, \forall t \in \pred(p).
 \]
 We set a soft clause for each variable of the CSP and then use a ``minimal correction subset'' blocking strategy, which will ensure set-inclusion maximality of the solutions.
 This is what is implemented in \texttt{Trappist} using the \texttt{RC2} MaxSAT solver~\cite{DBLP:journals/jsat/IgnatievMM19} available through the \texttt{python-sat} package\footnote{\url{https://pysathq.github.io/docs/html/api/examples/rc2.html}}.
@@ -730,11 +741,11 @@ This is what is implemented in \texttt{Trappist} using the \texttt{RC2} MaxSAT s
 Another possible method is to translate the characterization shown in Subsection~\ref{subsec:siphon_characterization} into the ASP \(\mathcal{L}\) as follows.
 We introduce atom \verb|p-v| (resp. \verb|n-v|) to denote place \(p_v\) (resp. \(\overline{p}_v\)), \(\forall v \in V\).
 The set of all atoms in \(\mathcal{L}\) is given as \(\mathcal{A} = \bigcup_{v \in V}\{\verb|p-v|, \verb|n-v|\}\).
-For each pair \((p, t)\) where \(p \in P, t \in T, t \in pred(p)\), we translate the rule (\ref{eq:siphon}) into the ASP rule
+For each pair \((p, t)\) where \(p \in P, t \in T, t \in \pred(p)\), we translate the rule (\ref{eq:siphon}) into the ASP rule
 \[
 \verb|a_1; ... ; a_k :- a.|
 \]
-where \(\verb|a| \in \mathcal{A}\) is the atom representing place \(p\) and \(\{\verb|a_1|, \dots,\verb|a_k|\} \subseteq \mathcal{A}\) is the set of atoms representing places in \(pred(t)\). The rule (\ref{eq:conflict}) is translated into the ASP rule
+where \(\verb|a| \in \mathcal{A}\) is the atom representing place \(p\) and \(\{\verb|a_1|, \dots,\verb|a_k|\} \subseteq \mathcal{A}\) is the set of atoms representing places in \(\pred(t)\). The rule (\ref{eq:conflict}) is translated into the ASP rule
 \[\verb|:- p-v, n-v.|\]
 for each \(v \in V\).
 This ASP rule guarantees that two places representing the same node in \(\mathcal{N}\) never belong to the same siphon of \(\mathcal{P}\), representing the conflict-freeness.
@@ -763,11 +774,11 @@ By using this built-in option, we can compute all the set-inclusion maximal answ
 We first show how an Integer Linear Programming (ILP) \(\mathcal{I}\) can define a set of all conflict-free siphons of the encoded Petri net \(\mathcal{P}\).
 We introduce \emph{binary} variable \verb|p-v| (resp. \verb|n-v|) to denote place \(p_v\) (resp. \(\overline{p}_v\)), \(\forall v \in V\).
 The set of all binary variables in \(\mathcal{I}\) is \(\bigcup_{v \in V}\{\verb|p-v|, \verb|n-v|\}\).
-For each pair \((p, t)\) where \(p \in P, t \in T, t \in pred(p)\), we translate the rule (\ref{eq:siphon}) into the ILP inequality
+For each pair \((p, t)\) where \(p \in P, t \in T, t \in \pred(p)\), we translate the rule (\ref{eq:siphon}) into the ILP inequality
 \[
 \verb|a <= a_1 + ... + a_k|
 \]
-where \verb|a| is the binary variable representing place \(p\) and \{\verb|a_1|, \dots,\verb|a_k|\} is the set of binary variable representing places in \(pred(t)\).
+where \verb|a| is the binary variable representing place \(p\) and \{\verb|a_1|, \dots,\verb|a_k|\} is the set of binary variable representing places in \(\pred(t)\).
 The rule (\ref{eq:conflict}) is translated into the ILP inequality
 \[\verb|p-v + n-v <= 1|\]
 for each \(v \in V\).
