@@ -282,7 +282,7 @@ An update scheme of a Boolean network specifies which nodes update their states,
 Following the update scheme, the Boolean network transits from a state to another state (possibly identical).
 This transition is called the \emph{state transition} and denoted by \(\rightarrow \subseteq \mathcal{S}_{\mathcal{N}} \times \mathcal{S}_{\mathcal{N}}\).
 Then the dynamics of \(\mathcal{N}\) is captured by the directed graph \((\mathcal{S}_{\mathcal{N}}, \rightarrow)\) called the State Transition Graph (STG).
-There are many different update schemes, but the two main types~\cite{thomas1991regulatory} are: synchronous, where all the nodes are update simultaneously, and fully asynchronous, where only one node is selected to be updated.
+There are many different update schemes, but the two main types~\cite{thomas1991regulatory} are: synchronous, where all the nodes are update simultaneously, and fully asynchronous, where only one node is selected in random to be updated.
 
 \subsection{Traps spaces}
 
@@ -595,8 +595,11 @@ Theorem~\ref{theo:ts_2_sp} exhibits the very first theoretical application of th
 We here showcase a theoretical application of the connection between trap spaces in Boolean networks and conflict-free siphons in Petri nets.
 We use it to prove a property of minimal trap spaces, which has surprisingly not been formally proved.
 \sylvain{I'm not sure how much we should insist on the ``surprise''. The proof directly on trap-spaces is quite obvious and follows the same structure: the intersection would be a trap-space, and smaller than the original ones, hence a contradiction\ldots}
+\vangiang{I agree with you. I have added an argument for this.}
 Specifically, all minimal trap spaces of a Boolean network are mutually disjoint.
 This property is important because we can use it to approximate the set of attractors of the Boolean network under any update scheme~\cite{klarner2015computing} or to compute exactly the set of complex attractors of the Boolean network under the fully asynchronous update scheme~\cite{DBLP:conf/bcb/TrinhHB22}.
+Note that it would be not difficult to obtain a direct proof on trap spaces for this property, which follows the same structure as the proof on siphons.
+However, we emphasize here the potential of using the connection between Boolean networks and Petri nets to explore and prove properties of trap spaces in Boolean networks.
 
 \begin{theorem}%
 \label{theo:separation_min_ts}
@@ -1076,10 +1079,12 @@ This is also true for the Alzheimer model also mentioned in that same article an
 The current practice usually revolves then around fixing some source nodes to plausible values and reducing the model accordingly.
 While this approach makes sense, it relies on potentially arbitrary decisions, and \emph{hides away} critical modelling choices that were actually not part of the original Boolean network or even of the starting map.
 
-Using the ASP-based method presented in Section~\ref{subsec:computation_asp}, it is possible to obtain the first 1000 minimal trap spaces (including ones that contain more than one state) within 0.19s, which is much quicker than \texttt{mpbn}.
-Unfortunately since this was not available at the time, the analysis of the model remained very high-level and qualitative, instead of being able to use the rich information of computed minimal trap spaces.
+For the ``RA-apoptosis'' model, using the ASP-based method presented in Section~\ref{subsec:computation_asp}, it is possible to obtain the first 1000 minimal trap spaces (including ones that contain more than one state) within 0.19s, which is much quicker than \texttt{mpbn}.
+The needed time for the ``Alzheimer'' model is 0.79s.
+Unfortunately since this method was not available at the time, the analysis of the model remained very high-level and qualitative, instead of being able to use the rich information of computed minimal trap spaces.
 
 \sylvain{I think that the result above (0.19s) is only about the F5 model, but do we also have the time for the F4 model, if so, it should be nice to include it too.}
+\vangiang{I agree. Simply included it.}
 
 \section{Evaluation}%
 \label{sec:eval}
@@ -1156,6 +1161,7 @@ In the case of \texttt{bioLQM}, ``N/A'' means that the number of all minimal tra
 A number in bold indicates a ratio greater than three compared to the best result.
 ``NM'' indicates a non-locally-monotonic model.
 \sylvain{should we also highlight in some way the (tied-)best result?}
+\vangiang{I think we should not because such highlights seem not much support the experimental analysis, but may make the table a bit awkward.}
 There are four variants of \texttt{Trappist}: \texttt{SAT} (i.e., \texttt{Trappist-MaxSAT}, the MaxSAT-based method shown in Subsection~\ref{subsec:computation_csp}), \texttt{CP} (i.e., \texttt{Trappist-CP}, the CP-based method shown in Subsection~\ref{subsec:computation_csp}), \texttt{ILP} (i.e., \texttt{Trappist-ILP}, the ILP-based method shown in Subsection~\ref{subsec:computation_ilp}), and \texttt{ASP} (i.e., \texttt{Trappist-ASP}, the ASP-based method shown in Subsection~\ref{subsec:computation_asp}).
 
 We first analyze the results of the four variants of \texttt{Trappist}.
@@ -1729,10 +1735,11 @@ This shows the practical advantage of \texttt{Trappist-ASP} compared to \texttt{
 \label{sec:Conclusion}
 
 In this article we have explored and proved for the first time the equivalence between (minimal) trap spaces of a general Boolean network and (maximal) conflict-free siphons of its Petri net encoding.
-We have shown several important applications of this finding to studying properties of trap spaces in Boolean networks.
+We have shown several useful applications of this finding to studying properties of trap spaces in Boolean networks.
 As an important practical application of the equivalence, we have proposed a new approach for the computation of minimal trap spaces in Boolean networks, based on the enumeration of maximal conflict-free siphons of Petri nets.
 We have also proposed the four possible methods using MaxSAT, CP, ILP, and ASP for implementing the new approach.
-The proposed methods have been evaluated on many real-world models from the literature as well as randomly generated models.
+In particular, we have shown how to adjust our approach to compute several specific types of trap spaces (e.g., maximal trap spaces, fixed points), which besides minimal trap spaces also play crucial rules in the analysis and control of Boolean networks.
+The proposed methods for the minimal trap space computation have been evaluated on many real-world models from the literature as well as randomly generated models.
 The experimental results show that the new approach vastly outperforms all the state-of-the-art methods in terms of general Boolean networks and is comparable to the \texttt{mpbn} method even much better on average in terms of locally-monotonic Boolean networks.
 We believe that this opens up the way to a much better analysis of large Boolean networks, which is needed with the advent of automatic model-generation pipelines~\cite{ostaszewski2021covid19}.
 
@@ -1754,6 +1761,7 @@ We also believe that the connection between trap spaces of Boolean networks and 
 Diving into this direction is promising and one of our future work.
 
 \sylvain{Do you want to say a word about specific types of trap-spaces? This currently does not really appear in the conclusion.}
+\vangiang{Thank you for your reminder. I have mentioned the computation of specific types of trap spaces in the conclusion.}
 
 %% The Appendices part is started with the command \appendix;
 %% appendix sections are then done as normal sections
