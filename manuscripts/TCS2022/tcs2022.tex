@@ -283,7 +283,6 @@ Following the update scheme, the Boolean network transits from a state to anothe
 This transition is called the \emph{state transition} and denoted by \(\rightarrow \subseteq \mathcal{S}_{\mathcal{N}} \times \mathcal{S}_{\mathcal{N}}\).
 Then the dynamics of \(\mathcal{N}\) is captured by the directed graph \((\mathcal{S}_{\mathcal{N}}, \rightarrow)\) called the State Transition Graph (STG).
 There are many different update schemes, but the two main types~\cite{thomas1991regulatory} are: synchronous, where all the nodes are update simultaneously, and fully asynchronous, where only one node is selected non-deterministically to be updated.
-\sylvain{I removed the ``random'' part since actually, how the only node is selected is not strictly part of the asynchronous update\ldots Updating always the nodes in the order in which they appear in the model for instance, though pretty bad, would be an admissible async update run. Usually for such things where you could even imagine an ``opponent'' chosing which node to update, you can say it's ``non-deterministic'' but not necessarily ``random''.}
 
 \subsection{Traps spaces}
 
