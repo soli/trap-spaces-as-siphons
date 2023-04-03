@@ -183,9 +183,9 @@ Logical model \sep Boolean network \sep Trap space \sep Attractor computation \s
 \section{Introduction}
 
 From the observation that the transcriptional regulation behaved in a sigmoid step-like way, came the original idea to represent models of gene regulation as discrete event systems.
-Those Gene Regulation Networks (GRN) use thresholds or equivalently logical functions to represent the different regulations~\cite{glass1973logical,thomas1973boolean,thomas1990biological,thomas1991regulatory}.
+Those gene regulation networks use thresholds or equivalently logical functions to represent the different regulations~\cite{glass1973logical,thomas1973boolean,thomas1990biological,thomas1991regulatory}.
 
-Boolean net modeling has proven over the years that it can bring powerful analyses and corresponding insight to the many cases where precise biological data is not sufficiently available to build a detailed quantitative model~\cite{wang2012boolean}, even for modelling post-transcriptional mechanisms.
+Boolean network modeling has proven over the years that it can bring powerful analyses and corresponding insight to the many cases where precise biological data is not sufficiently available to build a detailed quantitative model~\cite{wang2012boolean}, even for modelling post-transcriptional mechanisms.
 This is even more true for very large models where such data is frequently missing and led to a constant increase in size of logical models \emph{à la} Thomas~\cite{aghamiri2020automated}.
 Besides simulation, the analysis of such models is mostly based on attractor computation, since those correspond roughly to observable biological \emph{phenotypes}.
 The recent use of trap spaces~\cite{klarner2015computing} made a real breakthrough in that field allowing to consider medium-sized models that used to be out of reach.
@@ -193,12 +193,12 @@ However, with the continuing increase in model size and complexity of Boolean up
 More specifically, the number of prime implicants of a Boolean function is in general exponential in the number of input nodes of this function~\cite{klarner2015computing}.
 Moreover, the computation of prime implicants is a demanding task, especially for complex Boolean functions.
 
-It is worth noting that the recent method presented in~\cite{DBLP:conf/ictai/ChevalierFPZ19} for computing minimal trap spaces avoids the prime-implicants computation by relying on the \emph{most-permissive} semantics of Boolean networks.
+It is worth noting that the recent method presented in~\cite{DBLP:conf/ictai/ChevalierFPZ19} for computing minimal trap spaces avoids the prime-implicant computation by relying on the \emph{most-permissive} semantics of Boolean networks.
 This method has been implemented in the tool \texttt{mpbn}\footnote{\url{https://github.com/bnediction/mpbn}} demonstrated in~\cite{Paulev2020} for handling medium-sized models from the literature and very large synthetic models (up to 100,000 nodes).
 However, this method is only applicable for \emph{locally-monotonic} Boolean networks, whereas the prime-implicants based method~\cite{klarner2015computing} is applicable for \emph{general} Boolean networks (i.e., including both locally-monotonic and non-locally-monotonic ones).
 In addition, the \texttt{bioLQM} platform also provides another method using Binary Decision Diagrams (BDDs) in \url{http://colomoto.org/biolqm/doc/tools-trapspace.html}.
-This method avoids the prime-implicants computation as it characterizes the set of generic trap spaces of a Boolean network by a BDD, then filters this set to get the set of all minimal trap spaces.
-By this approach, it requires the computation of all solutions, whereas the ASP-based methods~\cite{klarner2015computing,Paulev2020} can start enumerating them as they are found.
+This method avoids the prime-implicant computation as it characterizes the set of generic trap spaces of a Boolean network by a BDD, then filters this set to get the set of all minimal trap spaces.
+By this approach, it requires the computation of all solutions, whereas the methods~\cite{klarner2015computing,Paulev2020} based on Answer Set Programming (ASP) can start enumerating them as they are found.
 Moreover, the main issue with the BDD-based method is that the number of generic trap spaces of a Boolean network may be extremely larger than its number of minimal trap spaces.
 This issue limits the efficiency of the BDD-based method.
 The study~\cite{DBLP:journals/tcs/NoualRS13} highlights the need for non-locally-monotonic Boolean networks in both biological and theoretical aspects.
@@ -273,16 +273,16 @@ At each time step \(t\), node \(v_i\) can, depending on the update scheme, updat
 \[v_i(t + 1) =
   \begin{cases}
     &f_i(v(t))\\
-    \text{or} &v(t)
+    \text{or} &v_i(t)
   \end{cases}
 \]
-where \(v(t)\) is the state of \(\mathcal{N}\) at time \(t\). % and \(v_i(t + 1)\) is the state of node \(v_i\) at time \(t + 1\).
+where \(v(t)\) (resp. \(v_i(t)\)) is the state of \(\mathcal{N}\) (resp. the state of node \(v_i\)) at time \(t\). % and \(v_i(t + 1)\) is the state of node \(v_i\) at time \(t + 1\).
 Note that for simplicity, we write \(f_i(v(t))\) even if \(\IN(v_i) \subsetneq V\) (i.e., \(\IN(v_i)\) does not contain some nodes of \(V\)).
 An update scheme of a Boolean network specifies which nodes update their states, as defined above, through time evolution~\cite{thomas1991regulatory}.
 Following the update scheme, the Boolean network transits from a state to another state (possibly identical).
 This transition is called the \emph{state transition} and denoted by \(\rightarrow \subseteq \mathcal{S}_{\mathcal{N}} \times \mathcal{S}_{\mathcal{N}}\).
 Then the dynamics of \(\mathcal{N}\) is captured by the directed graph \((\mathcal{S}_{\mathcal{N}}, \rightarrow)\) called the State Transition Graph (STG).
-There are many different update schemes, but the two main types~\cite{thomas1991regulatory} are: synchronous, where all the nodes are update simultaneously, and fully asynchronous, where only one node is selected non-deterministically to be updated.
+There are many different update schemes, but the two main types~\cite{thomas1991regulatory} are: \emph{synchronous}, where all the nodes are update simultaneously, and \emph{fully asynchronous}, where only one node is selected non-deterministically to be updated.
 
 \subsection{Traps spaces}
 
@@ -295,8 +295,8 @@ An attractor can be also seen as a terminal strongly connected component of \((\
 An attractor of size 1 is called a fixed point, otherwise it is called a cyclic or complex attractor~\cite{klarner2015computing}.
 
 A subspace \(m\) of a Boolean network \(\mathcal{N} = (V, F)\) is a mapping \(m \colon V \mapsto \mathbb{B} \cup \{\star\}\).
-\(m(v_i) \in \mathbb{B}\) means that the value of \(v_i\) is fixed in \(m\) and \(v_i\) is called a fixed variable.
-\(m(v_i) \in \star\) means that the value of \(v_i\) is free in \(m\) and \(v_i\) is called a free variable.
+\(m(v_i) \in \mathbb{B}\) means that the value of \(v_i\) is fixed in \(m\) and \(v_i\) is called a \emph{fixed} variable.
+\(m(v_i) \in \star\) means that the value of \(v_i\) is free in \(m\) and \(v_i\) is called a \emph{free} variable.
 We denote \(D_m\) the set of all fixed variables of \(m\).
 A subspace \(m\) is equivalent to a set of states:
 \[
@@ -312,7 +312,7 @@ Consequently, a trap space \(m\) is minimal if and only if there is no trap spac
 
 For example, let us consider the Boolean network shown in Example~\ref{example:BN}.
 Figure~\ref{fig:stg} shows the dynamics of this model under the fully asynchronous update (i.e., only one node is updated at each time step).
-The model has all trap spaces, \(m_1 = 11\) and \(m_2 = \star\star\).
+The model has all two trap spaces, \(m_1 = 11\) and \(m_2 = \star\star\).
 Since \(m_1 < m_2\), \(m_1\) is the only minimal trap space of the Boolean network.
 
 \begin{example}
@@ -440,13 +440,13 @@ Note that transforming a Boolean network defined by its functions into its Petri
 Though this might appear quite computationally intensive it is important to remark first that contrary to the prime-implicants case, there is no need to find \emph{minimal} DNFs.
 One way to look at this is to consider that this amounts to a similar approach as that used in~\cite{DBLP:conf/ictai/ChevalierFPZ19} but with the encoding of both activation and inhibition functions as DNFs in order to take into account possible non-local-monotonicity.
 This does not change the worst-case-complexity (obtaining a single DNF being exponential) but might matter a lot in practice.
-As such, we will explore how this transformation, here using BDDs in \texttt{bioLQM} or directly in our tool using the \texttt{pyeda}\footnote{\url{https://pyeda.readthedocs.io/en/latest/}} library, and the one based on the most-permissive semantics compare in the Section~\ref{sec:eval} on evaluation.
+As such, we will explore how this transformation, here using BDDs in \texttt{bioLQM} or directly in our tool using the \texttt{pyeda}\footnote{\url{https://pyeda.readthedocs.io/en/latest/}} library, and the one based on the most-permissive semantics compare in Section~\ref{sec:eval} on evaluation.
 
 
 \subsection{Siphons}
 
 Siphons are a static and classical property of Petri nets~\cite{peterson1981petri}.
-Note however that the use of siphons for the analysis of biological models, though it is not new, has been mostly relevant to the ODE-based continuous semantics of Chemical Reaction Networks~\cite{angeli2007petri,angeli2011persistence,degrand2020graphical}.
+Note however that the use of siphons for the analysis of biological models, though it is not new, has been mostly relevant to the ODE-based continuous semantics of chemical reaction networks~\cite{angeli2007petri,angeli2011persistence,degrand2020graphical}.
 We recall here the basic definition establishing that to produce something in a siphon you must consume something from the siphon.
 This corresponds to the idea that a siphon is a set of places that once unmarked remains unmarked.
 
@@ -470,7 +470,7 @@ We have an important property on siphons~\cite{DBLP:journals/isci/LiuB16} as fol
 \end{proposition}
 
 
-\section{Minimal trap spaces as maximal conflict-free siphons}%
+\section{Trap spaces as conflict-free siphons}%
 \label{sec:Main_finding}
 
 First, we add a definition related to any set of places of a Petri net encoding a Boolean network, and notably a siphon of such a net.
@@ -647,7 +647,7 @@ Note that in the case of special types of trap spaces (e.g., fixed points), this
 See Subsection~\ref{subsec:computation_special_ts} for more discussions about many special types of trap spaces.
 It might actually be possible to generalize our result to any 1-safe place-complementary Petri net to define a notion of trap spaces that might be useful for the analysis of Petri nets, but this is out of the scope of the present article.
 
-Note that there are no existing methods specifically designed for computing maximal conflict-free siphons (even maximal siphons) of a Petri net.
+Note that there are no existing methods specifically designed for computing maximal conflict-free siphons (even maximal generic siphons) of a Petri net.
 The reason might be that researchers mainly focus on minimal generic siphons~\cite{DBLP:journals/isci/LiuB16} in the field of Petri nets.
 Hence, we here propose several methods for computing maximal conflict-free siphons of a Petri net.
 The details of the proposed methods shall be given in the next section.
@@ -735,7 +735,7 @@ and
   (\neg p \vee \bigvee_{p' \in \pred(t)}p'), \forall p \in P, \forall t \in \pred(p).
 \]
 We set a soft clause for each variable of the CSP and then use a ``minimal correction subset'' blocking strategy, which will ensure set-inclusion maximality of the solutions.
-This is what is implemented in \texttt{Trappist} using the \texttt{RC2} MaxSAT solver~\cite{DBLP:journals/jsat/IgnatievMM19} available through the \texttt{python-sat} package\footnote{\url{https://pysathq.github.io/docs/html/api/examples/rc2.html}}.
+We implement this approach by using the \texttt{RC2} MaxSAT solver~\cite{DBLP:journals/jsat/IgnatievMM19} available through the \texttt{python-sat} package\footnote{\url{https://pysathq.github.io/docs/html/api/examples/rc2.html}}.
 
 \subsection{Answer set programming-based method}%
 \label{subsec:computation_asp}
@@ -780,7 +780,7 @@ For each pair \((p, t)\) where \(p \in P, t \in T, t \in \pred(p)\), we translat
 \[
 \verb|a <= a_1 + ... + a_k|
 \]
-where \verb|a| is the binary variable representing place \(p\) and \{\verb|a_1|, \dots,\verb|a_k|\} is the set of binary variable representing places in \(\pred(t)\).
+where \verb|a| is the binary variable representing place \(p\) and \{\verb|a_1|, \dots,\verb|a_k|\} is the set of binary variables representing places in \(\pred(t)\).
 The rule (\ref{eq:conflict}) is translated into the ILP inequality
 \[\verb|p-v + n-v <= 1|\]
 for each \(v \in V\).
@@ -820,7 +820,7 @@ Again, we add to \(\mathcal{I}\) a new inequality with respect to the newly foun
 The above process is iterated until \(\mathcal{I}\) becomes unfeasible, this means that there is no further maximal conflict-free siphon.
 Thus, all the maximal conflict-free siphons of the Petri net have been found.
 
-Since we used the MiniZinc framework to interface with the CP solver, it was simple to make the slight modifications described above and use that same interface to call the Coin-OR CBC solver\footnote{\url{https://github.com/coin-or/Cbc}}~\cite{john_forrest_2022_6522795}.
+Since we used the MiniZinc framework to interface with the CP solver, it was simple to make the slight modifications described above and to use that same interface to call the Coin-OR CBC solver\footnote{\url{https://github.com/coin-or/Cbc}}~\cite{john_forrest_2022_6522795}.
 
 \subsection{Computation of special types of trap spaces}%
 \label{subsec:computation_special_ts}
@@ -1062,7 +1062,7 @@ In the case that \(m^{*} = \varepsilon\), we have all maximal trap spaces of the
 
 For a few years now we have been collaborating with biologists who build very large detailed and annotated maps and now wish to analyze the dynamics of the corresponding models.
 One of the main maps studied this way represents knowledge about the Rheumatoïd Arthritis~\cite{singh2018computational}, and was the main motivation for the development of a tool to automatically transform it into an executable Boolean network~\cite{aghamiri2020automated}.
-In the supplementary material of the paper, an excerpt of the map, focused around the apoptosis (cell death) module is transformed into a model of \emph{reasonable} size, namely 180 Boolean variables (model \verb|F5_RA_apoptosis_executable_module.sbml| of supplementary material S3, and model ``RA-apoptosis'' of Section~\ref{sec:eval}).
+In the supplementary material of the paper, an excerpt of the map, focused around the apoptosis (cell death) module is transformed into a model of \emph{reasonable} size, namely 180 Boolean variables (model \verb|F5_RA_apoptosis_executable_module.sbml| of supplementary material S3, and model ``RA\_apoptosis'' of Subsection~\ref{subsec:Selected_models}).
 The study of such model, though, is a big hurdle.
 Indeed, as stated in the article about another model of the same size:
 \emph{``The size of the CaSQ-inferred MAPK model (181 nodes) made the calculation of stable states a non-realistic endeavour.''}
@@ -1072,12 +1072,12 @@ In particular, it provides a feature-rich alternative to random simulations for 
 Being able to detect that there are inconsistencies with published experimental data in some of the first 1000 attractors, for instance, can lead to a much quicker Systems Biology loop: model, invalidate, refine.
 
 However, using a state-of-the-art tool like \texttt{PyBoolNet}~\cite{klarner2015computing} on that model actually fails at the phase of prime-implicant generation.
-\texttt{mpbn}~\cite{Paulev2020} can return the first 1000 solution within 1.43s, but indeed, it limits the modeling range of the modelers as it does not permit using non-locally-monotonic Boolean functions.
+\texttt{mpbn}~\cite{Paulev2020} can return the first 1000 solutions within 1.43s, but indeed, it limits the modeling range of the modelers as it does not permit using non-locally-monotonic Boolean functions.
 This is also true for the Alzheimer model also mentioned in that same article and originally from~\cite{ogishima2016alzpathway} (\verb|F4| file in the original supplementary material, and ``Alzheimer'' in Table~\ref{tab:result_real}), where \texttt{PyBoolNet} also fails at the prime-implicant computation and \texttt{mpbn} does not give any answer because this model is actually non-locally-monotonic.
 The current practice usually revolves then around fixing some source nodes to plausible values and reducing the model accordingly.
 While this approach makes sense, it relies on potentially arbitrary decisions, and \emph{hides away} critical modelling choices that were actually not part of the original Boolean network or even of the starting map.
 
-For the ``RA-apoptosis'' model, using the ASP-based method presented in Section~\ref{subsec:computation_asp}, it is possible to obtain the first 1000 minimal trap spaces (including ones that contain more than one state) within 0.19s, which is much quicker than \texttt{mpbn}.
+For the ``RA\_apoptosis'' model, using the ASP-based method presented in Subsection~\ref{subsec:computation_asp}, it is possible to obtain the first 1000 minimal trap spaces (including ones that contain more than one state) within 0.19s, which is much quicker than \texttt{mpbn}.
 The needed time for the ``Alzheimer'' model is 0.79s.
 Unfortunately since this method was not available at the time, the analysis of the model remained very high-level and qualitative, instead of being able to use the rich information of computed minimal trap spaces.
 
@@ -1426,6 +1426,7 @@ This observation confirms the disadvantage of \texttt{Trappist-MaxSAT} compared 
 
 
 \subsection{Selected models}
+\label{subsec:Selected_models}
 
 We used a set of real-world Boolean networks lying in various scales collected from numerous bibliographic sources in the literature.
 Most of these models are quite big (in size), complex (i.e., having high average in-degree, which is related to the number of prime-implicants), and have never been fully analyzed.
@@ -1501,11 +1502,11 @@ Second, \texttt{Trappist-ASP} (even \texttt{Trappist-MaxSAT}) is far more effici
 For most models, the speedups of \texttt{Trappist-ASP} compared to \texttt{bioLQM} and \texttt{PyBoolNet} are between one and three orders of magnitude.
 This again confirms the superiority of \texttt{Trappist-ASP} compared to the other methods that can handle general Boolean networks.
 
-Third, for 11 of the 32 models (more than 34\%), \texttt{mpbn} did not give any answer because these models as non-locally-monotonic.
+Third, for 11 of the 32 models (more than 34\%), \texttt{mpbn} did not give any answer because these models are non-locally-monotonic.
 For 21 of the 32 models where \texttt{mpbn} returned the answers, \texttt{mpbn} and \texttt{Trappist-ASP} are roughly comparable in computation time, but \texttt{mpbn} appears quite slower on average.
 In particular, for the Rho-GTPases model, \texttt{mpbn} is \(577\times\) slower than \texttt{Trappist-ASP}.
 This observation along with the comparisons between \texttt{mpbn} and \texttt{Trappist-ASP} in the previous subsections are quite surprising because the ASP encoding of \texttt{mpbn} only requires the DNF for the activation part of a Boolean function, whereas that of \texttt{Trappist-ASP} requires both the activation and inhibition parts (see Subsection~\ref{subsec:computation_asp}).
-However, the reason may lie on the differences in the ASP encoding characteristics of the two methods and the fact that \texttt{mpbn} needs to spend time checking the locally-monotonicity of each Boolean function in a Boolean network.
+However, the reason may lie on the differences in the ASP encoding characteristics of the two methods and the fact that \texttt{mpbn} needs to spend time checking the local-monotonicity of each Boolean function in a Boolean network.
 We expect that \texttt{mpbn} may outperform \texttt{Trappist} for a certain set of models, but not for the set of real-world models considered in this article.
 
 Fourth, regarding the comparison of the ASP-based methods (i.e., \texttt{PyBoolNet}, \texttt{mpbn}, and \texttt{Trappist-ASP}), we note that for all the models where \texttt{PyBoolNet} did not finish before the time limit, the timeout occurred during the computation of the prime-implicants.
@@ -1541,7 +1542,7 @@ In total, we have 350 random models.
 We then applied the compared methods to these models and recorded the running time of each method for each model.
 It is worth noting that N-K models usually have small numbers of minimal trap spaces~\cite{klarner2015computing}.
 Hence, we searched for all solutions in each model, which makes the comparison to \texttt{bioLQM} more comprehensive.
-In addition, each node has only three input nodes, i.e., the number of prime-implicants of the associated Boolean function is small.
+In addition, each node has only three input nodes, leading to the number of prime-implicants of the associated Boolean function is small.
 Hence, \texttt{PyBoolNet} always passed the phase of computing prime-implicants in every model even within one second, which enables us to compare the ASP encoding of \texttt{PyBoolNet} and that of \texttt{Trappist-ASP}.
 
 \begin{figure}[!ht]
@@ -1749,7 +1750,7 @@ Although these approaches do not directly support the minimal/maximal conflict-f
 They could replace our proposed methods if they give significantly better performance.
 However, the current methods appear to already perform very well even on the biggest models we have considered.
 
-Finally, we think that the links between Petri nets and Boolean networks that we stumbled upon in this method might have deeper roots.
+Finally, we think that the links between Petri nets and Boolean networks that we stumbled upon in this article might have deeper roots.
 Exploring those connections might lead both to interesting topics of research for Petri nets, like a notion of trap-spaces, and for Boolean networks.
 We also believe that the connection between trap spaces of Boolean networks and siphons of Petri nets can be a very useful tool for exploring and proving more new properties of trap spaces in Boolean networks, as we have used it to successfully prove the independence of trap spaces to the update scheme and the separation of minimal trap spaces.
 Diving into this direction is promising and one of our future work.
