@@ -221,14 +221,14 @@ We then demonstrate its efficiency and compare it to the state-of-the-art method
 % Mention the extensions for the journal version
 Herein we revise and extend our previous work in~\cite{DBLP:conf/cmsb/TrinhBHS22} as follows.
 First, more formal definitions are given and the existing proofs are made more detailed.
-In particular, an updated proof provides another way to prove the independence of trap spaces of a Boolean network on its update scheme, which was originally proved in~\cite{klarner2015computing}.
+In particular, an updated proof provides another way to prove the independence of trap spaces of a Boolean network with respect to its update scheme, which was originally proved in~\cite{klarner2015computing}.
 Second, we showcase a theoretical application of the connection between trap spaces in Boolean networks and conflict-free siphons in Petri nets.
 Third, beyond the proposed ASP method implementing the alternative approach~\cite{DBLP:conf/cmsb/TrinhBHS22}, we propose several other possible methods for computing minimal trap spaces using Maximum Satisfiability (MaxSAT), Constraint Programming (CP), and Integer Linear Programming (ILP).
 Fourth, we discuss in detail how to compute several special types of trap spaces in a Boolean network.
 Besides minimal trap spaces, these special types also play crucial roles in analyzing and controlling Boolean networks~\cite{Rozum2021}.
 %Fifth, we present the idea for using our Petri net approach to handle the problem of inconsistent and incomplete data in modeling biological systems.
 Fifth, regarding the implementation, we have developed a new converter that directly reads a \texttt{.bnet} file and builds the Petri net encoding, instead of using the \texttt{PNML} conversion of \texttt{bioLQM}~\cite{DBLP:conf/cmsb/TrinhBHS22}.
-Finally, we conduct a more extensive benchmark on more real-world models from various sources and randomly generated models to evaluate all the proposed methods (the benchmark conducted in~\cite{DBLP:conf/cmsb/TrinhBHS22} considers only dozens of representative real-world models), with more comprehensive insights are obtained.
+Finally, we conduct a more extensive benchmark on more real-world models from various sources and randomly generated models to evaluate all the proposed methods (the benchmark conducted in~\cite{DBLP:conf/cmsb/TrinhBHS22} considers only a few dozens of representative real-world models), therefore obtaining more comprehensive insights.
 
 %%% Paper structure %%%
 The rest of this paper is organized as follows: Section~\ref{sec:Preliminaries} recalls the basic concepts including Boolean networks, attractors, trap spaces, Petri nets, and siphons.
@@ -640,7 +640,7 @@ Hence, the checking method in~\cite{klarner2017pyboolnet} shows its limitations.
 Instead, we can first compute the mirror \(S_m\) of \(m\) in the Petri net encoding.
 Then, by Proposition~\ref{prop:siphon_set} and Theorem~\ref{theo:ts_2_sp}, we can check if \(\pred(S_m) \subseteq \succ(S_m)\).
 Note that the Petri net construction is less computationally demanding than the prime-implicant computation because it only requires computing generic (not prime) implicants of the Boolean functions~\cite{chatain2014characterization}.
-In addition, the time complexity of the above checking method is quadratic in the number of transitions of the Petri net in worst cases.
+In addition, the worst case time complexity of the above checking method is quadratic in the number of transitions of the Petri net.
 
 Furthermore, by Theorem~\ref{theo:min_ts_2_max_sp}, we can reduce the problem of computing all minimal trap spaces of a Boolean network to the problem of computing all maximal conflict-free siphons of its Petri net encoding.
 Note that in the case of special types of trap spaces (e.g., fixed points), this can be put in regard to special types of siphons in Petri nets.
@@ -1732,7 +1732,7 @@ This shows the practical advantage of \texttt{Trappist-ASP} compared to \texttt{
 In this article we have explored and proved for the first time the equivalence between (minimal) trap spaces of a general Boolean network and (maximal) conflict-free siphons of its Petri net encoding.
 We have shown several useful applications of this finding to studying properties of trap spaces in Boolean networks.
 As an important practical application of the equivalence, we have proposed a new approach for the computation of minimal trap spaces in Boolean networks, based on the enumeration of maximal conflict-free siphons of Petri nets.
-We have also proposed the four possible methods using MaxSAT, CP, ILP, and ASP for implementing the new approach.
+We have also proposed four possible methods using MaxSAT, CP, ILP, and ASP for implementing the new approach.
 In particular, we have shown how to adjust our approach to compute several specific types of trap spaces (e.g., maximal trap spaces, fixed points), which besides minimal trap spaces also play crucial roles in the analysis and control of Boolean networks.
 The proposed methods for the minimal trap space computation have been evaluated on many real-world models from the literature as well as randomly generated models.
 The experimental results show that the new approach vastly outperforms all the state-of-the-art methods in terms of general Boolean networks and is comparable to the \texttt{mpbn} method even much better on average in terms of locally-monotonic Boolean networks.
