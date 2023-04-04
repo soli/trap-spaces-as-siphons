@@ -34,7 +34,7 @@ The first article describing trappist is [here](cmsb22.pdf)
 
 After installing `trappist` (and maybe `clingo`), just run
 
-``` sh
+```
 $ trappist -h
 usage: trappist [-h] [-d] [-v] [-m MAX] [-p PARALLEL] [-t TIME] [-s {asp,cp,ilp,sat,naive}] [infile]
 
