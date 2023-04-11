@@ -185,11 +185,12 @@ Logical model \sep Boolean network \sep Trap space \sep Attractor computation \s
 From the observation that the transcriptional regulation behaved in a sigmoid step-like way, came the original idea to represent models of gene regulation as discrete event systems.
 Those gene regulation networks use thresholds or equivalently logical functions to represent the different regulations~\cite{glass1973logical,thomas1973boolean,thomas1990biological,thomas1991regulatory}.
 
-Boolean network modeling has proven over the years that it can bring powerful analyses and corresponding insight to the many cases where precise biological data is not sufficiently available to build a detailed quantitative model~\cite{wang2012boolean}, even for modelling post-transcriptional mechanisms.
-This is even more true for very large models where such data is frequently missing and led to a constant increase in size of logical models \emph{à la} Thomas~\cite{aghamiri2020automated}.
-Besides simulation, the analysis of such models is mostly based on attractor computation, since those correspond roughly to observable biological \emph{phenotypes}.
-The recent use of trap spaces~\cite{klarner2015computing} made a real breakthrough in that field allowing to consider medium-sized models that used to be out of reach.
-However, with the continuing increase in model size and complexity of Boolean update functions, the state-of-the-art computation of minimal trap spaces based on \emph{prime-implicants} shows its limits.
+Boolean modeling made available some powerful analyses and corresponding insight for gene regulation models.
+Then, over the years, its use increased even for modelling post-transcriptional mechanisms, supported by the many cases where precise biological data was not sufficiently available to build a detailed quantitative model~\cite{wang2012boolean}.
+This lack of data is more frequent for large and very large models, which led to a steady increase in the size of logical models \emph{à la} Thomas~\cite{aghamiri2020automated}.
+The main analysis tool for such models is the computation of its fixed and periodic attractors, since those correspond roughly to observable biological \emph{phenotypes}.
+The recent use of trap spaces~\cite{klarner2015computing} made a real breakthrough in that field allowing to consider medium-sized models that used to be out of reach and for which only simulation was available.
+However, with the most recent models both being quite large and using rather complex update functions, the state-of-the-art computation of minimal trap spaces based on \emph{prime-implicants} shows its limits.
 More specifically, the number of prime implicants of a Boolean function is in general exponential in the number of input nodes of this function~\cite{klarner2015computing}.
 Moreover, the computation of prime implicants is a demanding task, especially for complex Boolean functions.
 
@@ -1772,7 +1773,7 @@ Diving into this direction is promising and one of our future work.
 %% bibitems, please use
 %%
 \bibliographystyle{elsarticle-num-names}
-\bibliography{tcs2022.bib}
+\bibliography{tcs2023.bib}
 
 %% else use the following coding to input the bibitems directly in the
 %% TeX file.
