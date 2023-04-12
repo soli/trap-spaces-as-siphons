@@ -57,8 +57,6 @@
 \newcommand{\belaid}[1]{\textcolor{blue}{#1}}
 \newcommand{\sylvain}[1]{\textcolor{teal}{#1}}
 
-\newcommand{\revBelaid}[1]{\textcolor{black}{#1}}
-
 \usepackage{amsmath}
 \newcommand{\IN}{\mathit{IN}}
 \DeclareMathOperator{\pred}{pred}
@@ -319,7 +317,7 @@ The model has all two trap spaces, \(m_1 = 11\) and \(m_2 = \star\star\).
 Since \(m_1 < m_2\), \(m_1\) is the only minimal trap space of the Boolean network.
 
 \begin{example}
-We give a Boolean network \(\mathcal{N} = (V, F)\), where \(V = (x_1, x_2)\) and \(F = (f_1, f_2)\) with \(f_1 = (x_1 \land x_2) \lor (\neg x_1 \land \neg x_2), f_2 = (x_1 \land x_2) \lor (\neg x_1 \land \neg x_2)\). Herein, \(\land\), \(\lor\), and \(\neg\) denote the \revBelaid{logical conjunction, disjunction, and negation operators}, respectively.\label{example:BN}
+We give a Boolean network \(\mathcal{N} = (V, F)\), where \(V = (x_1, x_2)\) and \(F = (f_1, f_2)\) with \(f_1 = (x_1 \land x_2) \lor (\neg x_1 \land \neg x_2), f_2 = (x_1 \land x_2) \lor (\neg x_1 \land \neg x_2)\). Herein, \(\land\), \(\lor\), and \(\neg\) denote the logical conjunction, disjunction, and negation operators, respectively.\label{example:BN}
 \end{example}
 
 \begin{figure}[!htb]
@@ -443,7 +441,7 @@ Note that transforming a Boolean network defined by its functions into its Petri
 Though this might appear quite computationally intensive it is important to remark first that contrary to the prime-implicants case, there is no need to find \emph{minimal} DNFs.
 One way to look at this is to consider that this amounts to a similar approach as that used in~\cite{DBLP:conf/ictai/ChevalierFPZ19} but with the encoding of both activation and inhibition functions as DNFs in order to take into account possible non-local-monotonicity.
 This does not change the worst-case-complexity (obtaining a single DNF being exponential) but might matter a lot in practice.
-As such, we will explore how this transformation, here using BDDs in \texttt{bioLQM} or directly in our tool using the \texttt{pyeda}\footnote{\url{https://pyeda.readthedocs.io/en/latest/}} library, and the one based on the most-permissive semantics \revBelaid{compare with each other in Section~\ref{sec:eval}}.
+As such, we will explore how this transformation, here using BDDs in \texttt{bioLQM} or directly in our tool using the \texttt{pyeda}\footnote{\url{https://pyeda.readthedocs.io/en/latest/}} library, and the one based on the most-permissive semantics compare with each other in Section~\ref{sec:eval}.
 
 
 \subsection{Siphons}
@@ -467,8 +465,8 @@ We have an important property on siphons~\cite{DBLP:journals/isci/LiuB16} as fol
 
 \begin{proposition}%
 \label{prop:siphon_set}
-  Let \(S\) be a siphon of a Petri net \((P, T, W)\).
-  Then \(\pred(S) \subseteq \succ(S)\).
+
+  A set \(S\) of places is a siphon of a Petri net \((P, T, W)\) if and only if \(\pred(S) \subseteq \succ(S)\).
 
 \end{proposition}
 
@@ -486,7 +484,7 @@ First, we add a definition related to any set of places of a Petri net encoding 
 \end{definition}
 
 Intuitively, a siphon is a set of places that once unmarked remains so.
-If it is conflict-free then its dual corresponds to a \revBelaid{subspace} of the model such that whatever update, the fixed values remain so (since the unmarked places remain unmarked).
+If it is conflict-free then its dual corresponds to a subspace of the model such that whatever update, the fixed values remain so (since the unmarked places remain unmarked).
 This is precisely the definition of a trap space and maximality of the siphon is equivalent to as many fixed values as possible, hence minimality of the trap space.
 For example, the Boolean network given in Example~\ref{example:BN} has two trap spaces, \(m_1 = 11\) and \(m_2 = \star\star\).
 The Petri net encoding of this Boolean network has five generic siphons, \(S_1 = \emptyset\), \(S_2 = \{p_{x_1}, \overline{p}_{x_1}\}\), \(S_3 = \{p_{x_2}, \overline{p}_{x_2}\}\), \(S_4 = \{\overline{p}_{x_1}, \overline{p}_{x_2}\}\), and \(S_5 = \{p_{x_1}, \overline{p}_{x_1}, p_{x_2}, \overline{p}_{x_2}\}\).
@@ -498,7 +496,7 @@ Hereafter, we formally prove that a (maximal) conflict-free siphon is equivalent
 
   Let \(m\) be a subspace of Boolean network \(\mathcal{N} = (V, F)\).
   A \emph{mirror} of \(m\) is a set of places \(S\) in the Petri net encoding \(\mathcal{P}\) of \(\mathcal{N}\) such that:
-  \[\forall v \in D_m, m(v) = 0 \Leftrightarrow p_v \in S, m(v) = 1 \Leftrightarrow \overline{p}_v \in S\] and \[\forall v \in V \setminus D_m, p_v \not \in S, \overline{p}_v \not \in S.\]
+  \[\forall v \in D_m \left[m(v) = 0 \Leftrightarrow p_v \in S \land m(v) = 1 \Leftrightarrow \overline{p}_v \in S\right]\] and \[\forall v \in V \setminus D_m \left[p_v \not \in S \land \overline{p}_v \not \in S\right].\]
 
 \end{definition}
 
