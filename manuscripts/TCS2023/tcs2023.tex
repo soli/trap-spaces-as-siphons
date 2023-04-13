@@ -196,7 +196,7 @@ Moreover, the computation of prime implicants is a demanding task, especially fo
 
 It is worth noting that the recent method presented in~\cite{DBLP:conf/ictai/ChevalierFPZ19} for computing minimal trap spaces avoids the prime-implicant computation by relying on the \emph{most-permissive} semantics of Boolean networks.
 This method has been implemented in the tool \texttt{mpbn}\footnote{\url{https://github.com/bnediction/mpbn}} demonstrated in~\cite{Paulev2020} for handling medium-sized models from the literature and very large synthetic models (up to 100,000 nodes).
-However, this method is only applicable for \emph{locally-monotonic} Boolean networks, whereas the prime-implicants based method~\cite{klarner2015computing} is applicable for \emph{general} Boolean networks (i.e., including both locally-monotonic and non-locally-monotonic ones).
+However, this method is only applicable for \emph{locally-monotonic} Boolean networks, whereas the prime-implicants based method~\cite{klarner2015computing} is applicable for \emph{general} Boolean networks (i.e., including both locally-mono\-tonic and non-locally-monotonic ones).
 In addition, the \texttt{bioLQM} platform also provides another method using Binary Decision Diagrams (BDDs) in \url{http://colomoto.org/biolqm/doc/tools-trapspace.html}.
 This method avoids the prime-implicant computation as it characterizes the set of generic trap spaces of a Boolean network by a BDD, then filters this set to get the set of all minimal trap spaces.
 By this approach, it requires the computation of all solutions, whereas the methods~\cite{klarner2015computing,Paulev2020} based on Answer Set Programming (ASP) can start enumerating them as they are found.
@@ -723,7 +723,7 @@ For enumerating conflict-free siphons in the set inclusion order, we can use the
 The correctness of this technique comes from the fact that once \(S\) is found, it is the conflict-free siphon of maximum cardinality among all the remaining feasible conflict-free siphons.
 Similar to~\cite{nabli2016enumerating}, the newly CSP-based method can also be implemented with SAT and CP solvers.
 
-This method was implemented using the state-of-the-art CP solver Chuffed\footnote{\url{https://github.com/chuffed/chuffed}}~\cite{demirovic2018solution} via its MiniZinc~\cite{nethercote2007minizinc} interface.
+This method was implemented using the state-of-the-art CP solver Chuffed\footnote{\url{https://github.com/chuffed/chuffed}} \cite{demirovic2018solution} via its MiniZinc~\cite{nethercote2007minizinc} interface.
 Because it is a high-level interface, the backtrack-and-replay method of~\cite{nabli2016enumerating} was not used but rather the alternative implementation with two global constraints for lexicographic ordering (ensuring enumeration of solutions) and iterated non-subset of each already found solution (for maximality).
 
 For the SAT-based method, however a more direct method is to use a MaxSAT solver.
@@ -1510,7 +1510,7 @@ This observation along with the comparisons between \texttt{mpbn} and \texttt{Tr
 However, the reason may lie on the differences in the ASP encoding characteristics of the two methods and the fact that \texttt{mpbn} needs to spend time checking the local-monotonicity of each Boolean function in a Boolean network.
 We expect that \texttt{mpbn} may outperform \texttt{Trappist} for a certain set of models, but not for the set of real-world models considered in this article.
 
-Fourth, regarding the comparison of the ASP-based methods (i.e., \texttt{PyBoolNet}, \texttt{mpbn}, and \texttt{Trappist-ASP}), we note that for all the models where \texttt{PyBoolNet} did not finish before the time limit, the timeout occurred during the computation of the prime-implicants.
+Fourth, regarding the comparison of the ASP-based methods (i.e.,\linebreak \texttt{PyBoolNet}, \texttt{mpbn}, and \texttt{Trappist-ASP}), we note that for all the models where \texttt{PyBoolNet} did not finish before the time limit, the timeout occurred during the computation of the prime-implicants.
 Hence, not even a single minimal trap space was output by that method.
 For all the remaining models, once \texttt{PyBoolNet} went through the prime-implicant phase, its ASP solving phase quickly returned the first 1000 minimal trap spaces, all under one second.
 Hence, with the experimental results shown in this subsection as well as the two previous subsections, the practical differences between the ASP encoding of \texttt{Trappist-ASP} and that of \texttt{PyBoolNet} are not distinctly exposed.
@@ -1718,7 +1718,7 @@ The two remaining variants (i.e., \texttt{Trappist-CP} and \texttt{Trappist-ILP}
 However, for certain cases, they are still better than all state-of-the-art methods (i.e., \texttt{bioLQM}, \texttt{PyBoolNet}, and \texttt{mpbn}).
 This is evidence for the advantages of an alternative approach compared to what preexisted.
 
-Regarding general Boolean networks, \texttt{Trappist-ASP} (even \texttt{Trappist-MaxSAT}) is far more efficient than both \texttt{bioLQM} and \texttt{PyBoolNet}.
+Regarding general Boolean networks, \texttt{Trappist-ASP} (even \texttt{Trappist\-MaxSAT}) is far more efficient than both \texttt{bioLQM} and \texttt{PyBoolNet}.
 The speedups of \texttt{Trappist-ASP} or \texttt{Trappist-MaxSAT} are large, even between one and three orders of magnitude for most models.
 In addition, the experimental results also confirm that the ASP encoding of \texttt{Trappist-ASP} is much more efficient than that of \texttt{PyBoolNet}.
 
