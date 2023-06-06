@@ -116,8 +116,8 @@ However, this method is only applicable for \emph{locally-monotonic} Boolean net
 In addition, the \texttt{bioLQM} platform also provides another method using Binary Decision Diagrams (BDDs) in \url{http://colomoto.org/biolqm/doc/tools-trapspace.html}.
 This method avoids the prime-implicant computation as it characterizes the set of generic trap spaces of a Boolean network by a BDD, then filters this set to get the set of all minimal trap spaces.
 By this approach, it requires the computation of all solutions, whereas the methods~\cite{klarner2015computing,Paulev2020} based on Answer Set Programming (ASP) can start enumerating them as they are found.
-Moreover, the main issue with the BDD-based method is that the number of generic trap spaces of a Boolean network may be extremely larger than its number of minimal trap spaces.
-This issue limits the efficiency of the BDD-based method.
+Moreover, the main issue with \change{this} BDD-based method is that the number of generic trap spaces of a Boolean network may be extremely larger than its number of minimal trap spaces.
+This issue limits the efficiency of the \change{current} BDD-based method.
 The study~\cite{DBLP:journals/tcs/NoualRS13} highlights the need for non-locally-monotonic Boolean networks in both biological and theoretical aspects.
 Hence, it is still necessary to develop efficient methods for computing minimal trap spaces of large-scale general Boolean networks.
 
@@ -197,7 +197,7 @@ There are many different update schemes, but the two main types~\cite{thomas1991
 We recall here some definitions from~\cite{klarner2015computing} for the introduction of \emph{trap spaces}.
 Minimal trap spaces prove to be a very good approximation of the attractors of a Boolean network under asynchronous update schemes and have become the \emph{de facto} standard way to analyze models of a few tens of \emph{genes}~\cite{klarner2017pyboolnet,cifuentes2020control}.
 
-A non-empty set \(T \subseteq \mathcal{S}_{\mathcal{N}}\) is a trap set with respect to \(\rightarrow\) if for every \(x \in T\) and \(y \in S\) with \(x \rightarrow y\) it holds that \(y \in T\)~\cite{klarner2015computing}.
+A non-empty set \(T \subseteq \mathcal{S}_{\mathcal{N}}\) is a \change{\emph{trap set}} with respect to \(\rightarrow\) if for every \(x \in T\) and \change{\(y \in \mathcal{S}_{\mathcal{N}}\)} with \(x \rightarrow y\) it holds that \(y \in T\)~\cite{klarner2015computing}.
 An attractor of \(\mathcal{N}\) with respect to \(\rightarrow\) can be defined as an inclusion-wise minimal trap set of \((\mathcal{S}_{\mathcal{N}}, \rightarrow)\).
 An attractor can be also seen as a terminal strongly connected component of \((\mathcal{S}_{\mathcal{N}}, \rightarrow)\)~\cite{chatain2014characterization}.
 An attractor of size 1 is called a fixed point, otherwise it is called a cyclic or complex attractor~\cite{klarner2015computing}.
@@ -214,7 +214,7 @@ We denote \(\mathcal{S}_{\mathcal{N}}^{\star} = (\mathbb{B} \cup \{\star\})^n\) 
 Note that \(\left\vert\mathcal{S}_{\mathcal{N}}^{\star}\right\vert = 3^n\) and \change{\(\mathcal{S}_{\mathcal{N}} \in \mathcal{S}_{\mathcal{N}}^{\star}\)}~\cite{klarner2015computing}.
 
 A \emph{trap space} is defined as a subspace that is also a trap set.
-It is noted that trap spaces of a Boolean network are independent of the update scheme of this model~\cite{klarner2015computing}.
+It is noted that trap spaces of a Boolean network are independent of the update scheme of this model~\cite{klarner2015computing}, \change{we provide in Corollary~\ref{cor:indep} another proof of this}.
 Then, we define a partial order \(<\) on \(\mathcal{S}_{\mathcal{N}}^{\star}\) as: \(m < m'\) if and only if \(\mathcal{S}_{\mathcal{N}}[m] \subseteq \mathcal{S}_{\mathcal{N}}[m']\) and \(\mathcal{S}_{\mathcal{N}}[m] \neq \mathcal{S}_{\mathcal{N}}[m']\).
 Consequently, a trap space \(m\) is minimal if and only if there is no trap space \(m' \in \mathcal{S}_{\mathcal{N}}^{\star}\) such that \(m' < m\).
 
@@ -477,7 +477,7 @@ Hereafter, we formally prove that a (maximal) conflict-free siphon is equivalent
 
 \change{Note that this proof gives us as corollary a well-known result on trap spaces.}
 
-\begin{corollary}
+\begin{corollary}\label{cor:indep}
   \change{Trap spaces of a Boolean network are independent of the update scheme.}
 \end{corollary}
 
@@ -573,9 +573,11 @@ Furthermore, by Theorem~\ref{theo:min_ts_2_max_sp}, we can reduce the problem of
 Note that in the case of special types of trap spaces (e.g., fixed points), this can be put in regard to special types of siphons in Petri nets.
 See Subsection~\ref{subsec:computation_special_ts} for more discussions about many special types of trap spaces.
 It might actually be possible to generalize our result to any 1-safe place-complementary \change{(i.e., places are defined by pairs such that the markings are complementary)} Petri net to define a notion of trap spaces that might be useful for the analysis of Petri nets, but this is out of the scope of the present article.
+\change{Note also that conversely, investigating static analyses on such 1-safe place-complementary nets might allow for a more efficient computation of their siphons and hence of trap spaces.}
 
 Note that there are no existing methods specifically designed for computing maximal conflict-free siphons (even maximal generic siphons) of a Petri net.
 The reason might be that researchers mainly focus on minimal generic siphons~\cite{DBLP:journals/isci/LiuB16} in the field of Petri nets.
+\change{While adapting those methods to obtain minimal conflict-free siphons would sometimes be possible, the switch from minimality to maximality is quite a leap.}
 Hence, we here propose several methods for computing maximal conflict-free siphons of a Petri net.
 The details of the proposed methods shall be given in the next section.
 
@@ -1412,7 +1414,7 @@ Hence, it is apparent that all \change{these types} of randomly generated models
 This observation confirms a limit on the applicable model class of \texttt{mpbn}.
 
 Second, surprisingly \texttt{bioLQM} cannot handle any model.
-One of the reason may be that the BDD characterizing all trap spaces is too large, and its computation is slow.
+One of the reason may be that the BDD characterizing all \change{generic} trap spaces is too large, and its computation is slow.
 In addition, having too many generic trap spaces before the filtering process may be also a reason.
 It is apparent because the network size is large (\(n \geq 100\)) and the Boolean functions are not simple.
 
@@ -1466,6 +1468,7 @@ Recognizing that a model is locally-monotonic and applying in that specific case
 It is worth noting that there may be possibly other methods for computing minimal/maximal conflict-free siphons in Petri nets, like the methods for generic siphon computation in the field of Petri nets (see~\cite{DBLP:journals/isci/LiuB16} for a survey about these methods).
 Although these approaches do not directly support the minimal/maximal conflict-free siphon computation now, we plan to investigate them in the future.
 They could replace our proposed methods if they give significantly better performance.
+\change{Making use of the specific structure (1-safe, place-complementary) might also reveal new techniques to be considered.}
 However, the current methods appear to already perform very well even on the biggest models we have considered.
 
 Finally, we think that the links between Petri nets and Boolean networks that we stumbled upon in this article might have deeper roots.

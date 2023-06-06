@@ -11,3 +11,101 @@ We thank the reviewer for their kind words and for a very thorough reading of
 our article.  We fixed all the minor remarks highlighted by the reviewer, as can
 be seen in red in the uploaded version.  We believe it improved substantially
 the readability of the article.
+
+* Reviewer 2
+
+"1. The authors employ an existing method of translating BNs to PNs. Anyway, they introduce a novel notion of a
+specific class of siphons. It would be great to see more discussion on that general concept. Especially, I am not
+familiar with the complexity of computing general siphons in PNs. It would be good to recall complexity issues
+around that and to discuss (at least informally) the complexity of the problem of computing all conflict-free siphons
+of the specific class of safe PNs."
+
+TODO
+
+
+"2. It is claimed that the PNs-based encoding (and also the results) are independent of the semantics of the update
+scheme. It is not clear how this encoding could work with most-permissive semantics. I can imagine synchronous or
+generally synchronous schemes to be embedded (still raising some questions on the complexity issues and
+adaptability of the three methods presented in trappist)."
+
+As explained in the article, and now extracted as a Corollary, the trap-spaces
+of a Boolean network are indeed independent of any update scheme.  The
+most-permissive semantics is not an update scheme (since it goes outside of the
+Boolean state space) but an approximation technique for reachability and
+trap-spaces.  As shown in the comparison with the mpbn tool that is based on
+that semantics, the proposed method still outperforms any existing technique for
+computing trap spaces, while also being able to handle non-locally-monotonic
+networks.
+
+
+"3. The paper is quite skeptic on the topic of using BDDs for identifying trap spaces. Anyway, BDDs have recently
+proven to be useful for computing attractors (e.g., Benes et al. CAV 2021). I am aware the trap spaces are much more
+complicated structures than (general) SCCs. Anyway, it might be good to see some deeper discussion that gives the
+reader more information on why BDD would not work. Or the claim could be rather made weaker."
+
+Since we do use BDDs in our implementation, in our case to obtain the Petri net
+encoding, we are fully aware of their great characteristics.  As explained in
+the introduction, what makes the current BDD-based approach, as implemented in
+bioLQM, not efficient is that it tries to represent *all* trap spaces of a model
+as a BDD and then to filter them to get minimal trap spaces. This is where the
+inefficiency lies, and not in the specific use of BDDs per se.
+
+We have added some points to highlight that we are not at any point claiming
+that BDDs in general are not suited to this kind of task.
+
+
+"4. At last of but not least, an investigative (may be naive) question comes to my mind: Are there (at the PN level) any
+static analysis approaches that might help even (or improve) in identifying conflict-free siphons based on the
+network structure? That would made the idea of the paper even more promising."
+
+We are not aware of any such technique, but have now highlighted (at the end of
+Section 3 and in conclusion) that the link between Petri nets and Trap spaces
+could bring novelties both ways.
+
+
+"The critical problem I see in this submission is that several parts of the related work are missing (especially the
+coverage of TCS background is quite low).
+First, I think there must be definitely more background on the related problems in the domain of PNs. There exist
+several approaches to compute siphons. I am not from the PN domain but by some fast googling I see many papers
+on computing siphons. It would be good to include some of them in the background and discuss if they might be also
+considered for computing conflict-free siphons. I can believe the simple argument is that existing approaches are
+general and hence cannot be that efficient as the approach presented in the paper. Anyway, that should be
+discussed explicitly to add some more rigour."
+
+As explained at the very end of Section 3, there is, to our knowledge, no method
+to compute maximal generic siphons, and even less maximal conflict-free
+siphons. We refer to a recent survey [34] but as it shows, the focus is on the
+minimal siphons, and of course generic ones.  We have added a sentence to
+explain even more why these methods are not adapted to our problem.
+
+
+"Second, in my opinion some work on attractor identification might be seemed as strongly related since there are
+several useful concepts that have strong relation to trap spaces. In particular, there is the quite recent phd work of
+Fontanels et al. elaborating on the concept of phenotype control where I think that phenotypes can somehow gain
+from computing the trap spaces. Also the network reductions as recently introduced by Tonello et al. (arxiv 2023)
+seem to be promising for shifting the scalability further. This comes to question especially on lines 692-698."
+
+
+TODO
+
+
+We would like to thank the reviewer for their useful comments. We also addressed all the minor issues they pointed out.
+
+
+Minor issues
+==========
+page 5. The general definition of BNs semantics at the line 35 is quite non-standard. I understand the attempt to
+capture a sort of subclass of update modes abstractly but I think it still would make sense to be more explicit and
+give some concrete instances (that can be discussed throughout the paper). In the current version I have the feeling
+you focus primarily on asynchronous update mode.
+
+Do we have a reference for this?
+
+Figure 1: add the topology of the BN
+
+TODO
+
+line 172: there is the abuse of notion $m$ (already used for "markings" of BNs)
+
+TODO
+m = subspaces = markings is indeed not nice
