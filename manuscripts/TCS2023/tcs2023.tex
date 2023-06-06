@@ -7,6 +7,7 @@
 \newtheorem{example}{Example}[section]
 \newtheorem{definition}{Definition}[section]
 \newtheorem{proposition}{Proposition}[section]
+\newtheorem{corollary}{Corollary}[section]
 
 \usepackage{pgfplots}
 \pgfplotsset{width=10cm,compat=1.13}
@@ -474,8 +475,17 @@ Hereafter, we formally prove that a (maximal) conflict-free siphon is equivalent
   From (*) and (**), we can conclude the proof.
 \end{proof}
 
-From the proof of Theorem~\ref{theo:ts_2_sp}, we can see that the theorem holds for any update scheme associated to the Boolean network.
-Since the Petri net encoding of a Boolean network is independent of its update scheme and siphons are a static property of a Petri net, we can imply that trap spaces of a Boolean network are independent of its update scheme.
+\change{Note that this proof gives us as corollary a well-known result on trap spaces.}
+
+\begin{corollary}
+  \change{Trap spaces of a Boolean network are independent of the update scheme.}
+\end{corollary}
+
+\begin{proof}
+\change{From the proof of Theorem~\ref{theo:ts_2_sp}, we can see that the theorem holds for any update scheme associated to the Boolean network.
+Since the Petri net encoding of a Boolean network is independent of its update scheme and siphons are a static property of a Petri net, we get that trap spaces of a Boolean network are independent of its update scheme.}
+\end{proof}
+
 Note that the original proof for this property of trap spaces (see Theorem 1 of~\cite{klarner2015computing}) only considers the two popular update schemes (i.e., synchronous and fully asynchronous).
 Theorem~\ref{theo:ts_2_sp} exhibits the very first theoretical application of the connection between trap spaces of Boolean networks and siphons of Petri nets.
 
@@ -562,7 +572,7 @@ In addition, the worst case time complexity of the above checking method is quad
 Furthermore, by Theorem~\ref{theo:min_ts_2_max_sp}, we can reduce the problem of computing all minimal trap spaces of a Boolean network to the problem of computing all maximal conflict-free siphons of its Petri net encoding.
 Note that in the case of special types of trap spaces (e.g., fixed points), this can be put in regard to special types of siphons in Petri nets.
 See Subsection~\ref{subsec:computation_special_ts} for more discussions about many special types of trap spaces.
-It might actually be possible to generalize our result to any 1-safe place-complementary Petri net to define a notion of trap spaces that might be useful for the analysis of Petri nets, but this is out of the scope of the present article.
+It might actually be possible to generalize our result to any 1-safe place-complementary \change{(i.e., places are defined by pairs such that the markings are complementary)} Petri net to define a notion of trap spaces that might be useful for the analysis of Petri nets, but this is out of the scope of the present article.
 
 Note that there are no existing methods specifically designed for computing maximal conflict-free siphons (even maximal generic siphons) of a Petri net.
 The reason might be that researchers mainly focus on minimal generic siphons~\cite{DBLP:journals/isci/LiuB16} in the field of Petri nets.
@@ -594,7 +604,8 @@ By definition, the final system fully characterizes all conflict-free siphons of
 \subsection{Constraint satisfaction problem}%
 \label{subsec:computation_csp}
 
-The following Boolean Constraint Satisfaction Problem (CSP) directly derives from the above characterization:
+\change{A Constraint Satisfaction Problem (CSP) is defined by a triple giving its variables, their domains, and the constraints on those variables.}
+The following Boolean CSP directly derives from the above characterization:
 \begin{definition}
 
   Given a Petri net \(\mathcal{P} = (P, T, W)\) encoding a Boolean network \(\mathcal{N} = (V, F)\).
@@ -628,7 +639,7 @@ The following Boolean Constraint Satisfaction Problem (CSP) directly derives fro
 
 In~\cite{nabli2016enumerating}, the set of all siphons of a given Petri net is characterized by a similar Boolean CSP except the conflict-freeness constraint.
 From the encoded CSP, the set of all \emph{minimal} siphons of the Petri net can be enumerated in the set inclusion order.
-For enumerating siphons in the set inclusion order, the proposed method by~\cite{nabli2016enumerating} uses the technique that labels directly the Boolean variables with increasing value selection (i.e., to test first the absence, then the presence of a place in the candidate solution).
+For enumerating siphons in the set inclusion order, the \change{method proposed in}~\cite{nabli2016enumerating} uses the technique that labels directly the Boolean variables with increasing value selection (i.e., to test first the absence, then the presence of a place in the candidate solution).
 The method has two implementations, one uses an iterated SAT procedure and the other uses Constraint Programming (CP) with backtracking.
 
 One natural question is that how to use the CSP-based method for enumerating all the maximal conflict-free siphons of a Petri net encoding a Boolean network?
@@ -842,15 +853,15 @@ In practice, even if there is a huge number of attractors in such a model, obtai
 In particular, it provides a feature-rich alternative to random simulations for this type of very non-deterministic model.
 Being able to detect that there are inconsistencies with published experimental data in some of the first 1000 attractors, for instance, can lead to a much quicker Systems Biology loop: model, invalidate, refine.
 
-However, using a state-of-the-art tool like \texttt{PyBoolNet}~\cite{klarner2015computing} on that model actually fails at the phase of prime-implicant generation.
+However, using a state-of-the-art tool like \texttt{PyBoolNet}~\cite{klarner2015computing} on that model \change{unfortunately} fails at the phase of prime-implicant generation.
 \texttt{mpbn}~\cite{Paulev2020} can return the first 1000 solutions within 1.43s, but indeed, it limits the modeling range of the modelers as it does not permit using non-locally-monotonic Boolean functions.
 This is also true for the Alzheimer model also mentioned in that same article and originally from~\cite{ogishima2016alzpathway} (\verb|F4| file in the original supplementary material, and ``Alzheimer'' in Table~\ref{tab:result_real}), where \texttt{PyBoolNet} also fails at the prime-implicant computation and \texttt{mpbn} does not give any answer because this model is actually non-locally-monotonic.
 The current practice usually revolves then around fixing some source nodes to plausible values and reducing the model accordingly.
-While this approach makes sense, it relies on potentially arbitrary decisions, and \emph{hides away} critical modelling choices that were actually not part of the original Boolean network or even of the starting map.
+While this approach makes sense, it relies on potentially arbitrary decisions, and \emph{hides away} critical modelling choices that were \change{clearly} not part of the original Boolean network or even of the starting map.
 
-For the ``RA\_apoptosis'' model, using the ASP-based method presented in Subsection~\ref{subsec:computation_asp}, it is possible to obtain the first 1000 minimal trap spaces (including ones that contain more than one state) within 0.19s, which is much quicker than \texttt{mpbn}.
+For the ``RA\_apoptosis'' model, using the ASP-based method presented in Subsection~\ref{subsec:computation_asp}, it is \change{now} possible to obtain the first 1000 minimal trap spaces (including ones that contain more than one state) within 0.19s, which is much quicker than \texttt{mpbn}.
 The needed time for the ``Alzheimer'' model is 0.79s.
-Unfortunately since this method was not available at the time, the analysis of the model remained very high-level and qualitative, instead of being able to use the rich information of computed minimal trap spaces.
+% Unfortunately since this method was not available at the time, the analysis of the model remained very high-level and qualitative, instead of being able to use the rich information of computed minimal trap spaces.
 
 
 \section{Evaluation}%
@@ -894,7 +905,7 @@ These can be run on a Docker image in the cloud by clicking the ``Binder'' butto
     \rownb & faure\_cellcycle & 10 & 2 & \textbf{0.11} & 0.02 & 0.01 & 0.01 & \textbf{0.58} & \textbf{0.46} & 0.01\\
     \rownb & grieco\_mapk & 53 & 18 & \textbf{0.19} & 0.03 & 0.02 & 0.03 & \textbf{3.93} & \textbf{10.46} & 0.02\\
     \rownb & irons\_yeast & 18 & 1 & \textbf{0.12} & 0.03 & 0.01 & 0.01 & \textbf{0.37} & \textbf{0.39} & 0.02\\
-    \rownb & jaoude\_thdiff & 103 & $1000^+$ & N/A & \textbf{0.85} & \textbf{0.45} & \textbf{0.56} & \textbf{DNF} & \textbf{DNF} & 0.09\\
+    \rownb & jaoude\_thdiff & 103 & $1000^+$ & N/A & \textbf{0.85} & \textbf{0.45} & \textbf{0.56} & \textbf{\change{NF}} & \textbf{\change{NF}} & 0.09\\
     \rownb & klamt\_tcr & 40 & 8 & \textbf{0.11} & 0.01 & 0.01 & 0.01 & \textbf{1.98} & \textbf{1.22} & 0.02\\
     \rownb & krumsiek\_myeloid & 11 & 6 & \textbf{0.10} & 0.01 & 0.00 & 0.00 & \textbf{1.48} & \textbf{1.26} & 0.01\\
     \rownb & multivalued & 13 & 4 & \textbf{0.10} & 0.01 & 0.00 & 0.00 & \textbf{0.93} & \textbf{0.86} & 0.01\\
@@ -909,11 +920,11 @@ These can be run on a Docker image in the cloud by clicking the ``Binder'' butto
     \rownb & randomnet\_n7k3 & 7 & 10 & \textbf{0.10} & 0.01 & \textbf{NM} & 0.00 & \textbf{2.07} & \textbf{1.46} & 0.01\\
     \rownb & remy\_tumorigenesis & 34 & 25 & \textbf{0.15} & \textbf{0.94} & 0.02 & 0.02 & \textbf{5.98} & \textbf{7.98} & 0.02\\
     \rownb & saadatpour\_guardcell & 13 & 1 & \textbf{0.10} & 0.06 & 0.00 & 0.00 & \textbf{0.53} & \textbf{0.45} & 0.02\\
-    \rownb & selvaggio\_emt & 56 & $1000^+$ & N/A & \textbf{0.48} & \textbf{0.28} & \textbf{0.28} & \textbf{DNF} & \textbf{DNF} & 0.09\\
+    \rownb & selvaggio\_emt & 56 & $1000^+$ & N/A & \textbf{0.48} & \textbf{0.28} & \textbf{0.28} & \textbf{\change{NF}} & \textbf{\change{NF}} & 0.09\\
     \rownb & tournier\_apoptosis & 12 & 3 & \textbf{0.10} & 0.01 & 0.00 & 0.00 & \textbf{0.74} & \textbf{0.75} & 0.01\\
     \rownb & xiao\_wnt5a & 7 & 4 & \textbf{0.10} & 0.01 & 0.00 & 0.00 & \textbf{1.00} & \textbf{0.89} & 0.01\\
-    \rownb & zhang\_tlgl & 60 & 156 & \textbf{0.60} & 0.09 & 0.09 & 0.07 & \textbf{37.26} & \textbf{DNF} & 0.04\\
-    \rownb & zhang\_tlgl\_v2 & 60 & 258 & \textbf{0.64} & 0.04 & 0.08 & 0.11 & \textbf{69.95} & \textbf{DNF} & 0.04\\
+    \rownb & zhang\_tlgl & 60 & 156 & \textbf{0.60} & 0.09 & 0.09 & 0.07 & \textbf{37.26} & \textbf{\change{NF}} & 0.04\\
+    \rownb & zhang\_tlgl\_v2 & 60 & 258 & \textbf{0.64} & 0.04 & 0.08 & 0.11 & \textbf{69.95} & \textbf{\change{NF}} & 0.04\\
     \bottomrule
   \end{tabular}
   }
@@ -923,8 +934,8 @@ These can be run on a Docker image in the cloud by clicking the ``Binder'' butto
 Table~\ref{tab:pyboolnet_repo} shows the experimental results on the models from the official \texttt{PyBoolNet} repository\footnote{\url{https://github.com/hklarner/pyboolnet/tree/master/pyboolnet/repository}}.
 Column \(n\) denotes the number of nodes of each model.
 Column \(|M|\) denotes the number of minimal trap spaces and for each method is given the computation time in seconds, asking only for the first 1000 minimal trap spaces.
-``DNF'' means that the method did not finish the computation within the time limit of three minutes.
-In the case of \texttt{bioLQM}, ``N/A'' means that the number of all minimal trap spaces of the model is larger than 1000 and we did not recorded the running time of \texttt{bioLQM} because it always requires to compute all minimal trap spaces.
+``\change{NF}'' means that the method did not finish the computation within the time limit of three minutes.
+In the case of \texttt{bioLQM}, ``N/A'' means that the number of all minimal trap spaces of the model is larger than 1000 and we did not record the running time of \texttt{bioLQM} because it always requires to compute all minimal trap spaces.
 A number in bold indicates a ratio greater than three compared to the best result.
 ``NM'' indicates a non-locally-monotonic model.
 There are four variants of \texttt{Trappist}: \texttt{SAT} (i.e., \texttt{Trappist-MaxSAT}, the MaxSAT-based method shown in Subsection~\ref{subsec:computation_csp}), \texttt{CP} (i.e., \texttt{Trappist-CP}, the CP-based method shown in Subsection~\ref{subsec:computation_csp}), \texttt{ILP} (i.e., \texttt{Trappist-ILP}, the ILP-based method shown in Subsection~\ref{subsec:computation_ilp}), and \texttt{ASP} (i.e., \texttt{Trappist-ASP}, the ASP-based method shown in Subsection~\ref{subsec:computation_asp}).
@@ -949,12 +960,12 @@ First, \texttt{Trappist-ASP} is far more efficient than \texttt{bioLQM} in every
 Second, for small models, \texttt{PyBoolNet} and \texttt{mpbn} are comparable to \texttt{Trappist-ASP}.
 However, on every model that was a bit challenging for \texttt{PyBoolNet} or \texttt{mpbn}, \texttt{Trappist-ASP} is far more efficient with speedups between \(3\times\) and \(5 \times\) for the case of \texttt{mpbn}, and between \(5\times\) and \(1783 \times\) for the case of \texttt{PyBoolNet}.
 In particular, the second best variant of \texttt{Trappist} (i.e., \texttt{Trappist-MaxSAT}) is even far more efficient than \texttt{bioLQM} and \texttt{PyBoolNet}, and is comparable to \texttt{mpbn} on every model.
-It is worth noting that for 3 of the 29 models, \texttt{mpbn} did not give any answer because these models are locally-monotonic but all the other methods did, which confirms the limit of \texttt{mpbn} on the applicable class of models.
+It is worth noting that for 3 of the 29 models, \texttt{mpbn} did not give any answer because these models are \change{non-}locally-monotonic but all the other methods did, which confirms the limit of \texttt{mpbn} on the applicable class of models.
 
 
 \subsection{\texttt{BBM} repository}
 
-Currently, a research group has made a great effort for building a collection (called \texttt{BBM}) of real-world Boolean models from various sources used in systems biology.
+\change{The research group behind the \texttt{BBM} repository has recently undertaken considerable effort for building a collection of real-world Boolean models from various sources used in systems biology.}
 It aims to be a comprehensive collection suitable for benchmarking and testing new tools and methods.
 \texttt{BBM} consists of 211 models (24 out of them are non-locally-monotonic), peaking at 321 nodes, 1100 regulations among the nodes, and 133 source nodes, respectively.
 It is released and maintained at \url{https://github.com/sybila/biodivine-boolean-models}.
@@ -1162,10 +1173,10 @@ We here tested all the compared methods on this model repository.
 Figure~\ref{fig:BBM_cumul} (upper panel) shows cumulative numbers of the \texttt{BBM} models that have less than 1000 minimal trap spaces solved by the compared methods with respect to enumerating the first 1000 minimal trap spaces.
 The number of such models is 134 (per all 211 models), and 15 of them are non-locally-monotonic.
 This model set allows us to fairly consider \texttt{bioLQM} for comparison, since \texttt{bioLQM} always requires to compute all minimal trap spaces.
-We can first see that \texttt{Trappist-ASP} and \texttt{Trappist-MaxSAT} are still the two best methods as they can handle every model within 1s as well as they always can handle more models than all the remaining methods on every time limit.
+We can first see that \texttt{Trappist-ASP} and \texttt{Trappist-MaxSAT} are still the two best methods as they can handle every model within 1s \change{and} always can handle more models than all the remaining methods on every time limit.
 Second, \texttt{Trappist-CP} is better than \texttt{Trappist-ILP}, which is consistent with their comparison shown in the previous subsection.
 Third, one notable remark is that for the time limit of 100s or 180s, \texttt{Trappist-CP} can handle more models than all \texttt{bioLQM}, \texttt{PyBoolNet}, and \texttt{mpbn}.
-This remark shows that even with a not best implementation, our alternative approach is still better than the state-of-the-art methods on a certain set of real-world models.
+This remark shows that even \change{without focusing on the optimization of our implementation}, our alternative approach is still better than the state-of-the-art methods on a certain set of real-world models.
 This is supported by the fact that our alternative approach avoids the need for computing prime implicants (as opposed to \texttt{PyBoolNet}) and can handle non-locally-monotonic Boolean networks (as opposed to \texttt{mpbn}).
 
 
@@ -1189,8 +1200,9 @@ The remaining notations are similar to those in Table~\ref{tab:pyboolnet_repo}.
 Hereafter, we analyze in detail the results with respect to minimal trap space computation.
 
 \begin{table}[!htb]
-  \caption{Timing comparisons (in seconds) between \texttt{bioLQM} (\texttt{LQM}), \texttt{PyBoolNet} (\texttt{PBN}), \texttt{mpbn} and the four variants of \texttt{Trappist} on selected models from the literature.}
-  % in bold if greater than or equal to 10
+  \caption{Timing comparisons (in seconds) between \texttt{bioLQM} (\texttt{LQM}), \texttt{PyBoolNet} (\texttt{PBN}), \texttt{mpbn} and the four variants of \texttt{Trappist} on selected models from the literature.
+  \change{The models are sorted by size with a horizontal rule inserted to split at 100 and 200 nodes, as in~\cite{DBLP:conf/cmsb/TrinhBHS22}}}
+% in bold if greater than or equal to 10
   \centering%
   \label{tab:result_real}
   \scalebox{0.76}{
@@ -1204,38 +1216,38 @@ Hereafter, we analyze in detail the results with respect to minimal trap space c
     \rownb & Arabidopsis\_thaliana~\cite{DesignPrinciplesGeneNetworks} & 15 & 8 & \textbf{0.10} & 0.06 & NM & 0.01 & \textbf{2.06} & \textbf{1.83} & 0.02 \\
     \rownb & p53\_high\_dna~\cite{DesignPrinciplesGeneNetworks} & 16 & 1 & 0.38 & \textbf{1.76} & NM & 0.08 & 0.53 & 0.43 & 0.14 \\
     \rownb & p53\_low\_dna~\cite{DesignPrinciplesGeneNetworks} & 16 & 1 & 0.41 & \textbf{1.76} & NM & 0.07 & 0.58 & 0.48 & 0.14 \\
-    \rownb & FT-GRN~\cite{ChvezHernndez2022} & 23 & 32 & \textbf{DNF} & \textbf{DNF} & NM & 0.03 & \textbf{8.41} & \textbf{12.38} & 0.19 \\
+    \rownb & FT-GRN~\cite{ChvezHernndez2022} & 23 & 32 & \textbf{\change{NF}} & \textbf{\change{NF}} & NM & 0.03 & \textbf{8.41} & \textbf{12.38} & 0.19 \\
     \rownb & DNA\_damage~\cite{DesignPrinciplesGeneNetworks} & 26 & 16 & \textbf{0.24} & \textbf{0.33} & NM & 0.02 & \textbf{3.91} & \textbf{5.33} & 0.05 \\
     \rownb & Rho-GTPases~\cite{DesignPrinciplesGeneNetworks} & 33 & 2 & 0.17 & 0.57 & \textbf{40.39} & 0.07 & \textbf{0.74} & 0.56 & 0.11 \\
-    \rownb & Pluripotency~\cite{YachieKinoshita2018} & 36 & 440 & \textbf{DNF} & \textbf{DNF} & NM & 0.16 & \textbf{138.92} & \textbf{DNF} & 0.28 \\
-    \rownb & Pluripotent~\cite{DesignPrinciplesGeneNetworks} & 36 & 276 & 0.37 & 0.43 & NM & 0.07 & \textbf{72.40} & \textbf{DNF} & 0.06 \\
-    \rownb & Pancreatic\_Cancer~\cite{DesignPrinciplesGeneNetworks} & 43 & $1000^+$ & N/A & 0.11 & 0.36 & 0.17 & \textbf{DNF} & \textbf{DNF} & 0.06 \\
+    \rownb & Pluripotency~\cite{YachieKinoshita2018} & 36 & 440 & \textbf{\change{NF}} & \textbf{\change{NF}} & NM & 0.16 & \textbf{138.92} & \textbf{\change{NF}} & 0.28 \\
+    \rownb & Pluripotent~\cite{DesignPrinciplesGeneNetworks} & 36 & 276 & 0.37 & 0.43 & NM & 0.07 & \textbf{72.40} & \textbf{\change{NF}} & 0.06 \\
+    \rownb & Pancreatic\_Cancer~\cite{DesignPrinciplesGeneNetworks} & 43 & $1000^+$ & N/A & 0.11 & 0.36 & 0.17 & \textbf{\change{NF}} & \textbf{\change{NF}} & 0.06 \\
     \rownb & Drosophila~\cite{RodrguezVega2014} & 52 & 128 & 0.33 & 0.05 & 0.07 & 0.06 & \textbf{32.66} & \textbf{126.22} & 0.05 \\
     \rownb & Cacace\_TdevModel~\cite{Cacace2020} & 61 & 28 & \textbf{1.29} & \textbf{5.67} & NM & 0.06 & \textbf{7.51} & \textbf{23.15} & 0.08 \\
-    \rownb & hedgehog~\cite{DesignPrinciplesGeneNetworks} & 65 & $1000^+$ & N/A & \textbf{DNF} & 0.50 & 0.34 & \textbf{DNF} & \textbf{DNF} & 0.33 \\
-    \rownb & EMT~\cite{Rozum2021} & 69 & 268 & \textbf{39.22} & \textbf{1.01} & 0.20 & 0.12 & \textbf{75.81} & \textbf{DNF} & 0.05 \\
+    \rownb & hedgehog~\cite{DesignPrinciplesGeneNetworks} & 65 & $1000^+$ & N/A & \textbf{\change{NF}} & 0.50 & 0.34 & \textbf{\change{NF}} & \textbf{\change{NF}} & 0.33 \\
+    \rownb & EMT~\cite{Rozum2021} & 69 & 268 & \textbf{39.22} & \textbf{1.01} & 0.20 & 0.12 & \textbf{75.81} & \textbf{\change{NF}} & 0.05 \\
     \rownb & Bcell~\cite{Dutta2019} & 73 & 72 & 0.23 & 0.04 & 0.08 & 0.06 & \textbf{18.95} & \textbf{81.85} & 0.05 \\
-    \rownb & mast\_cell~\cite{aghamiri2020automated} & 73 & $1000^+$ & N/A & 0.09 & 0.55 & 0.37 & \textbf{DNF} & \textbf{DNF} & 0.15 \\
-    \rownb & Corral\_ThIL17diff~\cite{corral2021interplay} & 92 & $1000^+$ & N/A & \textbf{107.57} & 0.76 & 0.56 & \textbf{DNF} & \textbf{DNF} & 0.16 \\
+    \rownb & mast\_cell~\cite{aghamiri2020automated} & 73 & $1000^+$ & N/A & 0.09 & 0.55 & 0.37 & \textbf{\change{NF}} & \textbf{\change{NF}} & 0.15 \\
+    \rownb & Corral\_ThIL17diff~\cite{corral2021interplay} & 92 & $1000^+$ & N/A & \textbf{107.57} & 0.76 & 0.56 & \textbf{\change{NF}} & \textbf{\change{NF}} & 0.16 \\
 
     \midrule % 100 <= n < 200
-     \rownb & Adhesion\_CIP~\cite{guberman2020boolean} & 121 & 78 & \textbf{56.81} & \textbf{4.25} & 0.23 & 0.17 & \textbf{25.20} & \textbf{DNF} & 0.19 \\
-    \rownb & EMT\_Mech~\cite{Sullivan2022} & 136 & 82 & \textbf{DNF} & \textbf{14.01} & 0.27 & 0.20 & \textbf{27.55} & \textbf{DNF} & 0.25 \\
-    \rownb & macrophage~\cite{DesignPrinciplesGeneNetworks} & 136 & $1000^+$ & N/A & 0.54 & 1.09 & 0.84 & \textbf{DNF} & \textbf{DNF} & 0.27 \\
-    \rownb & angiogenesis~\cite{DesignPrinciplesGeneNetworks} & 141 & $1000^+$ & N/A & 0.16 & 1.07 & 1.06 & \textbf{DNF} & \textbf{DNF} & 0.16 \\
-    \rownb & angiofull~\cite{Weinstein2017} & 142 & $1000^+$ & N/A & 0.17 & 1.06 & 0.88 & \textbf{DNF} & \textbf{DNF} & 0.23 \\
-    \rownb & EMT\_Mech\_TGFbeta~\cite{Sullivan2022} & 150 & 492 & \textbf{DNF} & \textbf{11.28} & 0.78 & 0.69 & \textbf{DNF} & \textbf{DNF} & 0.35 \\
-    \rownb & RA\_apoptosis~\cite{aghamiri2020automated} & 180 & $1000^+$ & N/A & \textbf{DNF} & 1.43 & 1.55 & \textbf{DNF} & \textbf{DNF} & 0.19 \\
-    \rownb & MAPK~\cite{aghamiri2020automated} & 181 & $1000^+$ & N/A & \textbf{13.58} & 1.76 & 1.51 & \textbf{DNF} & \textbf{DNF} & 0.27 \\
+     \rownb & Adhesion\_CIP~\cite{guberman2020boolean} & 121 & 78 & \textbf{56.81} & \textbf{4.25} & 0.23 & 0.17 & \textbf{25.20} & \textbf{\change{NF}} & 0.19 \\
+    \rownb & EMT\_Mech~\cite{Sullivan2022} & 136 & 82 & \textbf{\change{NF}} & \textbf{14.01} & 0.27 & 0.20 & \textbf{27.55} & \textbf{\change{NF}} & 0.25 \\
+    \rownb & macrophage~\cite{DesignPrinciplesGeneNetworks} & 136 & $1000^+$ & N/A & 0.54 & 1.09 & 0.84 & \textbf{\change{NF}} & \textbf{\change{NF}} & 0.27 \\
+    \rownb & angiogenesis~\cite{DesignPrinciplesGeneNetworks} & 141 & $1000^+$ & N/A & 0.16 & 1.07 & 1.06 & \textbf{\change{NF}} & \textbf{\change{NF}} & 0.16 \\
+    \rownb & angiofull~\cite{Weinstein2017} & 142 & $1000^+$ & N/A & 0.17 & 1.06 & 0.88 & \textbf{\change{NF}} & \textbf{\change{NF}} & 0.23 \\
+    \rownb & EMT\_Mech\_TGFbeta~\cite{Sullivan2022} & 150 & 492 & \textbf{\change{NF}} & \textbf{11.28} & 0.78 & 0.69 & \textbf{\change{NF}} & \textbf{\change{NF}} & 0.35 \\
+    \rownb & RA\_apoptosis~\cite{aghamiri2020automated} & 180 & $1000^+$ & N/A & \textbf{\change{NF}} & 1.43 & 1.55 & \textbf{\change{NF}} & \textbf{\change{NF}} & 0.19 \\
+    \rownb & MAPK~\cite{aghamiri2020automated} & 181 & $1000^+$ & N/A & \textbf{13.58} & 1.76 & 1.51 & \textbf{\change{NF}} & \textbf{\change{NF}} & 0.27 \\
 
     \midrule % 200 <= n
-    \rownb & Snf1-pathway~\cite{Lubitz2015} & 202 & $1000^+$ & N/A & 1.13 & 1.47 & 1.43 & \textbf{DNF} & \textbf{DNF} & 0.31 \\
-    \rownb & T-cell-co-receptor~\cite{DesignPrinciplesGeneNetworks} & 206 & $1000^+$ & N/A & \textbf{DNF} & 1.52 & 2.26 & \textbf{DNF} & \textbf{DNF} & 0.35 \\
-    \rownb & TcellCheckPoint~\cite{hernandez2020computational} & 218 & $1000^+$ & N/A & \textbf{4.99} & NM & 1.96 & \textbf{DNF} & \textbf{DNF} & 0.28 \\
-    \rownb & Mycobacterium~\cite{DesignPrinciplesGeneNetworks} & 317 & $1000^+$ & N/A & 0.42 & 2.36 & \textbf{4.91} & \textbf{DNF} & \textbf{DNF} & 0.44 \\
-    \rownb & Leishmania~\cite{DesignPrinciplesGeneNetworks} & 342 & $1000^+$ & N/A & \textbf{DNF} & 2.56 & \textbf{5.62} & \textbf{DNF} & \textbf{DNF} & 0.46 \\
-    \rownb & Cholocystokinin~\cite{aghamiri2020automated} & 383 & $1000^+$ & N/A & 0.36 & 2.99 & \textbf{4.81} & \textbf{DNF} & \textbf{DNF} & 0.37 \\
-    \rownb & Alzheimer~\cite{aghamiri2020automated} & 762 & $1000^+$ & N/A & \textbf{DNF} & NM & \textbf{18.21} & \textbf{DNF} & \textbf{DNF} & 0.79 \\
+    \rownb & Snf1-pathway~\cite{Lubitz2015} & 202 & $1000^+$ & N/A & 1.13 & 1.47 & 1.43 & \textbf{\change{NF}} & \textbf{\change{NF}} & 0.31 \\
+    \rownb & T-cell-co-receptor~\cite{DesignPrinciplesGeneNetworks} & 206 & $1000^+$ & N/A & \textbf{\change{NF}} & 1.52 & 2.26 & \textbf{\change{NF}} & \textbf{\change{NF}} & 0.35 \\
+    \rownb & TcellCheckPoint~\cite{hernandez2020computational} & 218 & $1000^+$ & N/A & \textbf{4.99} & NM & 1.96 & \textbf{\change{NF}} & \textbf{\change{NF}} & 0.28 \\
+    \rownb & Mycobacterium~\cite{DesignPrinciplesGeneNetworks} & 317 & $1000^+$ & N/A & 0.42 & 2.36 & \textbf{4.91} & \textbf{\change{NF}} & \textbf{\change{NF}} & 0.44 \\
+    \rownb & Leishmania~\cite{DesignPrinciplesGeneNetworks} & 342 & $1000^+$ & N/A & \textbf{\change{NF}} & 2.56 & \textbf{5.62} & \textbf{\change{NF}} & \textbf{\change{NF}} & 0.46 \\
+    \rownb & Cholocystokinin~\cite{aghamiri2020automated} & 383 & $1000^+$ & N/A & 0.36 & 2.99 & \textbf{4.81} & \textbf{\change{NF}} & \textbf{\change{NF}} & 0.37 \\
+    \rownb & Alzheimer~\cite{aghamiri2020automated} & 762 & $1000^+$ & N/A & \textbf{\change{NF}} & NM & \textbf{18.21} & \textbf{\change{NF}} & \textbf{\change{NF}} & 0.79 \\
 
     \bottomrule
   \end{tabular}
@@ -1275,7 +1287,8 @@ In total, we have 350 random models.
 We then applied the compared methods to these models and recorded the running time of each method for each model.
 It is worth noting that N-K models usually have small numbers of minimal trap spaces~\cite{klarner2015computing}.
 Hence, we searched for all solutions in each model, which makes the comparison to \texttt{bioLQM} more comprehensive.
-In addition, each node has only three input nodes, leading to the number of \change{prime implicants} of the associated Boolean function is small.
+In addition, each node has only three input nodes, \change{leading to a small number of prime implicants of
+the associated Boolean function}.
 Hence, \texttt{PyBoolNet} always passed the phase of computing \change{prime implicants} in every model even within one second, which enables us to compare the ASP encoding of \texttt{PyBoolNet} and that of \texttt{Trappist-ASP}.
 
 \begin{figure}[!ht]
@@ -1395,7 +1408,7 @@ Upon closer inspection, we obtained several notable observations as follows.
 
 First, \texttt{mpbn} was not able to handle any model because all the models are non-locally-monotonic.
 Recall that a Boolean network is non-locally-monotonic if only one of its Boolean functions is non-locally-monotonic.
-Hence, it is apparent that all this type of randomly generated models are non-locally-monotonic because of the number of nodes is large (\(n \geq 100\)).
+Hence, it is apparent that all \change{these types} of randomly generated models are non-locally-monotonic because of the number of nodes is large (\(n \geq 100\)).
 This observation confirms a limit on the applicable model class of \texttt{mpbn}.
 
 Second, surprisingly \texttt{bioLQM} cannot handle any model.

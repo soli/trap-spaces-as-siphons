@@ -7,6 +7,7 @@ become a reference for anyone doing dynamics analysis of Boolean models. Below I
 list several minor remarks, fixes, and suggestions for improvement. I believe
 this work can be published after these minor corrections are implemented."
 
-We fixed all the minor remarks highlighted by the reviewer, as can be seen in
-red in the uploaded version.  Indeed it improved substantially the readability
-of the article.
+We thank the reviewer for their kind words and for a very thorough reading of
+our article.  We fixed all the minor remarks highlighted by the reviewer, as can
+be seen in red in the uploaded version.  We believe it improved substantially
+the readability of the article.
