@@ -1,20 +1,6 @@
 \documentclass[preprint,12pt]{elsarticle}
 
-%% Use the option review to obtain double line spacing
-%% \documentclass[preprint,review,12pt]{elsarticle}
-
-%% Use the options 1p,twocolumn; 3p; 3p,twocolumn; 5p; or 5p,twocolumn
-%% for a journal layout:
-%% \documentclass[final,1p,times]{elsarticle}
-%% \documentclass[final,1p,times,twocolumn]{elsarticle}
-%% \documentclass[final,3p,times]{elsarticle}
-%% \documentclass[final,3p,times,twocolumn]{elsarticle}
-%% \documentclass[final,5p,times]{elsarticle}
-%% \documentclass[final,5p,times,twocolumn]{elsarticle}
-
-%% The amssymb package provides various useful mathematical symbols
 \usepackage{amssymb}
-%% The amsthm package provides extended theorem environments
 \usepackage{amsthm}
 
 \newtheorem{theorem}{Theorem}[section]
@@ -26,36 +12,27 @@
 \pgfplotsset{width=10cm,compat=1.13}
 \usepgfplotslibrary{groupplots}
 
-%% The lineno packages adds line numbers. Start line numbering with
-%% \begin{linenumbers}, end it with \end{linenumbers}. Or switch it on
-%% for the whole article with \linenumbers.
 \usepackage{lineno}
 
 \usepackage{hyperref}
 \hypersetup{pdfauthor={Name}} % avoid warning messages from hyperref package in LaTex
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Drawing
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{tikz}
 \usepackage{amsfonts}
 
-% drawing automa
 \usetikzlibrary{positioning,automata}
 
-% for captions in figures
 \usepackage[labelformat=simple]{subcaption}
 \renewcommand\thesubfigure{(\alph{subfigure})}
 
 \usepackage{booktabs}
-
-% table row numbers
 \newcounter{rownumber}
 \newcommand\rownb{\stepcounter{rownumber}\arabic{rownumber}}
 
-\newcommand{\vangiang}[1]{\textcolor{magenta}{#1}}
-\newcommand{\belaid}[1]{\textcolor{blue}{#1}}
-\newcommand{\sylvain}[1]{\textcolor{teal}{#1}}
+% \newcommand{\vangiang}[1]{\textcolor{magenta}{#1}}
+% \newcommand{\belaid}[1]{\textcolor{blue}{#1}}
+% \newcommand{\sylvain}[1]{\textcolor{teal}{#1}}
+\newcommand{\change}[1]{\textcolor{red}{#1}}
 
 \usepackage{amsmath}
 \newcommand{\IN}{\mathit{IN}}
@@ -69,48 +46,7 @@
 
 \begin{frontmatter}
 
-%% Title, authors and addresses
-
-%% use the tnoteref command within \title for footnotes;
-%% use the tnotetext command for theassociated footnote;
-%% use the fnref command within \author or \address for footnotes;
-%% use the fntext command for theassociated footnote;
-%% use the corref command within \author for corresponding author footnotes;
-%% use the cortext command for theassociated footnote;
-%% use the ead command for the email address,
-%% and the form \ead[url] for the home page:
-%% \title{Title\tnoteref{label1}}
-%% \tnotetext[label1]{}
-%% \author{Name\corref{cor1}\fnref{label2}}
-%% \ead{email address}
-%% \ead[url]{home page}
-%% \fntext[label2]{}
-%% \cortext[cor1]{}
-%% \affiliation{organization={},
-%%             addressline={},
-%%             city={},
-%%             postcode={},
-%%             state={},
-%%             country={}}
-%% \fntext[label3]{}
-
 \title{Trap spaces of Boolean networks are conflict-free siphons of their Petri net encoding}
-
-%% use optional labels to link authors explicitly to addresses:
-%% \author[label1,label2]{}
-%% \affiliation[label1]{organization={},
-%%             addressline={},
-%%             city={},
-%%             postcode={},
-%%             state={},
-%%             country={}}
-%%
-%% \affiliation[label2]{organization={},
-%%             addressline={},
-%%             city={},
-%%             postcode={},
-%%             state={},
-%%             country={}}
 
 \author{Van-Giang Trinh\fnref{1}}
 \ead{trinh.van-giang@lis-lab.fr}
@@ -118,30 +54,22 @@
 \author{Belaid Benhamou\fnref{1}}
 \ead{belaid.benhamou@lis-lab.fr}
 
-\affiliation[1]{organization={LIS, Aix-Marseille University},%Department and Organization
-            %addressline={},
+\affiliation[1]{organization={LIS, Aix-Marseille University},
             city={Marseille},
-            %postcode={},
-            %state={},
             country={France}}
 
 \author{Sylvain Soliman\corref{cor1}\fnref{2}}
 \ead{Sylvain.Soliman@inria.fr}
 
-\affiliation[2]{organization={Lifeware team, Inria Saclay center},%Department and Organization
-            %addressline={},
+\affiliation[2]{organization={Lifeware team, Inria Saclay center},
             city={Palaiseau},
-            %postcode={},
-            %state={},
             country={France}}
 
 \cortext[cor1]{Corresponding author.}
 
 \begin{abstract}
-%% Text of abstract
 
 Boolean network modeling of gene regulation but also of post-trans\-criptomic systems has proven over the years that it can bring powerful analyses and corresponding insight to the many cases where precise biological data is not sufficiently available to build a detailed quantitative model.
-%This is even more true for very large models where such data is frequently missing and led to a constant increase in size of logical models \emph{à la} Thomas.
 Besides simulation, the analysis of such models is mostly based on attractor computation, since those correspond roughly to observable biological \emph{phenotypes}.
 The recent use of trap spaces made a real breakthrough in that field allowing to consider medium-sized models that used to be out of reach.
 However, with the continuing increase in model size and complexity of Boolean update functions, the state-of-the-art computation of minimal trap spaces based on \emph{prime-implicants} shows its limits due to the difficulty of the prime-implicant computation.
@@ -153,11 +81,6 @@ We then demonstrate its efficiency and compare it to the state-of-the-art method
 
 \end{abstract}
 
-%%Graphical abstract
-% \begin{graphicalabstract}
-% %\includegraphics{grabs}
-% \end{graphicalabstract}
-
 %%Research highlights
 % \begin{highlights}
 % \item Research highlight 1
@@ -165,13 +88,6 @@ We then demonstrate its efficiency and compare it to the state-of-the-art method
 % \end{highlights}
 
 \begin{keyword}
-%% keywords here, in the form: keyword \sep keyword
-
-%% PACS codes here, in the form: \PACS code \sep code
-
-%% MSC codes here, in the form: \MSC code \sep code
-%% or \MSC[2008] code \sep code 2000 is the default
-
 Logical model \sep Boolean network \sep Trap space \sep Attractor computation \sep Petri net \sep Siphon \sep Systems biology
 \end{keyword}
 
@@ -179,7 +95,6 @@ Logical model \sep Boolean network \sep Trap space \sep Attractor computation \s
 
 \linenumbers%
 
-%% main text
 \section{Introduction}
 
 From the observation that the transcriptional regulation behaved in a sigmoid step-like way, came the original idea to represent models of gene regulation as discrete event systems.
@@ -215,11 +130,6 @@ Specifically, based on the connection, we propose an alternative approach to com
 It replaces the need for prime-implicants by a completely different technique, namely the enumeration of maximal siphons in the Petri net encoding of the original model.
 We then demonstrate its efficiency and compare it to the state-of-the-art methods for computing minimal trap spaces of Boolean networks on many real-world models from various sources in the literature and on randomly generated models.
 
-%After recalling several technical preliminaries (Section~\ref{sec:Preliminaries}), we expose the concrete need for such a method and detail its implementation using Answer Set Programming (Section~\ref{sec:Computation}).
-
-%All models used for evaluation and the implementation of the presented method are available at \url{https://github.com/soli/trap-spaces-as-siphons} and executable as a CoLoMoTo docker image.
-
-% Mention the extensions for the journal version
 Herein we revise and extend our previous work in~\cite{DBLP:conf/cmsb/TrinhBHS22} as follows.
 First, more formal definitions are given and the existing proofs are made more detailed.
 In particular, an updated proof provides another way to prove the independence of trap spaces of a Boolean network with respect to its update scheme, which was originally proved in~\cite{klarner2015computing}.
@@ -227,11 +137,9 @@ Second, we showcase a theoretical application of the connection between trap spa
 Third, beyond the proposed ASP method implementing the alternative approach~\cite{DBLP:conf/cmsb/TrinhBHS22}, we propose several other possible methods for computing minimal trap spaces using Maximum Satisfiability (MaxSAT), Constraint Programming (CP), and Integer Linear Programming (ILP).
 Fourth, we discuss in detail how to compute several special types of trap spaces in a Boolean network.
 Besides minimal trap spaces, these special types also play crucial roles in analyzing and controlling Boolean networks~\cite{Rozum2021}.
-%Fifth, we present the idea for using our Petri net approach to handle the problem of inconsistent and incomplete data in modeling biological systems.
 Fifth, regarding the implementation, we have developed a new converter that directly reads a \texttt{.bnet} file and builds the Petri net encoding, instead of using the \texttt{PNML} conversion of \texttt{bioLQM}~\cite{DBLP:conf/cmsb/TrinhBHS22}.
 Finally, we conduct a more extensive benchmark on more real-world models from various sources and randomly generated models to evaluate all the proposed methods (the benchmark conducted in~\cite{DBLP:conf/cmsb/TrinhBHS22} considers only a few dozens of representative real-world models), therefore obtaining more comprehensive insights.
 
-%%% Paper structure %%%
 The rest of this paper is organized as follows: Section~\ref{sec:Preliminaries} recalls the basic concepts including Boolean networks, attractors, trap spaces, Petri nets, and siphons.
 Section~\ref{sec:Main_finding} presents the main finding, the connection between trap spaces in Boolean networks and siphons in Petri nets.
 Section~\ref{sec:Computation} presents the alternative approach for computing minimal trap spaces and the four possible methods implementing it.
@@ -244,8 +152,6 @@ Finally, Section~\ref{sec:Conclusion} concludes the paper and draws future work.
 \label{sec:Preliminaries}
 
 We shall briefly recall here some preliminaries on Boolean networks related to trap spaces and Petri nets.
-%In the case of multi-level logical models, an encoding into a Boolean network is always possible~\cite{Didier2011}.
-%\vangiang{Remove this statement because there is not sure if the encoded Boolean network preserves the trap spaces of the original multi-level logical model.}
 
 \subsection{Boolean networks}
 
@@ -277,7 +183,7 @@ At each time step \(t\), node \(v_i\) can, depending on the update scheme, updat
     \text{or} &v_i(t)
   \end{cases}
 \]
-where \(v(t)\) (resp. \(v_i(t)\)) is the state of \(\mathcal{N}\) (resp. the state of node \(v_i\)) at time \(t\). % and \(v_i(t + 1)\) is the state of node \(v_i\) at time \(t + 1\).
+where \(v(t)\) (resp. \(v_i(t)\)) is the state of \(\mathcal{N}\) (resp. the state of node \(v_i\)) at time \(t\).
 Note that for simplicity, we write \(f_i(v(t))\) even if \(\IN(v_i) \subsetneq V\) (i.e., \(\IN(v_i)\) does not contain some nodes of \(V\)).
 An update scheme of a Boolean network specifies which nodes update their states, as defined above, through time evolution~\cite{thomas1991regulatory}.
 Following the update scheme, the Boolean network transits from a state to another state (possibly identical).
@@ -518,7 +424,6 @@ Hereafter, we formally prove that a (maximal) conflict-free siphon is equivalent
   Let \(v\) be the node in \(\mathcal{N}\) corresponding to \(p\).
   By the characteristics of the encoding~\cite{chaouiya2004qualitative}, there is a directional arc from \(t\) to \(p\) and a directional arc from the complementary place of \(p\) to \(t\).
   Without loss of generality, we assume that \(p = p_v\), then there is a directional arc from \(t\) to \(p_v\) and a directional arc from \(\overline{p}_v\) to \(t\).
-  %In addition, there is also no arc or a bidirectional arc between \(t\) and another place rather than \(p_v\) and \(\overline{p}_v\).
   We follow the following procedure to find a state \(s \in \mathcal{S}_{\mathcal{N}}[m]\) such that \(m_s(p') = 1, \forall p' \in \pred(t)\) where \(m_s\) is the corresponding marking in \(\mathcal{P}\) of \(s\).
   For every place \(p' \in \pred(t)\), let \(p''\) be the complementary place of \(p'\) and \(v'\) be the corresponding node in \(\mathcal{N}\) of \(p'\) and \(p''\).
   If \(p'' \not \in S\), then \(v' \not \in D_m\) and we can always set a Boolean value to \(s(v')\) such that \(s \in \mathcal{S}_{\mathcal{N}}[m]\) and \(m_s(p') = 1\).
@@ -912,152 +817,6 @@ where \(\{v_{i_1}, \dots, v_{i_k}\}\) is the set of free nodes of \(m^{*}\).
 This rule ensures that \(m \neq m^{*}\).
 In the case that \(m^{*} = \varepsilon\), we have all maximal trap spaces of the original Boolean network.
 
-%\section{Inconsistent and incomplete data}%
-%\label{sec:incomplete-data}
-%
-%So far we have assumed that we are always able to derive complete
-%and consistent truth tables (i.e., Boolean functions) that correctly capture the behavior of each node in a Boolean network.
-%However, in practice it is rarely the
-%case that a Boolean network of a biological system is fully understood and indeed, this is one important reason for modeling such networks.
-%The data provided may be incomplete in the sense that information is missing about what happens in certain states, or it may be inconsistent in that we have conflicting information.
-%The result is that the behavior of some nodes under certain conditions may be non-deterministic~\cite{Steggles2006}.
-%
-%Non-deterministic behavior is problematic for Boolean networks with the synchronous update scheme, which are unable to represent the possibility of more than one next state.
-%It can be addressed by using Boolean networks with asynchronous update schemes because of their non-determinism.
-%However, multiple update functions may be considered for each node, which is problematic for existing analysis methods in Boolean networks.
-%For example, if the truth table of a node have \(k\) unknown-output rows, then this node may have \(2^k\) possible Boolean functions and the analysis methods such as \texttt{PyBoolNet} and \texttt{mpbn} need to consider \(2^k\) possible Boolean networks due to they require complete Boolean functions for their underlying processing.
-%Moreover, one interesting question maybe raised from systems biologists is if there is a common behavioral property (e.g., minimal trap space, fixed point, attractor) among all possible combinations.
-%To answer this question, the existing analysis methods maybe need to consider \(2^k\) possible Boolean networks as well.
-%
-%We shall show how our Petri net approach presented the previous section can handle the problem of inconsistent and incomplete data.
-%The idea is to build the Petri net encoding of the Boolean network from its partial truth tables.
-%More specifically, for each unknown-output row in the truth table of a node, we create two conflicting transitions representing the two possible outputs (i.e., 0 or 1).
-%For the remaining rows, we create transitions as usual following the Petri net encoding~\cite{chatain2014characterization}.
-%Because of the non–deterministic choice mechanisms of Petri nets, the new Petri net is still equivalent in dynamics to the incomplete Boolean network.
-%One notable advantage of the connection between trap spaces of a Boolean network and conflict-free siphons of its Petri net encoding is that it still holds if the Petri net encoding changes (e.g., more or less transitions) but still maintain the equivalence in dynamics to the Boolean network.
-%Hence, the minimal trap spaces of the incomplete Boolean network can be computed by computing maximal conflict-free siphons of the resulting Petri net.
-%As a consequence, we can easily answer the question on common behavioral property.
-%
-%\begin{example}
-%Consider an incomplete Boolean network \(\mathcal{N} = (V, F)\) (mentioned in~\cite{Steggles2006}), where \(V = (g_1, g_2, g_3)\) and \(F = (f_1, f_2, f_3)\) with \(f_1 = g_2, f_3 = \neg g_1\). Herein, \(f_2\) is an incomplete function and the partial truth table is as follows.
-%\begin{center}
-%	\begin{tabular}{rr|r}
-%		\toprule
-%		$g_1$ & $g_3$ & $g_2$ \\ \midrule
-%		0 & 0 & 0 \\
-%		0 & 1 & 0 \\
-%		1 & 0 & ? \\
-%		1 & 1 & 1 \\
-%		\bottomrule
-%	\end{tabular}
-%\end{center}
-%We have two possible update functions for \(g_2\): \(f_2 = g_1 \land g_3\) for the case that \(? = 0\) and \(f_2 = g_1\) for the case that \(? = 1\).
-%Accordingly, we have two possible Boolean networks.
-%The first one has one minimal trap space: 001.
-%The second one has two minimal trap spaces: 001 and 110.
-%Both have a common minimal trap space: 001.
-%The asynchronous dynamics of the incomplete Boolean network is shown in Figure~\ref{fig:incomplete-dynamics-new-PN}a.
-%The resulting Petri net following our idea is given in Figure~\ref{fig:incomplete-dynamics-new-PN}b.
-%Herein, \(t^3_{g_2}\) and \(t^4_{g_2}\) are the two conflicting transitions representing the unknown-output row.
-%This Petri net has only one maximal conflict-free siphon \(\{p_{g_1}, p_{g_2}, \overline{p}_{g_3}\}\) corresponding to the common minimal trap space 001.
-%
-%\label{example:incomplete-BN}%
-%\end{example}
-%
-%\begin{figure}[!htb]
-%	\centering
-%	\begin{subfigure}[b]{0.3\textwidth}
-%		\centering
-%		\begin{tikzpicture}[node distance=1cm and 1cm, every node/.style={scale=1.0}]
-%		\node[] (0) [] {000};
-%		\node[] (1) [left=of 0] {001};
-%		\node[] (4) [above=of 0] {100};
-%		\node[] (6) [above=of 1] {110};
-%		\node[] (5) [below=of 1] {101};
-%		\node[] (2) [left=of 6] {010};
-%		\node[] (3) [left=of 1] {011};
-%		\node[] (7) [below=of 3] {111};
-%
-%		\draw[->] (0) edge [] (1);
-%		\draw[->] (4) edge [] (0);
-%		\draw[->] (4) edge [bend left] (6);
-%		\draw[->] (6) edge [bend left] (4);
-%
-%		\draw[->] (5) edge [] (1);
-%		\draw[->] (5) edge [] (7);
-%
-%		\draw[->] (2) edge [] (6);
-%		\draw[->] (2) edge [] (0);
-%		\draw[->] (2) edge [] (3);
-%
-%		\draw[->] (3) edge [] (1);
-%		\draw[->] (3) edge [] (7);
-%
-%		\draw[->] (7) edge [] (6);
-%
-%		\end{tikzpicture}
-%		\caption{}%
-%		%\label{fig:stg}
-%	\end{subfigure}\hfill%
-%	\begin{subfigure}[b]{0.6\textwidth}
-%		\centering
-%		\begin{tikzpicture}[node distance=1cm and 1cm, every node/.style={scale=1.0}]\footnotesize
-%		\node[circle,draw,label=left:$p_{g_1}$] (x1) {};
-%		\node[circle,draw,label=left:$\overline{p}_{g_1}$] (nx1) [below=of x1, yshift=-0.5cm] {};
-%
-%		\node[circle,draw,label=right:$p_{g_2}$] (x2) [right=of x1, xshift=2.5cm] {};
-%		\node[circle,draw,label=right:$\overline{p}_{g_2}$] (nx2) [below=of x2, yshift=-0.5cm] {};
-%
-%		\node[circle,draw,label=left:$p_{g_3}$] (x3) [below=of nx1, yshift=-0.5cm] {};
-%		\node[circle,draw,label=right:$\overline{p}_{g_3}$] (nx3) [below=of nx2, yshift=-0.5cm] {};
-%
-%		\node[rectangle,draw,label=above:$t^1_{g_2}$] (t1x2) [right=of x1] {};
-%		\node[rectangle,draw,label=above:$t^2_{g_2}$] (t2x2) [right=of nx1] {};
-%
-%		\node[rectangle,draw,label=left:$t^3_{g_2}$] (t3x2) [left=of nx2] {};
-%		\node[rectangle,draw,label=left:$t^4_{g_2}$] (t4x2) [left=of nx3] {};
-%
-%		\draw[->] (x2) -- (t1x2);
-%		\draw[->] (t1x2) -- (nx2);
-%		\draw[<->] (t1x2) -- (nx1);
-%
-%		\draw[->] (nx2) edge [bend left] (t2x2);
-%		\draw[->] (t2x2) -- (x2);
-%		\draw[<->] (t2x2) -- (x1);
-%		\draw[<->] (t2x2) -- (x3);
-%
-%		\draw[->] (x2) -- (t3x2);
-%		\draw[->] (t3x2) -- (nx2);
-%		\draw[<->] (t3x2) -- (x1);
-%		\draw[<->] (t3x2) -- (nx3);
-%
-%		\draw[->] (nx2) -- (t4x2);
-%		\draw[->] (t4x2) -- (x2);
-%		\draw[<->] (t4x2) edge [bend left=15] (x1);
-%		\draw[<->] (t4x2) -- (nx3);
-%
-%		\end{tikzpicture}
-%		\caption{}%
-%		%\label{fig:PN}
-%	\end{subfigure}%
-%	\caption{Asynchronous dynamics (self arcs are omitted for simplicity) and new Petri net encoding (the transitions corresponding to \(g_1\) and \(g_3\) are omitted for simplicity) of the incomplete Boolean network of Example~\ref{example:incomplete-BN}.}%
-%	\label{fig:incomplete-dynamics-new-PN}
-%\end{figure}
-%
-%In summary, we can still perform meaningful analysis on the resulting Petri net.
-%Note that the new Petri net may have more transitions, however the number of additional transitions is only \(O(2k)\) where \(k\) is the number of unknown-output rows in the truth tables.
-%This is actually a significant advantage, since we do not need to consider \(2^k\) possible Boolean networks.
-%It is worth noting that the approach proposed in~\cite{Steggles2006} is only shown to deal with the case that \(k = 1\), thus it is not clear how this approach can handle the case that \(k > 1\).
-%Moreover, in the context of Boolean models construction of biological systems from prior knowledge and experimental data, the work by~\cite{chevalier2020synthesis} also deals with some kind of uncertainty.
-%It uses ASP to represent all possible Boolean networks possessing the same given property, where each solution of this ASP is equivalent to a distinct Boolean network.
-%Then it samples through that solution space with heuristics to select \emph{diverse} Boolean networks, and proceed further simulations or analysis on every individual Boolean network.
-%Compared to our Petri net approach presented above, it still requires to consider multiple Boolean networks as well as it is only applicable for locally-monotonic Boolean networks~\cite{chevalier2020synthesis}.
-%
-%To this end, as more data becomes available for the underlying biological system, the Petri net model can be refined to reduce the
-%amount of non-determinism (i.e., the number of conflicting transitions) it contains.
-%Specifically, if we know the output for an unknown-output row of a node, we can remove one of the two conflicting transitions corresponding to this unknown-output row.
-%Hence, Petri nets provide an interesting means of documenting the development of knowledge for a biological system, and our Petri net-based approach can be more useful in the model refinement loop.
-
 \section{Motivating example}%
 \label{sec:case_study}
 
@@ -1189,26 +948,6 @@ It aims to be a comprehensive collection suitable for benchmarking and testing n
 \texttt{BBM} consists of 211 models (24 out of them are non-locally-monotonic), peaking at 321 nodes, 1100 regulations among the nodes, and 133 source nodes, respectively.
 It is released and maintained at \url{https://github.com/sybila/biodivine-boolean-models}.
 We here tested all the compared methods on this model repository.
-
-%\setlength{\tabcolsep}{4pt}
-%\begin{table}[!htb]
-%  \caption{Results on the real-world models from the BBM repository.}
-%  \centering%
-%  \label{tab:bbm_repo}
-%  \begin{tabular}{lrrrr}
-%    \toprule
-%    Method & \# failures & avg-lqm (s) & avg-mono (s) & avg-all (s) \\ \midrule
-%    \texttt{bioLQM} & 9 (134) & 12.87 & N/A & N/A \\
-%    \texttt{PyBoolNet} & 12 & 8.87 & 11.00 & 13.59 \\
-%    \texttt{mpbn} & 2 (187) & N/A & 2.31 & N/A \\
-%    \texttt{Trappist}-MaxSAT & 1 & 0.03 & 1.09 & 1.01 \\
-%    \texttt{Trappist}-CP & - & - & - & - \\
-%    \texttt{Trappist}-ILP & - & - & - & - \\
-%    \texttt{Trappist}-ASP & 1 & 0.05 & 1.02 & 0.93 \\
-%    \bottomrule
-%  \end{tabular}
-%\end{table}
-%\setcounter{rownumber}{0}
 
 \begin{figure}[!ht]
 	\centering
@@ -1516,24 +1255,6 @@ For all the remaining models, once \texttt{PyBoolNet} went through the prime-imp
 Hence, with the experimental results shown in this subsection as well as the two previous subsections, the practical differences between the ASP encoding of \texttt{Trappist-ASP} and that of \texttt{PyBoolNet} are not distinctly exposed.
 The fact that our new ASP encoding is guaranteed to be linear in the number of nodes of the original model (see Subsection~\ref{subsec:computation_asp}) does not seem to be crucial here, however a much deeper analysis of those cases shall be shown in the next subsection.
 
-%The second observation is that the proposed method vastly outperforms \texttt{PyBoolNet} in computational time, on each and every model, and sometimes with orders of magnitude of difference (e.g., for most models in the 100--1000 nodes size range).
-%Note that for all the cases where \texttt{PyBoolNet} did not manage to finish before the timeout, as marked by ``DNF'' in Table~\ref{tab:result_real}, the timeout occurred during the computation of the prime-implicants.
-%Hence, not even a single minimal trap space was output by that method.
-%The computational advantage is therefore immediately a practical advantage since on the one hand the state-of-the-art method did not allow any analysis whatsoever of the models, and on the other hand the proposed method could provide, very often under one second, the first thousand minimal trap spaces.
-%For modellers having a critical look at a model and in a \emph{model, invalidate, refine} loop this means a huge difference in the models that are amenable to study.
-%
-%Note that even with a very restricted time-limit of two minutes, it was possible with the proposed technique to find \emph{all} minimal trap spaces of small models (roughly under 130 nodes, i.e., considered as quite big up to now).
-%Though it might seem impractical to handle tens of thousands of such possible complex attractors in a manual way, i.e., to compare them to specific experimental conditions and corresponding data, we hope that an automatic analysis of such attractors might become possible with systematic verification methods, not unlike that described in~\cite{hernandez2020computational}.
-%Since the ASP code is declarative by nature, it is also possible to add to it supplementary constraints coming from the modeler in case one is looking for specific attractors.
-%Finally, sampling from the ASP-generated solutions as is done in~\cite{chevalier2020synthesis} would allow for a different type of exploration.
-%
-%The third observation is that for all the models where \texttt{PyBoolNet} finished before the timeout, once \texttt{PyBoolNet} went through the prime-implicant phase, its ASP solving phase quickly returned the first 1000 minimal trap spaces, all under one second.
-%For these models, the ASP solving phase of the proposed method also took very short time, all under one second.
-%Hence, with the experimental results shown in this paper, the practical differences between our ASP encoding and that of \texttt{PyBoolNet} are not distinctly exposed.
-%The fact that our new ASP encoding is guaranteed to be linear in the number of nodes of the original model does not seem to be crucial here, however a much deeper analysis of those cases remains to be done.
-%
-%Note that though enumerating the extremal siphons of a Petri net is exponential (see~\cite{nabli2016enumerating} for instance) this is apparently not the bottleneck of the proposed method, showing once again that networks obtained from biochemical models do have a specific structure.
-
 \subsection{Randomly generated models}
 
 We randomly generated a set of N-K models~\cite{glass1973logical} with network size \(n\) in the set \{100, 150, 200, 250, 300, 350, 400\} and in-degree \(K = 3\) (i.e., each node has exactly three input nodes).
@@ -1653,34 +1374,6 @@ Hence, \texttt{PyBoolNet} always passed the phase of computing prime-implicants 
 	\label{fig:random_cumul_first}
 \end{figure}
 
-%\begin{table}[!htb]
-%  \caption{Results on N-K models.}
-%  \centering%
-%  \label{tab:result_N_K}
-%  \begin{tabular}{rrrrrrrr}
-%    \toprule
-%    & & & & \multicolumn{4}{c}{\texttt{Trappist}}\\
-%    \cmidrule(rr){5-8}
-%    \(n\) & \texttt{LQM} & \texttt{mpbn} & \texttt{PBN} & \texttt{SAT} & \texttt{CP} & \texttt{ILP} & \texttt{ASP} \\
-%    \midrule
-%    100 & 50 ($>$ 180) & 50 (N/A) & 0 (0.07) & 0 (0.05) & - () & - () & 0 (0.09) \\
-%    150 & 50 ($>$ 180) & 50 (N/A) & 0 (0.14) & 0 (0.10) & - () & - () & 0 (0.14) \\
-%    200 & 50 ($>$ 180) & 50 (N/A) & 0 (0.43) & 0 (0.25) & - () & - () & 0 (0.24) \\
-%    250 & 50 ($>$ 180) & 50 (N/A) & 0 (1.92) & 0 (1.04) & - () & - () & 0 (0.56) \\
-%    300 & 50 ($>$ 180) & 50 (N/A) & 0 (9.68) & 0 (4.46) & - () & - () & 0 (1.83) \\
-%    350 & 50 ($>$ 180) & 50 (N/A) & 1 (46.54) & 0 (20.09) & - () & - () & 0 (6.10) \\
-%    400 & 50 ($>$ 180) & 50 (N/A) & 29 (144.09) & 12 (90.36) & - () & - () & 1 (33.01) \\
-%    \bottomrule
-%  \end{tabular}
-%\end{table}
-
-%Table~\ref{tab:result_N_K} shows the experimental results on N-K models.
-%Column \(n\) denotes the network size.
-%Columns \texttt{LQM} and \texttt{PBN} show the results of \texttt{bioLQM} and \texttt{PyBoolNet}, respectively.
-%For each method, the number outside the parentheses indicates the number of failures, whereas the number inside the parentheses indicates the average running time (in seconds).
-%Note that when computing the average running time, if the running time exceeds 180s, it is considered as 180s.
-%From these results, we obtained several observations consistent with those obtained for real-world models.
-
 Figure~\ref{fig:random_cumul_first} shows cumulative numbers of random models solved by the compared methods with respect to enumerating all the minimal trap spaces.
 The number of succeeded models within three minutes for each method is: \texttt{bioLQM} (0), \texttt{PyBoolNet} (320), \texttt{mpbn} (0), \texttt{Trappist-maxSAT} (338), \texttt{Trappist-CP} (226), \texttt{Trappist-ILP} (39), \texttt{Trappist-ASP} (349).
 We can see that \texttt{Trappist-ASP} is the only method that can handle every model, but one.
@@ -1757,37 +1450,9 @@ We also believe that the connection between trap spaces of Boolean networks and 
 Diving into this direction is promising and one of our future work.
 
 
-%% The Appendices part is started with the command \appendix;
-%% appendix sections are then done as normal sections
-%% \appendix
-
-%% \section{}
-%% \label{}
-
-%% For citations use:
-%%       \citet{<label>} ==> Jones et al. [21]
-%%       \citep{<label>} ==> [21]
-%%
-
-%% If you have bibdatabase file and want bibtex to generate the
-%% bibitems, please use
-%%
 \bibliographystyle{elsarticle-num-names}
 \bibliography{tcs2023.bib}
 
-%% else use the following coding to input the bibitems directly in the
-%% TeX file.
-
-% \begin{thebibliography}{00}
-
-% %% \bibitem[Author(year)]{label}
-% %% Text of bibliographic item
-
-% \bibitem[ ()]{}
-
-% \end{thebibliography}
 \end{document}
 
 \endinput
-%%
-%% End of file `elsarticle-template-num-names.tex'.

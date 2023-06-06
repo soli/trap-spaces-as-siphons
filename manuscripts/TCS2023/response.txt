@@ -1,0 +1,12 @@
+We would first like to thank the reviewers for their insightful comments.
+
+* Reviewer 1
+
+"In my opinion, this submission is a solid paper, quite well written, and should
+become a reference for anyone doing dynamics analysis of Boolean models. Below I
+list several minor remarks, fixes, and suggestions for improvement. I believe
+this work can be published after these minor corrections are implemented."
+
+We fixed all the minor remarks highlighted by the reviewer, as can be seen in
+red in the uploaded version.  Indeed it improved substantially the readability
+of the article.
