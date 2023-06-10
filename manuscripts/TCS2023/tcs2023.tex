@@ -175,22 +175,19 @@ A Boolean function is \emph{locally-monotonic} if it can be represented by a for
 A Boolean network is said to be locally-monotonic if all its Boolean functions are locally-monotonic.
 Otherwise, this model is said to be non-locally-monotonic.
 
-A state \(v \in \mathbb{B}^{n}\) is as a mapping \(v \colon V \mapsto \mathbb{B}\) that assigns either 0 (inactive) or 1 (active) to each node.
+\change{A state \(s \in \mathbb{B}^{n}\) is as a mapping \(s \colon V \mapsto \mathbb{B}\) that assigns either 0 (inactive) or 1 (active) to each node.}
 We denote the set of all possible states of a Boolean network \(\mathcal{N}\) by \(\mathcal{S}_{\mathcal{N}} = \mathbb{B}^n\).
-At each time step \(t\), node \(v_i\) can, depending on the update scheme, update its state by
-\[v_i(t + 1) =
-  \begin{cases}
-    &f_i(v(t))\\
-    \text{or} &v_i(t)
-  \end{cases}
+\change{At each time step \(t\), node \(v_i\) can update its state by
+\[s'(v_i) = f_i(s)
 \]
-where \(v(t)\) (resp. \(v_i(t)\)) is the state of \(\mathcal{N}\) (resp. the state of node \(v_i\)) at time \(t\).
-Note that for simplicity, we write \(f_i(v(t))\) even if \(\IN(v_i) \subsetneq V\) (i.e., \(\IN(v_i)\) does not contain some nodes of \(V\)).
-An update scheme of a Boolean network specifies which nodes update their states, as defined above, through time evolution~\cite{thomas1991regulatory}.
+where \(s\) (resp. \(s'\)) is the state of \(\mathcal{N}\) at time \(t\) (resp. \(t + 1\)).
+Note that for simplicity, we write \(f_i(s)\) even if \(\IN(v_i) \subsetneq V\) (i.e., \(\IN(v_i)\) does not contain some nodes of \(V\)).
+An update scheme of a Boolean network specifies the way that the nodes update their states through time evolution~\cite{gershenson2004introduction}.
+There are many different update schemes, but the two main types~\cite{gershenson2004introduction} are: \emph{synchronous}, where all the nodes are \change{updated} simultaneously, and \emph{fully asynchronous}, where only one node is selected non-deterministically to be updated.}
 Following the update scheme, the Boolean network transits from a state to another state (possibly identical).
 This transition is called the \emph{state transition} and denoted by \(\rightarrow \subseteq \mathcal{S}_{\mathcal{N}} \times \mathcal{S}_{\mathcal{N}}\).
+\change{For example, under the synchronous update scheme, we have \(x \rightarrow y\) if and only if \(y(v_i) = f_i(x), \forall v_i \in V\), whereas under the fully asynchronous update scheme, we have \(x \rightarrow y\) if and only if there is a node \(v_i \in V\) such that \(y(v_i) = f_i(x)\) and \(y(v_j) = x(v_j), \forall v_j \in V, j \neq i\).}
 Then the dynamics of \(\mathcal{N}\) is captured by the directed graph \((\mathcal{S}_{\mathcal{N}}, \rightarrow)\) called the State Transition Graph (STG).
-There are many different update schemes, but the two main types~\cite{thomas1991regulatory} are: \emph{synchronous}, where all the nodes are \change{updated} simultaneously, and \emph{fully asynchronous}, where only one node is selected non-deterministically to be updated.
 
 \subsection{Traps spaces}
 
