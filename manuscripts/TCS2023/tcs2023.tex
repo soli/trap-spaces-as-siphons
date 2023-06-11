@@ -298,16 +298,15 @@ We give a Boolean network \(\mathcal{N} = (V, F)\), where \(V = (x_1, x_2)\) and
   and \(W : (P \times T) \cup (T \times P) \mapsto \mathbb{N} \) is a weight function attached to the arcs.
 
 \end{definition}
-A \emph{marking} for a Petri net is a mapping \(m : P \mapsto \mathbb{N}\) that assigns a number of tokens to each place.
-A place \(p\) is marked by a marking \(m\) if and only if \(m(p) > 0\).
-Marking \(m\) can be seen as a subset of \(P\) that contains all marked places by \(m\).
+A \emph{marking} for a Petri net is a mapping \change{\(M : P \mapsto \mathbb{N}\)} that assigns a number of tokens to each place.
+A place \(p\) is \change{\emph{marked}} by a marking \change{\(M\)} if and only if \change{\(M(p) > 0\)}.
 We shall write \(\pred(x)\) (resp.\ \(\succ(x)\)) to represent the set of vertices that have a (non-zero weighted) arc leading to (resp.\ coming from) \(x\).
 In this work, we consider a class of Petri nets called 1-safe Petri nets where every place has at most 1 token and all arcs are of weight 1.
-\change{Note that in such nets we have \(m : P \mapsto \{0,1\}\), we might therefore represent a marking by the equivalent set of places containing a token and will use this notation for simplicity.}
+\change{Note that in such nets we have \change{\(M : P \mapsto \{0,1\}\)}, we might therefore represent a marking by the equivalent set of places containing a token and will use this notation for simplicity.}
 In this case, weights are implicitly omitted in the arcs of a Petri net.
-Then, a transition \(t \in T\) is \emph{enabled} at a marking \(m\) if and only if \(\pred(t) \subseteq m\).
-A marking \(m\) is called a deadlock if there are no enabled transitions at \(m\).
-The firing of \(t\) leads to a new marking \(m'\) specified by \(m' = (m \backslash \pred(t)) \cup \succ(t)\).
+Then, a transition \(t \in T\) is \emph{enabled} at a marking \change{\(M\)} if and only if \change{\(\pred(t) \subseteq M\)}.
+A marking \change{\(M\)} is called a deadlock if there are no enabled transitions at \change{\(M\)}.
+The firing of \(t\) leads to a new marking \change{\(M'\)} specified by \change{\(M' = (M \backslash \pred(t)) \cup \succ(t)\)}.
 Note that when multiple transitions are enabled, we need to embed one firing scheme (similar to the update scheme of a Boolean network) to the Petri net.
 The classical firing scheme is that only one of the enabled transition is non-deterministically chosen to fire~\cite{Murata1989}.
 
@@ -318,12 +317,12 @@ Since our study is focused on Boolean networks, we briefly recall the original e
 Its basis is that every node (\emph{gene}) \(v\) of the original model \(\mathcal{N} = (V, F)\) is represented by two separate places (\(p_v\) and \(\overline{p}_v\)), corresponding to its two states, active, and inactive, respectively.
 Each conjunct of the logical function that activates the \emph{gene} will lead to a transition \(t\), consuming the inactive place (i.e., a directional arc from \(\overline{p}_v\) to \(t\)), producing the active place (i.e., a directional arc from \(t\) to \(p_v\)), and with all other literals both consumed and produced (i.e., a bidirectional arc).
 \change{Conversely a transition is added from the active place to the inactive place for each conjunct of the negation of that function.}
-Let \(s\) be a state of the Boolean network and \(m_s\) be its corresponding marking in the encoded Petri net.
-It holds that \(\forall v \in V\), \(s(v) = 0\) if and only if \(m_s(\overline{p}_v) = 1\) \change{and \(m_s(p_v) = 0\)} and \(s(v) = 1\) if and only if \(m_s(p_v) = 1\) \change{and \(m_s(\overline{p}_v) = 0\)}. Note also that at any marking \(m\) of the Petri net encoding a Boolean network, it always holds that \(m(p_v) + m(\overline{p}_v) = 1\).
+Let \(s\) be a state of the Boolean network and \change{\(M_s\)} be its corresponding marking in the encoded Petri net.
+\change{It holds that \(\forall v \in V\), \(s(v) = 0\) if and only if \(M_s(\overline{p}_v) = 1\) \change{and \(M_s(p_v) = 0\)} and \(s(v) = 1\) if and only if \(M_s(p_v) = 1\) \change{and \(M_s(\overline{p}_v) = 0\)}. Note also that at any marking \(M\) of the Petri net encoding a Boolean network, it always holds that \(M(p_v) + M(\overline{p}_v) = 1\).}
 
 The main property of this encoding is that it is completely faithful with respect to the update scheme of the original Boolean network.
 For each node \(v\) of \(\mathcal{N}\), only transitions corresponding to \(v\) can change the current marking of \(p_v\) or \(\overline{p}_v\).
-In addition, at any marking at most one of such transitions is enabled because \(m(p_v) + m(\overline{p}_v) = 1\) holds.
+\change{In addition, at any marking at most one of such transitions is enabled because \(M(p_v) + M(\overline{p}_v) = 1\) holds.}
 Hence, for any update scheme in \(\mathcal{N}\), we have a corresponding firing scheme in \(\mathcal{P}\), which preserves the equivalence between the dynamics of \(\mathcal{N}\) and \(\mathcal{P}\)~\cite{DBLP:journals/nc/ChatainHKPT20}.
 
 For illustration, let us reconsider the Boolean network shown in Example~\ref{example:BN}.
@@ -427,20 +426,20 @@ Hereafter, we formally prove that a (maximal) conflict-free siphon is equivalent
   By the characteristics of the encoding~\cite{chaouiya2004qualitative}, there is a directional arc from \(t\) to \(p\) and a directional arc from the complementary place of \(p\) to \(t\).
   Without loss of generality, we assume that \(p = p_v\), then there is a directional arc from \(t\) to \(p_v\) and a directional arc from \(\overline{p}_v\) to \(t\).
 
-  We follow the following procedure to find a state \(s \in \mathcal{S}_{\mathcal{N}}[m]\) such that \(m_s(p') = 1, \forall p' \in \pred(t)\) where \(m_s\) is the corresponding marking in \(\mathcal{P}\) of \(s\).
+  We follow the following procedure to find a state \(s \in \mathcal{S}_{\mathcal{N}}[m]\) such that \change{\(M_s(p') = 1, \forall p' \in \pred(t)\)} where \change{\(M_s\)} is the corresponding marking in \(\mathcal{P}\) of \(s\).
   For every place \(p' \in \pred(t)\), let \(p''\) be the complementary place of \(p'\) and \(v'\) be the corresponding node in \(\mathcal{N}\) of \(p'\) and \(p''\).
 
-  If \(p'' \not \in S\), then \(v' \not \in D_m\) and we can always set \change{the} Boolean value to \(s(v')\) such that \(s \in \mathcal{S}_{\mathcal{N}}[m]\) and \(m_s(p') = 1\).
+  If \(p'' \not \in S\), then \(v' \not \in D_m\) and we can always set \change{the} Boolean value to \(s(v')\) such that \(s \in \mathcal{S}_{\mathcal{N}}[m]\) and \change{\(M_s(p') = 1\)}.
 
   If \(p'' \in S\), then \(v' \in D_m\) and we set \(s(v') = m(v')\).
-  In this case, if \(p' = p_{v'}\) then \(s(v') = m(v') = 1\) leading to \(m_s(p') = 1\), if \(p' = \overline{p}_{v'}\) then \(s(v') = m(v') = 0\) leading to \(m_s(p') = \change{0}\).
+  In this case, if \(p' = p_{v'}\) then \(s(v') = m(v') = 1\) leading to \change{\(M_s(p') = 1\)}, if \(p' = \overline{p}_{v'}\) then \(s(v') = m(v') = 0\) leading to \change{\(M_s(p') = \change{0}\)}.
 
   For the remaining nodes of \(\mathcal{N}\), we can always set Boolean values to these nodes to preserve that \(s \in \mathcal{S}_{\mathcal{N}}[m]\) \change{by applying the same procedure}.
-  We also have \(m_s(p_v) = 0\) by the characteristics of the encoding~\cite{chaouiya2004qualitative} \change{(and Definition \ref{def:mirror})}.
-  Now, \(t\) is enabled at marking \(m_s\).
-  Its firing leads to a new marking \(m'_s\) such that \(m'_s(p_v) = 1\) and \(m'_s(\overline{p}_v) = 0\).
-  Let \(s'\) be the corresponding state in \(\mathcal{N}\) of \(m'_s\).
-  We have \(s'(v) = 1\) because \(m'_s(p_v) = 1\) and \(m(v) = 0\) because \(p_v \in S\).
+  We also have \change{\(M_s(p_v) = 0\)} by the characteristics of the encoding~\cite{chaouiya2004qualitative} \change{(and Definition \ref{def:mirror})}.
+  Now, \(t\) is enabled at marking \change{\(M_s\)}.
+  Its firing leads to a new marking \change{\(M'_s\) such that \(M'_s(p_v) = 1\) and \(M'_s(\overline{p}_v) = 0\).}
+  Let \(s'\) be the corresponding state in \(\mathcal{N}\) of \change{\(M'_s\)}.
+  We have \(s'(v) = 1\) because \change{\(M'_s(p_v) = 1\) and \(m(v) = 0\) because \(p_v \in S\).}
   This implies that \(s' \not \in \mathcal{S}_{\mathcal{N}}[m]\).
 
   For any firing scheme of \(\mathcal{P}\), the firing of \(t\) always happens.
@@ -451,20 +450,20 @@ Hereafter, we formally prove that a (maximal) conflict-free siphon is equivalent
   \change{\textit{Second, we show that if \(S\) is a conflict-free siphon of \(\mathcal{P}\), then \(m\) is a trap space of \(\mathcal{N}\) (**).}}
 
   By the definition of a mirror, \(m\) is a subspace of \(\mathcal{N}\).
-  Let \(s\) be an arbitrary state in \(\mathcal{S}_{\mathcal{N}}[m]\) and \(m_s\) be its corresponding marking in \(\mathcal{P}\).
-  Assume that there is a place \(p \in S\) such that \(m_s(p) = 1\).
+  Let \(s\) be an arbitrary state in \(\mathcal{S}_{\mathcal{N}}[m]\) and \change{\(M_s\)} be its corresponding marking in \(\mathcal{P}\).
+  Assume that there is a place \(p \in S\) such that \change{\(M_s(p) = 1\)}.
   Let \(v\) be the corresponding node in \(\mathcal{N}\) of \(p\).
   Since \(p \in S\), \(v \in D_m\) and \(m(v) = s(v)\).
-  If \(p = p_{v}\), then \(m_s(p_{v}) = 1\) leading to \(m(v) = s(v) = 1\) by the characteristics of the encoding~\cite{chaouiya2004qualitative}.
-  By the definition of a mirror, \(m(v) = 0\) because \(p_{v} \in S\), \change{meaning that \(m_s(p_{v}) = 0\)}, which is a contradiction.
+  If \(p = p_{v}\), then \change{\(M_s(p_{v}) = 1\)} leading to \(m(v) = s(v) = 1\) by the characteristics of the encoding~\cite{chaouiya2004qualitative}.
+  By the definition of a mirror, \(m(v) = 0\) because \(p_{v} \in S\), \change{meaning that \(M_s(p_{v}) = 0\)}, which is a contradiction.
 
   It is symmetric for the case that \(p = \overline{p}_{v}\).
-  Hence, \(m_s(p) = 0, \forall p \in S\).
-  In any marking \(m'_s\) reachable from \(m_s\) regardless of the firing scheme of \(\mathcal{P}\), we have \(m'_s(p) = 0, \forall p \in S\) by the dynamical property on markings of a siphon~\cite{DBLP:journals/isci/LiuB16}.
-  Let \(s'\) be the corresponding state in \(\mathcal{N}\) of \(m'_s\).
+  Hence, \change{\(M_s(p) = 0, \forall p \in S\)}.
+  In any marking \change{\(M'_s\) reachable from \(M_s\) regardless of the firing scheme of \(\mathcal{P}\), we have \(M'_s(p) = 0, \forall p \in S\) by the dynamical property on markings of a siphon~\cite{DBLP:journals/isci/LiuB16}.}
+  Let \(s'\) be the corresponding state in \(\mathcal{N}\) of \change{\(M'_s\)}.
   For every node \(v \in D_m\), we have all two cases as follows.
-  Case 1: \(p_v \in S\), then \(m'_s(p_v) = 0\), thus \(s'(v) = 0 = m(v)\).
-  Case 2: \(\overline{p}_v \in S\), then \(m'_s(\overline{p}_v) = 0\), thus \(s'(v) = 1 = m(v)\).
+  Case 1: \(p_v \in S\), then \change{\(M'_s(p_v) = 0\)}, thus \(s'(v) = 0 = m(v)\).
+  Case 2: \(\overline{p}_v \in S\), then \change{\(M'_s(\overline{p}_v) = 0\)}, thus \(s'(v) = 1 = m(v)\).
   Hence, \(s'(v) = m(v)\) for every \(v \in D_m\).
   Then, \(s' \in \mathcal{S}_{\mathcal{N}}[m]\).
   By the definition of a trap space and the arbitrariness of \(s\), \(m\) is a trap space of \(\mathcal{N}\).
