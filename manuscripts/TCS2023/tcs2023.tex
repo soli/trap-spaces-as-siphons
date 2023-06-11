@@ -1482,8 +1482,11 @@ Furthermore, we believe that the connection between trap spaces and siphons can 
 
 It is worth noting that there may be possibly other methods for computing minimal/maximal conflict-free siphons in Petri nets, like the methods for generic siphon computation in the field of Petri nets (see~\cite{DBLP:journals/isci/LiuB16} for a survey about these methods).
 Although these approaches do not directly support the minimal/maximal conflict-free siphon computation now, we plan to investigate them in the future.
-They could replace our proposed methods if they give significantly better performance.
-\change{Making use of the specific structure (1-safe, place-complementary) might also reveal new techniques to be considered.}
+\change{
+In particular, several approaches based on the network structure at the Petri net level (e.g., the decomposition approaches~\cite{DBLP:journals/tsmc/CordoneFP05,DBLP:journals/ieeejas/YouKW22} for identifying minimal generic siphons) can be adapted to help the identification of minimal conflict-free siphons.
+Making use of the specific structure (1-safe, place-complementary) might also reveal new techniques to be considered.
+It is potentially possible because in the field of Petri nets, most of the methods for identifying minimal generic siphons focus on various net classes with special structures~\cite{DBLP:journals/isci/LiuB16}.
+The above potential approaches could replace our proposed methods if they give significantly better performance.}
 However, the current methods appear to already perform very well even on the biggest models we have considered.
 
 Finally, we think that the links between Petri nets and Boolean networks that we stumbled upon in this article might have deeper roots.
