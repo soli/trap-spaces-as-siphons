@@ -519,7 +519,11 @@ Theorem~\ref{theo:ts_2_sp} exhibits the very first theoretical application of th
 We here showcase a theoretical application of the connection between trap spaces in Boolean networks and conflict-free siphons in Petri nets.
 We use it to prove a property of minimal trap spaces, which has surprisingly not been formally proved.
 Specifically, all minimal trap spaces of a Boolean network are mutually disjoint.
-This property is important because we can use it to approximate the set of attractors of the Boolean network under any update scheme~\cite{klarner2015computing} or to compute exactly the set of complex attractors of the Boolean network under the fully asynchronous update scheme~\cite{DBLP:conf/bcb/TrinhHB22}.
+\change{This property is important because it can benefit attractor identification of Boolean networks.
+Specifically, in~\cite{Klarner2015att}, the authors use random walks inside each minimal trap space to obtain approximations for attractors of a Boolean network under the fully asynchronous update scheme, then they use CTL model checking to verify the quality of the approximations.
+In~\cite{DBLP:conf/bcb/TrinhHB22}, the authors use the set of minimal trap spaces as a seed to speedup their previous attractor identification method that relies on feedback vertex sets and reachablity analysis.
+The soundness of the two above approaches comes from the separation of minimal trap spaces.
+}
 Note that it would be not difficult to obtain a direct proof on trap spaces for this property, which follows the same structure as the proof on siphons.
 However, we emphasize here the potential of using the connection between Boolean networks and Petri nets to explore and prove properties of trap spaces in Boolean networks.
 
@@ -756,10 +760,12 @@ In the field of systems biology, biologists may want to compute more special typ
 We shall show that our proposed methods can be easily adjusted to compute such popular types of trap spaces.
 We illustrate the adjustments via the ASP-based method (see Subsection~\ref{subsec:computation_asp}) because ASP is declarative by nature, but these adjustments are completely applicable for other approaches such as MaxSAT, CP, and ILP\@.
 
-First, the work by~\cite{Rozum2021} uses the concept of \emph{stable motifs} to build the succession diagram of a Boolean network, a summary of the decisions in the network dynamics that lead to successively more restrictive nested stable motifs.
+\change{First, the work presented in~\cite{Rozum2021} uses the concept of \emph{stable motifs} to build the succession diagram of a Boolean network, a summary of the decisions in the network dynamics that lead to successively more restrictive nested stable motifs.
 The succession diagram is useful for control and decision making on this Boolean network.
 In particular, the proposed control methods are independent to the update scheme.
-It has been shown that a stable motif of a Boolean network is equivalent to a maximal trap space of this Boolean network~\cite{Rozum2021}.
+Note that, in~\cite{Rozum2021}, the succession diagram is also used to identify all attractors of a Boolean network under the fully asynchronous update scheme.
+It has been shown that a stable motif of a Boolean network is equivalent to a \emph{maximal trap space} of this Boolean network~\cite{Rozum2021}.
+Indeed, the computation of stable motif is a bottleneck of the methods proposed in~\cite{Rozum2021}.}
 Hence, it is necessary to develop an efficient method for computing maximal trap spaces of a Boolean network.
 We shall show how to adjust the ASP-method presented in Subsection~\ref{subsec:computation_asp} to compute maximal trap spaces.
 
@@ -800,8 +806,10 @@ Note that we can also build another ASP characterizing all fixed points of \(\ma
 This approach may give a more compact ASP\@.
 
 Third, we consider the trap spaces \emph{intersecting} a given subspace \(m^{*}\) of a Boolean network.
-Such trap spaces are used in the trap space-based control method~\cite{cifuentes2020control}.
-A trap space \(m\) intersects \(m^{*}\) if and only if \(S_{\mathcal{N}}[m] \cap S_{\mathcal{N}}[m^{*}] \neq \emptyset\).
+\change{Such trap spaces (along with minimal trap space) are used in the phenotype control method~\cite{cifuentes2020control}.
+This method uses the prime implicant-based method to compute trap spaces, which has been shown inefficient.
+Hence, having a more efficient method for computing such trap spaces can push the barrier previously existing in this control method.
+}A trap space \(m\) intersects \(m^{*}\) if and only if \(S_{\mathcal{N}}[m] \cap S_{\mathcal{N}}[m^{*}] \neq \emptyset\).
 It follows that for every \(v\), if \(m^{*}(v) = 0\) then \(m(v) = 0\) or \(m(v) = \star\), if \(m^{*}(v) = 1\) then \(m(v) = 1\) or \(m(v) = \star\).
 For the former case, we add to \(\mathcal{L}\) the ASP rule
 \[
@@ -1461,6 +1469,17 @@ This points to the fact that our current choice of using a BDD-based translation
 In such a case, a more \emph{naive} encoding might provide a much larger ASP program, with many redundant rules, but easier/faster to obtain.
 The evaluation of the feasibility of such strategy, and of its impact on smaller instances, remains to be done.
 Recognizing that a model is locally-monotonic and applying in that specific case dedicated strategies as those of \texttt{mpbn} might also be a partial solution.
+
+\change{Another direction to speed up our approach in the side of Boolean networks is to apply reduction techniques to the original Boolean network.
+Many reduction techniques on Boolean networks~\cite{DBLP:journals/tcs/NaldiRTC11,schwieger2023reduction} have been proposed and some of them fully preserve attractors of a Boolean network under the fully asynchronous Boolean networks.
+In particular, a reduction technique on elimination of negatively auto-regulated nodes with respect to asynchronous attractors has recently been proposed~\cite{schwieger2023reduction}.
+However, there are two major issues needed to be considered.
+First, the question of whether these reduction techniques fully preserve minimal trap spaces of a Boolean network is still open.
+Second, although these reduction techniques can reduce the number of nodes, they can also increase the complexity of Boolean update functions~\cite{DBLP:journals/tcs/NaldiRTC11}, which is also an importan factor.
+It raises the question of whether they really simplify the computational burden of trap space computation.
+We will deeply investigate the two issues.
+Furthermore, we believe that the connection between trap spaces and siphons can be a very useful tool for addressing the first issue.
+}
 
 It is worth noting that there may be possibly other methods for computing minimal/maximal conflict-free siphons in Petri nets, like the methods for generic siphon computation in the field of Petri nets (see~\cite{DBLP:journals/isci/LiuB16} for a survey about these methods).
 Although these approaches do not directly support the minimal/maximal conflict-free siphon computation now, we plan to investigate them in the future.
