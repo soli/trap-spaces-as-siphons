@@ -584,10 +584,22 @@ The details of the proposed methods shall be given in the next section.
 \section{Computation methods}%
 \label{sec:Computation}
 
+\change{First, we discuss the complexity of siphon computation in Petri nets.
+Siphons are a prominent concept in the field of Petri nets, but unfortunately there are very few studies focusing on the complexity aspect.
+In this field, researchers mainly focus on practical methods for computing minimal generic siphons (also many related types) in general or special Petri nets and the applications of such types to the control of real-world systems modeled by Petri nets~\cite{DBLP:journals/isci/LiuB16}.
+The problem of finding a minimal siphon of a 1-safe Petri net is solvable in polynomial time~\cite{tanimoto1996finding}.
+Clearly, the problem of finding a siphon of a 1-safe Petri net is also solvable in polynomial time.
+However, the problem of computing all (minimal) siphons is not easier than the problem of computing a (minimal) siphon but its complexity still not clear.
+Note that the number of siphons (even minimal siphons) can be exponential in the number of places of the Petri net~\cite{DBLP:journals/isci/LiuB16}.
+Moreover, there is no complexity result for the case of maximal siphons.
+Regarding the conflict-free siphons, we believe that the polynomial algorithm for computing a minimal generic siphon presented in~\cite{tanimoto1996finding} can be adapted to find a (minimal) conflict-free siphon.
+This is not in contrast to the NP-hardness of some problems on trap spaces in Boolean networks~\cite{moon2023computational} because in general the number of transitions of the Petri net encoding of a Boolean network can be exponential in the number of nodes of this Boolean network.
+However, again the complexity of the problem of computing all (minimal/maximal) conflict-free siphons is still open.}
+
 \subsection{Characterization}%
 \label{subsec:siphon_characterization}
 
-First, we show the characterization of all conflict-free siphons of the encoded Petri net \(\mathcal{P} = (P, T, W)\).
+\change{We here show} the characterization of all conflict-free siphons of the encoded Petri net \(\mathcal{P} = (P, T, W)\).
 Suppose that \(S\) is a generic siphon of \(\mathcal{P}\). If a place \(p\) should belong to \(S\), then by Proposition~\ref{prop:siphon_set} all the transitions in \(\pred(p)\) must belong to \(\succ(S)\).
 A transition \(t\) belongs to \(\succ(S)\) if and only if there is at least one place \(p'\) in \(S\) such that \(p' \in \pred(t)\).
 Hence, for each transition \(t \in \pred(p)\), we can state that
@@ -1474,7 +1486,7 @@ Many reduction techniques on Boolean networks~\cite{DBLP:journals/tcs/NaldiRTC11
 In particular, a reduction technique on elimination of negatively auto-regulated nodes with respect to asynchronous attractors has recently been proposed~\cite{schwieger2023reduction}.
 However, there are two major issues needed to be considered.
 First, the question of whether these reduction techniques fully preserve minimal trap spaces of a Boolean network is still open.
-Second, although these reduction techniques can reduce the number of nodes, they can also increase the complexity of Boolean update functions~\cite{DBLP:journals/tcs/NaldiRTC11}, which is also an importan factor for the efficiency of computation methods.
+Second, although these reduction techniques can reduce the number of nodes, they can also increase the complexity of Boolean update functions~\cite{DBLP:journals/tcs/NaldiRTC11}, which is also an importan factor for the performance of computation methods.
 It raises the question of whether they really simplify the computational burden of trap space computation.
 We will deeply investigate the two issues.
 Furthermore, we believe that the connection between trap spaces and siphons can be a very useful tool for addressing the first issue.
