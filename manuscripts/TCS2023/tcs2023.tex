@@ -226,7 +226,20 @@ We give a Boolean network \(\mathcal{N} = (V, F)\), where \(V = (x_1, x_2)\) and
 
 \begin{figure}[!htb]
 \centering
-\begin{subfigure}[b]{0.3\textwidth}
+\begin{subfigure}[b]{0.25\textwidth}
+  \centering
+  \begin{tikzpicture}
+    \node (1) {\(x_{1}\)};
+    \node (2) [right=of 1] {\(x_{2}\)};
+
+    \draw[->] (1) edge [bend left=45] (2);
+    \draw[->] (2) edge [bend left=45] (1);
+    \draw[->] (1) to [loop left] (1);
+    \draw[->] (2) to [loop right] (2);
+  \end{tikzpicture}
+  \caption{\change{Influence graph of the model. Each arc is actually both positive and negative.}}
+\end{subfigure}\hfill%
+\begin{subfigure}[b]{0.25\textwidth}
 \centering
 \begin{tikzpicture}[node distance=1cm and 1cm, every node/.style={scale=1.0}]
    \node[] (0) [] {00};
@@ -248,7 +261,7 @@ We give a Boolean network \(\mathcal{N} = (V, F)\), where \(V = (x_1, x_2)\) and
 \caption{State transition graph, under the fully asynchronous update \change{scheme}.}%
 \label{fig:stg}
 \end{subfigure}\hfill%
-\begin{subfigure}[b]{0.6\textwidth}
+\begin{subfigure}[b]{0.4\textwidth}
 \centering
 \begin{tikzpicture}[node distance=1cm and 1cm, every node/.style={scale=1.0}]\footnotesize
   \node[circle,draw,label=left:$p_{x_1}$] (x1) {};
@@ -281,7 +294,7 @@ We give a Boolean network \(\mathcal{N} = (V, F)\), where \(V = (x_1, x_2)\) and
 \end{tikzpicture}
 \caption{Petri net encoding of the model. Circles denote places, whereas rectangles denote transitions.}%
 \label{fig:PN}
-\end{subfigure}%
+\end{subfigure}\hfill%
 \caption{Dynamics and encoding of the Boolean network of Example~\ref{example:BN}.}%
 \label{fig:stg_and_PN}
 \end{figure}
