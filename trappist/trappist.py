@@ -29,6 +29,7 @@ import networkx as nx  # TODO maybe replace with lists/dicts
 
 from . import pnml_to_asp, version
 from .bnet import read_bnet
+from .conj import write_conj_asp
 from .cp import get_cp_solutions
 from .ilp import get_ilp_solutions
 from .max_sat import get_sat_solutions
@@ -75,20 +76,26 @@ def write_asp(petri_net: nx.DiGraph, asp_file: IO):
                     print(f"{or_preds} :- {pnml_to_asp(succ)}.", file=asp_file)
 
 
-def solve_asp(asp_filename: str, max_output: int, time_limit: int) -> str:
+def solve_asp(asp_filename: str, max_output: int, time_limit: int, method: str) -> str:
     """Run an ASP solver on program asp_file and get the solutions."""
-    result = subprocess.run(
-        [
-            "clingo",
-            str(max_output),
-            # TODO try clasp parrallel-mode f"--parallel-mode={os.cpu_count()}",
+    args = [
+        "clingo",
+        # TODO try clasp parrallel-mode f"--parallel-mode={os.cpu_count()}",
+        str(max_output),
+    ]
+    if method != "conj":
+        args += [
             "--heuristic=Domain",  # maximal w.r.t. inclusion
             "--enum-mod=domRec",
             "--dom-mod=3,16",
-            "--outf=2",  # json output
-            f"--time-limit={time_limit}",
-            asp_filename,
-        ],
+        ]
+    args += [
+        "--outf=2",  # json output
+        f"--time-limit={time_limit}",
+        asp_filename,
+    ]
+    result = subprocess.run(
+        args,
         capture_output=True,
         text=True,
     )
@@ -102,9 +109,12 @@ def solve_asp(asp_filename: str, max_output: int, time_limit: int) -> str:
     return result.stdout
 
 
-def solution_to_bool(places: List[str], sol: Set[str]) -> List[str]:
+def solution_to_bool(places: List[str], sol: Set[str], method: str) -> List[str]:
     """Convert a list of present places in sol, to a tri-valued vector."""
-    return [place_in_sol(sol, p) for p in places]
+    if method != "conj":
+        return [place_in_sol(sol, p) for p in places]
+    print(sol)
+    return [conj_place_in_sol(sol, p) for p in places]
 
 
 def place_in_sol(sol: Set[str], place: str) -> str:
@@ -120,13 +130,27 @@ def place_in_sol(sol: Set[str], place: str) -> str:
     return "-"
 
 
+def conj_place_in_sol(sol: Set[str], place: str) -> str:
+    """Return 0/1/- if place is absent, present or does not appear in sol.
+
+    Remember that being in the siphon means staying empty,
+    so the opposite value is the one fixed.
+    For the conjunctive encoding, both need to be present to represent *
+    """
+    if "p" + place in sol:
+        if "n" + place in sol:
+            return "-"
+        return "0"
+    return "1"
+
+
 def get_solutions(
-    asp_output: str, places: List[str]
+    asp_output: str, places: List[str], method: str
 ) -> Generator[List[str], None, None]:
     """Display the ASP output back as trap-spaces."""
     solutions = json.loads(asp_output)
     yield from (
-        solution_to_bool(places, set(sol["Value"]))
+        solution_to_bool(places, set(sol["Value"]), method)
         for sol in solutions["Call"][0]["Witnesses"]
     )
 
@@ -146,9 +170,11 @@ def get_asp_output(
             write_asp(petri_net, asp_file)
         elif method == "naive":
             write_naive_asp(petri_net, asp_file, nprocs)
+        elif method == "conj":
+            write_conj_asp(petri_net, asp_file, nprocs)
     if debug:
         print(f"ASP file {tmpname} written.")
-    solutions = solve_asp(tmpname, max_output, time_limit)
+    solutions = solve_asp(tmpname, max_output, time_limit, method)
     if not debug:
         os.unlink(tmpname)
     return solutions
@@ -169,7 +195,7 @@ def compute_trap_spaces(
         infile = open(infile, "r", encoding="utf-8")
         toclose = True
 
-    if infile.name.endswith(".pnml") and method not in ("naive"):
+    if infile.name.endswith(".pnml") and method not in ("naive", "conj"):
         petri_net = read_pnml(infile)
     elif infile.name.endswith(".bnet"):
         petri_net = read_bnet(infile, method)
@@ -202,7 +228,7 @@ def compute_trap_spaces(
         )
         if debug:
             print("ASP solutions obtained.")
-        solutions = get_solutions(solutions_output, places)
+        solutions = get_solutions(solutions_output, places, method)
 
     if display:
         print("\n".join(" ".join(sol) for sol in solutions))
@@ -240,7 +266,7 @@ def main():
         "--parallel",
         type=int,
         default=1,
-        help="Maximum number of cores to use [only for naive method] (0 for no-limit).",
+        help="Maximum number of cores to use [only for naive and conj method] (0 for no-limit).",
     )
     parser.add_argument(
         "-t",
@@ -252,7 +278,7 @@ def main():
     parser.add_argument(
         "-s",
         "--solver",
-        choices=["asp", "cp", "ilp", "sat", "naive"],
+        choices=["asp", "cp", "ilp", "sat", "naive", "conj"],
         default="asp",
         type=str,
         help="Solver to compute the Maximal conflict-free siphons.\n"

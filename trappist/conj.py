@@ -1,6 +1,6 @@
 """Compute minimal trap-spaces of a Petri-net encoded Boolean model.
 
-Copyright (C) 2022 Sylvain.Soliman@inria.fr
+Copyright (C) 2023 Sylvain.Soliman@inria.fr
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -20,7 +20,7 @@ from math import ceil
 from multiprocessing import Pool, cpu_count, current_process
 from os import unlink
 from sys import setrecursionlimit
-from typing import IO, List, Set, Tuple
+from typing import IO
 
 import networkx as nx  # TODO maybe replace with lists/dicts
 
@@ -30,10 +30,11 @@ from pyeda.boolalg.expr import And, AndOp, Constant, Literal, Or, OrOp, Variable
 # from pyeda.boolalg.minimization import espresso_exprs
 
 from . import pnml_to_asp
+from .naive import split_safe_unsafe
 
 
-def write_naive_asp(petri_net: nx.DiGraph, asp_file: IO, nprocs: int):
-    """Write the ASP program for naive encoding of trap spaces."""
+def write_conj_asp(petri_net: nx.DiGraph, asp_file: IO, nprocs: int):
+    """Write the ASP program for conjunctive encoding of trap spaces."""
     nnodes = petri_net.number_of_nodes()
     if nprocs == 0:
         nproc = cpu_count()
@@ -65,6 +66,7 @@ def write_naive_asp(petri_net: nx.DiGraph, asp_file: IO, nprocs: int):
 
 def setup_worker(filename):
     """Set global variables for subprocess."""
+    # FIXME duplicated from naive, because it uses globals…
     # big bnets…
     setrecursionlimit(2048)
     global counter
@@ -81,13 +83,10 @@ def add_variable(node_and_data):
     """Add all the rules for one variable."""
     node, data = node_and_data
     name = pnml_to_asp(node)
-    print("{", name, "}.", sep="", file=asp_file)
     print(f"#show {name}/0.", file=asp_file)
     if not node.startswith("-"):
-        print(
-            f":- {name}, {pnml_to_asp('-' + node)}.", file=asp_file
-        )  # conflict-freeness
-    add_tree(expr(data["function"]).to_nnf(), expr(data["var"]), asp_file)
+        print(f"{name}, {pnml_to_asp('-' + node)}.", file=asp_file)  # conflict-freeness
+    add_tree(expr(data["var"]), expr(data["function"]).to_nnf(), asp_file)
     asp_file.flush()
     return pid
 
@@ -95,95 +94,61 @@ def add_variable(node_and_data):
 def add_tree(source: expr, target: expr, asp_file):
     """Add the AST of things->target to the ASP program."""
     global counter
-    if isinstance(target, Variable) and target.name.startswith("aux"):
-        starget = target.name
+    if isinstance(source, Variable) and source.name.startswith("aux"):
+        ssource = source.name
     else:
-        starget = pnml_to_asp(str(~target))
+        ssource = pnml_to_asp(str(~source))
 
-    if isinstance(source, Literal):
-        print(f"{pnml_to_asp(str(~source))} :- {starget}.", file=asp_file)
-    elif isinstance(source, Constant):
-        if source.is_zero():
-            print(f":- {starget}.", file=asp_file)
-        elif source.is_one():
+    if isinstance(target, Literal):
+        print(f"{ssource} :- {pnml_to_asp(str(~target))}.", file=asp_file)
+    elif isinstance(target, Constant):
+        if target.is_zero():
             # nothing to do
             pass
+        elif target.is_one():
+            print(f"{ssource}.", file=asp_file)
         else:
-            raise ValueError(f"Houston we have a problem with {source}…")
-    elif isinstance(source, OrOp):
-        safe, unsafe = split_safe_unsafe(source)
+            raise ValueError(f"Houston we have a problem with {target}…")
+    elif isinstance(target, AndOp):
+        safe, unsafe = split_safe_unsafe(target)
         if unsafe:
-            source = Or(cnf_from_bdd(Or(*unsafe)), *safe)
-            if not isinstance(source, OrOp):
+            target = And(dnf_from_bdd(And(*unsafe)), *safe)
+            if not isinstance(target, AndOp):
                 return add_tree(source, target, asp_file)
-        source_str = ""
-        for s in source.xs:
+        target_str = ""
+        for s in target.xs:
             if isinstance(s, Literal):
                 svs = pnml_to_asp(str(~s))
             else:
                 vs = expr(f"aux_{pid}_{counter}")
                 counter += 1
-                add_tree(s, vs, asp_file)
+                add_tree(vs, s, asp_file)
                 svs = str(vs)
-            if source_str:
-                source_str += "; " + svs
+            if target_str:
+                target_str += ", " + svs
             else:
-                source_str = svs
-        print(f"{source_str} :- {starget}.", file=asp_file)
-    elif isinstance(source, AndOp):
-        for s in source.xs:
+                target_str = svs
+        print(f"{ssource} :- {target_str}.", file=asp_file)
+    elif isinstance(target, OrOp):
+        for s in target.xs:
             if isinstance(s, Literal):
-                print(f"{pnml_to_asp(str(~s))} :- {starget}.", file=asp_file)
+                print(f"{ssource} :- {pnml_to_asp(str(~s))}.", file=asp_file)
             else:
-                add_tree(s, target, asp_file)
+                add_tree(source, s, asp_file)
     else:
-        print(f"Houston we have a problem with {source}…")
+        print(f"Houston we have a problem with {target}…")
 
 
-def leaves(expression: expr) -> Set[Literal]:
-    """Return all the Litterals in expression."""
-    # TODO cache?
-    s = set()
-    for ex in expression.iter_dfs():
-        if isinstance(ex, Literal):
-            s.add(ex)
-    return s
-
-
-def split_safe_unsafe(expression: expr) -> Tuple[List[expr], List[expr]]:
-    """Split an Or/And into safe and unsafe parts.
-
-    An unsafe part contains a literal and its negation.
-    """
-    leaves_list = [leaves(child) for child in expression.xs]
-    conflicts = set()
-    for child1, child2 in [
-        (a, b) for index, a in enumerate(leaves_list) for b in leaves_list[index + 1 :]
-    ]:
-        for v in child1:
-            if ~v in child2:
-                conflicts.add(v)
-                conflicts.add(~v)
-    safe = []
-    unsafe = []
-    for child, child_leaves in zip(expression.xs, leaves_list):
-        if child_leaves & conflicts:
-            unsafe.append(child)
-        else:
-            safe.append(child)
-    return (safe, unsafe)
-
-
-def cnf_from_bdd(source):
-    """Get a CNF via a BDD."""
-    conjunct = []
-    for success in expr2bdd(~source).satisfy_all():
-        disjunct = []
+def dnf_from_bdd(source):
+    """Get a DNF via a BDD."""
+    disjunct = []
+    for success in expr2bdd(source).satisfy_all():
+        conjunct = []
         for p, v in success.items():
-            if v == 0:
-                disjunct.append(bdd2expr(p))
+            if v == 1:
+                conjunct.append(bdd2expr(p))
             else:
-                disjunct.append(~bdd2expr(p))
-        conjunct.append(Or(*disjunct))
-    result = And(*conjunct)
+                conjunct.append(~bdd2expr(p))
+        disjunct.append(And(*conjunct))
+    result = Or(*disjunct)
     return result
