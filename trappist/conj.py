@@ -58,6 +58,7 @@ def write_conj_asp(petri_net: nx.DiGraph, asp_file: IO, nprocs: int):
     else:
         setrecursionlimit(2048)
         globals()["counter"] = 0
+        globals()["has_aux"] = dict()
         globals()["pid"] = 0
         globals()["asp_file"] = asp_file
         for node_and_data in petri_net.nodes(data=True):
@@ -94,6 +95,7 @@ def add_variable(node_and_data):
 def add_tree(source: expr, target: expr, asp_file):
     """Add the AST of things->target to the ASP program."""
     global counter
+    global has_aux
     if isinstance(source, Variable) and source.name.startswith("aux"):
         ssource = source.name
     else:
@@ -120,10 +122,14 @@ def add_tree(source: expr, target: expr, asp_file):
             if isinstance(s, Literal):
                 svs = pnml_to_asp(str(~s))
             else:
-                vs = expr(f"aux_{pid}_{counter}")
-                counter += 1
-                add_tree(vs, s, asp_file)
-                svs = str(vs)
+                if str(s) in has_aux:
+                    svs = has_aux[str(s)]
+                else:
+                    vs = expr(f"aux_{pid}_{counter}")
+                    counter += 1
+                    add_tree(vs, s, asp_file)
+                    svs = str(vs)
+                    has_aux[str(s)] = svs
             if target_str:
                 target_str += ", " + svs
             else:
@@ -141,6 +147,7 @@ def add_tree(source: expr, target: expr, asp_file):
 
 def dnf_from_bdd(source):
     """Get a DNF via a BDD."""
+    # TODO functools.lru_cache? But pyeda expr are not hashable…
     disjunct = []
     for success in expr2bdd(source).satisfy_all():
         conjunct = []

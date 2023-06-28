@@ -113,7 +113,6 @@ def solution_to_bool(places: List[str], sol: Set[str], method: str) -> List[str]
     """Convert a list of present places in sol, to a tri-valued vector."""
     if method != "conj":
         return [place_in_sol(sol, p) for p in places]
-    print(sol)
     return [conj_place_in_sol(sol, p) for p in places]
 
 
