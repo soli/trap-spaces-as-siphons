@@ -148,14 +148,4 @@ def add_tree(source: expr, target: expr, asp_file):
 def dnf_from_bdd(source):
     """Get a DNF via a BDD."""
     # TODO functools.lru_cache? But pyeda expr are not hashable…
-    disjunct = []
-    for success in expr2bdd(source).satisfy_all():
-        conjunct = []
-        for p, v in success.items():
-            if v == 1:
-                conjunct.append(bdd2expr(p))
-            else:
-                conjunct.append(~bdd2expr(p))
-        disjunct.append(And(*conjunct))
-    result = Or(*disjunct)
-    return result
+    return bdd2expr(expr2bdd(source))

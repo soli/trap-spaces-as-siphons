@@ -25,7 +25,7 @@ from typing import IO, List, Set, Tuple
 import networkx as nx  # TODO maybe replace with lists/dicts
 
 from pyeda.boolalg.bdd import bdd2expr, expr2bdd
-from pyeda.boolalg.expr import And, AndOp, Constant, Literal, Or, OrOp, Variable, expr
+from pyeda.boolalg.expr import AndOp, Constant, Literal, Or, OrOp, Variable, expr
 
 # from pyeda.boolalg.minimization import espresso_exprs
 
@@ -176,14 +176,4 @@ def split_safe_unsafe(expression: expr) -> Tuple[List[expr], List[expr]]:
 
 def cnf_from_bdd(source):
     """Get a CNF via a BDD."""
-    conjunct = []
-    for success in expr2bdd(~source).satisfy_all():
-        disjunct = []
-        for p, v in success.items():
-            if v == 0:
-                disjunct.append(bdd2expr(p))
-            else:
-                disjunct.append(~bdd2expr(p))
-        conjunct.append(Or(*disjunct))
-    result = And(*conjunct)
-    return result
+    return bdd2expr(expr2bdd(source), conj=True)
