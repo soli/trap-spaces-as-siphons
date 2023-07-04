@@ -16,6 +16,7 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
+from functools import partial
 from math import ceil
 from multiprocessing import Pool, cpu_count, current_process
 from os import unlink
@@ -33,7 +34,7 @@ from . import pnml_to_asp
 from .naive import split_safe_unsafe
 
 
-def write_conj_asp(petri_net: nx.DiGraph, asp_file: IO, nprocs: int):
+def write_conj_asp(petri_net: nx.DiGraph, asp_file: IO, nprocs: int, constraint: bool):
     """Write the ASP program for conjunctive encoding of trap spaces."""
     nnodes = petri_net.number_of_nodes()
     if nprocs == 0:
@@ -45,7 +46,7 @@ def write_conj_asp(petri_net: nx.DiGraph, asp_file: IO, nprocs: int):
         with Pool(nproc, setup_worker, (asp_file.name,)) as p:
             pids = set(
                 p.imap_unordered(
-                    add_variable,
+                    partial(add_variable, constraint=constraint),
                     petri_net.nodes(data=True),
                     chunksize,
                 )
@@ -56,20 +57,20 @@ def write_conj_asp(petri_net: nx.DiGraph, asp_file: IO, nprocs: int):
                     asp_file.write(line)
             unlink(f"{asp_file.name}_{p}")
     else:
-        setrecursionlimit(2048)
+        setrecursionlimit(204800)
         globals()["counter"] = 0
         globals()["has_aux"] = dict()
         globals()["pid"] = 0
         globals()["asp_file"] = asp_file
         for node_and_data in petri_net.nodes(data=True):
-            add_variable(node_and_data)
+            add_variable(node_and_data, constraint)
 
 
 def setup_worker(filename):
     """Set global variables for subprocess."""
     # FIXME duplicated from naive, because it uses globals…
     # big bnets…
-    setrecursionlimit(2048)
+    setrecursionlimit(204800)
     global counter
     counter = 0
     global pid
@@ -80,19 +81,21 @@ def setup_worker(filename):
     asp_file = open(f"{filename}_{pid}", "wt")
 
 
-def add_variable(node_and_data):
+def add_variable(node_and_data, constraint: bool):
     """Add all the rules for one variable."""
     node, data = node_and_data
     name = pnml_to_asp(node)
     print(f"#show {name}/0.", file=asp_file)
+    if constraint is True:
+        print(f"{{{name}}}.", file=asp_file)
     if not node.startswith("-"):
         print(f"{name}, {pnml_to_asp('-' + node)}.", file=asp_file)  # conflict-freeness
-    add_tree(expr(data["var"]), expr(data["function"]).to_nnf(), asp_file)
+    add_tree(expr(data["var"]), expr(data["function"]).to_nnf(), asp_file, constraint=constraint)
     asp_file.flush()
     return pid
 
 
-def add_tree(source: expr, target: expr, asp_file):
+def add_tree(source: expr, target: expr, asp_file, constraint: bool):
     """Add the AST of things->target to the ASP program."""
     global counter
     global has_aux
@@ -112,11 +115,18 @@ def add_tree(source: expr, target: expr, asp_file):
         else:
             raise ValueError(f"Houston we have a problem with {target}…")
     elif isinstance(target, AndOp):
-        safe, unsafe = split_safe_unsafe(target)
-        if unsafe:
-            target = And(dnf_from_bdd(And(*unsafe)), *safe)
+        # TODO make this heuristic actionable
+        if len(target.xs) < 1000:
+            safe, unsafe = split_safe_unsafe(target)
+            if unsafe:
+                target = And(dnf_from_bdd(And(*unsafe)), *safe)
+                if not isinstance(target, AndOp):
+                    return add_tree(source, target, asp_file, constraint)
+        else:
+            target = dnf_from_bdd(target)
             if not isinstance(target, AndOp):
-                return add_tree(source, target, asp_file)
+                return add_tree(source, target, asp_file, constraint)
+
         target_str = ""
         for s in target.xs:
             if isinstance(s, Literal):
@@ -127,20 +137,30 @@ def add_tree(source: expr, target: expr, asp_file):
                 else:
                     vs = expr(f"aux_{pid}_{counter}")
                     counter += 1
-                    add_tree(vs, s, asp_file)
+                    add_tree(vs, s, asp_file, constraint)
                     svs = str(vs)
                     has_aux[str(s)] = svs
             if target_str:
                 target_str += ", " + svs
             else:
                 target_str = svs
-        print(f"{ssource} :- {target_str}.", file=asp_file)
+        if constraint is False or ssource.startswith("aux"):
+            print(f"{ssource} :- {target_str}.", file=asp_file)
+        else:
+            print(f":- {target_str} ; not {ssource}."
+                , file=asp_file
+            )
     elif isinstance(target, OrOp):
         for s in target.xs:
             if isinstance(s, Literal):
-                print(f"{ssource} :- {pnml_to_asp(str(~s))}.", file=asp_file)
+                if constraint is False or ssource.startswith("aux"):
+                    print(f"{ssource} :- {pnml_to_asp(str(~s))}.", file=asp_file)
+                else:
+                    print(f":- {pnml_to_asp(str(~s))} ; not {ssource}."
+                        , file=asp_file
+                    )
             else:
-                add_tree(source, s, asp_file)
+                add_tree(source, s, asp_file, constraint)
     else:
         print(f"Houston we have a problem with {target}…")
 

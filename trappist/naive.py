@@ -55,7 +55,7 @@ def write_naive_asp(petri_net: nx.DiGraph, asp_file: IO, nprocs: int):
                     asp_file.write(line)
             unlink(f"{asp_file.name}_{p}")
     else:
-        setrecursionlimit(2048)
+        setrecursionlimit(204800)
         globals()["counter"] = 0
         globals()["pid"] = 0
         globals()["asp_file"] = asp_file
@@ -66,7 +66,7 @@ def write_naive_asp(petri_net: nx.DiGraph, asp_file: IO, nprocs: int):
 def setup_worker(filename):
     """Set global variables for subprocess."""
     # big bnets…
-    setrecursionlimit(2048)
+    setrecursionlimit(204800)
     global counter
     counter = 0
     global pid

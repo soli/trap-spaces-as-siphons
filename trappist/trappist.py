@@ -85,10 +85,13 @@ def solve_asp(asp_filename: str, max_output: int, time_limit: int, method: str) 
     ]
     if method != "conj":
         args += [
-            "--heuristic=Domain",  # maximal w.r.t. inclusion
+            "--heuristic=Domain",  # order w.r.t. inclusion
             "--enum-mod=domRec",
-            "--dom-mod=3,16",
         ]
+        if method != "conj-c":
+            args += ["--dom-mod=3,16"]  # maximal
+        else:
+            args += ["--dom-mod=5,16"]  # minimal
     args += [
         "--outf=2",  # json output
         f"--time-limit={time_limit}",
@@ -111,9 +114,9 @@ def solve_asp(asp_filename: str, max_output: int, time_limit: int, method: str) 
 
 def solution_to_bool(places: List[str], sol: Set[str], method: str) -> List[str]:
     """Convert a list of present places in sol, to a tri-valued vector."""
-    if method != "conj":
-        return [place_in_sol(sol, p) for p in places]
-    return [conj_place_in_sol(sol, p) for p in places]
+    if method.startswith("conj"):
+        return [conj_place_in_sol(sol, p) for p in places]
+    return [place_in_sol(sol, p) for p in places]
 
 
 def place_in_sol(sol: Set[str], place: str) -> str:
@@ -169,8 +172,8 @@ def get_asp_output(
             write_asp(petri_net, asp_file)
         elif method == "naive":
             write_naive_asp(petri_net, asp_file, nprocs)
-        elif method == "conj":
-            write_conj_asp(petri_net, asp_file, nprocs)
+        elif method.startswith("conj"):
+            write_conj_asp(petri_net, asp_file, nprocs, method == "conj-c")
     if debug:
         print(f"ASP file {tmpname} written.")
     solutions = solve_asp(tmpname, max_output, time_limit, method)
@@ -194,7 +197,7 @@ def compute_trap_spaces(
         infile = open(infile, "r", encoding="utf-8")
         toclose = True
 
-    if infile.name.endswith(".pnml") and method not in ("naive", "conj"):
+    if infile.name.endswith(".pnml") and method not in ("naive", "conj", "conj-c"):
         petri_net = read_pnml(infile)
     elif infile.name.endswith(".bnet"):
         petri_net = read_bnet(infile, method)
@@ -265,7 +268,7 @@ def main():
         "--parallel",
         type=int,
         default=1,
-        help="Maximum number of cores to use [only for naive and conj method] (0 for no-limit).",
+        help="Maximum number of cores to use [only for naive and conj(-c) method] (0 for no-limit).",
     )
     parser.add_argument(
         "-t",
@@ -277,7 +280,7 @@ def main():
     parser.add_argument(
         "-s",
         "--solver",
-        choices=["asp", "cp", "ilp", "sat", "naive", "conj"],
+        choices=["asp", "cp", "ilp", "sat", "naive", "conj", "conj-c"],
         default="asp",
         type=str,
         help="Solver to compute the Maximal conflict-free siphons.\n"
