@@ -26,7 +26,7 @@ from typing import IO
 import networkx as nx  # TODO maybe replace with lists/dicts
 
 from pyeda.boolalg.bdd import bdd2expr, expr2bdd
-from pyeda.boolalg.expr import And, AndOp, Constant, Literal, Or, OrOp, Variable, expr
+from pyeda.boolalg.expr import And, AndOp, Constant, Literal, OrOp, Variable, expr
 
 # from pyeda.boolalg.minimization import espresso_exprs
 
@@ -59,7 +59,7 @@ def write_conj_asp(petri_net: nx.DiGraph, asp_file: IO, nprocs: int, constraint:
     else:
         setrecursionlimit(204800)
         globals()["counter"] = 0
-        globals()["has_aux"] = dict()
+        globals()["has_aux"] = {}
         globals()["pid"] = 0
         globals()["asp_file"] = asp_file
         for node_and_data in petri_net.nodes(data=True):
@@ -90,7 +90,12 @@ def add_variable(node_and_data, constraint: bool):
         print(f"{{{name}}}.", file=asp_file)
     if not node.startswith("-"):
         print(f"{name}, {pnml_to_asp('-' + node)}.", file=asp_file)  # conflict-freeness
-    add_tree(expr(data["var"]), expr(data["function"]).to_nnf(), asp_file, constraint=constraint)
+    add_tree(
+        expr(data["var"]),
+        expr(data["function"]).to_nnf(),
+        asp_file,
+        constraint=constraint,
+    )
     asp_file.flush()
     return pid
 
@@ -147,18 +152,14 @@ def add_tree(source: expr, target: expr, asp_file, constraint: bool):
         if constraint is False or ssource.startswith("aux"):
             print(f"{ssource} :- {target_str}.", file=asp_file)
         else:
-            print(f":- {target_str} ; not {ssource}."
-                , file=asp_file
-            )
+            print(f":- {target_str} ; not {ssource}.", file=asp_file)
     elif isinstance(target, OrOp):
         for s in target.xs:
             if isinstance(s, Literal):
                 if constraint is False or ssource.startswith("aux"):
                     print(f"{ssource} :- {pnml_to_asp(str(~s))}.", file=asp_file)
                 else:
-                    print(f":- {pnml_to_asp(str(~s))} ; not {ssource}."
-                        , file=asp_file
-                    )
+                    print(f":- {pnml_to_asp(str(~s))} ; not {ssource}.", file=asp_file)
             else:
                 add_tree(source, s, asp_file, constraint)
     else:
