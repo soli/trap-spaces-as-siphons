@@ -268,7 +268,8 @@ def main():
         "--parallel",
         type=int,
         default=1,
-        help="Maximum number of cores to use [only for naive and conj(-c) method] (0 for no-limit).",
+        help="Maximum number of cores to use [only for naive and conj(-c) method]"
+        " (0 for no-limit).",
     )
     parser.add_argument(
         "-t",
@@ -284,14 +285,15 @@ def main():
         default="asp",
         type=str,
         help="Solver to compute the Maximal conflict-free siphons.\n"
-        "'asp' requires clingo, 'cp' requires minizinc.",
+        "'asp', 'naive' and 'conj(-c)' require `clingo`,\n'cp' requires `minizinc`.",
     )
     parser.add_argument(
         "infile",
         type=argparse.FileType("r", encoding="utf-8"),
         nargs="?",
         default=sys.stdin,
-        help="Boolnet (.bnet) file of the model or Petri-net (PNML) file of its Petri net encoding.",
+        help="Boolnet (.bnet) file of the model or Petri-net (PNML) file of its Petri"
+        " net encoding.\n'naive' and 'conj(-c)' solvers only handle .bnet input.",
     )
     args = parser.parse_args()
 
