@@ -53,6 +53,7 @@ include = [
 ]
 exclude = [
     "/trappist/.mypy_cache/**",
+    "/trappist/__token__",
 ]
 
 [tool.hatch.envs.default]
