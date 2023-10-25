@@ -23,7 +23,7 @@ import subprocess
 import sys
 import tempfile
 import xml.etree.ElementTree as etree
-from typing import Generator, IO, List, Set
+from typing import IO, Generator, List, Set
 
 import networkx as nx  # TODO maybe replace with lists/dicts
 
@@ -45,7 +45,8 @@ def read_pnml(fileobj: IO) -> nx.DiGraph:
 
     for place in root.findall("./net/place"):
         net.add_node(
-            place.get("id"), kind="place"  # , name=place.find("./name/value").text
+            place.get("id"),
+            kind="place",  # , name=place.find("./name/value").text
         )
 
     for transition in root.findall("./net/transition"):
