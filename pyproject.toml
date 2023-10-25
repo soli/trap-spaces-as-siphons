@@ -36,8 +36,7 @@ Code = "https://github.com/soli/trap-spaces-as-siphons"
 
 [project.optional-dependencies]
 dev = [
-    "black",
-    "flake8-mypy",
+    "ruff>=0.0.289",
 ]
 
 [project.scripts]
@@ -62,26 +61,28 @@ python = "39"
 [tool.hatch.envs.lint]
 detached = true
 dependencies = [
-    "pydocstyle",
-    "flake8",
-    "flake8-blind-except",
-    "flake8-bugbear",
-    "flake8-builtins",
-    "flake8-comprehensions",
-    "flake8-docstrings",
-    "flake8-import-order",
-    "flake8-mypy",
-    "flake8-polyfill",
-    "black",
+    "ruff>=0.0.289",
 ]
 python = "39"
 
 [tool.hatch.envs.lint.scripts]
 check = [
-    "flake8 --select=C,E,F,W,D,A,I,B --ignore=B950,E501,W503,E203 trappist",
-    "black --check --diff trappist",
+    "ruff format --diff trappist",
+    "ruff check trappist",
 ]
 fmt = [
-    "black trappist",
-    "check",
+    "ruff format trappist",
+    "ruff check --fix trappist",
 ]
+
+
+[tool.ruff]
+select = ["C", "E", "F", "W", "D", "A", "I", "B"]
+ignore = ["D203", "D212", "D213", "E501", "D206", "W191", "C901"]
+
+[tool.isort]
+profile = "black"
+
+[tool.mypy]
+ignore_missing_imports = true
+check_untyped_defs = true

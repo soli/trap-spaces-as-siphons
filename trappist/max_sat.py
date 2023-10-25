@@ -20,7 +20,6 @@ from itertools import islice
 from typing import Generator, List
 
 import networkx as nx  # TODO maybe replace with lists/dicts
-
 from pysat.examples.rc2 import RC2
 from pysat.formula import WCNF
 

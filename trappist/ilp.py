@@ -23,9 +23,8 @@ from datetime import timedelta
 from time import perf_counter
 from typing import Generator, List
 
-from minizinc import Instance, Model, Solver, Status
-
 import networkx as nx  # TODO maybe replace with lists/dicts
+from minizinc import Instance, Model, Solver, Status
 
 from .cp import cp_to_bool, zincify
 

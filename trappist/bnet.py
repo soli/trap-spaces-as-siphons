@@ -20,7 +20,6 @@ from sys import setrecursionlimit
 from typing import IO
 
 import networkx as nx  # TODO maybe replace with lists/dicts
-
 from pyeda.boolalg.bdd import bddvar, expr2bdd
 from pyeda.boolalg.expr import expr
 
