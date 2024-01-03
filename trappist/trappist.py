@@ -77,22 +77,33 @@ def write_asp(petri_net: nx.DiGraph, asp_file: IO):
                     print(f"{or_preds} :- {pnml_to_asp(succ)}.", file=asp_file)
 
 
-def solve_asp(asp_filename: str, max_output: int, time_limit: int, method: str) -> str:
+def solve_asp(
+    asp_filename: str, max_output: int, time_limit: int, method: str, computation: str
+) -> str:
     """Run an ASP solver on program asp_file and get the solutions."""
     args = [
         "clingo",
         # TODO try clasp parrallel-mode f"--parallel-mode={os.cpu_count()}",
         str(max_output),
     ]
-    if method != "conj":
+    if method != "conj" and method != "conj-c":
         args += [
-            "--heuristic=Domain",  # order w.r.t. inclusion
+            "--heuristic=Domain",  # maximal w.r.t. inclusion
             "--enum-mod=domRec",
+            "--dom-mod=3,16",
         ]
-        if method != "conj-c":
-            args += ["--dom-mod=3,16"]  # maximal
-        else:
-            args += ["--dom-mod=5,16"]  # minimal
+    if method == "conj-c":
+        args += [
+            "--heuristic=Domain",  # minimal w.r.t. inclusion
+            "--enum-mod=domRec",
+            "--dom-mod=5,16",
+        ]
+    if method == "conj" and computation == "max":
+        args += [
+            "--heuristic=Domain",  # maximal w.r.t. inclusion
+            "--enum-mod=domRec",
+            "--dom-mod=3,16",
+        ]
     args += [
         "--outf=2",  # json output
         f"--time-limit={time_limit}",
@@ -162,6 +173,7 @@ def get_asp_output(
     petri_net: nx.DiGraph,
     max_output: int,
     time_limit: int,
+    computation: str,
     method: str,
     debug: bool,
     nprocs: int,
@@ -173,11 +185,16 @@ def get_asp_output(
             write_asp(petri_net, asp_file)
         elif method == "naive":
             write_naive_asp(petri_net, asp_file, nprocs)
-        elif method.startswith("conj"):
-            write_conj_asp(petri_net, asp_file, nprocs, method == "conj-c")
+        elif method == "conj":
+            write_conj_asp(petri_net, asp_file, nprocs, computation, constraint=False)
+        elif method == "conj-c":
+            # replace a Horn rule by an equivalent constraint
+            # start = time.perf_counter()
+            write_conj_asp(petri_net, asp_file, nprocs, computation, constraint=True)
+            # print(f"# write_conj_asp time = {time.perf_counter() - start:.2f}s")
     if debug:
         print(f"ASP file {tmpname} written.")
-    solutions = solve_asp(tmpname, max_output, time_limit, method)
+    solutions = solve_asp(tmpname, max_output, time_limit, method, computation)
     if not debug:
         os.unlink(tmpname)
     return solutions
@@ -188,6 +205,7 @@ def compute_trap_spaces(
     display: bool = False,
     max_output: int = 0,
     time_limit: int = 0,
+    computation: str = "min",
     method: str = "asp",
     debug: bool = False,
     nprocs: int = 1,
@@ -227,7 +245,7 @@ def compute_trap_spaces(
         solutions = get_ilp_solutions(petri_net, max_output, time_limit, places, nprocs)
     else:
         solutions_output = get_asp_output(
-            petri_net, max_output, time_limit, method, debug, nprocs
+            petri_net, max_output, time_limit, computation, method, debug, nprocs
         )
         if debug:
             print("ASP solutions obtained.")
@@ -278,6 +296,14 @@ def main():
         type=int,
         default=0,
         help="Maximum number of seconds for search (0 for no-limit).",
+    )
+    parser.add_argument(
+        "-c",
+        "--computation",
+        choices=["min", "max", "fix"],
+        default="min",
+        type=str,
+        help="Computation option.",
     )
     parser.add_argument(
         "-s",
