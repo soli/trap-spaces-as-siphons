@@ -32,7 +32,9 @@ from . import pnml_to_asp
 from .naive import split_safe_unsafe
 
 
-def write_conj_asp(petri_net: nx.DiGraph, asp_file: IO, nprocs: int, constraint: bool):
+def write_conj_asp(
+    petri_net: nx.DiGraph, asp_file: IO, nprocs: int, computation: str, constraint: bool
+):
     """Write the ASP program for conjunctive encoding of trap spaces."""
     nnodes = petri_net.number_of_nodes()
     if nprocs == 0:
@@ -60,8 +62,20 @@ def write_conj_asp(petri_net: nx.DiGraph, asp_file: IO, nprocs: int, constraint:
         globals()["has_aux"] = {}
         globals()["pid"] = 0
         globals()["asp_file"] = asp_file
+        main_atoms = []
         for node_and_data in petri_net.nodes(data=True):
+            if computation == "max":
+                node, data = node_and_data
+                name = pnml_to_asp(node)
+                main_atoms.append(name)
             add_variable(node_and_data, constraint)
+
+        if computation == "max":
+            for m_name in main_atoms:
+                print("{", m_name, "}.", sep="", file=asp_file)
+
+            max_condition = "; ".join(main_atoms)
+            print(f":- {max_condition}.", file=asp_file)
 
 
 def setup_worker(filename):
@@ -147,17 +161,25 @@ def add_tree(source: expr, target: expr, asp_file, constraint: bool):
                 target_str += ", " + svs
             else:
                 target_str = svs
-        if constraint is False or ssource.startswith("aux"):
+        if constraint is False:
             print(f"{ssource} :- {target_str}.", file=asp_file)
         else:
-            print(f":- {target_str} ; not {ssource}.", file=asp_file)
+            if ssource.startswith("p") or ssource.startswith("n"):
+                print(f":- {target_str} ; not {ssource}.", file=asp_file)
+            else:
+                print(f"{ssource} :- {target_str}.", file=asp_file)
     elif isinstance(target, OrOp):
         for s in target.xs:
             if isinstance(s, Literal):
-                if constraint is False or ssource.startswith("aux"):
+                if constraint is False:
                     print(f"{ssource} :- {pnml_to_asp(str(~s))}.", file=asp_file)
                 else:
-                    print(f":- {pnml_to_asp(str(~s))} ; not {ssource}.", file=asp_file)
+                    if ssource.startswith("p") or ssource.startswith("n"):
+                        print(
+                            f":- {pnml_to_asp(str(~s))} ; not {ssource}.", file=asp_file
+                        )
+                    else:
+                        print(f"{ssource} :- {pnml_to_asp(str(~s))}.", file=asp_file)
             else:
                 add_tree(source, s, asp_file, constraint)
     else:
