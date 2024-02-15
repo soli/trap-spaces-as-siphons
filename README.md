@@ -28,7 +28,7 @@ Latest version, with _2022-12-01_ colomoto-docker image: [![Binder](https://myb
 
 # Read about trappist
 
-The first article describing trappist is [here](cmsb22.pdf)
+You can find articles describing trappist [here](https://hal.science/hal-03721508), [here](https://hal.science/hal-04167028/) and [here]().
 
 # Run trappist from the command line
 
