@@ -23,7 +23,7 @@ dynamic = [
 requires-python = ">=3.6"
 dependencies = [
     "loguru>=0.2.5",
-    "python-sat",
+    "python-sat>=1.8.dev1",
     "networkx>=2.2",
     "minizinc>=0.6",
     "pyeda>=0.28",
@@ -36,7 +36,7 @@ Code = "https://github.com/soli/trap-spaces-as-siphons"
 
 [project.optional-dependencies]
 dev = [
-    "ruff>=0.0.289",
+    "ruff>=0.3",
 ]
 
 [project.scripts]
@@ -61,7 +61,7 @@ python = "39"
 [tool.hatch.envs.lint]
 detached = true
 dependencies = [
-    "ruff>=0.0.289",
+    "ruff>=0.3",
 ]
 python = "39"
 
@@ -76,7 +76,7 @@ fmt = [
 ]
 
 
-[tool.ruff]
+[tool.ruff.lint]
 select = ["C", "E", "F", "W", "D", "A", "I", "B"]
 ignore = ["D203", "D212", "D213", "E501", "D206", "W191", "C901"]
 
