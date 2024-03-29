@@ -28,7 +28,7 @@ Latest version, with _2022-12-01_ colomoto-docker image: [![Binder](https://myb
 
 # Read about trappist
 
-You can find articles describing trappist [here](https://hal.science/hal-03721508), [here](https://hal.science/hal-04167028/) and [here]().
+You can find articles describing trappist [here](https://hal.science/hal-03721508), [here](https://hal.science/hal-04167028/) and [here](https://hal.science/hal-04523118/) (`tsconj`'s improvements have been backported to `trappist` with `conj` and `conj-c` solvers).
 
 # Run trappist from the command line
 
@@ -36,22 +36,26 @@ After installing `trappist` (and maybe `clingo`), just run
 
 ```
 $ trappist -h
-usage: trappist [-h] [-d] [-v] [-m MAX] [-p PARALLEL] [-t TIME] [-s {asp,cp,ilp,sat,naive}] [infile]
+usage: trappist [-h] [-d] [-v] [-m MAX] [-p PARALLEL] [-t TIME] [-c {min,max,fix}] [-s {asp,cp,ilp,sat,naive,conj,conj-c}] [infile]
 
-Compute minimal trap-spaces of a Petri-net encoded Boolean model. Copyright (C) 2022 Sylvain.Soliman@inria.fr and
+Compute minimal trap-spaces of a Petri-net encoded Boolean model. Copyright (C) Sylvain.Soliman@inria.fr and
 giang.trinh91@gmail.com GPLv3
 
 positional arguments:
-  infile                Boolnet (.bnet) file of the model or Petri-net (PNML) file of its Petri net encoding.
+  infile                Boolnet (.bnet) file of the model or Petri-net (PNML) file of its Petri net encoding. 'naive' and
+                        'conj(-c)' solvers only handle .bnet input.
 
-options:
+optional arguments:
   -h, --help            show this help message and exit
   -d, --debug           Print debugging information.
   -v, --version         show program's version number and exit
   -m MAX, --max MAX     Maximum number of solutions (0 for all).
   -p PARALLEL, --parallel PARALLEL
-                        Maximum number of cores to use [only for naive method] (0 for no-limit).
+                        Maximum number of cores to use [only for naive and conj(-c) method] (0 for no-limit).
   -t TIME, --time TIME  Maximum number of seconds for search (0 for no-limit).
-  -s {asp,cp,ilp,sat,naive}, --solver {asp,cp,ilp,sat,naive}
-                        Solver to compute the Maximal conflict-free siphons. 'asp' requires clingo, 'cp' requires minizinc.
+  -c {min,max,fix}, --computation {min,max,fix}
+                        Computation option.
+  -s {asp,cp,ilp,sat,naive,conj,conj-c}, --solver {asp,cp,ilp,sat,naive,conj,conj-c}
+                        Solver to compute the Maximal conflict-free siphons. 'asp', 'naive' and 'conj(-c)' require `clingo`, 'cp'
+                        requires `minizinc`.
 ```
