@@ -55,6 +55,11 @@ exclude = [
     "/trappist/__token__",
 ]
 
+[tool.hatch.build.targets.wheel]
+exclude = [
+    "/trappist/__token__",
+]
+
 [tool.hatch.envs.default]
 python = "39"
 
