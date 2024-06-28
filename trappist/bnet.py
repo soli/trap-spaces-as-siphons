@@ -55,7 +55,7 @@ def read_bnet(fileobj: IO, method: str) -> nx.DiGraph:
     # big bnets…
     setrecursionlimit(204800)
     for line in fileobj.readlines():
-        if line.startswith("#") or line.startswith("targets, factors"):
+        if line.startswith("#") or line.startswith("targets, factors") or line.startswith("targets,factors"):
             continue
         line = line.split("#")[0]
         try:
