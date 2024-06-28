@@ -19,7 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 """
 
 # Don't forget to git tag v<version> && git push --tags
-version = "1.1.2"  # pylint: disable=invalid-name
+version = "1.1.3"  # pylint: disable=invalid-name
 
 
 def pnml_to_asp(name: str) -> str:
